@@ -24,6 +24,7 @@ class CreateStudentsTable extends Migration
             $table->date('date_of_birth');
             $table->string('status');
             $table->foreignId('guardian_id');
+            $table->foreignId('set_id');
             $table->timestamps();
         });
     }
