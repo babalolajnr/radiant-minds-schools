@@ -22,13 +22,12 @@ class TeacherTest extends TestCase
 
     public function test_admin_can_store_a_new_teacher()
     {
-        // $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
         $request = $this->actingAs($user)->post('/store/teacher', [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'phone' => '08124792224',
+            'phone' => $this->faker->e164PhoneNumber,
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ]);
         $request->assertStatus(200);
@@ -40,5 +39,29 @@ class TeacherTest extends TestCase
         $teacher = Teacher::factory()->create();
         $request = $this->actingAs($user)->get('/view/teacher/' . $teacher->slug);
         $request->assertStatus(200);
+    }
+
+    public function test_admin_can_access_edit_teacher_view()
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $teacher = Teacher::factory()->create();
+        $request = $this->actingAs($user)->get('/edit/teacher/' . $teacher->slug);
+        $request->assertStatus(200);
+    }
+
+    public function test_admin_can_update_teacher()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $teacher = Teacher::factory()->create();
+        $request = $this->actingAs($user)->patch('/update/teacher/' . $teacher->slug, [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->e164PhoneNumber,
+            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+        ]);
+        $request->assertStatus(200);
+
     }
 }
