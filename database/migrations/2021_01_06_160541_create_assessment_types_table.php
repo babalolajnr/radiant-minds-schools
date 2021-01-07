@@ -15,6 +15,8 @@ class CreateAssessmentTypesTable extends Migration
     {
         Schema::create('assessment_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->double('total_score');
             $table->timestamps();
         });
     }
