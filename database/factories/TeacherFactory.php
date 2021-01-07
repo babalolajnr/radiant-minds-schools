@@ -31,8 +31,8 @@ class TeacherFactory extends Factory
             'last_name' => $lastName,
             'slug' => $slug,
             'email' => $this->faker->email,
-            'phone' => '08124792224',
-            'status' => $this->faker->randomElement(['active', 'inactive', 'susended']),
+            'phone' => $this->faker->e164PhoneNumber,
+            'status' => $this->faker->randomElement(['active', 'inactive', 'suspended']),
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ];
     }
