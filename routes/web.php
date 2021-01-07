@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/create/teacher', [TeacherController::class, 'create']);
+    Route::post('/store/teacher', [TeacherController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
