@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
 class TeacherController extends Controller
 {
     public function index()
@@ -25,11 +27,11 @@ class TeacherController extends Controller
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'string', 'unique:teachers', 'email:rfc,dns'],
-            'phone' => ['required', 'string', 'unique:teachers', 'max:11', 'min:11'],
+            'phone' => ['required', 'string', 'unique:teachers', 'max:15', 'min:10'],
             'date_of_birth' => ['required', 'date']
         ]);
 
-        $fullname = $request->first_name . ' ' . $request->last_name;
+        $fullname = $request->first_name . ' ' . $request->last_name . ' ' . Str::random(5);
         $slug = Str::of($fullname)->slug('-');
 
         Teacher::create([
@@ -47,22 +49,60 @@ class TeacherController extends Controller
 
     public function show($slug)
     {
-        // dd($slug);
         $teacher = Teacher::where('slug', $slug);
-        // dd($teacher->exists());
+
         if ($teacher->exists()) {
             return response(200);
-        }else {
+        } else {
             abort(404);
         }
     }
 
-    public function edit()
+    public function edit($slug, Teacher $teacher)
     {
+        $this->authorize('update', $teacher);
+
+        $teacher = Teacher::where('slug', $slug);
+
+        if ($teacher->exists()) {
+            return response(200);
+        } else {
+            abort(404);
+        }
     }
 
-    public function update()
+    public function update($slug, Teacher $teacher, Request $request)
     {
+        $this->authorize('update', $teacher);
+
+        $teacher = Teacher::where('slug', $slug);
+
+        if ($teacher->exists()) {
+
+            $this->validate($request, [
+                'first_name' => ['required', 'string', 'max:30'],
+                'last_name' => ['required', 'string', 'max:30'],
+                'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher->first()), 'email:rfc,dns'],
+                'phone' => ['required', 'string', Rule::unique('teachers')->ignore($teacher->first()), 'max:15', 'min:10'],
+                'date_of_birth' => ['required', 'date']
+            ]);
+
+            $fullname = $request->first_name . ' ' . $request->last_name . ' ' . Str::random(5);
+            $slug = Str::of($fullname)->slug('-');
+
+            $teacher->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'date_of_birth' => $request->date_of_birth,
+                'slug' => $slug,
+            ]);
+
+            return response(200);
+        } else {
+            abort(404);
+        }
     }
 
     public function destroy()
