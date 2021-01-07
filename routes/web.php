@@ -25,7 +25,9 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/create/teacher', [TeacherController::class, 'create']);
     Route::get('/view/teacher/{slug}', [TeacherController::class, 'show']);
+    Route::get('/edit/teacher/{slug}', [TeacherController::class, 'edit']);
     Route::post('/store/teacher', [TeacherController::class, 'store']);
+    Route::patch('/update/teacher/{slug}', [TeacherController::class, 'update']);
 });
 
 require __DIR__.'/auth.php';
