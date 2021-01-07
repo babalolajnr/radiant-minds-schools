@@ -41,7 +41,7 @@ class TeacherPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
