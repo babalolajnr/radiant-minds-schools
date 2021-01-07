@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/create/teacher', [TeacherController::class, 'create']);
+    Route::get('/view/teacher/{slug}', [TeacherController::class, 'show']);
     Route::post('/store/teacher', [TeacherController::class, 'store']);
 });
 
