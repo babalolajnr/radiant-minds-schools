@@ -2,21 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use App\Utilities\TestUtilities;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class TeacherTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
+    use WithFaker;
+    // use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_admin_can_access_create_view()
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $request = $this->actingAs($user)->get('/create/teacher');
+
+        $request->assertStatus(200);
     }
 }
