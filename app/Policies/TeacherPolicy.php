@@ -53,7 +53,7 @@ class TeacherPolicy
      */
     public function update(User $user, Teacher $teacher)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
