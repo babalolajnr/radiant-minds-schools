@@ -13,13 +13,13 @@ class TeacherController extends Controller
 
     public function create()
     {
-        $this->autorize('create', Teacher::class);
+        $this->authorize('create', Teacher::class);
         return response(200);
     }
 
     public function store(Request $request)
     {
-        $this->autorize('create', Teacher::class);
+        $this->authorize('create', Teacher::class);
 
         $this->validate($request, [
             'first_name' => ['required', 'string', 'max:30'],
