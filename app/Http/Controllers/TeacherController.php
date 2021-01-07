@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 class TeacherController extends Controller
 {
     public function index()
@@ -29,20 +29,32 @@ class TeacherController extends Controller
             'date_of_birth' => ['required', 'date']
         ]);
 
+        $fullname = $request->first_name . ' ' . $request->last_name;
+        $slug = Str::of($fullname)->slug('-');
+
         Teacher::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
+            'slug' => $slug,
             'status' => 'inactive'
         ]);
 
         return response(200);
     }
 
-    public function show()
+    public function show($slug)
     {
+        // dd($slug);
+        $teacher = Teacher::where('slug', $slug);
+        // dd($teacher->exists());
+        if ($teacher->exists()) {
+            return response(200);
+        }else {
+            abort(404);
+        }
     }
 
     public function edit()
