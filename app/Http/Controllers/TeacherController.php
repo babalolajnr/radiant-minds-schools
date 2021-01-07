@@ -24,8 +24,8 @@ class TeacherController extends Controller
         $this->validate($request, [
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
-            'email' => ['required', 'string', 'unique', 'email:rfc,dns'],
-            'phone' => ['required', 'string', 'unique', 'max:11', 'min:11'],
+            'email' => ['required', 'string', 'unique:teachers', 'email:rfc,dns'],
+            'phone' => ['required', 'string', 'unique:teachers', 'max:11', 'min:11'],
             'date_of_birth' => ['required', 'date']
         ]);
 
