@@ -89,6 +89,6 @@ class TeacherPolicy
      */
     public function forceDelete(User $user, Teacher $teacher)
     {
-        //
+        return $user->isMaster();
     }
 }
