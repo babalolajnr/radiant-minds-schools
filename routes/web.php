@@ -23,6 +23,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group( function () {
+
+    //Teacher routes
     Route::get('/create/teacher', [TeacherController::class, 'create']);
     Route::get('/view/teacher/{slug}', [TeacherController::class, 'show']);
     Route::get('/edit/teacher/{slug}', [TeacherController::class, 'edit']);
@@ -30,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::patch('/update/teacher/{slug}', [TeacherController::class, 'update']);
     Route::patch('/suspend/teacher/{id}', [TeacherController::class, 'suspend']);
     Route::patch('/activate/teacher/{id}', [TeacherController::class, 'activate']);
+    Route::patch('/deactivate/teacher/{id}', [TeacherController::class, 'deactivate']);
     Route::delete('/delete/teacher/{id}', [TeacherController::class, 'destroy']);
     Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
 });
