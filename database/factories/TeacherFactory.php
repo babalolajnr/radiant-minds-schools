@@ -24,7 +24,7 @@ class TeacherFactory extends Factory
     {
         $firstName = $this->faker->firstName;
         $lastName = $this->faker->lastName;
-        $fullname = $firstName . ' ' . $lastName;
+        $fullname = $firstName . ' ' . $lastName . ' ' . Str::random(5);
         $slug = Str::of($fullname)->slug('-');
         return [
             'first_name' => $firstName,
