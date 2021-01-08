@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::patch('/suspend/teacher/{id}', [TeacherController::class, 'suspend']);
     Route::patch('/activate/teacher/{id}', [TeacherController::class, 'activate']);
     Route::patch('/deactivate/teacher/{id}', [TeacherController::class, 'deactivate']);
+    Route::patch('/restore/teacher/{id}', [TeacherController::class, 'restore']);
     Route::delete('/delete/teacher/{id}', [TeacherController::class, 'destroy']);
     Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
 });
