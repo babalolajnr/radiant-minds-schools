@@ -92,7 +92,7 @@ class TeacherPolicy
      */
     public function restore(User $user, Teacher $teacher)
     {
-        //
+        return $user->isMaster();
     }
 
     /**
