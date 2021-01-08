@@ -104,4 +104,12 @@ class TeacherTest extends TestCase
         $response = $this->actingAs($user)->patch('/deactivate/teacher/' . $teacher->id);
         $response->assertStatus(200);
     }
+
+    public function test_master_can_restore_teacher()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $teacher = Teacher::factory()->create(['deleted_at' => now()]);
+        $response = $this->actingAs($user)->patch('/restore/teacher/' . $teacher->id);
+        $response->assertStatus(200);
+    }
 }
