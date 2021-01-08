@@ -105,7 +105,14 @@ class TeacherController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy($id, Teacher $teacher)
     {
+        $this->authorize('delete', $teacher);
+
+        $teacher = Teacher::findOrFail($id);
+
+        $teacher->delete();
+
+        return response(200);
     }
 }
