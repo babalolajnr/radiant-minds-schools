@@ -11,7 +11,7 @@ use Tests\TestCase;
 class TeacherTest extends TestCase
 {
     use WithFaker;
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_admin_can_access_create_teacher_view()
     {
@@ -94,6 +94,14 @@ class TeacherTest extends TestCase
         $user = User::factory()->create(['user_type' => 'master']);
         $teacher = Teacher::factory()->create(['status' => 'suspended']);
         $response = $this->actingAs($user)->patch('/activate/teacher/' . $teacher->id);
+        $response->assertStatus(200);
+    }
+
+    public function test_master_can_deactivate_teacher()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $teacher = Teacher::factory()->create(['status' => 'active']);
+        $response = $this->actingAs($user)->patch('/deactivate/teacher/' . $teacher->id);
         $response->assertStatus(200);
     }
 }
