@@ -105,6 +105,19 @@ class TeacherController extends Controller
         }
     }
 
+    public function suspend($id, Teacher $teacher)
+    {
+        $this->authorize('suspend', $teacher);
+
+        $teacher = Teacher::findOrFail($id);
+
+        $teacher->status = 'suspended';
+
+        $teacher->save();
+
+        return response(200);
+    }
+
     public function destroy($id, Teacher $teacher)
     {
         $this->authorize('delete', $teacher);
