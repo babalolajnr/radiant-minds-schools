@@ -56,6 +56,11 @@ class TeacherPolicy
         return $user->isAdmin();
     }
 
+    public function suspend(User $user, Teacher $teacher)
+    {
+        return $user->isMaster();
+    }
+
     /**
      * Determine whether the user can delete the model.
      *
