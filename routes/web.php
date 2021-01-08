@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/teacher', [TeacherController::class, 'store']);
     Route::patch('/update/teacher/{slug}', [TeacherController::class, 'update']);
     Route::delete('/delete/teacher/{id}', [TeacherController::class, 'destroy']);
+    Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
 });
 
 require __DIR__.'/auth.php';
