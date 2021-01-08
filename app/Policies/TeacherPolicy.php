@@ -65,7 +65,7 @@ class TeacherPolicy
      */
     public function delete(User $user, Teacher $teacher)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
