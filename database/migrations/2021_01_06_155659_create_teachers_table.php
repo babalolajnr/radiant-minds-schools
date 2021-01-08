@@ -23,6 +23,7 @@ class CreateTeachersTable extends Migration
             $table->string('date_of_birth');
             $table->string('slug')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
