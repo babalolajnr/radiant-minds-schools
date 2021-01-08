@@ -155,12 +155,24 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function forceDelete($id, Teacher $teacher){
+    public function forceDelete($id, Teacher $teacher)
+    {
         $this->authorize('forceDelete', $teacher);
 
         $teacher = Teacher::findOrFail($id);
 
         $teacher->forceDelete();
+
+        return response(200);
+    }
+
+    public function restore($id, Teacher $teacher)
+    {
+        $this->authorize('restore', $teacher);
+
+        $teacher = Teacher::onlyTrashed()->findOrFail($id);
+
+        $teacher->restore();
 
         return response(200);
     }
