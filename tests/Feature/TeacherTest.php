@@ -16,37 +16,37 @@ class TeacherTest extends TestCase
     public function test_admin_can_access_create_teacher_view()
     {
         $user = User::factory()->create(['user_type' => 'admin']);
-        $request = $this->actingAs($user)->get('/create/teacher');
-        $request->assertStatus(200);
+        $response = $this->actingAs($user)->get('/create/teacher');
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_store_a_new_teacher()
     {
         $user = User::factory()->create(['user_type' => 'admin']);
-        $request = $this->actingAs($user)->post('/store/teacher', [
+        $response = $this->actingAs($user)->post('/store/teacher', [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ]);
-        $request->assertStatus(200);
+        $response->assertStatus(200);
     }
 
     public function test_a_single_teacher_record_can_be_viewed()
     {
         $user = User::factory()->create();
         $teacher = Teacher::factory()->create();
-        $request = $this->actingAs($user)->get('/view/teacher/' . $teacher->slug);
-        $request->assertStatus(200);
+        $response = $this->actingAs($user)->get('/view/teacher/' . $teacher->slug);
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_access_edit_teacher_view()
     {
         $user = User::factory()->create(['user_type' => 'admin']);
         $teacher = Teacher::factory()->create();
-        $request = $this->actingAs($user)->get('/edit/teacher/' . $teacher->slug);
-        $request->assertStatus(200);
+        $response = $this->actingAs($user)->get('/edit/teacher/' . $teacher->slug);
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_update_teacher()
@@ -54,14 +54,14 @@ class TeacherTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
         $teacher = Teacher::factory()->create();
-        $request = $this->actingAs($user)->patch('/update/teacher/' . $teacher->slug, [
+        $response = $this->actingAs($user)->patch('/update/teacher/' . $teacher->slug, [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ]);
-        $request->assertStatus(200);
+        $response->assertStatus(200);
 
     }
 
@@ -69,15 +69,31 @@ class TeacherTest extends TestCase
     {
         $user = User::factory()->create(['user_type' => 'admin']);
         $teacher = Teacher::factory()->create();
-        $request = $this->actingAs($user)->delete('/delete/teacher/' . $teacher->id);
-        $request->assertStatus(200);
+        $response = $this->actingAs($user)->delete('/delete/teacher/' . $teacher->id);
+        $response->assertStatus(200);
     }
 
     public function test_master_can_force_delete_teacher()
     {
         $user = User::factory()->create(['user_type' => 'master']);
         $teacher = Teacher::factory()->create();
-        $request = $this->actingAs($user)->delete('/forceDelete/teacher/' . $teacher->id);
-        $request->assertStatus(200);
+        $response = $this->actingAs($user)->delete('/forceDelete/teacher/' . $teacher->id);
+        $response->assertStatus(200);
+    }
+
+    public function test_master_can_suspend_teacher()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $teacher = Teacher::factory()->create(['status' => 'active']);
+        $response = $this->actingAs($user)->patch('/suspend/teacher/' . $teacher->id);
+        $response->assertStatus(200);
+    }
+
+    public function test_master_can_activate_teacher()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $teacher = Teacher::factory()->create(['status' => 'suspended']);
+        $response = $this->actingAs($user)->patch('/activate/teacher/' . $teacher->id);
+        $response->assertStatus(200);
     }
 }
