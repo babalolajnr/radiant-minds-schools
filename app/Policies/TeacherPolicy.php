@@ -66,6 +66,11 @@ class TeacherPolicy
         return $user->isMaster();
     }
 
+    public function deactivate(User $user, Teacher $teacher)
+    {
+        return $user->isMaster();
+    }
+
     /**
      * Determine whether the user can delete the model.
      *
