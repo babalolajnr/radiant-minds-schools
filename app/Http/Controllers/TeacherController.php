@@ -131,6 +131,19 @@ class TeacherController extends Controller
         return response(200);
     }
 
+    public function deactivate($id, Teacher $teacher)
+    {
+        $this->authorize('deactivate', $teacher);
+
+        $teacher = Teacher::findOrFail($id);
+
+        $teacher->status = 'inactive';
+
+        $teacher->save();
+
+        return response(200);
+    }
+
     public function destroy($id, Teacher $teacher)
     {
         $this->authorize('delete', $teacher);
