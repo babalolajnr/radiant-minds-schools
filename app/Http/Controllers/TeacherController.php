@@ -118,6 +118,19 @@ class TeacherController extends Controller
         return response(200);
     }
 
+    public function activate($id, Teacher $teacher)
+    {
+        $this->authorize('activate', $teacher);
+
+        $teacher = Teacher::findOrFail($id);
+
+        $teacher->status = 'active';
+
+        $teacher->save();
+
+        return response(200);
+    }
+
     public function destroy($id, Teacher $teacher)
     {
         $this->authorize('delete', $teacher);
