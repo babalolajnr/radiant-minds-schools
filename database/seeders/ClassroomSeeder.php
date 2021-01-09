@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Classroom;
+use App\Models\Teacher;
 use Illuminate\Database\Seeder;
 
 class ClassroomSeeder extends Seeder
@@ -13,6 +15,27 @@ class ClassroomSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $classes = [
+            'Pre nursery',
+            'Nursery 1',
+            'Nursery 2',
+            'Reception',
+            'Grade 1',
+            'Grade 2',
+            'Grade 3',
+            'Grade 4',
+            'Grade 5',
+        ];
+
+        for ($i = 0; $i < count($classes); $i++) {
+            Classroom::updateOrCreate(
+                [
+                    'name' => $classes[$i]
+                ],
+                [
+                    'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
+                ]
+            );
+        }
     }
 }
