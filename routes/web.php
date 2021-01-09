@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::patch('/restore/teacher/{id}', [TeacherController::class, 'restore']);
     Route::delete('/delete/teacher/{id}', [TeacherController::class, 'destroy']);
     Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
+
+    //Student Routes
+    Route::post('/store/student', [StudentController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
