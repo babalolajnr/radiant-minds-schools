@@ -23,6 +23,8 @@ class CreateStudentsTable extends Migration
             $table->string('state');
             $table->string('country');
             $table->date('date_of_birth');
+            $table->text('place_of_birth');
+            $table->string('blood_group');
             $table->string('status');
             $table->foreignId('guardian_id');
             $table->foreignId('classroom_id');
