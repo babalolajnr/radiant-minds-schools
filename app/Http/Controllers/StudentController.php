@@ -61,7 +61,7 @@ class StudentController extends Controller
                 $fullname = $fullname;
             } else {
                 do {
-                    $fullname = $fullname . Str::random(3);
+                    $fullname = $fullname . '-' . Str::random(3);
                     $checkIfTaken = Guardian::where('full_name', $fullname)->first();
                 } while (!is_null($checkIfTaken));
             }
@@ -82,7 +82,7 @@ class StudentController extends Controller
             Student::create($studentInfo);
         } else {
             $guardian = Guardian::where('full_name', $request->guardian)->first();
-            
+
             $guardianID = ['guardian_id' => $guardian->id];
             $studentInfo = array_merge($studentInfo, $guardianID);
             Student::create($studentInfo);
