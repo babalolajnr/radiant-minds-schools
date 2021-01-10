@@ -49,7 +49,7 @@ class StudentTest extends TestCase
         ];
     }
 
-    public function test_admin_can_create_student_with_all_guardian_info()
+    public function test_admin_can_create_student_with_new_guardian_info()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
@@ -71,8 +71,8 @@ class StudentTest extends TestCase
     }
 
     public function test_an_already_taken_guardian_phone_will_work() {
-        // $guardian = Guardian::factory()->create();
-        $guardian = Guardian::all()->random();
+        $guardian = Guardian::factory()->create();
+        // $guardian = Guardian::all()->random();
         $user = User::factory()->create(['user_type' => 'admin']);
 
         $classroom = $this->generateTestClassroom();
