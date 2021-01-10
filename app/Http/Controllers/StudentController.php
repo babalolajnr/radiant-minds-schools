@@ -35,6 +35,19 @@ class StudentController extends Controller
 
 
         $classroom =  Classroom::where('name', $request->classroom)->first();
+
+        $studentInfo = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'sex' => $request->sex,
+            'admission_no' => $request->admission_no,
+            'lg' => $request->lg,
+            'state' => $request->state,
+            'country' => $request->country,
+            'date_of_birth' => $request->date_of_birth,
+            'classroom_id' => $classroom->id,
+            'status' => 'active'
+        ];
         /**
          * if request has guradian_first_name
          */
@@ -62,35 +75,17 @@ class StudentController extends Controller
                 'full_name' => $fullname,
             ]);
 
-            Student::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'sex' => $request->sex,
-                'admission_no' => $request->admission_no,
-                'lg' => $request->lg,
-                'state' => $request->state,
-                'country' => $request->country,
-                'date_of_birth' => $request->date_of_birth,
-                'guardian_id' => $guardian->id,
-                'classroom_id' => $classroom->id,
-                'status' => 'active',
-            ]);
+            //assign guardian_id to an array and merge it with the original student info array
+            $guardianID = ['guardian_id' => $guardian->id];
+            $studentInfo = array_merge($studentInfo, $guardianID);
+
+            Student::create($studentInfo);
         } else {
             $guardian = Guardian::where('full_name', $request->guardian)->first();
-
-            Student::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'sex' => $request->sex,
-                'admission_no' => $request->admission_no,
-                'lg' => $request->lg,
-                'state' => $request->state,
-                'country' => $request->country,
-                'date_of_birth' => $request->date_of_birth,
-                'guardian_id' => $guardian->id,
-                'classroom_id' => $classroom->id,
-                'status' => 'active',
-            ]);
+            
+            $guardianID = ['guardian_id' => $guardian->id];
+            $studentInfo = array_merge($studentInfo, $guardianID);
+            Student::create($studentInfo);
         }
 
         return response(200);
