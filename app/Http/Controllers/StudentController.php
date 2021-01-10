@@ -23,14 +23,17 @@ class StudentController extends Controller
             'lg' => ['required', 'string'],
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
+            'blood_group' => ['required', 'string'],
             'date_of_birth' => ['required', 'date'],
+            'place_of_birth' => ['required'],
             'classroom' => ['required', 'string'],
-            'guardian' => ['string', Rule::requiredIf(is_null($request->guardian_first_name))],
-            'guardian_title' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
-            'guardian_first_name' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
-            'guardian_last_name' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
-            'guardian_email' => [Rule::requiredIf(is_null($request->guardian)), 'string', 'unique:guardians,email', 'email:rfc,dns'],
-            'guardian_phone' => [Rule::requiredIf(is_null($request->guardian)), 'string', 'unique:guardians,phone', 'max:15', 'min:10'],
+            'guardian_title' => ['string', 'max:30', 'required'],
+            'guardian_first_name' => ['string', 'max:30', 'required'],
+            'guardian_last_name' => ['string', 'max:30', 'required'],
+            'guardian_email' => ['required', 'string', 'email:rfc,dns'],
+            'guardian_phone' => ['required', 'string', 'max:15', 'min:10'],
+            'guardian_occupation' => ['required', 'string'],
+            'guardian_address' => ['required']
         ]);
 
 
@@ -44,50 +47,31 @@ class StudentController extends Controller
             'lg' => $request->lg,
             'state' => $request->state,
             'country' => $request->country,
+            'blood_group' => $request->blood_group,
             'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
             'classroom_id' => $classroom->id,
             'status' => 'active'
         ];
-        /**
-         * if request has guradian_first_name
-         */
-        if ($request->guardian_first_name) {
 
-            $fullname = $request->guardian_title . ' ' . $request->guardian_first_name . ' ' . $request->guardian_last_name;
-            $checkIfTaken = Guardian::where('full_name', $fullname)->first();
+        $guardian = Guardian::where('phone', $request->guardian_phone)->first();
 
-            //check if full name exists
-            if (is_null($checkIfTaken)) {
-                $fullname = $fullname;
-            } else {
-                do {
-                    $fullname = $fullname . '-' . Str::random(3);
-                    $checkIfTaken = Guardian::where('full_name', $fullname)->first();
-                } while (!is_null($checkIfTaken));
-            }
-
+        if (is_null($guardian)) {
             $guardian = Guardian::create([
                 'title' => $request->guardian_title,
                 'first_name' => $request->guardian_first_name,
                 'last_name' => $request->guardian_last_name,
                 'email' => $request->guardian_email,
                 'phone' => $request->guardian_phone,
-                'full_name' => $fullname,
+                'occupation' => $request->guardian_occupation,
+                'address' => $request->guardian_address,
             ]);
-
-            //assign guardian_id to an array and merge it with the original student info array
-            $guardianID = ['guardian_id' => $guardian->id];
-            $studentInfo = array_merge($studentInfo, $guardianID);
-
-            Student::create($studentInfo);
-        } else {
-            $guardian = Guardian::where('full_name', $request->guardian)->first();
-
-            $guardianID = ['guardian_id' => $guardian->id];
-            $studentInfo = array_merge($studentInfo, $guardianID);
-            Student::create($studentInfo);
         }
 
-        return response(200);
+        //assign guardian_id to an array and merge it with the original student info array
+        $guardianID = ['guardian_id' => $guardian->id];
+        $studentInfo = array_merge($studentInfo, $guardianID);
+
+        Student::create($studentInfo);
     }
 }
