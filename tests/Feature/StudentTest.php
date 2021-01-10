@@ -17,20 +17,28 @@ class StudentTest extends TestCase
     use WithFaker;
     // use RefreshDatabase;
 
-    public function test_admin_can_create_student_with_all_guardian_info()
+    private function generateTestClassroom()
     {
-        $this->withoutExceptionHandling();
-        $user = User::factory()->create(['user_type' => 'admin']);
         $classroom = Classroom::pluck('name')->all();
 
         //if classroom table is empty run ClassroomSeeder
-        if (sizeof($classroom) < 1 ) {
+        if (sizeof($classroom) < 1) {
             Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
             $classroom = Classroom::pluck('name')->all();
             $classroom = Arr::random($classroom);
         } else {
             $classroom = Arr::random($classroom);
         }
+
+        return $classroom;
+    }
+
+    public function test_admin_can_create_student_with_all_guardian_info()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'admin']);
+
+        $classroom = $this->generateTestClassroom();
 
         $response = $this->actingAs($user)->post('/store/student', [
             'first_name' => $this->faker->firstName,
@@ -56,17 +64,7 @@ class StudentTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
-        $classroom = Classroom::pluck('name')->all();
-
-        //if classroom table is empty run ClassroomSeeder
-        if (sizeof($classroom) < 1 ) {
-            Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
-            $classroom = Classroom::pluck('name')->all();
-            $classroom = Arr::random($classroom);
-        } else {
-            $classroom = Arr::random($classroom);
-        }
-
+        $classroom = $this->generateTestClassroom();
 
         $response = $this->actingAs($user)->post('/store/student', [
             'first_name' => $this->faker->firstName,
@@ -84,5 +82,34 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    // public function test_an_already_taken_guardian_full_name_will_work()
+    public function test_an_already_taken_guardian_full_name_will_work()
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $classroom = $this->generateTestClassroom();
+        $guardian = Guardian::all()->random();
+        $guardianFullName = $guardian->full_name;
+        $guardianFullName = explode(' ', $guardianFullName);
+        $guardianTitle = $guardianFullName[0];
+        $guardianFirstName = $guardianFullName[1];
+        $guardianLastName = $guardianFullName[2];
+
+        $response = $this->actingAs($user)->post('/store/student', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'sex' => $this->faker->randomElement(['M', 'F']),
+            'admission_no' => Str::random(6),
+            'lg' => $this->faker->state,
+            'state' => $this->faker->state,
+            'country' => $this->faker->country,
+            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'guardian_title' => $guardianTitle,
+            'guardian_first_name' => $guardianFirstName,
+            'guardian_last_name' => $guardianLastName,
+            'guardian_email' => $this->faker->email,
+            'guardian_phone' => $this->faker->e164PhoneNumber,
+            'classroom' => $classroom
+        ]);
+
+        $response->assertStatus(200);
+    }
 }
