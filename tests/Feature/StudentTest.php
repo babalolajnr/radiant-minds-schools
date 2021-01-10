@@ -33,83 +33,62 @@ class StudentTest extends TestCase
         return $classroom;
     }
 
+    private function studentInfo($classroom) {
+        return [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'sex' => $this->faker->randomElement(['M', 'F']),
+            'admission_no' => Str::random(6),
+            'lg' => $this->faker->state,
+            'state' => $this->faker->state,
+            'country' => $this->faker->country,
+            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'classroom' => $classroom,
+            'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
+            'place_of_birth' => $this->faker->address
+        ];
+    }
+
     public function test_admin_can_create_student_with_all_guardian_info()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
 
         $classroom = $this->generateTestClassroom();
-
-        $response = $this->actingAs($user)->post('/store/student', [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'sex' => $this->faker->randomElement(['M', 'F']),
-            'admission_no' => Str::random(6),
-            'lg' => $this->faker->state,
-            'state' => $this->faker->state,
-            'country' => $this->faker->country,
-            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+        $studentInfo = $this->studentInfo($classroom);
+        $guardianInfo = [
             'guardian_title' => $this->faker->title,
             'guardian_first_name' => $this->faker->firstName,
             'guardian_last_name' => $this->faker->lastName,
             'guardian_email' => $this->faker->email,
             'guardian_phone' => $this->faker->e164PhoneNumber,
-            'classroom' => $classroom
-        ]);
-
+            'guardian_occupation' => $this->faker->jobTitle,
+            'guardian_address' => $this->faker->address
+        ];
+        $studentInfo = array_merge($studentInfo, $guardianInfo);
+        $response = $this->actingAs($user)->post('/store/student', $studentInfo);
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_create_student_with_guardian_selected()
-    {
-        $this->withoutExceptionHandling();
-        $user = User::factory()->create(['user_type' => 'admin']);
-        $classroom = $this->generateTestClassroom();
-
-        $response = $this->actingAs($user)->post('/store/student', [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'sex' => $this->faker->randomElement(['M', 'F']),
-            'admission_no' => Str::random(6),
-            'lg' => $this->faker->state,
-            'state' => $this->faker->state,
-            'country' => $this->faker->country,
-            'date_of_birth' => $this->faker->dateTimeThisCentury(),
-            'guardian' => Guardian::factory()->create()->full_name,
-            'classroom' => $classroom
-        ]);
-
-        $response->assertStatus(200);
-    }
-
-    public function test_an_already_taken_guardian_full_name_will_work()
-    {
-        $user = User::factory()->create(['user_type' => 'admin']);
-        $classroom = $this->generateTestClassroom();
+    public function test_an_already_taken_guardian_phone_will_work() {
+        // $guardian = Guardian::factory()->create();
         $guardian = Guardian::all()->random();
-        $guardianFullName = $guardian->full_name;
-        $guardianFullName = explode(' ', $guardianFullName);
-        $guardianTitle = $guardianFullName[0];
-        $guardianFirstName = $guardianFullName[1];
-        $guardianLastName = $guardianFullName[2];
+        $user = User::factory()->create(['user_type' => 'admin']);
 
-        $response = $this->actingAs($user)->post('/store/student', [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'sex' => $this->faker->randomElement(['M', 'F']),
-            'admission_no' => Str::random(6),
-            'lg' => $this->faker->state,
-            'state' => $this->faker->state,
-            'country' => $this->faker->country,
-            'date_of_birth' => $this->faker->dateTimeThisCentury(),
-            'guardian_title' => $guardianTitle,
-            'guardian_first_name' => $guardianFirstName,
-            'guardian_last_name' => $guardianLastName,
+        $classroom = $this->generateTestClassroom();
+        $studentInfo = $this->studentInfo($classroom);
+        $guardianInfo = [
+            'guardian_title' => $this->faker->title,
+            'guardian_first_name' => $this->faker->firstName,
+            'guardian_last_name' => $this->faker->lastName,
             'guardian_email' => $this->faker->email,
-            'guardian_phone' => $this->faker->e164PhoneNumber,
-            'classroom' => $classroom
-        ]);
-
+            'guardian_phone' => $guardian->phone,
+            'guardian_occupation' => $this->faker->jobTitle,
+            'guardian_address' => $this->faker->address
+        ];
+        $studentInfo = array_merge($studentInfo, $guardianInfo);
+        $response = $this->actingAs($user)->post('/store/student', $studentInfo);
         $response->assertStatus(200);
+
     }
 }
