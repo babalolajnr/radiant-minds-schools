@@ -20,7 +20,8 @@ class CreateGuardiansTable extends Migration
             $table->string('last_name');
             $table->string('email')->nullable()->unique();
             $table->string('phone')->unique();
-            $table->string('full_name')->unique();
+            $table->string('occupation');
+            $table->text('address');
             $table->timestamps();
         });
     }
