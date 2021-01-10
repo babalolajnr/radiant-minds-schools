@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Classroom;
+use App\Models\Guardian;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,7 +17,7 @@ class StudentTest extends TestCase
     use WithFaker;
     // use RefreshDatabase;
 
-    public function test_admin_can_create_student()
+    public function test_admin_can_create_student_with_all_guardian_info()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
@@ -40,6 +41,7 @@ class StudentTest extends TestCase
             'state' => $this->faker->state,
             'country' => $this->faker->country,
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'guardian_title' => $this->faker->title,
             'guardian_first_name' => $this->faker->firstName,
             'guardian_last_name' => $this->faker->lastName,
             'guardian_email' => $this->faker->email,
@@ -49,4 +51,38 @@ class StudentTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_admin_can_create_student_with_guardian_selected()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $classroom = Classroom::pluck('name')->all();
+
+        //if classroom table is empty run ClassroomSeeder
+        if (sizeof($classroom) < 1 ) {
+            Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
+            $classroom = Classroom::pluck('name')->all();
+            $classroom = Arr::random($classroom);
+        } else {
+            $classroom = Arr::random($classroom);
+        }
+
+
+        $response = $this->actingAs($user)->post('/store/student', [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'sex' => $this->faker->randomElement(['M', 'F']),
+            'admission_no' => Str::random(6),
+            'lg' => $this->faker->state,
+            'state' => $this->faker->state,
+            'country' => $this->faker->country,
+            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'guardian' => Guardian::factory()->create()->full_name,
+            'classroom' => $classroom
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    // public function test_an_already_taken_guardian_full_name_will_work()
 }
