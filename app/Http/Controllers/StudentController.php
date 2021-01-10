@@ -6,11 +6,15 @@ use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
+    public function index()
+    {
+        $students = Student::all();
+        return response(200);
+    }
+
     public function store(Request $request)
     {
         $this->authorize('create', Student::class);
