@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
 
     //Student Routes
+    Route::get('/students', [StudentController::class, 'index']);
     Route::post('/store/student', [StudentController::class, 'store']);
 });
 
