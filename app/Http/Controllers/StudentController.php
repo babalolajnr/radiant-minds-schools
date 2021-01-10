@@ -25,19 +25,12 @@ class StudentController extends Controller
             'country' => ['required', 'string'],
             'date_of_birth' => ['required', 'date'],
             'classroom' => ['required', 'string'],
-            'guardian' => ['string'],
-            'guardian_first_name' => ['string', 'max:30', Rule::requiredIf(function () use ($request) {
-                return $request->guardian == null;
-            })],
-            'guardian_last_name' => ['string', 'max:30', Rule::requiredIf(function () use ($request) {
-                return $request->guardian_first_name != null;
-            })],
-            'guardian_email' => [Rule::requiredIf(function () use ($request) {
-                return $request->guardian_first_name != null;
-            }), 'string', 'unique:guardians,email', 'email:rfc,dns'],
-            'guardian_phone' => [Rule::requiredIf(function () use ($request) {
-                return $request->guardian_first_name != null;
-            }), 'string', 'unique:guardians,phone', 'max:15', 'min:10'],
+            'guardian' => ['string', Rule::requiredIf(is_null($request->guardian_first_name))],
+            'guardian_title' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
+            'guardian_first_name' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
+            'guardian_last_name' => ['string', 'max:30', Rule::requiredIf(is_null($request->guardian))],
+            'guardian_email' => [Rule::requiredIf(is_null($request->guardian)), 'string', 'unique:guardians,email', 'email:rfc,dns'],
+            'guardian_phone' => [Rule::requiredIf(is_null($request->guardian)), 'string', 'unique:guardians,phone', 'max:15', 'min:10'],
         ]);
 
 
@@ -47,14 +40,26 @@ class StudentController extends Controller
          */
         if ($request->guardian_first_name) {
 
-            $fullname = $request->guardian_first_name . ' ' . $request->guardian_last_name . ' ' . Str::random(5);
-            $slug = Str::of($fullname)->slug('-');
+            $fullname = $request->guardian_title . ' ' . $request->guardian_first_name . ' ' . $request->guardian_last_name;
+            $checkIfTaken = Guardian::where('full_name', $fullname)->first();
+
+            //check if full name exists
+            if (is_null($checkIfTaken)) {
+                $fullname = $fullname;
+            } else {
+                do {
+                    $fullname = $fullname . Str::random(3);
+                    $checkIfTaken = Guardian::where('full_name', $fullname)->first();
+                } while (!is_null($checkIfTaken));
+            }
+
             $guardian = Guardian::create([
+                'title' => $request->guardian_title,
                 'first_name' => $request->guardian_first_name,
                 'last_name' => $request->guardian_last_name,
                 'email' => $request->guardian_email,
                 'phone' => $request->guardian_phone,
-                'slug' => $slug,
+                'full_name' => $fullname,
             ]);
 
             Student::create([
@@ -71,7 +76,7 @@ class StudentController extends Controller
                 'status' => 'active',
             ]);
         } else {
-            $guardian = Guardian::where('slug', $request->guardian)->first();
+            $guardian = Guardian::where('full_name', $request->guardian)->first();
 
             Student::create([
                 'first_name' => $request->first_name,
