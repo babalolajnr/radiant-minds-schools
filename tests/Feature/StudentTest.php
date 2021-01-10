@@ -91,4 +91,12 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
 
     }
+
+    public function test_student_controller_index_method() { 
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/students');
+
+        $response->assertStatus(200);
+    }
 }
