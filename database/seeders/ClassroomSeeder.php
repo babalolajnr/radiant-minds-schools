@@ -28,11 +28,9 @@ class ClassroomSeeder extends Seeder
         ];
 
         for ($i = 0; $i < count($classes); $i++) {
-            Classroom::updateOrCreate(
+            Classroom::Create(
                 [
-                    'name' => $classes[$i]
-                ],
-                [
+                    'name' => $classes[$i],
                     'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
                 ]
             );
