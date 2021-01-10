@@ -22,28 +22,14 @@ class GuardianFactory extends Factory
      */
     public function definition()
     {
-        $firstName = $this->faker->firstName;
-        $lastName = $this->faker->lastName;
-        $title = $this->faker->title;
-        $fullname = $title . ' ' . $firstName . ' ' . $lastName;
-        $checkIfTaken = Guardian::where('full_name', $fullname)->first();
-
-        if (is_null($checkIfTaken)) {
-            $fullname = $fullname;
-        } else {
-            do {
-                $fullname = $fullname . Str::random(3);
-                $checkIfTaken = Guardian::where('full_name', $fullname)->first();
-            } while (!is_null($checkIfTaken));
-        }
-
         return [
-            'title' => $title,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
+            'title' => $this->faker->title,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
-            'full_name' => $fullname,
+            'occupation' => $this->faker->jobTitle,
+            'address' => $this->faker->address
         ];
     }
 }
