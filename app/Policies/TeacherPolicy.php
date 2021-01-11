@@ -41,7 +41,7 @@ class TeacherPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin();
+        return $user->isAdmin() || $user->isMaster();
     }
 
     /**
@@ -53,7 +53,7 @@ class TeacherPolicy
      */
     public function update(User $user, Teacher $teacher)
     {
-        return $user->isAdmin();
+        return $user->isAdmin() || $user->isMaster();
     }
 
     public function suspend(User $user, Teacher $teacher)
@@ -80,7 +80,7 @@ class TeacherPolicy
      */
     public function delete(User $user, Teacher $teacher)
     {
-        return $user->isAdmin();
+        return $user->isMaster();
     }
 
     /**
