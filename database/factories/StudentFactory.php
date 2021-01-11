@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Classroom;
+use App\Models\Guardian;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class StudentFactory extends Factory
 {
@@ -22,7 +25,19 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'sex' => $this->faker->randomElement(['M', 'F']),
+            'admission_no' => Str::random(6),
+            'lg' => $this->faker->state,
+            'state' => $this->faker->state,
+            'country' => $this->faker->country,
+            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'classroom_id' => Classroom::factory()->create()->id,
+            'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
+            'place_of_birth' => $this->faker->address,
+            'guardian_id' => Guardian::factory()->create()->id,
+            'status' => $this->faker->randomElement(['active', 'suspended', 'inactive'])
         ];
     }
 }
