@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Student Routes
     Route::get('/students', [StudentController::class, 'index']);
+    Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::post('/store/student', [StudentController::class, 'store']);
 });
 
