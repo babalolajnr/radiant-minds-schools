@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Classroom;
 use App\Models\Guardian;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,7 +16,7 @@ use Illuminate\Support\Str;
 class StudentTest extends TestCase
 {
     use WithFaker;
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     private function generateTestClassroom()
     {
@@ -49,6 +50,11 @@ class StudentTest extends TestCase
         ];
     }
 
+    /**
+     * This test fails sometimes and works most of the time and i have no idea why
+     * might be because of the random generated data by faker in one of the columns
+     * but the route and controller it tests work fine.
+     */
     public function test_admin_can_create_student_with_new_guardian_info()
     {
         $this->withoutExceptionHandling();
@@ -97,6 +103,14 @@ class StudentTest extends TestCase
 
         $response = $this->actingAs($user)->get('/students');
 
+        $response->assertStatus(200);
+    }
+
+    public function test_single_student_can_be_viewed()
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create()->admission_no;
+        $response = $this->actingAs($user)->get('/view/student/'.$student);
         $response->assertStatus(200);
     }
 }
