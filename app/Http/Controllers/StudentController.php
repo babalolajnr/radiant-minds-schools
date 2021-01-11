@@ -78,4 +78,14 @@ class StudentController extends Controller
 
         Student::create($studentInfo);
     }
+
+    public function show($student)
+    {
+        $student = Student::where('admission_no', $student);
+        if ($student->exists()) {
+            return response(200);
+        } else {
+            abort(404);
+        }
+    }
 }
