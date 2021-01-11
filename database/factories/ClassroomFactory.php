@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Classroom;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClassroomFactory extends Factory
@@ -21,8 +22,20 @@ class ClassroomFactory extends Factory
      */
     public function definition()
     {
+        $classes = [
+            'Pre nursery',
+            'Nursery 1',
+            'Nursery 2',
+            'Reception',
+            'Grade 1',
+            'Grade 2',
+            'Grade 3',
+            'Grade 4',
+            'Grade 5',
+        ];
         return [
-            //
+            'name' => $this->faker->randomElement($classes),
+            'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
         ];
     }
 }
