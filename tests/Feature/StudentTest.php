@@ -55,10 +55,10 @@ class StudentTest extends TestCase
      * might be because of the random generated data by faker in one of the columns
      * but the route and controller it tests work fine.
      */
-    public function test_admin_can_create_student_with_new_guardian_info()
+    public function test_student_can_be_created_with_new_guardian_info()
     {
         $this->withoutExceptionHandling();
-        $user = User::factory()->create(['user_type' => 'admin']);
+        $user = User::factory()->create();
 
         $classroom = $this->generateTestClassroom();
         $studentInfo = $this->studentInfo($classroom);
@@ -79,7 +79,7 @@ class StudentTest extends TestCase
     public function test_an_already_taken_guardian_phone_will_work() {
         $guardian = Guardian::factory()->create();
         // $guardian = Guardian::all()->random();
-        $user = User::factory()->create(['user_type' => 'admin']);
+        $user = User::factory()->create();
 
         $classroom = $this->generateTestClassroom();
         $studentInfo = $this->studentInfo($classroom);
