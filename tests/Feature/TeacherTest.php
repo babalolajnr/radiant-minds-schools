@@ -65,12 +65,12 @@ class TeacherTest extends TestCase
 
     }
 
-    public function test_admin_can_delete_teacher()
+    public function test_admin_cannot_delete_teacher()
     {
         $user = User::factory()->create(['user_type' => 'admin']);
         $teacher = Teacher::factory()->create();
         $response = $this->actingAs($user)->delete('/delete/teacher/' . $teacher->id);
-        $response->assertStatus(200);
+        $response->assertStatus(403);
     }
 
     public function test_master_can_force_delete_teacher()
