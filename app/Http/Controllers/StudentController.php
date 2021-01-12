@@ -94,7 +94,8 @@ class StudentController extends Controller
         }
     }
 
-    public function suspend($id) {
+    public function suspend($id)
+    {
         $student = Student::findOrFail($id);
 
         $student->status = 'suspended';
@@ -102,5 +103,15 @@ class StudentController extends Controller
         $student->save();
 
         return response(200);
+    }
+
+    public function edit($student)
+    {
+        $student = Student::where('admission_no', $student);
+        if ($student->exists()) {
+            return response(200);
+        } else {
+            abort(404);
+        }
     }
 }
