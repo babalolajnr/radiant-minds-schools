@@ -18,4 +18,12 @@ class ClassroomTest extends TestCase
         $response = $this->actingAs($user)->get('/classrooms');
         $response->assertStatus(200);
     }
+
+    public function test_classroom_can_be_stored(){
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->post('/classroom/store', [
+            'name' => $this->faker->word
+        ]);
+        $response->assertStatus(200);
+    }
 }
