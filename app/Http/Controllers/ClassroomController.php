@@ -12,4 +12,15 @@ class ClassroomController extends Controller
         $classrooms = Classroom::all();
         return response(200);
     }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => ['required', 'string', 'unique:classrooms']
+        ]);
+
+        Classroom::create($request->all());
+        return response(200);
+
+    }
 }
