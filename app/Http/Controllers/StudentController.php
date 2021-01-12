@@ -9,6 +9,26 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    private function studentInfo($request)
+    {
+        $classroom =  Classroom::where('name', $request->classroom)->first();
+
+        return [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'sex' => $request->sex,
+            'admission_no' => $request->admission_no,
+            'lg' => $request->lg,
+            'state' => $request->state,
+            'country' => $request->country,
+            'blood_group' => $request->blood_group,
+            'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
+            'classroom_id' => $classroom->id,
+            'status' => 'active'
+        ];
+    }
+
     public function index()
     {
         $students = Student::all();
@@ -46,23 +66,6 @@ class StudentController extends Controller
         ]);
 
 
-        $classroom =  Classroom::where('name', $request->classroom)->first();
-
-        $studentInfo = [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'sex' => $request->sex,
-            'admission_no' => $request->admission_no,
-            'lg' => $request->lg,
-            'state' => $request->state,
-            'country' => $request->country,
-            'blood_group' => $request->blood_group,
-            'date_of_birth' => $request->date_of_birth,
-            'place_of_birth' => $request->place_of_birth,
-            'classroom_id' => $classroom->id,
-            'status' => 'active'
-        ];
-
         $guardian = Guardian::where('phone', $request->guardian_phone)->first();
 
         if (is_null($guardian)) {
@@ -79,7 +82,7 @@ class StudentController extends Controller
 
         //assign guardian_id to an array and merge it with the original student info array
         $guardianID = ['guardian_id' => $guardian->id];
-        $studentInfo = array_merge($studentInfo, $guardianID);
+        $studentInfo = array_merge($this->studentInfo($request), $guardianID);
 
         Student::create($studentInfo);
     }
@@ -113,5 +116,26 @@ class StudentController extends Controller
         } else {
             abort(404);
         }
+    }
+    public function update($id, Request $request)
+    {
+        $student = Student::findOrFail($id);
+
+        $this->validate($request, [
+            'first_name' => ['required', 'string', 'max:30'],
+            'last_name' => ['required', 'string', 'max:30'],
+            'sex' => ['required', 'string'],
+            'admission_no' => ['required', 'string', 'unique:students'],
+            'lg' => ['required', 'string'],
+            'state' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'blood_group' => ['required', 'string'],
+            'date_of_birth' => ['required', 'date'],
+            'place_of_birth' => ['required'],
+            'classroom' => ['required', 'string'],
+        ]);
+
+        $student->update($this->studentInfo($request));
+        return response(200);
     }
 }
