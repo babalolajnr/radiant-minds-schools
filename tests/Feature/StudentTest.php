@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 class StudentTest extends TestCase
 {
     use WithFaker;
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     private function generateTestClassroom()
     {
@@ -124,7 +124,16 @@ class StudentTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $student = Student::factory()->create()->id;
+        $student = Student::factory()->create(['status' => 'active'])->id;
+        $response = $this->actingAs($user)->patch('/suspend/student/'.$student);
+        $response->assertStatus(200);
+    }
+
+    public function test_student_can_be_activated()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/suspend/student/'.$student);
         $response->assertStatus(200);
     }
