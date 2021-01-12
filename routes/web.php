@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::post('/store/student', [StudentController::class, 'store']);
+    Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
 });
 
 require __DIR__.'/auth.php';
