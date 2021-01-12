@@ -93,4 +93,14 @@ class StudentController extends Controller
             abort(404);
         }
     }
+
+    public function suspend($id) {
+        $student = Student::findOrFail($id);
+
+        $student->status = 'suspended';
+
+        $student->save();
+
+        return response(200);
+    }
 }
