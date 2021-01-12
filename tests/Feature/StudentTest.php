@@ -100,9 +100,7 @@ class StudentTest extends TestCase
 
     public function test_student_controller_index_method() { 
         $user = User::factory()->create();
-
         $response = $this->actingAs($user)->get('/students');
-
         $response->assertStatus(200);
     }
 
@@ -138,6 +136,15 @@ class StudentTest extends TestCase
         $student = Student::factory()->create()->id;
         $classroom = $this->generateTestClassroom();
         $response = $this->actingAs($user)->patch('/update/student/'.$student, $this->studentInfo($classroom));
+        $response->assertStatus(200);
+    }
+
+    public function test_student_can_be_deleted()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'master']);
+        $student = Student::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/delete/student/'.$student);
         $response->assertStatus(200);
     }
 }
