@@ -150,4 +150,12 @@ class StudentController extends Controller
 
         return response(200);
     }
+
+    public function forceDelete($id, Student $student)
+    {
+        $this->authorize('forceDelete', $student);
+        $student = Student::findOrFail($id);
+        $student->forceDelete();
+        return response(200);
+    }
 }
