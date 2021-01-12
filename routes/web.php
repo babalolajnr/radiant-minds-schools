@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
     Route::post('/store/student', [StudentController::class, 'store']);
+    Route::patch('/update/student/{id}', [StudentController::class, 'update']);
     Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
 });
 
