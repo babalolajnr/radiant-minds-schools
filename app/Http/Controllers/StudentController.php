@@ -117,6 +117,7 @@ class StudentController extends Controller
             abort(404);
         }
     }
+
     public function update($id, Request $request)
     {
         $student = Student::findOrFail($id);
@@ -136,6 +137,17 @@ class StudentController extends Controller
         ]);
 
         $student->update($this->studentInfo($request));
+        return response(200);
+    }
+
+    public function destroy($id, Student $student)
+    {
+        $this->authorize('delete', $student);
+
+        $student = Student::findOrFail($id);
+
+        $student->delete();
+
         return response(200);
     }
 }
