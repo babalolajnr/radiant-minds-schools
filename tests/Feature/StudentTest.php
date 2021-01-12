@@ -130,4 +130,14 @@ class StudentTest extends TestCase
         $response = $this->actingAs($user)->patch('/suspend/student/'.$student);
         $response->assertStatus(200);
     }
+
+    public function test_student_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $student = Student::factory()->create()->id;
+        $classroom = $this->generateTestClassroom();
+        $response = $this->actingAs($user)->patch('/update/student/'.$student, $this->studentInfo($classroom));
+        $response->assertStatus(200);
+    }
 }
