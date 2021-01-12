@@ -147,4 +147,13 @@ class StudentTest extends TestCase
         $response = $this->actingAs($user)->delete('/delete/student/'.$student);
         $response->assertStatus(200);
     }
+
+    public function test_student_can_be_forceDeleted()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'master']);
+        $student = Student::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/forceDelete/student/'.$student);
+        $response->assertStatus(200);
+    }
 }
