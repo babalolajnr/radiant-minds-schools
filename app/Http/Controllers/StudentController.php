@@ -119,6 +119,17 @@ class StudentController extends Controller
         return response(200);
     }
 
+    public function deactivate($id)
+    {
+        $student = Student::findOrFail($id);
+
+        $student->status = 'inactive';
+
+        $student->save();
+
+        return response(200);
+    }
+
     public function edit($student)
     {
         $student = Student::where('admission_no', $student);
