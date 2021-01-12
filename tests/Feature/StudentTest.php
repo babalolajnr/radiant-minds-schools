@@ -114,6 +114,14 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_single_student_can_be_edited()
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create()->admission_no;
+        $response = $this->actingAs($user)->get('/edit/student/'.$student);
+        $response->assertStatus(200);
+    }
+
     public function test_student_can_be_suspended()
     {
         $this->withoutExceptionHandling();
