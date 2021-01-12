@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::patch('/deactivate/student/{id}', [StudentController::class, 'deactivate']);
     Route::delete('/delete/student/{id}', [StudentController::class, 'destroy']);
     Route::delete('/forceDelete/student/{id}', [StudentController::class, 'forceDelete']);
+
+    //Classroom ROutes
+    Route::get('/classrooms', [ClassroomController::class, 'index']);
 });
 
 require __DIR__.'/auth.php';
