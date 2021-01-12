@@ -26,9 +26,9 @@ class CreateStudentsTable extends Migration
             $table->text('place_of_birth');
             $table->string('blood_group');
             $table->string('status');
-            $table->foreignId('guardian_id');
-            $table->foreignId('classroom_id');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 
