@@ -15,6 +15,11 @@ class StudentController extends Controller
         return response(200);
     }
 
+    /**
+     * This method works by collecting all the guardian and student info from the user and
+     * making sure it's all filled out. Then it checks if the guardian's phone number is present
+     * in the database. If it is then it gets the guardian's id and inserts it into the student's table
+     */
     public function store(Request $request)
     {
         $this->authorize('create', Student::class);
