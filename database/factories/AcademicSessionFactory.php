@@ -21,8 +21,15 @@ class AcademicSessionFactory extends Factory
      */
     public function definition()
     {
+        $academicSession = [
+            '2010/2011',
+            '2011/2012',
+            '2012/2013',
+            '2013/2014',
+            '2014/2015',
+        ];
         return [
-            //
+            'name' => $this->faker->unique()->randomElement($academicSession)
         ];
     }
 }
