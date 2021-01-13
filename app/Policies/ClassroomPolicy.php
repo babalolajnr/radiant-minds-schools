@@ -65,7 +65,7 @@ class ClassroomPolicy
      */
     public function delete(User $user, Classroom $classroom)
     {
-        //
+        return $user->isMaster();
     }
 
     /**
