@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AssessmentType extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'max_score'];
 }
