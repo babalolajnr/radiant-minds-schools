@@ -19,10 +19,10 @@ class TermSeeder extends Seeder
             'Second Term',
             'Third Term',
         ];
-        for ($i = 0; $i < count($terms); $i++) {
-            Term::Create(
+        foreach ($terms as $term) {
+            Term::create(
                 [
-                    'name' => $terms[$i],
+                    'name' => $term,
                 ]
             );
         }
