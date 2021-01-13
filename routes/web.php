@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
@@ -81,6 +82,13 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/assessmentType', [AssessmentTypeController::class, 'store']);
     Route::patch('/update/assessmentType/{id}', [AssessmentTypeController::class, 'update']);
     Route::delete('/delete/assessmentType/{id}', [AssessmentTypeController::class, 'destroy']);
+    
+    //AcademicSession routes
+    Route::get('/academicSessions', [AcademicSessionController::class, 'index']);
+    Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
+    Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
+    Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
+    // Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
