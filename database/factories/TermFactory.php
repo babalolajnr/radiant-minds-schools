@@ -22,7 +22,7 @@ class TermFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word
         ];
     }
 }
