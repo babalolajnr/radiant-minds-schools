@@ -27,10 +27,10 @@ class ClassroomSeeder extends Seeder
             'Grade 5',
         ];
 
-        for ($i = 0; $i < count($classes); $i++) {
-            Classroom::Create(
+        foreach ($classes as $class) {
+            Classroom::create(
                 [
-                    'name' => $classes[$i],
+                    'name' => $class,
                     'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
                 ]
             );
