@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TermController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,13 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/term', [TermController::class, 'store']);
     Route::patch('/update/term/{id}', [TermController::class, 'update']);
     Route::delete('/delete/term/{id}', [TermController::class, 'destroy']);
+    
+    // Subject routes
+    Route::get('/subjects', [SubjectController::class, 'index']);
+    Route::get('/edit/subject/{id}', [SubjectController::class, 'edit']);
+    Route::post('/store/subject', [SubjectController::class, 'store']);
+    Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
+    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
