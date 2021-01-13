@@ -23,4 +23,10 @@ class ClassroomController extends Controller
         return response(200);
 
     }
+
+    public function edit($id){
+        
+        $classroom = Classroom::findOrFail($id);
+        return response(200);
+    }
 }
