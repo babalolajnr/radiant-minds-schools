@@ -29,4 +29,11 @@ class ClassroomController extends Controller
         $classroom = Classroom::findOrFail($id);
         return response(200);
     }
+
+    public function update($id, Request $request)
+    {
+        $classroom = Classroom::findOrFail($id);
+        $classroom->update($request->all());
+        return response(200);
+    }
 }
