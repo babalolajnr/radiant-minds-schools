@@ -19,7 +19,6 @@ class CreateAssessmentResultsTable extends Migration
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
             $table->double('mark');
-            $table->text('remarks');
             $table->timestamps();
         });
     }
