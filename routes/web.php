@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -73,6 +74,13 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/subject', [SubjectController::class, 'store']);
     Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
     Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']);
+    
+    //AssessmentType routes
+    Route::get('/assessmentTypes', [AssessmentTypeController::class, 'index']);
+    Route::get('/edit/assessmentType/{id}', [AssessmentTypeController::class, 'edit']);
+    Route::post('/store/assessmentType', [AssessmentTypeController::class, 'store']);
+    Route::patch('/update/assessmentType/{id}', [AssessmentTypeController::class, 'update']);
+    Route::delete('/delete/assessmentType/{id}', [AssessmentTypeController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
