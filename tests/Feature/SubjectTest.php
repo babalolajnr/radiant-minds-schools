@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class SubjectTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     use WithFaker;
 
     public function test_subject_index_method()
