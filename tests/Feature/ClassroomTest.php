@@ -33,7 +33,7 @@ class ClassroomTest extends TestCase
     {
         $user = User::factory()->create();
         $classroom = Classroom::factory()->create()->id;
-        $response = $this->actingAs($user)->get('/edit/classroom/'.$classroom);
+        $response = $this->actingAs($user)->get('/edit/classroom/' . $classroom);
         $response->assertStatus(200);
     }
 
@@ -41,9 +41,25 @@ class ClassroomTest extends TestCase
     {
         $user = User::factory()->create();
         $classroom = Classroom::factory()->create()->id;
-        $response = $this->actingAs($user)->patch('/update/classroom/'.$classroom, [
+        $response = $this->actingAs($user)->patch('/update/classroom/' . $classroom, [
             'name' => $this->faker->word
         ]);
         $response->assertStatus(200);
+    }
+
+    public function test_master_can_delete_a_classroom()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $classroom = Classroom::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_cannot_delete_classroom()
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $classroom = Classroom::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
+        $response->assertStatus(403);
     }
 }
