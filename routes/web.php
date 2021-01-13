@@ -53,7 +53,8 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Classroom ROutes
     Route::get('/classrooms', [ClassroomController::class, 'index']);
-    Route::post('/classroom/store', [ClassroomController::class, 'store']);
+    Route::get('/edit/classroom/{id}', [ClassroomController::class, 'edit']);
+    Route::post('/store/classroom', [ClassroomController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
