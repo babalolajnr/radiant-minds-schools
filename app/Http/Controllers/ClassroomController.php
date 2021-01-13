@@ -21,11 +21,11 @@ class ClassroomController extends Controller
 
         Classroom::create($request->all());
         return response(200);
-
     }
 
-    public function edit($id){
-        
+    public function edit($id)
+    {
+
         $classroom = Classroom::findOrFail($id);
         return response(200);
     }
@@ -34,6 +34,14 @@ class ClassroomController extends Controller
     {
         $classroom = Classroom::findOrFail($id);
         $classroom->update($request->all());
+        return response(200);
+    }
+
+    public function destroy($id, Classroom $classroom)
+    {
+        $this->authorize('delete', $classroom);
+        $classroom = Classroom::findOrFail($id);
+        $classroom->delete();
         return response(200);
     }
 }
