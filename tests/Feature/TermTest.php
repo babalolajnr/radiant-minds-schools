@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class TermTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     use WithFaker;
 
     public function test_term_index_method()
