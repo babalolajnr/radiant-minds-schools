@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/edit/classroom/{id}', [ClassroomController::class, 'edit']);
     Route::post('/store/classroom', [ClassroomController::class, 'store']);
     Route::patch('/update/classroom/{id}', [ClassroomController::class, 'update']);
+    Route::delete('/delete/classroom/{id}', [ClassroomController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
