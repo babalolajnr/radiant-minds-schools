@@ -21,8 +21,13 @@ class TermFactory extends Factory
      */
     public function definition()
     {
+        $terms = [
+            'First Term',
+            'Second Term',
+            'Third Term',
+        ];
         return [
-            'name' => $this->faker->word
+            'name' => $this->faker->randomElement($terms),
         ];
     }
 }
