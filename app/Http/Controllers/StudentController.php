@@ -162,6 +162,17 @@ class StudentController extends Controller
         return response(200);
     }
 
+    public function getResults($student)
+    {
+        $student = Student::where('admission_no', $student);
+
+        if (!$student->exists()) {
+            abort(404);
+        }
+
+        $results = $student->assessmentResults()->get();
+    }
+
     public function destroy($id, Student $student)
     {
         $this->authorize('delete', $student);
