@@ -16,7 +16,7 @@ class AssessmentTypeSeeder extends Seeder
     {
         $assessmentTypes = [
             ['name' => 'C.A', 'max_score' => 40],
-            ['name' => 'Exam', 'max_score' => 100],
+            ['name' => 'Exam', 'max_score' => 60],
         ];
 
         foreach ($assessmentTypes as $assessmentType) {
