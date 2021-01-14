@@ -10,4 +10,9 @@ class AcademicSession extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function assessments()
+    {
+        return $this->hasMany(Assessment::class);
+    }
 }
