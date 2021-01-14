@@ -11,4 +11,20 @@ class Student extends Model
     use SoftDeletes;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    public function guardian()
+    {
+        return $this->belongsTo(Guardian::class);
+    }
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
+
+    public function assessmentResults()
+    {
+        return $this->hasMany(AssessmentResult::class);
+    }
+
 }

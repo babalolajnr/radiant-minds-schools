@@ -13,6 +13,11 @@ class Subject extends Model
 
     public function classrooms()
     {
-        $this->belongsToMany(Classroom::class);
+        return $this->belongsToMany(Classroom::class);
+    }
+
+    public function assessmentResults()
+    {
+        return $this->hasMany(AssessmentResult::class);
     }
 }

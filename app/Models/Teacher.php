@@ -12,4 +12,9 @@ class Teacher extends Model
     use SoftDeletes;
     
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    public function classroom()
+    {
+        return $this->hasOne(Classroom::class);
+    }
 }
