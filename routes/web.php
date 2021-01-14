@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
+    Route::get('/results/student/{student}', [[StudentController::class, 'getResults']]);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
     Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/classrooms', [ClassroomController::class, 'index']);
     Route::get('/edit/classroom/{id}', [ClassroomController::class, 'edit']);
     Route::post('/store/classroom', [ClassroomController::class, 'store']);
+    Route::post('/update/classroom-subjects/{id}', [ClassroomController::class, 'updateSubjects']);
     Route::patch('/update/classroom/{id}', [ClassroomController::class, 'update']);
     Route::delete('/delete/classroom/{id}', [ClassroomController::class, 'destroy']);
     
