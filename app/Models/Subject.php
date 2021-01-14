@@ -13,7 +13,7 @@ class Subject extends Model
 
     public function classrooms()
     {
-        return $this->belongsToMany(Classroom::class);
+        return $this->belongsToMany(Classroom::class)->withTimestamps();
     }
 
     public function assessmentResults()
