@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\Classroom;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ClassroomTest extends TestCase
@@ -61,5 +64,33 @@ class ClassroomTest extends TestCase
         $classroom = Classroom::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
         $response->assertStatus(403);
+    }
+
+    public function test_classroom_subjects_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $subjects = $this->generateTestSubjects();
+        $classroom = Classroom::factory()->create()->id;
+        $response = $this->actingAs($user)->post('/update/classroom-subjects/' . $classroom, [
+            'subjects' => $subjects
+        ]);
+
+        $response->assertStatus(200);
+        
+    }
+
+    private function generateTestSubjects()
+    {
+        $subjects = Subject::pluck('name')->all();
+
+        //if subject table is empty run subjectSeeder
+        if (sizeof($subjects) < 1) {
+            Artisan::call('db:seed', ['--class' => 'SubjectSeeder']);
+            $subjects = Subject::pluck('name')->all();
+        }
+
+        $selectedSubjects = Arr::random($subjects, 5);
+        return $selectedSubjects;
     }
 }
