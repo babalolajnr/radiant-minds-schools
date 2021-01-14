@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ClassroomController extends Controller
 {
@@ -43,5 +45,36 @@ class ClassroomController extends Controller
         $classroom = Classroom::findOrFail($id);
         $classroom->delete();
         return response(200);
+    }
+
+    public function editSubjects($id)
+    {
+        $classroom = Classroom::findOrFail($id);
+
+        $subjects = $classroom->subjects()->all();
+    }
+
+    public function updateSubjects($id, Request $request)
+    {
+        $classroom = Classroom::findOrFail($id);
+
+        $this->validate($request, [
+            'subjects' => ['required']
+        ]);
+
+        $subjects = $request->subjects;
+
+        foreach ($subjects as $subject){
+            
+            $checkUniqueness = $classroom->subjects()->where('name', $subject)->first();
+            
+            if(!is_null($checkUniqueness)){
+                throw ValidationException::withMessages(['subjects' => $subject . ' is already registered']);
+            }
+
+            $subjectID = Subject::where('name', $subject)->first()->id;
+
+            $classroom->subjects()->attach($subjectID);
+        }
     }
 }
