@@ -6,6 +6,7 @@ use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class StudentFactory extends Factory
@@ -24,9 +25,10 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $classroom = Classroom::all();
+        $classroom = Classroom::pluck('id')->all();
+        
         if (!empty($classroom)) {
-            $classroom = $classroom->random()->id;
+            $classroom = Arr::random($classroom);
         } else {
             $classroom = Classroom::factory()->create()->id;
         }
