@@ -96,6 +96,8 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Assessment Routes
     Route::get('/assessments', [AssessmentController::class, 'index']);
+    Route::get('/create/assessments', [AssessmentController::class, 'create']);
+    Route::post('/store/assessment', [AssessmentController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
