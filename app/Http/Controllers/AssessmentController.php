@@ -30,9 +30,12 @@ class AssessmentController extends Controller
             'academic_session' => ['required', 'string'],
         ]);
 
-        $termID = Term::where('name', $request->term)->first()->id;
-        $assessmentTypeID = AssessmentType::where('name', $request->assessment_type)->first()->id;
-        $academicSessionID = AcademicSession::where('name', $request->academic_session)->first()->id;
+        $term = Term::where('name', $request->term)->first();
+        $termID = $term->id;
+        $assessmentType = AssessmentType::where('name', $request->assessment_type)->first();
+        $academicSession = AcademicSession::where('name', $request->academic_session)->first();
+        $assessmentTypeID = $assessmentType->id;
+        $academicSessionID = $academicSession->id;
 
         $checkUniqueness = Assessment::where('term_id', $termID)->where('assessment_type_id', $assessmentTypeID)->where('academic_session_id', $academicSessionID)->first();
 
@@ -40,10 +43,12 @@ class AssessmentController extends Controller
             throw ValidationException::withMessages(['term' => 'Record exist']);
         }
 
+        $name = $assessmentType->name . ' ' . $term->name . ' ' . $academicSession->name;
         Assessment::create([
             'term_id' => $termID,
             'assessment_type_id' => $assessmentTypeID,
             'academic_session_id' => $academicSessionID,
+            'name' =>  $name
         ]);
 
         return response(200);
