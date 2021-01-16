@@ -20,4 +20,9 @@ class Assessment extends Model
     {
         return $this->belongsTo(AcademicSession::class);
     }
+
+    public function assessmentType()
+    {
+        return $this->belongsTo(AssessmentType::class);
+    }
 }
