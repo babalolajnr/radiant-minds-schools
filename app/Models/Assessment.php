@@ -9,6 +9,8 @@ class Assessment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['term_id', 'academic_session_id', 'assessment_type_id'];
+
     public function assessmentResults()
     {
         return $this->hasMany(AssessmentResult::class);
