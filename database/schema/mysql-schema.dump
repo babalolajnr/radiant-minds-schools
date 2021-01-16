@@ -53,6 +53,7 @@ DROP TABLE IF EXISTS `assessments`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `assessments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `term_id` bigint(20) unsigned NOT NULL,
