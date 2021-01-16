@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class AssessmentResultTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     
     public function test_user_can_store_assessment()
     {
