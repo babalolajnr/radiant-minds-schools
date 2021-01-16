@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicSessionController;
+use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
@@ -92,6 +93,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
     Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
     // Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
+
+    //Assessment Routes
+    Route::get('/assessments', [AssessmentController::class, 'index']);
 });
 
 require __DIR__.'/auth.php';
