@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\AssessmentController;
+use App\Http\Controllers\AssessmentResultController;
 use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentController;
@@ -98,6 +99,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/assessments', [AssessmentController::class, 'index']);
     Route::get('/create/assessments', [AssessmentController::class, 'create']);
     Route::post('/store/assessment', [AssessmentController::class, 'store']);
+
+    //Assessment Result routes
+    Route::post('/assessment-result/{studentID}/{subjectID}', [AssessmentResultController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
