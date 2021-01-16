@@ -24,6 +24,12 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
+        $classroom = Classroom::all();
+        if (!empty($classroom)) {
+            $classroom = $classroom->random()->id;
+        } else {
+            $classroom = Classroom::factory()->create()->id;
+        }
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -33,7 +39,7 @@ class StudentFactory extends Factory
             'state' => $this->faker->state,
             'country' => $this->faker->country,
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
-            'classroom_id' => Classroom::factory()->create()->id,
+            'classroom_id' => $classroom,
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
             'place_of_birth' => $this->faker->address,
             'guardian_id' => Guardian::factory()->create()->id,
