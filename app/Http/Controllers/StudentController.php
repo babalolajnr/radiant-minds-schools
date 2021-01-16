@@ -173,6 +173,20 @@ class StudentController extends Controller
         $results = $student->assessmentResults()->get();
     }
 
+    public function getSubjects($student)
+    {
+        $student = Student::where('admission_no', $student);
+
+        if (!$student->exists()) {
+            abort(404);
+        }
+        $student = $student->first();
+        $subjects = $student->classroom->subjects()->get();
+
+        return response(200);
+       
+    }
+
     public function destroy($id, Student $student)
     {
         $this->authorize('delete', $student);
