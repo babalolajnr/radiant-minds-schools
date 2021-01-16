@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,18 +24,18 @@ class StudentTest extends TestCase
         $classroom = Classroom::pluck('name')->all();
 
         //if classroom table is empty run ClassroomSeeder
-        if (sizeof($classroom) < 1) {
+        if (empty($classroom)) {
             Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
             $classroom = Classroom::pluck('name')->all();
             $classroom = Arr::random($classroom);
         } else {
             $classroom = Arr::random($classroom);
         }
-
         return $classroom;
     }
 
-    private function studentInfo($classroom) {
+    private function studentInfo($classroom)
+    {
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -76,7 +77,8 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_an_already_taken_guardian_phone_will_work() {
+    public function test_an_already_taken_guardian_phone_will_work()
+    {
         $guardian = Guardian::factory()->create();
         // $guardian = Guardian::all()->random();
         $user = User::factory()->create();
@@ -95,10 +97,10 @@ class StudentTest extends TestCase
         $studentInfo = array_merge($studentInfo, $guardianInfo);
         $response = $this->actingAs($user)->post('/store/student', $studentInfo);
         $response->assertStatus(200);
-
     }
 
-    public function test_student_controller_index_method() { 
+    public function test_student_controller_index_method()
+    {
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/students');
         $response->assertStatus(200);
@@ -108,7 +110,7 @@ class StudentTest extends TestCase
     {
         $user = User::factory()->create();
         $student = Student::factory()->create()->admission_no;
-        $response = $this->actingAs($user)->get('/view/student/'.$student);
+        $response = $this->actingAs($user)->get('/view/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -116,7 +118,7 @@ class StudentTest extends TestCase
     {
         $user = User::factory()->create();
         $student = Student::factory()->create()->admission_no;
-        $response = $this->actingAs($user)->get('/edit/student/'.$student);
+        $response = $this->actingAs($user)->get('/edit/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -125,7 +127,7 @@ class StudentTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'active'])->id;
-        $response = $this->actingAs($user)->patch('/suspend/student/'.$student);
+        $response = $this->actingAs($user)->patch('/suspend/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -134,7 +136,7 @@ class StudentTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
-        $response = $this->actingAs($user)->patch('/activate/student/'.$student);
+        $response = $this->actingAs($user)->patch('/activate/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -143,7 +145,7 @@ class StudentTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
-        $response = $this->actingAs($user)->patch('/deactivate/student/'.$student);
+        $response = $this->actingAs($user)->patch('/deactivate/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -153,7 +155,7 @@ class StudentTest extends TestCase
         $user = User::factory()->create();
         $student = Student::factory()->create()->id;
         $classroom = $this->generateTestClassroom();
-        $response = $this->actingAs($user)->patch('/update/student/'.$student, $this->studentInfo($classroom));
+        $response = $this->actingAs($user)->patch('/update/student/' . $student, $this->studentInfo($classroom));
         $response->assertStatus(200);
     }
 
@@ -162,7 +164,7 @@ class StudentTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/student/'.$student);
+        $response = $this->actingAs($user)->delete('/delete/student/' . $student);
         $response->assertStatus(200);
     }
 
@@ -171,7 +173,18 @@ class StudentTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/forceDelete/student/'.$student);
+        $response = $this->actingAs($user)->delete('/forceDelete/student/' . $student);
+        $response->assertStatus(200);
+    }
+
+    public function test_student_subjects_can_be_gotten()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+        $subject = Subject::factory()->create()->id;
+        $student->classroom->subjects()->sync([$subject]);
+        $response = $this->actingAs($user)->get('/student-subjects/' . $student->admission_no);
         $response->assertStatus(200);
     }
 }
