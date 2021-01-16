@@ -47,7 +47,8 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
-    Route::get('/results/student/{student}', [[StudentController::class, 'getResults']]);
+    Route::get('/results/student/{student}', [StudentController::class, 'getResults']);
+    Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
     Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
