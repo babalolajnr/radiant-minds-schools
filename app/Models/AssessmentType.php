@@ -10,4 +10,9 @@ class AssessmentType extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'max_score'];
+
+    public function assessment()
+    {
+        return $this->hasMany(Assessment::class);
+    }
 }
