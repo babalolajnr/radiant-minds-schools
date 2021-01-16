@@ -24,10 +24,15 @@ class AssessmentFactory extends Factory
      */
     public function definition()
     {
+        $term = Term::factory()->create();
+        $assessmentType = AssessmentType::factory()->create();
+        $academicSession = AcademicSession::factory()->create();
+        $name = $assessmentType->name . ' ' . $term->name . ' ' . $academicSession->name;
         return [
-            'term_id' => Term::factory()->create()->id,
-            'assessment_type_id' => AssessmentType::factory()->create()->id,
-            'academic_session_id' => AcademicSession::factory()->create()->id,
+            'term_id' => $term->id,
+            'assessment_type_id' => $assessmentType->id,
+            'academic_session_id' => $academicSession->id,
+            'name' => $name
         ];
     }
 }
