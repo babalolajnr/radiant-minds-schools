@@ -9,6 +9,8 @@ class AssessmentResult extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['mark', 'assessment_id', 'subject_id', 'student_id'];
+    
     public function assessment()
     {
         return $this->belongsTo(Assessment::class);
