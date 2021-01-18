@@ -162,15 +162,18 @@ class StudentController extends Controller
         return response(200);
     }
 
-    public function getResults($student)
+    public function getAssessmentResults($student)
     {
         $student = Student::where('admission_no', $student);
 
         if (!$student->exists()) {
             abort(404);
         }
-
+        
+        $student =  $student->first();
         $results = $student->assessmentResults()->get();
+
+        return response(200);
     }
 
     public function getSubjects($student)
@@ -184,7 +187,6 @@ class StudentController extends Controller
         $subjects = $student->classroom->subjects()->get();
 
         return response(200);
-       
     }
 
     public function destroy($id, Student $student)
