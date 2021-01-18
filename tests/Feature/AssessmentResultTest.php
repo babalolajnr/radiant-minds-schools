@@ -22,7 +22,7 @@ class AssessmentResultTest extends TestCase
         $subject = Subject::factory()->create();
         $assessment =  Assessment::factory()->create();
 
-        $response = $this->actingAs($user)->post('/assessment-result/' . $student->id . '/' . $subject->id, [
+        $response = $this->actingAs($user)->post('store/assessment-result/' . $student->id . '/' . $subject->id, [
             'mark' => mt_rand(0, $assessment->assessmentType->max_score), 
             'assessment' => $assessment->name
         ]);
