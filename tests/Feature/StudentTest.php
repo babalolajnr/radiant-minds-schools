@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AssessmentResult;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -177,7 +178,7 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_student_subjects_can_be_gotten()
+    public function test_user_can_get_student_subjects()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
@@ -185,6 +186,16 @@ class StudentTest extends TestCase
         $subject = Subject::factory()->create()->id;
         $student->classroom->subjects()->sync([$subject]);
         $response = $this->actingAs($user)->get('/student-subjects/' . $student->admission_no);
+        $response->assertStatus(200);
+    }
+
+    public function test_user_can_get_student_assessment_results()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $assessmentResult = AssessmentResult::factory()->create();
+        $student = $assessmentResult->student->admission_no;
+        $response = $this->actingAs($user)->get('/results/student/' . $student);
         $response->assertStatus(200);
     }
 }
