@@ -79,7 +79,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/edit/subject/{id}', [SubjectController::class, 'edit']);
     Route::post('/store/subject', [SubjectController::class, 'store']);
     Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
-    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']);
+    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']); 
     
     //AssessmentType routes
     Route::get('/assessmentTypes', [AssessmentTypeController::class, 'index']);
