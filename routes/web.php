@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
-    Route::get('/results/student/{student}', [StudentController::class, 'getResults']);
+    Route::get('/results/student/{student}', [StudentController::class, 'getAssessmentResults']);
     Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
@@ -101,7 +101,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/assessment', [AssessmentController::class, 'store']);
 
     //Assessment Result routes
-    Route::post('/assessment-result/{studentID}/{subjectID}', [AssessmentResultController::class, 'store']);
+    Route::post('store/assessment-result/{studentID}/{subjectID}', [AssessmentResultController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
