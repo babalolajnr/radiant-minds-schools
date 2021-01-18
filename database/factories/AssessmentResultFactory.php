@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Assessment;
 use App\Models\AssessmentResult;
+use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssessmentResultFactory extends Factory
@@ -21,8 +24,15 @@ class AssessmentResultFactory extends Factory
      */
     public function definition()
     {
+        $assessment = Assessment::factory()->create();
+        $maxScore = $assessment->assessmentType->max_score;
+        $mark = mt_rand(0, $maxScore);
+        
         return [
-            //
+            'assessment_id' => $assessment->id,
+            'subject_id' => Subject::factory()->create()->id,
+            'student_id' => Student::factory()->create()->id,
+            'mark' => $mark
         ];
     }
 }
