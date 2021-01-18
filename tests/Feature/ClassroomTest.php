@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class ClassroomTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     use WithFaker;
 
     public function test_classroom_index_method()
