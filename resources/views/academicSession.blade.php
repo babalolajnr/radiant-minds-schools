@@ -29,13 +29,16 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Academic Session</h3>
                             </div>
-                            <form id="addAcademicSession">
+                            <form id="addAcademicSession" method="POST" action="/store/academicSessions">
+                                @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
-                                        <input type="text" name="academicSession" class="form-control" id="academicSession" placeholder="Enter Academic Session">
+                                        <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="academicSession" placeholder="Enter Academic Session">
+                                        @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
@@ -50,41 +53,6 @@
     </div>
 
     <x-slot name="scripts">
-        <!-- jquery-validation -->
-        <script src="{{ asset('TAssets/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/jquery-validation/additional-methods.min.js')}}"></script>
-        <script>
-            $(function() {
-                $.validator.setDefaults({
-                    submitHandler: function() {
-                        alert("Form successful submitted!");
-                    }
-                });
-                $('#addAcademicSession').validate({
-                    rules: {
-                        academicSession: {
-                            required: true,
-                        },
 
-                    },
-                    messages: {
-                        academicSession: {
-                            required: "Please enter an academic session",
-                        },
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    }
-                });
-            });
-        </script>
     </x-slot>
 </x-app-layout>
