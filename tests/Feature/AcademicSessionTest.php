@@ -27,7 +27,7 @@ class AcademicSessionTest extends TestCase
         $response = $this->actingAs($user)->post('/store/academicSessions', [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function test_academic_session_edit_method()
