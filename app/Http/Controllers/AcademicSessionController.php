@@ -15,9 +15,14 @@ class AcademicSessionController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'name.required' => 'This field is required',
+            'name.unique' => 'Record exists'
+        ];
+        
         $this->validate($request, [
             'name' => ['required', 'string', 'unique:academic_sessions']
-        ]);
+        ], $messages);
 
         AcademicSession::create($request->all());
         return response(200);
