@@ -19,13 +19,13 @@ class AcademicSessionController extends Controller
             'name.required' => 'This field is required',
             'name.unique' => 'Record exists'
         ];
-        
+
         $this->validate($request, [
             'name' => ['required', 'string', 'unique:academic_sessions']
         ], $messages);
 
         AcademicSession::create($request->all());
-        return response(200);
+        return back()->with('success', 'Academic Session Created!');
     }
 
     public function edit($id)
