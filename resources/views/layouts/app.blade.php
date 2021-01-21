@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('TAssets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('TAssets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    {{ $styles }}
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('TAssets/dist/css/adminlte.min.css') }}">
     <!-- Scripts -->
