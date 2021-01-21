@@ -1,4 +1,7 @@
 <x-app-layout>
+    <x-slot name="styles">
+
+    </x-slot>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -54,4 +57,7 @@
         </section>
         <!-- /.content -->
     </div>
+    <x-slot name="scripts">
+
+    </x-slot>
 </x-app-layout>
