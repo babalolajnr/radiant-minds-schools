@@ -1,16 +1,21 @@
 <x-app-layout>
     <x-slot name="styles">
         <!-- Toastr -->
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <span id="success" {{ session('success') ? 'data-success = true' : false }} data-success-message='{{ json_encode(session('success')) }}'></span>
+        <span id="success"
+            {{ session('success') ? 'data-success = true' : false }}
+            data-success-message='{{ json_encode(session('success')) }}'></span>
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -45,9 +50,11 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
-                                        <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" id="academicSession" placeholder="Enter Academic Session">
+                                        <input type="text" name="name" value="{{ old('name') }}"
+                                            class="form-control @error('name') is-invalid @enderror"
+                                            id="academicSession" placeholder="Enter Academic Session">
                                         @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -67,20 +74,40 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($academicSessions as $academicSession)
-                                        <tr>
-                                            <td>
-                                                {{ $academicSession->name }}
-                                            </td>
-                                        </tr>
-                                    @endforeach    
+                                        @foreach($academicSessions as $academicSession)
+                                            <tr>
+                                                <td>
+                                                    {{ $academicSession->name }}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default btn-flat"
+                                                            title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <form
+                                                            action="/delete/academicSessions/{{ $academicSession->id }}"
+                                                            method="POST">
+                                                            @method('DELETE')
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-default btn-flat"
+                                                                title="Delete">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -94,23 +121,40 @@
 
     <x-slot name="scripts">
         <!-- Toastr -->
-        <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
         <!-- DataTables  & Plugins -->
-        <script src="{{ asset('TAssets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/jszip/jszip.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/pdfmake/pdfmake.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/pdfmake/vfs_fonts.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables/jquery.dataTables.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
+        </script>
+        <script src="{{ asset('TAssets/plugins/jszip/jszip.min.js') }}"></script>
+        <script src="{{ asset('TAssets/plugins/pdfmake/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('TAssets/plugins/pdfmake/vfs_fonts.js') }}"></script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.html5.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
+        </script>
+        <script
+            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
+        </script>
         <!-- AdminLTE App -->
         <script>
-            $(function() {
+            $(function () {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
@@ -122,7 +166,7 @@
                     })
 
             });
-            $(function() {
+            $(function () {
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
@@ -139,6 +183,7 @@
                 //     "responsive": true,
                 // });
             });
+
         </script>
     </x-slot>
 </x-app-layout>
