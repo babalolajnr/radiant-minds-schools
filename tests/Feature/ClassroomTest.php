@@ -29,7 +29,7 @@ class ClassroomTest extends TestCase
         $response = $this->actingAs($user)->post('/store/classroom', [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_classroom_edit_method()
