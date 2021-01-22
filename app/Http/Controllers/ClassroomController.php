@@ -12,17 +12,21 @@ class ClassroomController extends Controller
     public function index()
     {
         $classrooms = Classroom::all();
-        return response(200);
+        return view('classrooms', compact('classrooms'));
     }
 
     public function store(Request $request)
     {
+        $messages = [
+            'name.unique' => 'Classroom Exists'
+        ];
+
         $this->validate($request, [
             'name' => ['required', 'string', 'unique:classrooms']
-        ]);
+        ], $messages);
 
         Classroom::create($request->all());
-        return response(200);
+        return back()->with('success', 'Classroom Created!');
     }
 
     public function edit($id)
