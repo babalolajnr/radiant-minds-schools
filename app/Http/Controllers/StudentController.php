@@ -32,7 +32,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return response(200);
+        return view('students', compact('students'));
     }
 
     /**
