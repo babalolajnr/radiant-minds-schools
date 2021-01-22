@@ -10,7 +10,7 @@ class AcademicSessionController extends Controller
     public function index()
     {
         $academicSessions = AcademicSession::all();
-        return view('academicSession');
+        return view('academicSession', compact('academicSessions'));
     }
 
     public function store(Request $request)
