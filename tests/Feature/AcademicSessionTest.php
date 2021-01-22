@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class AcademicSessionTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
     use WithFaker;
 
     public function test_academic_session_index_method()
@@ -46,7 +46,8 @@ class AcademicSessionTest extends TestCase
         $response = $this->actingAs($user)->patch('/update/academicSessions/' . $academicSession, [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     // public function test_master_can_delete_a_academic_session()
