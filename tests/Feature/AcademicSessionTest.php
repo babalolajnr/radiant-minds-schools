@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class AcademicSessionTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     use WithFaker;
 
     public function test_academic_session_index_method()
@@ -50,19 +50,19 @@ class AcademicSessionTest extends TestCase
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
-    // public function test_master_can_delete_a_academic_session()
-    // {
-    //     $user = User::factory()->create(['user_type' => 'master']);
-    //     $academicSession = AcademicSession::factory()->create()->id;
-    //     $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
-    //     $response->assertStatus(200);
-    // }
+    public function test_master_can_delete_a_academic_session()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $academicSession = AcademicSession::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
+        $response->assertStatus(200);
+    }
 
-    // public function test_admin_cannot_delete_academic_session()
-    // {
-    //     $user = User::factory()->create(['user_type' => 'admin']);
-    //     $academicSession = AcademicSession::factory()->create()->id;
-    //     $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
-    //     $response->assertStatus(403);
-    // }
+    public function test_admin_cannot_delete_academic_session()
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $academicSession = AcademicSession::factory()->create()->id;
+        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
+        $response->assertStatus(403);
+    }
 }
