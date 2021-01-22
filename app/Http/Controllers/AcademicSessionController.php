@@ -41,11 +41,11 @@ class AcademicSessionController extends Controller
         return response(200);
     }
 
-    // public function destroy($id, AcademicSession $academicSession)
-    // {
-    //     $this->authorize('delete', $academicSession);
-    //     $academicSession = AcademicSession::findOrFail($id);
-    //     $academicSession->delete();
-    //     return response(200);
-    // }
+    public function destroy($id, AcademicSession $academicSession)
+    {
+        $this->authorize('delete', $academicSession);
+        $academicSession = AcademicSession::findOrFail($id);
+        $academicSession->delete();
+        return back()->with('success', 'Academic Session Deleted!');
+    }
 }
