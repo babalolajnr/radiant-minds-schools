@@ -31,14 +31,23 @@ class AcademicSessionController extends Controller
     public function edit($id)
     {
         $academicSession = AcademicSession::findOrFail($id);
-        return response(200);
+        return view('editAcademicSession', compact('academicSession'));
     }
 
     public function update($id, Request $request)
     {
+        $messages = [
+            'name.required' => 'This field is required',
+            'name.unique' => 'Record exists'
+        ];
+
         $academicSession = AcademicSession::findOrFail($id);
-        $academicSession->update($request->all());
-        return response(200);
+
+        $academicSession->update($this->validate($request, [
+            'name' => ['required', 'string', 'unique:academic_sessions']
+        ], $messages));
+        
+        return redirect('/academicSessions')->with('success', 'Academic Session Updated!');
     }
 
     public function destroy($id, AcademicSession $academicSession)
