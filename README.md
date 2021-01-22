@@ -1,7 +1,4 @@
-## Radiant Minds schools
 
-
-# Installation Guide
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -27,19 +24,16 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
-
 <!-- PROJECT LOGO -->
 <br />
 
   <h3 align="center">Radiant Minds schools</h3>
 
-  <p align="center">
+<p align="center">
     Radiant Minds Schools is a school management system for Primary and Secondary schools. It has all the management tools needed for effective school management.
     <br />
-    
     <a href="https://github.com/babalolajnr/radiant-minds-schools/issues">Report Bug</a>
     <a href="https://github.com/babalolajnr/radiant-minds-schools/issues">Request Feature</a>
-  </p>
 </p>
 
 
@@ -147,7 +141,6 @@ This is an example of how to list things you need to use the software and how to
 ## Roadmap
 
 See the [open issues](https://github.com/babalolajnr/radiant-minds-schools/issues) for a list of proposed features (and known issues).
-
 
 
 <!-- CONTRIBUTING -->
