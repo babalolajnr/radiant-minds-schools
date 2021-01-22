@@ -2,9 +2,13 @@
     <x-slot name="styles">
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css')}}">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
     </x-slot>
 
-    <div  class="content-wrapper" >
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <span id="success" {{ session('success') ? 'data-success = true' : false }} data-success-message='{{ json_encode(session('success')) }}'></span>
         <section class="content-header">
@@ -53,6 +57,45 @@
                                 </div>
                             </form>
                         </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Academic Sessions</h3>
+                            </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Rendering engine</th>
+                                            <th>Browser</th>
+                                            <th>Platform(s)</th>
+                                            <th>Engine version</th>
+                                            <th>CSS grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Trident</td>
+                                            <td>Internet
+                                                Explorer 4.0
+                                            </td>
+                                            <td>Win 95+</td>
+                                            <td> 4</td>
+                                            <td>X</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Rendering engine</th>
+                                            <th>Browser</th>
+                                            <th>Platform(s)</th>
+                                            <th>Engine version</th>
+                                            <th>CSS grade</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </section>
@@ -62,6 +105,20 @@
     <x-slot name="scripts">
         <!-- Toastr -->
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js')}}"></script>
+        <!-- DataTables  & Plugins -->
+        <script src="{{ asset('TAssets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/jszip/jszip.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/pdfmake/pdfmake.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/pdfmake/vfs_fonts.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+        <!-- AdminLTE App -->
         <script>
             $(function() {
                 let Success = document.getElementById('success')
@@ -73,6 +130,24 @@
                         subtitle: 'Close',
                         body: JSON.parse(Success.dataset.successMessage)
                     })
+
+            });
+            $(function() {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                // $('#example2').DataTable({
+                //     "paging": true,
+                //     "lengthChange": false,
+                //     "searching": false,
+                //     "ordering": true,
+                //     "info": true,
+                //     "autoWidth": false,
+                //     "responsive": true,
+                // });
             });
         </script>
     </x-slot>
