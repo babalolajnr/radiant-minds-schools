@@ -13,8 +13,7 @@
 
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <span id="success"
-            {{ session('success') ? 'data-success = true' : false }}
+        <span id="success" {{ session('success') ? 'data-success = true' : false }}
             data-success-message='{{ json_encode(session('success')) }}'></span>
         <section class="content-header">
             <div class="container-fluid">
@@ -54,7 +53,7 @@
                                             class="form-control @error('name') is-invalid @enderror"
                                             id="academicSession" placeholder="Enter Academic Session">
                                         @error('name')
-                                            <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -79,29 +78,41 @@
                                     </thead>
                                     <tbody>
                                         @foreach($academicSessions as $academicSession)
-                                            <tr>
-                                                <td>
-                                                    {{ $academicSession->name }}
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group">
+                                        <tr>
+                                            <td>
+                                                {{ $academicSession->name }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="edit/academicSessions/{{ $academicSession->id }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Edit">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <form
-                                                            action="/delete/academicSessions/{{ $academicSession->id }}"
-                                                            method="POST">
-                                                            @method('DELETE')
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-default btn-flat"
-                                                                title="Delete">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </a>
+                                                    {{-- render if user is authorized to delete --}}
+                                                    @can('delete', $academicSession)
+                                                    <form action="/delete/academicSessions/{{ $academicSession->id }}"
+                                                        method="POST">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-default btn-flat"
+                                                            title="Delete">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    @endcan
+
+                                                    {{-- render if user is not authorized to delete --}}
+                                                    @cannot('delete', $academicSession)
+                                                    <button type="submit" class="btn btn-default btn-flat"
+                                                        title="Delete" disabled>
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    @endcannot
+                                                </div>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -125,32 +136,24 @@
         <!-- DataTables  & Plugins -->
         <script src="{{ asset('TAssets/plugins/datatables/jquery.dataTables.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
         </script>
         <script src="{{ asset('TAssets/plugins/jszip/jszip.min.js') }}"></script>
         <script src="{{ asset('TAssets/plugins/pdfmake/pdfmake.min.js') }}"></script>
         <script src="{{ asset('TAssets/plugins/pdfmake/vfs_fonts.js') }}"></script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.html5.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.html5.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
         </script>
-        <script
-            src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
+        <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
         </script>
         <!-- AdminLTE App -->
         <script>
