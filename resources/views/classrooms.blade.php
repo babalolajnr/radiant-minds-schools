@@ -84,7 +84,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="edit/Classrooms/{{ $classroom->id }}">
+                                                    <a href="edit/classroom/{{ $classroom->id }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Edit">
                                                             <i class="fa fa-edit"></i>
@@ -92,7 +92,7 @@
                                                     </a>
                                                     {{-- render if user is authorized to delete --}}
                                                     @can('delete', $classroom)
-                                                    <form action="/delete/Classrooms/{{ $classroom->id }}"
+                                                    <form action="/delete/classroom/{{ $classroom->id }}"
                                                         method="POST">
                                                         @method('DELETE')
                                                         @csrf
