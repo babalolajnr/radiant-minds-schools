@@ -93,7 +93,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
     Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
     Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
-    // Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
+    Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
 
     //Assessment Routes
     Route::get('/assessments', [AssessmentController::class, 'index']);
