@@ -188,8 +188,8 @@
                                             <ul class="nav nav-pills">
                                                 <li class="nav-item"><a class="nav-link active" href="#about"
                                                         data-toggle="tab">About</a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#timeline"
-                                                        data-toggle="tab">Timeline</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="#guardianInfo"
+                                                        data-toggle="tab">Guardian</a></li>
                                                 <li class="nav-item"><a class="nav-link" href="#settings"
                                                         data-toggle="tab">Settings</a></li>
                                             </ul>
@@ -246,8 +246,26 @@
 
                                                 </div>
                                                 <!-- /.tab-pane -->
-                                                <div class="tab-pane" id="timeline">
-                                                    
+                                                <div class="tab-pane" id="guardianInfo">
+                                                    <strong></i>Full name</strong>
+                                                    <p class="text-muted" id="gFullname"></p>
+
+                                                    <hr>
+                                                    <strong></i>Occupation</strong>
+                                                    <p class="text-muted" id="gOccupation"></p>
+
+                                                    <hr>
+                                                    <strong></i>Email</strong>
+                                                    <p class="text-muted" id="gEmail"></p>
+
+                                                    <hr>
+                                                    <strong></i>Phone</strong>
+                                                    <p class="text-muted" id="gPhone"></p>
+
+                                                    <hr>
+                                                    <strong></i>Address</strong>
+                                                    <p class="text-muted" id="gAddress"></p>
+
                                                 </div>
                                                 <!-- /.tab-pane -->
 
@@ -359,6 +377,8 @@
         <script>
             function showViewModal(data) {
                 let fullname = data.first_name + ' ' + data.last_name
+                let gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
+                //fill student info in the modal
                 $('#viewModal .profile-username').html(fullname)
                 $('#viewModal #admissionNo').html(data.admission_no)
                 $('#viewModal #classroom').html(data.classroom.name)
@@ -368,6 +388,15 @@
                 $('#viewModal #pob').html(data.place_of_birth)
                 $('#viewModal #bloodGroup').html(data.blood_group)
                 $('#viewModal #status').html(data.status)
+
+                //fill guardian info in the modal
+                $('#viewModal #gFullname').html(gFullname)
+                $('#viewModal #gOccupation').html(data.guardian.occupation)
+                $('#viewModal #gEmail').html(data.guardian.email)
+                $('#viewModal #gPhone').html(data.guardian.phone)
+                $('#viewModal #gAddress').html(data.guardian.address)
+
+                //show modal
                 $('#viewModal').modal('show')
                 console.log(data)
             }
