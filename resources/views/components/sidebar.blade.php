@@ -41,7 +41,7 @@
                with font-awesome or any other icon font library -->
                     <li class="nav-item menu-is-opening menu-open">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-copy"></i>
+                            <i class="nav-icon fas fa-school"></i>
                             <p>
                                 School Management
                                 <i class="fas fa-angle-left right"></i>
@@ -56,10 +56,34 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/classrooms" class="nav-link">
-                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <i class="nav-icon fa fa-list-alt"  ></i>
                                     <p>Classrooms</p>
                                 </a>
                             </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item menu-is-opening menu-open">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-child"></i>
+
+                            <p>
+                                Students Management
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: block;">
+                            <li class="nav-item">
+                                <a href="/students" class="nav-link">
+                                    <i class="nav-icon fas fa-user-graduate"></i>
+                                    <p>Students</p>
+                                </a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a href="/classrooms" class="nav-link">
+                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
+                                    <p>Classrooms</p>
+                                </a>
+                            </li> --}}
                         </ul>
                     </li>
 
