@@ -242,8 +242,6 @@
 
                                                     <p class="text-muted" id="status"></p>
 
-                                                    <hr>
-
                                                 </div>
                                                 <!-- /.tab-pane -->
                                                 <div class="tab-pane" id="guardianInfo">
