@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Student Routes
     Route::get('/students', [StudentController::class, 'index']);
+    Route::get('create/student', [StudentController::class, 'create']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
     Route::get('/results/student/{student}', [StudentController::class, 'getAssessmentResults']);
