@@ -119,7 +119,7 @@
                                             <input type="text"
                                                 class="form-control @error('date_of_birth') is-invalid @enderror"
                                                 data-inputmask-alias="datetime" name="date_of_birth"
-                                                data-inputmask-inputformat="dd/mm/yyyy" data-mask value="{{ old('admission_no') }}">
+                                                data-inputmask-inputformat="yyyy-mm-dd" data-mask value="{{ old('date_of_birth') }}">
                                             @error('date_of_birth')
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -201,7 +201,7 @@
                                     <div class="form-group">
                                         <label>Address</label>
                                         <input type=" text" name="guardian_address"
-                                            class="form-control @error('guardian_address') is-invalid @enderror">
+                                            class="form-control @error('guardian_address') is-invalid @enderror" value="{{ old('guardian_address') }}">
                                         @error('guardian_address')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -230,8 +230,8 @@
             $(function () {
                 //Initialize Select2 Elements
                 $('.select2').select2()
-                $('#datemask').inputmask('dd/mm/yyyy', {
-                    'placeholder': 'dd/mm/yyyy'
+                $('#datemask').inputmask('yyyy-mm-dd', {
+                    'placeholder': 'yyyy-mm-dd'
                 })
                 //Money Euro
                 $('[data-mask]').inputmask()
