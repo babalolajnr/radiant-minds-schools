@@ -78,12 +78,13 @@
                                     <p>Students</p>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="/classrooms" class="nav-link">
-                                    <i class="nav-icon fa fa-list-alt" aria-hidden="true"></i>
-                                    <p>Classrooms</p>
+                            <li class="nav-item">
+                                <a href="create/student" class="nav-link">
+                                    <i class="nav-icon fas fa-plus"></i>
+                                    <p>New Student</p>
                                 </a>
-                            </li> --}}
+                            </li>
+                           
                         </ul>
                     </li>
 
