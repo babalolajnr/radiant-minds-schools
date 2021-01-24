@@ -41,7 +41,7 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = Student::all();
+        $students = Student::all()->sortByDesc('created_at');
         return view('students', compact('students'));
     }
 
@@ -101,6 +101,8 @@ class StudentController extends Controller
         $studentInfo = array_merge($this->studentInfo($request), $guardianID);
 
         Student::create($studentInfo);
+
+        return redirect('/students')->with('success', 'Student Added!');
     }
 
     public function show($student)
