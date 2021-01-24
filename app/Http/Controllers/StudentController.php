@@ -35,6 +35,12 @@ class StudentController extends Controller
         return view('students', compact('students'));
     }
 
+    public function create()
+    {
+        $classrooms = Classroom::pluck('name')->all();
+        return view('newStudent', compact('classrooms'));
+    }
+
     /**
      * This method works by collecting all the guardian and student info from the user and
      * making sure it's all filled out. Then it checks if the guardian's phone number is present
@@ -56,9 +62,9 @@ class StudentController extends Controller
             'date_of_birth' => ['required', 'date'],
             'place_of_birth' => ['required'],
             'classroom' => ['required', 'string'],
-            'guardian_title' => ['string', 'max:30', 'required'],
-            'guardian_first_name' => ['string', 'max:30', 'required'],
-            'guardian_last_name' => ['string', 'max:30', 'required'],
+            'guardian_title' => ['required', 'max:30', 'string'],
+            'guardian_first_name' => ['required', 'max:30', 'string'],
+            'guardian_last_name' => ['required', 'max:30', 'string'],
             'guardian_email' => ['required', 'string', 'email:rfc,dns'],
             'guardian_phone' => ['required', 'string', 'max:15', 'min:10'],
             'guardian_occupation' => ['required', 'string'],
@@ -169,7 +175,7 @@ class StudentController extends Controller
         if (!$student->exists()) {
             abort(404);
         }
-        
+
         $student =  $student->first();
         $results = $student->assessmentResults()->get();
 
