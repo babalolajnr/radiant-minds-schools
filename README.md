@@ -164,7 +164,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Abdulqudduus Babalola - [@your_twitter](https://twitter.com/babalolajnr) - babalolajnr@gmail.com
+Abdulqudduus Babalola - [@babalolajnr](https://twitter.com/babalolajnr) - babalolajnr@gmail.com
 
 Project Link: [https://github.com/babalolajnr/radiant-minds-schools](https://github.com/babalolajnr/radiant-minds-schools)
 
