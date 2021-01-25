@@ -142,11 +142,13 @@ class StudentController extends Controller
     public function edit($student)
     {
         $student = Student::where('admission_no', $student);
-        if ($student->exists()) {
-            return response(200);
-        } else {
+        if (!$student->exists()) {
             abort(404);
-        }
+        } 
+        $student = $student->first();
+        $classrooms = Classroom::pluck('name')->all();
+        return view('editStudent', compact(['student', 'classrooms']));
+        
     }
 
     public function update($id, Request $request)
