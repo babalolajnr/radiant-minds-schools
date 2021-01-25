@@ -9,19 +9,10 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    private function refineDate($date){
-        $refinedDate = $date;
-        $refinedDate = date('Y-m-d', strtotime($refinedDate));
-
-        return $refinedDate;
-    }
 
     private function studentInfo($request)
     {
         $classroom =  Classroom::where('name', $request->classroom)->first();
-
-        //convert user inputed date to valid mysql date format
-        $dateOfBirth = $this->refineDate($request->date_of_birth);
 
         return [
             'first_name' => $request->first_name,
@@ -32,7 +23,7 @@ class StudentController extends Controller
             'state' => $request->state,
             'country' => $request->country,
             'blood_group' => $request->blood_group,
-            'date_of_birth' => $dateOfBirth,
+            'date_of_birth' => $request->date_of_birth,
             'place_of_birth' => $request->place_of_birth,
             'classroom_id' => $classroom->id,
             'status' => 'active'
@@ -69,14 +60,14 @@ class StudentController extends Controller
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
             'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:'.$currentDate],
+            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
             'place_of_birth' => ['required'],
             'classroom' => ['required', 'string'],
             'guardian_title' => ['required', 'max:30', 'string'],
             'guardian_first_name' => ['required', 'max:30', 'string'],
             'guardian_last_name' => ['required', 'max:30', 'string'],
             'guardian_email' => ['required', 'string', 'email:rfc,dns'],
-            'guardian_phone' => ['required', 'numeric', 'digits_between:10,15'],
+            'guardian_phone' => ['required', 'string', 'between:10,15'],
             'guardian_occupation' => ['required', 'string'],
             'guardian_address' => ['required']
         ]);
@@ -161,6 +152,7 @@ class StudentController extends Controller
     public function update($id, Request $request)
     {
         $student = Student::findOrFail($id);
+        $currentDate = now();
 
         $this->validate($request, [
             'first_name' => ['required', 'string', 'max:30'],
@@ -171,7 +163,7 @@ class StudentController extends Controller
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
             'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date'],
+            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
             'place_of_birth' => ['required'],
             'classroom' => ['required', 'string'],
         ]);
