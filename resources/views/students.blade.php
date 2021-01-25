@@ -40,8 +40,6 @@
                     <div class="col-12">
 
                         <!-- Default box -->
-
-
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Students</h3>
@@ -426,6 +424,8 @@
                 $('#viewModal').modal('show')
                 console.log(data)
             }
+
+            //launch toastr 
             $(function () {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
@@ -438,6 +438,8 @@
                     })
 
             });
+
+            //datatables
             $(function () {
                 $("#example1").DataTable({
                     "responsive": true,
