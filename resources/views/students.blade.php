@@ -98,12 +98,10 @@
                                                         onclick="showViewModal({{ $student }})" title="View">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
-                                                    <a href="edit/student/{{ $student->id }}">
-                                                        <button type="button" class="btn btn-default btn-flat"
-                                                            title="Edit">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                    </a>
+                                                    <button type="button" onclick="showEditModal({{ $student }})"
+                                                        class="btn btn-default btn-flat" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
                                                     {{-- render if user is authorized to delete --}}
                                                     @can('delete', $student)
                                                     <form action="/delete/student/{{ $student->id }}" method="POST">
@@ -148,7 +146,30 @@
                 </div>
         </section>
         <!-- /.content -->
-
+        <div class="modal fade" id="editModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Student</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="" id="editStudentButton">
+                            <button type="button" class="btn btn-success" title="Edit Student">Student</button>
+                        </a>
+                        <span class="px-3"></span>
+                        <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <div class="modal fade" id="viewModal">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -373,6 +394,13 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+            function showEditModal(data) {
+                let editStudentUrl = '/edit/student/' + data.admission_no
+                $('#editStudentButton').attr("href", editStudentUrl)
+                $('#editModal').modal('show')
+
+            }
+
             function showViewModal(data) {
                 let fullname = data.first_name + ' ' + data.last_name
                 let gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
