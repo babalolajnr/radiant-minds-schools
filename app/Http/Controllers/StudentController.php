@@ -6,6 +6,7 @@ use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
@@ -160,7 +161,7 @@ class StudentController extends Controller
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
             'sex' => ['required', 'string'],
-            'admission_no' => ['required', 'string', 'unique:students'],
+            'admission_no' => ['required', 'string', Rule::unique('students')->ignore($student)],
             'lg' => ['required', 'string'],
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
@@ -171,7 +172,7 @@ class StudentController extends Controller
         ]);
 
         $student->update($this->studentInfo($request));
-        return response(200);
+        return redirect('/edit/student/'.$student->admission_no)->with('success', 'Student Updated!');
     }
 
     public function getAssessmentResults($student)
