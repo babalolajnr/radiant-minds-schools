@@ -58,8 +58,8 @@
                                     <div class="form-group">
                                         <label>Sex</label>
                                         <select class="custom-select @error('sex') is-invalid @enderror" name="sex">
-                                            <option>M</option>
-                                            <option>F</option>
+                                            <option @if (old('sex') == "M") SELECTED @endif>M</option>
+                                            <option @if (old('sex') == "F") SELECTED @endif>F</option>
                                         </select>
                                         @error('sex')
                                         <div class="text-danger">{{ $message }}</div>
@@ -100,13 +100,14 @@
                                     <div class="form-group">
                                         <label>Blood group</label>
                                         <select class="form-control select2" name="blood_group" style="width: 100%;">
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
+                                            <option @if (old('blood_group') == 'A+') SELECTED @endif>A+</option>
+                                            <option @if (old('blood_group') == 'A-') SELECTED @endif>A-</option>
+                                            <option @if (old('blood_group') == 'B+') SELECTED @endif>B+</option>
+                                            <option @if (old('blood_group') == 'B-') SELECTED @endif>B-</option>
+                                            <option @if (old('blood_group') == 'O+') SELECTED @endif>O+</option>
+                                            <option @if (old('blood_group') == 'O-') SELECTED @endif>O-</option>
+                                            <option @if (old('blood_group') == 'AB+') SELECTED @endif>AB+</option>
+                                            <option @if (old('blood_group') == 'AB-') SELECTED @endif>AB-</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -138,7 +139,7 @@
                                         <label>Class</label>
                                         <select class="form-control select2" name="classroom" style="width: 100%;">
                                             @foreach ($classrooms as $classroom)
-                                            <option>{{ $classroom }}</option>
+                                            <option @if (old('classroom') == $classroom) SELECTED @endif>{{ $classroom }}</option>
                                             @endforeach
                                         </select>
                                     </div>
