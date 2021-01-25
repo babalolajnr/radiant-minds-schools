@@ -45,7 +45,7 @@ class StudentTest extends TestCase
             'lg' => $this->faker->state,
             'state' => $this->faker->state,
             'country' => $this->faker->country,
-            'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'date_of_birth' => '1998-05-01',
             'classroom' => $classroom,
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
             'place_of_birth' => $this->faker->address
@@ -59,7 +59,6 @@ class StudentTest extends TestCase
      */
     public function test_student_can_be_created_with_new_guardian_info()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
 
         $classroom = $this->generateTestClassroom();
@@ -75,13 +74,13 @@ class StudentTest extends TestCase
         ];
         $studentInfo = array_merge($studentInfo, $guardianInfo);
         $response = $this->actingAs($user)->post('/store/student', $studentInfo);
-        $response->assertStatus(200);
+        
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_an_already_taken_guardian_phone_will_work()
     {
         $guardian = Guardian::factory()->create();
-        // $guardian = Guardian::all()->random();
         $user = User::factory()->create();
 
         $classroom = $this->generateTestClassroom();
@@ -97,7 +96,8 @@ class StudentTest extends TestCase
         ];
         $studentInfo = array_merge($studentInfo, $guardianInfo);
         $response = $this->actingAs($user)->post('/store/student', $studentInfo);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
+
     }
 
     public function test_student_controller_index_method()
