@@ -5,6 +5,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AssessmentResultController;
 use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -103,6 +104,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Assessment Result routes
     Route::post('store/assessment-result/{studentID}/{subjectID}', [AssessmentResultController::class, 'store']);
+
+    //Guardian Routes
+    Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);
 });
 
 require __DIR__.'/auth.php';
