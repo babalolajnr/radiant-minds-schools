@@ -1,5 +1,7 @@
 <x-app-layout>
     <x-slot name="styles">
+        <!-- Toastr -->
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- Select2 -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/select2/css/select2.min.css') }}">
         <link rel="stylesheet"
@@ -13,7 +15,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Edit Student ()</h1>
+                        <h1>Edit Student ({{ $student->first_name . ' ' . $student->last_name}})</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -36,8 +38,9 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Student</h3>
                             </div>
-                            <form id="updateStudent" method="POST" action="/update/student{{ $student->id }}">
+                            <form id="updateStudent" method="POST" action="/update/student/{{ $student->id }}">
                                 @csrf
+                                @method('PATCH')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>First name</label>
@@ -174,6 +177,20 @@
                 $('[data-mask]').inputmask()
 
             })
+
+            //launch toastr 
+            $(function () {
+                let Success = document.getElementById('success')
+                // if data-success = 'true' display alert
+                if (Success.dataset.success == 'true')
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        subtitle: 'Close',
+                        body: JSON.parse(Success.dataset.successMessage)
+                    })
+
+            });
 
         </script>
     </x-slot>
