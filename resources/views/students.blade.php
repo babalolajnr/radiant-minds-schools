@@ -158,7 +158,10 @@
                             <button type="button" class="btn btn-success" title="Edit Student">Student</button>
                         </a>
                         <span class="px-3"></span>
-                        <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
+                        <a href="" id="editGuardianButton">
+                            <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
+                        </a>
+
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -190,9 +193,9 @@
                                                     src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
                                             </div>
 
-                                            <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                            <h3 class="profile-username text-center"></h3>
 
-                                            <p class="text-muted text-center" id="admissionNo">Software Engineer</p>
+                                            <p class="text-muted text-center" id="admissionNo"></p>
 
                                         </div>
                                         <!-- /.card-body -->
@@ -394,7 +397,9 @@
         <script>
             function showEditModal(data) {
                 let editStudentUrl = '/edit/student/' + data.admission_no
+                let editGuardianUrl =  '/edit/guardian/' + data.guardian.phone
                 $('#editStudentButton').attr("href", editStudentUrl)
+                $('#editGuardianButton').attr("href", editGuardianUrl)
                 $('#editModal').modal('show')
 
             }
