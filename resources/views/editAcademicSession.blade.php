@@ -38,7 +38,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
-                                        <input type="text" name="name" value="{{ $academicSession->name }}"
+                                        <input type="text" name="name" value="{{ old('name', $academicSession->name) }}"
                                             class="form-control @error('name') is-invalid @enderror"
                                             id="academicSession" placeholder="Enter Academic Session">
                                         @error('name')
