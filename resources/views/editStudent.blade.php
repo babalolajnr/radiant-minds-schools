@@ -100,13 +100,14 @@
                                     <div class="form-group">
                                         <label>Blood group</label>
                                         <select class="form-control select2" name="blood_group" style="width: 100%;">
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'A+') SELECTED @endif>A+</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'A-') SELECTED @endif>A-</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'B+') SELECTED @endif>B+</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'B-') SELECTED @endif>B-</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'O+') SELECTED @endif>O+</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'O-') SELECTED @endif>O-</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'AB+') SELECTED @endif>AB+</option>
+                                            <option @if (old('blood_group', $student->blood_group) == 'AB-') SELECTED @endif>AB-</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
