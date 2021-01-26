@@ -39,7 +39,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Guardian</h3>
                             </div>
-                            <form id="updateStudent" method="POST" action="/update/student/{{ $guardian->id }}">
+                            <form id="updateGuardian" method="POST" action="/update/guardian/{{ $guardian->phone }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">
