@@ -10,6 +10,9 @@ use Tests\TestCase;
 
 class GuardianTest extends TestCase
 {
+    use WithFaker;
+    use RefreshDatabase;
+    
     public function test_guardian_controller_edit_method()
     {
         $user = User::factory()->create();
@@ -17,5 +20,23 @@ class GuardianTest extends TestCase
 
         $response = $this->actingAs($user)->get('/edit/guardian/'.$guardian->phone);
         $response->assertStatus(200)->assertViewIs('editGuardian');
+    }
+
+    public function test_guardian_controller_update_method()
+    {   $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $guardian = Guardian::factory()->create();
+
+        $response = $this->actingAs($user)->patch('/update/guardian/'.$guardian->phone, [
+            'title' => $this->faker->title,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->e164PhoneNumber,
+            'occupation' => $this->faker->jobTitle,
+            'address' => $this->faker->address
+        ]);
+
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 }
