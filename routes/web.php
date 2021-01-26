@@ -107,6 +107,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
 
     //Guardian Routes
     Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);
+    Route::patch('/update/guardian/{phone}', [GuardianController::class, 'update']);
 });
 
 require __DIR__.'/auth.php';
