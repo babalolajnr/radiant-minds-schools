@@ -48,7 +48,7 @@ class ClassroomController extends Controller
         $this->authorize('delete', $classroom);
         $classroom = Classroom::findOrFail($id);
         $classroom->delete();
-        return response(200);
+        return back()->with('success', 'Classroom Deleted!');
     }
 
     public function editSubjects($id)
