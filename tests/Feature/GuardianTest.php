@@ -2,21 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\Models\Guardian;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class GuardianTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_guardian_controller_edit_method()
     {
-        $response = $this->get('/');
+        $user = User::factory()->create();
+        $guardian = Guardian::factory()->create();
 
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->get('/edit/guardian/'.$guardian->phone);
+        $response->assertStatus(200)->assertViewIs('editGuardian');
     }
 }
