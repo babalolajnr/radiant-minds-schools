@@ -37,7 +37,7 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create();
         $classroom = Classroom::factory()->create()->id;
         $response = $this->actingAs($user)->get('/edit/classroom/' . $classroom);
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertViewIs('editClassroom');
     }
 
     public function test_classroom_update_method()
@@ -47,7 +47,7 @@ class ClassroomTest extends TestCase
         $response = $this->actingAs($user)->patch('/update/classroom/' . $classroom, [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_master_can_delete_a_classroom()
