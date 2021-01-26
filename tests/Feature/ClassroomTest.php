@@ -68,7 +68,6 @@ class ClassroomTest extends TestCase
 
     public function test_classroom_subjects_can_be_updated()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $subjects = $this->generateTestSubjects();
         $classroom = Classroom::factory()->create()->id;
