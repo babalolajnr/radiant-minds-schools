@@ -55,7 +55,7 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create(['user_type' => 'master']);
         $classroom = Classroom::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_admin_cannot_delete_classroom()
