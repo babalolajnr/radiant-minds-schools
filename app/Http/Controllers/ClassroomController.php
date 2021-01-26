@@ -32,16 +32,25 @@ class ClassroomController extends Controller
 
     public function edit($id)
     {
-
         $classroom = Classroom::findOrFail($id);
-        return response(200);
+
+        return view('editClassroom', compact('classroom'));
     }
 
     public function update($id, Request $request)
     {
         $classroom = Classroom::findOrFail($id);
+
+        $messages = [
+            'name.unique' => 'Classroom Exists'
+        ];
+        $this->validate($request, [
+            'name' => ['required', 'string', 'unique:classrooms']
+        ], $messages);
+
         $classroom->update($request->all());
-        return response(200);
+        
+        return redirect('/classrooms')->with('success', 'Classroom Updated!');
     }
 
     public function destroy($id, Classroom $classroom)
