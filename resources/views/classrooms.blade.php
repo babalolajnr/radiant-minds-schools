@@ -50,8 +50,8 @@
                                     <div class="form-group">
                                         <label for="Classroom">Classroom</label>
                                         <input type="text" name="name" value="{{ old('name') }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            id="classroom" placeholder="Enter Classroom">
+                                            class="form-control @error('name') is-invalid @enderror" id="classroom"
+                                            placeholder="Enter Classroom">
                                         @error('name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -92,20 +92,15 @@
                                                     </a>
                                                     {{-- render if user is authorized to delete --}}
                                                     @can('delete', $classroom)
-                                                    <form action="/delete/classroom/{{ $classroom->id }}"
-                                                        method="POST">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-default btn-flat"
-                                                            title="Delete">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger btn-flat"
+                                                        title="Delete" onclick="deleteConfirmationModal({{ $classroom }})">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
                                                     @endcan
 
                                                     {{-- render if user is not authorized to delete --}}
                                                     @cannot('delete', $classroom)
-                                                    <button type="submit" class="btn btn-default btn-flat"
+                                                    <button type="submit" class="btn btn-danger btn-flat"
                                                         title="Delete" disabled>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -128,6 +123,31 @@
                 </div>
         </section>
         <!-- /.content -->
+    </div>
+    <div class="modal fade" id="deleteConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <span id="deleteItemName" class="font-bold"></span>?
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <form action="" method="POST" id="yesDeleteConfirmation">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
 
     <x-slot name="scripts">
@@ -157,6 +177,12 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+            function deleteConfirmationModal(data) {
+                let deleteClassroomUrl = '/delete/classroom/' + data.id
+                $('#yesDeleteConfirmation').attr("action", deleteClassroomUrl)
+                $('#deleteItemName').html(data.name)
+                $('#deleteConfirmationModal').modal('show')
+            }
             $(function () {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
