@@ -49,9 +49,13 @@ class ClassroomController extends Controller
         $this->authorize('delete', $classroom);
         $classroom = Classroom::findOrFail($id);
         $student = Student::where('classroom_id', $classroom->id);
-        
+        $classroomSubject = $classroom->subjects()->first();
+
+        //test for constraints
         if($student->exists()){
             return back()->with('error', 'You cannot delete a classroom that has students!');
+        }else if(!is_null($classroomSubject)){
+            return back()->with('error', 'You cannot delete a classroom that has subjects assigned');
         }
         
         $classroom->delete();
