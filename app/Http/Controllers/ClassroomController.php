@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -47,6 +48,12 @@ class ClassroomController extends Controller
     {
         $this->authorize('delete', $classroom);
         $classroom = Classroom::findOrFail($id);
+        $student = Student::where('classroom_id', $classroom->id);
+        
+        if($student->exists()){
+            return back()->with('error', 'You cannot delete a classroom that has students!');
+        }
+        
         $classroom->delete();
         return back()->with('success', 'Classroom Deleted!');
     }
