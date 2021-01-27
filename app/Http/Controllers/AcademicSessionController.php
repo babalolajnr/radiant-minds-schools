@@ -54,6 +54,12 @@ class AcademicSessionController extends Controller
     {
         $this->authorize('delete', $academicSession);
         $academicSession = AcademicSession::findOrFail($id);
+        $assessments = $academicSession->assessments()->first();
+
+        if(!is_null($assessments)){
+            return back()->with('error', 'Academic Session with assessments cannot be deleted!');
+        }
+        
         $academicSession->delete();
         return back()->with('success', 'Academic Session Deleted!');
     }
