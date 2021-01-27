@@ -27,7 +27,7 @@ class TermFactory extends Factory
             'Third Term',
         ];
         return [
-            'name' => $this->faker->randomElement($terms),
+            'name' => $this->faker->unique()->randomElement($terms),
         ];
     }
 }
