@@ -126,6 +126,7 @@
         </section>
         <!-- /.content -->
     </div>
+    {{-- Delete confirmation modal --}}
     <div class="modal fade" id="deleteConfirmationModal">
         <div class="modal-dialog">
             <div class="modal-content">
