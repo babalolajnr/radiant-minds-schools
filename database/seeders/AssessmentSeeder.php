@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assessment;
 use Illuminate\Database\Seeder;
 
 class AssessmentSeeder extends Seeder
@@ -13,6 +14,6 @@ class AssessmentSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Assessment::factory()->times(10)->create();
     }
 }
