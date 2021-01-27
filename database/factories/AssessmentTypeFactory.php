@@ -26,7 +26,7 @@ class AssessmentTypeFactory extends Factory
             ['name' => 'Exam', 'max_score' => 100],
         ];
 
-        $assessmentType = $this->faker->randomElement($assessmentTypes);
+        $assessmentType = $this->faker->unique()->randomElement($assessmentTypes);
 
         return [
             'name' => $assessmentType['name'],
