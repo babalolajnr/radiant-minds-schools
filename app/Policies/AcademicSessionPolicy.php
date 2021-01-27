@@ -89,6 +89,6 @@ class AcademicSessionPolicy
      */
     public function forceDelete(User $user, AcademicSession $academicSession)
     {
-        //
+        return $user->isMaster();
     }
 }
