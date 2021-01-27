@@ -65,7 +65,7 @@ class AcademicSessionPolicy
      */
     public function delete(User $user, AcademicSession $academicSession)
     {
-        //
+        return $user->isMaster();
     }
 
     /**
