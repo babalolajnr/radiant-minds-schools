@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicSession;
+use App\Models\Assessment;
+use App\Models\AssessmentResult;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -34,7 +37,8 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all()->sortByDesc('created_at');
-        return view('students', compact('students'));
+        $academicSessions = AcademicSession::all()->sortByDesc('created_at');
+        return view('students', compact('students', 'academicSessions'));
     }
 
     public function create()
@@ -145,11 +149,10 @@ class StudentController extends Controller
         $student = Student::where('admission_no', $student);
         if (!$student->exists()) {
             abort(404);
-        } 
+        }
         $student = $student->first();
         $classrooms = Classroom::pluck('name')->all();
         return view('editStudent', compact(['student', 'classrooms']));
-        
     }
 
     public function update($id, Request $request)
@@ -172,10 +175,10 @@ class StudentController extends Controller
         ]);
 
         $student->update($this->studentInfo($request));
-        return redirect('/edit/student/'.$student->admission_no)->with('success', 'Student Updated!');
+        return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getAssessmentResults($student)
+    public function getAssessmentResults($student, Request $request)
     {
         $student = Student::where('admission_no', $student);
 
@@ -183,8 +186,24 @@ class StudentController extends Controller
             abort(404);
         }
 
+        $this->validate($request, [
+            'academicSession' => ['required']
+        ]);
+
         $student =  $student->first();
-        $results = $student->assessmentResults()->get();
+        $academicSession = AcademicSession::where('name', $request->academicSession)->first();
+        $assessments = Assessment::where('academic_session_id', $academicSession->id)->pluck('id')->all();
+        $results = [];
+        foreach ($assessments as $assessment) {
+            $result = AssessmentResult::where('assessment_id', $assessment)->where('student_id', $student->id)->first();
+            array_push($results, $result);
+        }
+
+        dd($results);
+        // $assessmentResults = $assessments->assessmentResults->get();
+        // $results = $student->assessmentResults()->where('academic_session_id', $assessments->)get();
+        // $results = $academicSession->assessments->assessmentResults;
+        // $results = $student->assessmentResults->assessments()->academicSession($academicSession)->get();
 
         return response(200);
     }
