@@ -11,8 +11,8 @@ class AssessmentType extends Model
 
     protected $fillable = ['name', 'max_score'];
 
-    public function assessment()
+    public function assessmentResults()
     {
-        return $this->hasMany(Assessment::class);
+        return $this->hasMany(AssessmentResult::class);
     }
 }
