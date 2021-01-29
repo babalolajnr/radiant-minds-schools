@@ -11,8 +11,8 @@ class AcademicSession extends Model
 
     protected $fillable = ['name'];
 
-    public function assessments()
+    public function assessmentResults()
     {
-        return $this->hasMany(Assessment::class);
+        return $this->hasMany(AssessmentResult::class);
     }
 }
