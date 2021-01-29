@@ -15,7 +15,6 @@ class CreateAssessmentResultsTable extends Migration
     {
         Schema::create('assessment_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assessment_id')->constrained('assessments')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
             $table->double('mark');
