@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AcademicSession;
 use App\Models\Assessment;
 use App\Models\AssessmentResult;
+use App\Models\AssessmentType;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -194,18 +195,19 @@ class StudentController extends Controller
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
         $assessments = Assessment::where('academic_session_id', $academicSession->id)->pluck('id')->all();
         $results = [];
+
         foreach ($assessments as $assessment) {
             $result = AssessmentResult::where('assessment_id', $assessment)->where('student_id', $student->id)->first();
             array_push($results, $result);
         }
 
-        dd($results);
+        $assessmentTypes = AssessmentType::all();
         // $assessmentResults = $assessments->assessmentResults->get();
         // $results = $student->assessmentResults()->where('academic_session_id', $assessments->)get();
         // $results = $academicSession->assessments->assessmentResults;
         // $results = $student->assessmentResults->assessments()->academicSession($academicSession)->get();
 
-        return response(200);
+        return view('studentResults', compact('results', 'assessmentTypes'));
     }
 
     public function getSubjects($student)
