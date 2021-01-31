@@ -17,7 +17,8 @@ class CreateResultsTable extends Migration
             $table->id();
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
-            $table->double('mark');
+            $table->double('CA');
+            $table->double('Exam');
             $table->timestamps();
         });
     }
