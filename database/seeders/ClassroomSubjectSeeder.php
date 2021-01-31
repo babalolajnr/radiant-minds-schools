@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassroomSubject;
 use Illuminate\Database\Seeder;
 
 class ClassroomSubjectSeeder extends Seeder
@@ -13,6 +14,6 @@ class ClassroomSubjectSeeder extends Seeder
      */
     public function run()
     {
-        //
+        ClassroomSubject::factory()->times('10')->create();
     }
 }
