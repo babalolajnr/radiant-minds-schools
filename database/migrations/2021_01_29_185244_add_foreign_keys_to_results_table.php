@@ -13,9 +13,8 @@ class AddForeignKeysToResultsTable extends Migration
      */
     public function up()
     {
-        Schema::table('assessment_results', function (Blueprint $table) {
+        Schema::table('results', function (Blueprint $table) {
             $table->foreignId('term_id')->constrained('terms')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignId('assessment_type_id')->constrained('assessment_types')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('academic_session_id')->constrained('academic_sessions')->onDelete('restrict')->onUpdate('cascade');
         });
     }
@@ -27,7 +26,7 @@ class AddForeignKeysToResultsTable extends Migration
      */
     public function down()
     {
-        Schema::table('assessment_results', function (Blueprint $table) {
+        Schema::table('results', function (Blueprint $table) {
             //
         });
     }
