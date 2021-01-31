@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicSessionController;
-use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\ResultController;
-use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
@@ -83,27 +81,12 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
     Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']); 
     
-    //AssessmentType routes
-    Route::get('/assessmentTypes', [AssessmentTypeController::class, 'index']);
-    Route::get('/edit/assessmentType/{id}', [AssessmentTypeController::class, 'edit']);
-    Route::post('/store/assessmentType', [AssessmentTypeController::class, 'store']);
-    Route::patch('/update/assessmentType/{id}', [AssessmentTypeController::class, 'update']);
-    Route::delete('/delete/assessmentType/{id}', [AssessmentTypeController::class, 'destroy']);
-    
     //AcademicSession routes
     Route::get('/academicSessions', [AcademicSessionController::class, 'index']);
     Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
     Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
     Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
     Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
-
-    //Assessment Routes
-    Route::get('/assessments', [AssessmentController::class, 'index']);
-    Route::get('/create/assessments', [AssessmentController::class, 'create']);
-    Route::post('/store/assessment', [AssessmentController::class, 'store']);
-
-    //Assessment Result routes
-    Route::post('store/assessment-result/{studentID}/{subjectID}', [ResultController::class, 'store']);
 
     //Guardian Routes
     Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);
