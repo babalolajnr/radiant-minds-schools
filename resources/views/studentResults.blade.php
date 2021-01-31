@@ -48,32 +48,34 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>S/N</th>
                                             <th>Subject</th>
-                                            
+                                            @foreach ($assessmentTypes as $assessmentType)
+                                                <th>{{$assessmentType->name }}</th>
+                                            @endforeach
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                            $no = 1;
-                                        ?>
+
                                         @foreach($results as $result)
                                         <tr>
-                                            <td>
-                                                <?php
-                                                    echo $no;
-                                                    $no++;
-                                                ?>
-                                            </td>
-                                            <td>{{ $result-> }}</td>
-                                           
+                                            <td>{{ $result->subject->name }}</td>
+                                            @foreach($assessmentTypes as $assessmentType)
+                                                @if($result->assessmentType->name == $assessmentType->name)
+                                                    <td>{{ $result->mark. $result->assessmentType->name }}</td>
+                                                @else
+                                                    <td></td>
+                                                @endif
+                                            @endforeach
+                                            
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>S/N</th>
-                                            <th>Admission No</th>
+                                            <th>Subject</th>
+                                            @foreach ($assessmentTypes as $assessmentType)
+                                            <th>{{ $assessmentType->name }}</th>
+                                            @endforeach
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -112,7 +114,6 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-
             //launch toastr 
             $(function () {
                 let Success = document.getElementById('success')
