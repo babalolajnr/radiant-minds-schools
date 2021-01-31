@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Classroom;
+use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class ClassroomSeeder extends Seeder
 {
@@ -27,13 +29,24 @@ class ClassroomSeeder extends Seeder
             'Grade 5',
         ];
 
+        $subject = Subject::inRandomOrder()->first();
+
+        if (!$subject) {
+            Artisan::call('db:seed', ['--class' => 'SubjectSeeder']);
+            $subject = Subject::inRandomOrder()->limit(5)->get()->pluck('id');
+        } else {
+            $subject = Subject::inRandomOrder()->limit(5)->get()->pluck('id');
+        }
+
         foreach ($classes as $class) {
-            Classroom::create(
+            $classroom = Classroom::create(
                 [
                     'name' => $class,
                     'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
                 ]
             );
+
+            $classroom->subjects()->sync($subject);
         }
     }
 }
