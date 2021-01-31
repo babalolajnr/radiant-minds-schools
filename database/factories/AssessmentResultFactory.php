@@ -50,6 +50,7 @@ class AssessmentResultFactory extends Factory
         $subject = Subject::inRandomOrder()->first();
         $student = Student::inRandomOrder()->first();
 
+        //if any of the required values are empty seed their tables
         if (!$term) {
             Artisan::call('db:seed', ['--class' => 'TermSeeder']);
             $term = Term::inRandomOrder()->first();
