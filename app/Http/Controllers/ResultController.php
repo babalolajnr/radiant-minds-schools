@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assessment;
-use App\Models\AssessmentResult;
+use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class AssessmentResultController extends Controller
+class ResultController extends Controller
 {
     public function store(Request $request, $studentID, $subjectID)
     {
@@ -32,7 +31,7 @@ class AssessmentResultController extends Controller
             'assessment' => ['string']
         ], $messages);
 
-        AssessmentResult::create([
+        Result::create([
             'assessment_id' => $assessment->id,
             'subject_id' => $subject->id,
             'student_id' => $student->id,

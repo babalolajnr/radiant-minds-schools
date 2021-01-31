@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\AssessmentResult;
+use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -193,8 +193,8 @@ class StudentTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $assessmentResult = AssessmentResult::factory()->create();
-        $student = $assessmentResult->student->admission_no;
+        $Result = Result::factory()->create();
+        $student = $Result->student->admission_no;
         $response = $this->actingAs($user)->get('/results/student/' . $student);
         $response->assertStatus(200);
     }

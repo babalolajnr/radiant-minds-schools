@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\AssessmentController;
-use App\Http\Controllers\AssessmentResultController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\AssessmentTypeController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\GuardianController;
@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('create/student', [StudentController::class, 'create']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
-    Route::post('/results/student/{student}', [StudentController::class, 'getAssessmentResults']);
+    Route::post('/results/student/{student}', [StudentController::class, 'getResults']);
     Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
@@ -103,7 +103,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/store/assessment', [AssessmentController::class, 'store']);
 
     //Assessment Result routes
-    Route::post('store/assessment-result/{studentID}/{subjectID}', [AssessmentResultController::class, 'store']);
+    Route::post('store/assessment-result/{studentID}/{subjectID}', [ResultController::class, 'store']);
 
     //Guardian Routes
     Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);

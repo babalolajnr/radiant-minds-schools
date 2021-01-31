@@ -10,8 +10,8 @@ class Term extends Model
     use HasFactory;
     protected $fillable = ['name'];
 
-    public function assessmentResults()
+    public function Results()
     {
-        return $this->hasMany(AssessmentResult::class);
+        return $this->hasMany(Result::class);
     }
 }

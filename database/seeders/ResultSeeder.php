@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\AssessmentResult;
+use App\Models\Result;
 use Illuminate\Database\Seeder;
 
-class AssessmentResultSeeder extends Seeder
+class ResultSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class AssessmentResultSeeder extends Seeder
      */
     public function run()
     {
-        AssessmentResult::factory()->times(10)->create();
+        Result::factory()->times(10)->create();
     }
 }

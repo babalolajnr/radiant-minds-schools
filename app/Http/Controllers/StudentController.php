@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
-use App\Models\Assessment;
-use App\Models\AssessmentResult;
+use App\Models\Result;
 use App\Models\AssessmentType;
 use App\Models\Classroom;
 use App\Models\Guardian;
@@ -179,7 +178,7 @@ class StudentController extends Controller
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getAssessmentResults($student, Request $request)
+    public function getResults($student, Request $request)
     {
         $student = Student::where('admission_no', $student);
 
@@ -193,20 +192,9 @@ class StudentController extends Controller
 
         $student =  $student->first();
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
-        $assessments = Assessment::where('academic_session_id', $academicSession->id)->pluck('id')->all();
-        $results = [];
-
-        foreach ($assessments as $assessment) {
-            $result = AssessmentResult::where('assessment_id', $assessment)->where('student_id', $student->id)->first();
-            array_push($results, $result);
-        }
-
+        $results = Result::where('student_id', $student->id)->where('academic_session_id', $academicSession->id)->get();
+        // dd($results);
         $assessmentTypes = AssessmentType::all();
-        // $assessmentResults = $assessments->assessmentResults->get();
-        // $results = $student->assessmentResults()->where('academic_session_id', $assessments->)get();
-        // $results = $academicSession->assessments->assessmentResults;
-        // $results = $student->assessmentResults->assessments()->academicSession($academicSession)->get();
-
         return view('studentResults', compact('results', 'assessmentTypes'));
     }
 

@@ -290,7 +290,7 @@
                                                 <!-- /.tab-pane -->
 
                                                 <div class="tab-pane" id="results">
-                                                    <form id="getAssessmentResult" method="POST" action="">
+                                                    <form id="getResult" method="POST" action="">
                                                         @csrf
                                                         <div class="form-group">
                                                             <label>Academic Session</label>
@@ -390,8 +390,8 @@
                 $('#viewModal #gAddress').html(data.guardian.address)
 
                 // fill results form
-                let assessmentResultUrl = '/results/student/' + data.admission_no
-                $('#viewModal #getAssessmentResult').attr("action", assessmentResultUrl)
+                let ResultUrl = '/results/student/' + data.admission_no
+                $('#viewModal #getResult').attr("action", ResultUrl)
 
                 //show modal
                 $('#viewModal').modal('show')

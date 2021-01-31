@@ -22,9 +22,9 @@ class Student extends Model
         return $this->belongsTo(Classroom::class);
     }
 
-    public function assessmentResults()
+    public function Results()
     {
-        return $this->hasMany(AssessmentResult::class);
+        return $this->hasMany(Result::class);
     }
 
 }
