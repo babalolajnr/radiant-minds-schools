@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\AcademicSession;
 use App\Models\Result;
-use App\Models\AssessmentType;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Term;
@@ -28,24 +27,22 @@ class ResultFactory extends Factory
     public function definition()
     {
         $values = $this->generateValues();
-        $assessmentType = $values['assessmentType'];
-        $maxScore = $assessmentType->max_score;
-        $mark = mt_rand(0, $maxScore);
+        $ca = mt_rand(0, 40);
+        $exam = mt_rand(0, 40);
 
         return [
             'term_id' => $values['term']->id,
-            'assessment_type_id' => $values['assessmentType']->id,
             'academic_session_id' => $values['academicSession']->id,
             'subject_id' => $values['subject']->id,
             'student_id' => $values['student']->id,
-            'mark' => $mark
+            'ca' => $ca,
+            'exam' => $exam
         ];
     }
 
     private function generateValues()
     {
         $term = Term::inRandomOrder()->first();
-        $assessmentType = AssessmentType::inRandomOrder()->first();
         $academicSession = AcademicSession::inRandomOrder()->first();
         $subject = Subject::inRandomOrder()->first();
         $student = Student::inRandomOrder()->first();
@@ -54,11 +51,6 @@ class ResultFactory extends Factory
         if (!$term) {
             Artisan::call('db:seed', ['--class' => 'TermSeeder']);
             $term = Term::inRandomOrder()->first();
-        }
-
-        if (!$assessmentType) {
-            Artisan::call('db:seed', ['--class' => 'AssessmentTypeSeeder']);
-            $assessmentType = AssessmentType::inRandomOrder()->first();
         }
 
         if (!$academicSession) {
@@ -77,7 +69,6 @@ class ResultFactory extends Factory
         }
 
         return [
-            'assessmentType' => $assessmentType, 
             'term' => $term, 
             'academicSession' => $academicSession, 
             'subject' => $subject, 
