@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
 use App\Models\Result;
-use App\Models\AssessmentType;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
@@ -193,8 +192,8 @@ class StudentController extends Controller
         $student =  $student->first();
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
         $results = Result::where('student_id', $student->id)->where('academic_session_id', $academicSession->id)->get();
+        
         // dd($results);
-        $assessmentTypes = AssessmentType::all();
         return view('studentResults', compact('results', 'assessmentTypes'));
     }
 
