@@ -9,16 +9,11 @@ class Result extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['mark', 'term_id', 'subject_id', 'student_id', 'assessment_type_id', 'academic_session_id'];
+    protected $fillable = ['mark', 'term_id', 'subject_id', 'student_id', 'academic_session_id', 'ca', 'exam'];
     
     public function term()
     {
         return $this->belongsTo(Term::class);
-    }
-
-    public function assessmentType()
-    {
-        return $this->belongsTo(AssessmentType::class);
     }
 
     public function academicSession()
