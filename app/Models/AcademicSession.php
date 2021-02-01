@@ -11,7 +11,7 @@ class AcademicSession extends Model
 
     protected $fillable = ['name'];
 
-    public function Results()
+    public function results()
     {
         return $this->hasMany(Result::class);
     }

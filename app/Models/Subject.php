@@ -16,7 +16,7 @@ class Subject extends Model
         return $this->belongsToMany(Classroom::class)->withTimestamps();
     }
 
-    public function Results()
+    public function results()
     {
         return $this->hasMany(Result::class);
     }
