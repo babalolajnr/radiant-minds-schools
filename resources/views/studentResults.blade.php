@@ -46,9 +46,14 @@
                             </div>
                             <div class="card-body">
                                 @foreach($results as $termResult)
-                                <h3>{{ array_search($termResult, $results) }}</h3>
-                                <table id="results" class="table table-bordered table-striped">
+
+
+                                {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
+                                <table
+                                    id="{{ array_search(array_search($termResult, $results), array_keys($results)) }}"
+                                    class="table table-bordered table-striped">
                                     <thead>
+                                        <h3>{{ array_search($termResult, $results) }}</h3>
                                         <tr>
                                             <th>Subject</th>
                                             <th>C.A.<span class="text-red-500 pl-1">40</span></th>
@@ -141,21 +146,17 @@
 
             //datatables
             $(function () {
-                $("#results").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print"]
-                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                // $('#example2').DataTable({
-                //     "paging": true,
-                //     "lengthChange": false,
-                //     "searching": false,
-                //     "ordering": true,
-                //     "info": true,
-                //     "autoWidth": false,
-                //     "responsive": true,
-                // });
+                // looping through all the tables to assign dynamic numeric id to the datatables initialization
+                $('table').each(function () {
+
+                    const tableID = $(this).attr('id')
+                    $("#" + tableID).DataTable({
+                        "responsive": true,
+                        "lengthChange": false,
+                        "autoWidth": false,
+                        "buttons": ["copy", "csv", "excel", "pdf", "print"]
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                })
             });
 
         </script>
