@@ -204,7 +204,7 @@ class StudentController extends Controller
             $results = array_merge($results, $result);
         }
 
-        return view('studentResults', compact('results'));
+        return view('studentSessionalResults', compact('results'));
     }
 
     public function getSubjects($student)

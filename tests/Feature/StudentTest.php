@@ -198,6 +198,6 @@ class StudentTest extends TestCase
         $response = $this->actingAs($user)->post('/results/sessional/student/' . $student, [
             'academicSession' => $academicSession
         ]);
-        $response->assertStatus(200)->assertViewIs('studentResults');
+        $response->assertStatus(200)->assertViewIs('studentSessionalResults');
     }
 }
