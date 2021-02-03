@@ -42,43 +42,54 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Students</h3>
+                                <h3 class="card-title">Results</h3>
                             </div>
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
+                                @foreach($results as $termResult)
+                                <h3>{{ array_search($termResult, $results) }}</h3>
+                                <table id="results" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>Subject</th>
-                                            @foreach ($assessmentTypes as $assessmentType)
-                                                <th>{{$assessmentType->name }}</th>
-                                            @endforeach
+                                            <th>C.A.<span class="text-red-500 pl-1">40</span></th>
+                                            <th>Exam<span class="text-red-500 pl-1">60</span></th>
+                                            <th>Total<span class="text-red-500 pl-1">100</span></th>
+                                            <th>Highest Score</th>
+                                            <th>Lowest Score</th>
+                                            <th>Class Average</th>
+                                            <th>Grade</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach($results as $result)
+                                        @foreach($termResult as $item)
                                         <tr>
-                                            <td>{{ $result->subject->name }}</td>
-                                            @foreach($assessmentTypes as $assessmentType)
-                                                @if($result->assessmentType->name == $assessmentType->name)
-                                                    <td>{{ $result->mark. $result->assessmentType->name }}</td>
-                                                @else
-                                                    <td></td>
-                                                @endif
-                                            @endforeach
-                                            
+                                            <td>{{ $item->subject->name }}</td>
+                                            <td>{{ $item->ca }}</td>
+                                            <td>{{ $item->exam }}</td>
+                                            <td>100</td>
+                                            <td>100</td>
+                                            <td>100</td>
+                                            <td>100</td>
+                                            <td>100</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>Subject</th>
-                                            @foreach ($assessmentTypes as $assessmentType)
-                                            <th>{{ $assessmentType->name }}</th>
-                                            @endforeach
+                                            <th>C.A.<span class="text-red-500 pl-1">40</span></th>
+                                            <th>Exam<span class="text-red-500 pl-1">60</span></th>
+                                            <th>Total<span class="text-red-500 pl-1">100</span></th>
+                                            <th>Highest Score</th>
+                                            <th>Lowest Score</th>
+                                            <th>Class Average</th>
+                                            <th>Grade</th>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <hr class="py-4">
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -130,7 +141,7 @@
 
             //datatables
             $(function () {
-                $("#example1").DataTable({
+                $("#results").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
