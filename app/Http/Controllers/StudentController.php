@@ -7,6 +7,7 @@ use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
+use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -177,7 +178,7 @@ class StudentController extends Controller
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getResults($student, Request $request)
+    public function getSessionalResults($student, Request $request)
     {
         $student = Student::where('admission_no', $student);
 
@@ -191,10 +192,18 @@ class StudentController extends Controller
 
         $student =  $student->first();
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
-        $results = Result::where('student_id', $student->id)->where('academic_session_id', $academicSession->id)->get();
-        
-        // dd($results);
-        return view('studentResults', compact('results', 'assessmentTypes'));
+        $terms = Term::all();
+        $results = [];
+
+        foreach ($terms as $term) {
+            $result = Result::where('student_id', $student->id)
+                ->where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->get();
+            $result = [$term->name => $result];
+            $results = array_merge($results, $result);
+        }
+
+        return view('studentResults', compact('results'));
     }
 
     public function getSubjects($student)
