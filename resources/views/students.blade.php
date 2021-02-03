@@ -144,6 +144,8 @@
                 </div>
         </section>
         <!-- /.content -->
+
+        {{-- edit student modal --}}
         <div class="modal fade" id="editModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -171,6 +173,52 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
+        {{-- /edit student modal --}}
+
+        {{-- sessional result modal --}}
+        <div class="modal fade" id="sesionalResultModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Choose Session</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="getResult" method="POST" action="">
+                            @csrf
+                            <div class="form-group">
+                                <label>Academic Session</label>
+                                <select class="form-control select2" name="academicSession" style="width: 100%;">
+                                    @foreach ($academicSessions as $academicSession)
+                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
+                                        {{ $academicSession->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('academicSession')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {{-- /sessional result modal --}}
+
+        {{-- student details modal --}}
         <div class="modal fade" id="viewModal">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -290,29 +338,15 @@
                                                 <!-- /.tab-pane -->
 
                                                 <div class="tab-pane" id="results">
-                                                    <form id="getResult" method="POST" action="">
-                                                        @csrf
-                                                        <div class="form-group">
-                                                            <label>Academic Session</label>
-                                                            <select class="form-control select2" name="academicSession"
-                                                                style="width: 100%;">
-                                                                @foreach ($academicSessions as $academicSession)
-                                                                <option @if (old('academicSession')==$academicSession )
-                                                                    SELECTED @endif>
-                                                                    {{ $academicSession->name }}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('academicSession')
-                                                            <div class="text-danger">{{ $message }}</div>
-                                                            @enderror
+                                                    <h3>Result Type</h3>
+                                                    <div>
+                                                        <div class="btn-group">
+                                                            <button type="button" id="showSessionalResultButton"
+                                                                class="btn btn-info" data-student onclick="showSessionalResultModal()">Sessional</button>
+                                                            <button type="button" class="btn btn-warning">Term</button>
+                                                        </div>
+                                                    </div>
 
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Submit</button>
-                                                        </div>
-                                                    </form>
                                                 </div>
                                                 <!-- /.tab-pane -->
                                             </div>
@@ -360,6 +394,8 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+
+            // Display edit modal
             function showEditModal(data) {
                 let editStudentUrl = '/edit/student/' + data.admission_no
                 let editGuardianUrl = '/edit/guardian/' + data.guardian.phone
@@ -368,9 +404,25 @@
                 $('#editModal').modal('show')
             }
 
+            // display sessional result modal
+            function showSessionalResultModal() {
+
+                $('#viewModal').modal('hide')
+
+                // get the student data attribute
+                const student  = $('#showSessionalResultButton').data('student')
+                
+                // fill results form
+                const ResultUrl = '/results/sessional/student/' + student.admission_no
+                $('#sesionalResultModal #getResult').attr("action", ResultUrl)
+
+                $('#sesionalResultModal').modal('show')
+            }
+
             function showViewModal(data) {
-                let fullname = data.first_name + ' ' + data.last_name
-                let gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
+                const fullname = data.first_name + ' ' + data.last_name
+                const gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
+                
                 //fill student info in the modal
                 $('#viewModal .profile-username').html(fullname)
                 $('#viewModal #admissionNo').html(data.admission_no)
@@ -389,13 +441,12 @@
                 $('#viewModal #gPhone').html(data.guardian.phone)
                 $('#viewModal #gAddress').html(data.guardian.address)
 
-                // fill results form
-                let ResultUrl = '/results/student/' + data.admission_no
-                $('#viewModal #getResult').attr("action", ResultUrl)
-
+                //results info
+                //set the data-attribute of the button to contain the student info
+                $('#showSessionalResultButton').data('student', data)
+                
                 //show modal
                 $('#viewModal').modal('show')
-                console.log(data)
             }
 
             //launch toastr 
