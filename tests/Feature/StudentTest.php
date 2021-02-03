@@ -157,7 +157,7 @@ class StudentTest extends TestCase
         $student = Student::factory()->create()->id;
         $classroom = $this->generateTestClassroom();
         $response = $this->actingAs($user)->patch('/update/student/' . $student, $this->studentInfo($classroom));
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_student_can_be_deleted()
@@ -189,13 +189,15 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_can_get_student_assessment_results()
+    public function test_user_can_get_student_sessional_results()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $Result = Result::factory()->create();
-        $student = $Result->student->admission_no;
-        $response = $this->actingAs($user)->get('/results/student/' . $student);
-        $response->assertStatus(200);
+        $result = Result::factory()->create();
+        $student = $result->student->admission_no;
+        $academicSession = $result->academicSession->name;
+        $response = $this->actingAs($user)->post('/results/sessional/student/' . $student, [
+            'academicSession' => $academicSession
+        ]);
+        $response->assertStatus(200)->assertViewIs('studentResults');
     }
 }
