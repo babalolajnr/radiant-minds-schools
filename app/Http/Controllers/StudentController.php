@@ -195,6 +195,7 @@ class StudentController extends Controller
         $terms = Term::all();
         $results = [];
 
+        //loop through all the terms and create an associative array based on terms and results
         foreach ($terms as $term) {
             $result = Result::where('student_id', $student->id)
                 ->where('academic_session_id', $academicSession->id)
