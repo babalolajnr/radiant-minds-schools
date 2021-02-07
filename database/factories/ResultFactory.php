@@ -26,10 +26,19 @@ class ResultFactory extends Factory
      */
     public function definition()
     {
-        $values = $this->generateValues();
+
+        do {
+            $values = $this->generateValues();
+
+            $record = Result::where('subject_id', $values['subject']->id)
+                ->where('student_id', $values['student']->id)
+                ->where('term_id', $values['term']->id)
+                ->where('academic_session_id', $values['academicSession']->id);
+                
+        } while ($record->exists());
+
         $ca = mt_rand(0, 40);
         $exam = mt_rand(0, 40);
-
         return [
             'term_id' => $values['term']->id,
             'academic_session_id' => $values['academicSession']->id,
@@ -70,11 +79,10 @@ class ResultFactory extends Factory
         }
 
         return [
-            'term' => $term, 
-            'academicSession' => $academicSession, 
-            'subject' => $subject, 
+            'term' => $term,
+            'academicSession' => $academicSession,
+            'subject' => $subject,
             'student' => $student
         ];
-
     }
 }
