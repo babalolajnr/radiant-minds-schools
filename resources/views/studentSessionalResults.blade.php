@@ -72,11 +72,24 @@
                                             <td>{{ $item->subject->name }}</td>
                                             <td>{{ $item->ca }}</td>
                                             <td>{{ $item->exam }}</td>
-                                            <td>{{ $item->ca + $item->exam}}</td>
+                                            <td>{{ $item->total }}</td>
                                             <td>{{ $maxScores[$item->subject->name.'-'.array_search($termResult, $results)] }}
                                             <td>{{ $minScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
                                             <td>{{ $averageScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
-                                            <td>100</td>
+                                            
+                                            @if($item->total <= 39)
+                                                <td class="text-red-700">F</td>
+                                            @elseif($item->total >= 40 && $item->total <= 49)
+                                                <td class="text-yellow-500">D</td>
+                                            @elseif($item->total >= 50 && $item->total <= 59)
+                                                <td class="text-green-300">C</td>
+                                            @elseif($item->total >= 60 && $item->total <= 69)
+                                                <td class="text-green-600">B</td>
+                                            @elseif($item->total >= 70 && $item->total <= 100)
+                                                <td class="text-green-900">A</td>
+                                            @else
+                                                <td></td>
+                                            @endif
                                         </tr>
                                         @endforeach
                                     </tbody>
