@@ -107,6 +107,7 @@ CREATE TABLE `results` (
   `student_id` bigint(20) unsigned NOT NULL,
   `ca` double DEFAULT NULL,
   `exam` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `term_id` bigint(20) unsigned NOT NULL,
