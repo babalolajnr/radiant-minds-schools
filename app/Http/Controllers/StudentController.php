@@ -194,17 +194,35 @@ class StudentController extends Controller
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
         $terms = Term::all();
         $results = [];
+        $maxScores = [];
+        // $minScores = [];
 
         //loop through all the terms and create an associative array based on terms and results
         foreach ($terms as $term) {
             $result = Result::where('student_id', $student->id)
                 ->where('academic_session_id', $academicSession->id)
                 ->where('term_id', $term->id)->get();
+
+            //Get each subject highest and lowest scores    
+            foreach ($result as $item) {
+
+                $maxScore = Result::where('academic_session_id', $academicSession->id)
+                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->max('total');
+
+                $maxScore = [$item->subject->name . '-' . $term->name => $maxScore];
+                $maxScores = array_merge($maxScores, $maxScore);
+
+                // $minScores = Result::where('academic_session_id', $academicSession->id)
+                //     ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->min('total');
+                // $minScore =     
+            }
+
             $result = [$term->name => $result];
             $results = array_merge($results, $result);
         }
 
-        return view('studentSessionalResults', compact('results'));
+
+        return view('studentSessionalResults', compact('results', 'maxScores'));
     }
 
     public function getSubjects($student)
