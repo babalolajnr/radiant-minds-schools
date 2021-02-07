@@ -19,6 +19,7 @@ class CreateResultsTable extends Migration
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
             $table->double('ca')->nullable();
             $table->double('exam')->nullable();
+            $table->double('total')->nullable();
             $table->timestamps();
         });
     }
