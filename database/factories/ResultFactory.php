@@ -36,7 +36,8 @@ class ResultFactory extends Factory
             'subject_id' => $values['subject']->id,
             'student_id' => $values['student']->id,
             'ca' => $ca,
-            'exam' => $exam
+            'exam' => $exam,
+            'total' => $exam + $ca
         ];
     }
 
