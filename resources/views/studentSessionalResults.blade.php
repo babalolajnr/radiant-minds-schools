@@ -72,8 +72,8 @@
                                             <td>{{ $item->subject->name }}</td>
                                             <td>{{ $item->ca }}</td>
                                             <td>{{ $item->exam }}</td>
-                                            <td>100</td>
-                                            <td>100</td>
+                                            <td>{{ $item->ca + $item->exam}}</td>
+                                            <td>{{ $maxScores[$item->subject->name.'-'.array_search($termResult, $results)] }}
                                             <td>100</td>
                                             <td>100</td>
                                             <td>100</td>
