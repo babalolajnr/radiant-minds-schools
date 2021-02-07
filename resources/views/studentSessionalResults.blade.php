@@ -45,15 +45,14 @@
                                 <h3 class="card-title">Results</h3>
                             </div>
                             <div class="card-body">
-                                @foreach($results as $termResult)
-
-
+                                @foreach($results as $key => $termResult)
+                                
                                 {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
                                 <table
-                                    id="{{ array_search(array_search($termResult, $results), array_keys($results)) }}"
+                                    id="{{ $key }}"
                                     class="table table-bordered table-striped">
                                     <thead>
-                                        <h3>{{ array_search($termResult, $results) }}</h3>
+                                        <h3>{{ $key }}</h3>
                                         <tr>
                                             <th>Subject</th>
                                             <th>C.A.<span class="text-red-500 pl-1">40</span></th>
@@ -67,7 +66,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach($termResult as $item)
+                                        @foreach($termResult as $itemKey => $item)
                                         <tr>
                                             <td>{{ $item->subject->name }}</td>
                                             <td>{{ $item->ca }}</td>
