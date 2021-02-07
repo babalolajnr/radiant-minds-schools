@@ -196,6 +196,7 @@ class StudentController extends Controller
         $results = [];
         $maxScores = [];
         $minScores = [];
+        $averageScores = [];
 
         //loop through all the terms and create an associative array based on terms and results
         foreach ($terms as $term) {
@@ -216,17 +217,23 @@ class StudentController extends Controller
                 //Lowest scores
                 $minScore = Result::where('academic_session_id', $academicSession->id)
                     ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->min('total');
+
                 $minScore = [$item->subject->name . '-' . $term->name => $minScore];
                 $minScores = array_merge($minScores, $minScore);
 
+                //Average Scores
+                $averageScore = Result::where('academic_session_id', $academicSession->id)
+                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->pluck('total');
+                $averageScore = collect($averageScore)->avg();
+                $averageScore = [$item->subject->name . '-' . $term->name => $averageScore];
+                $averageScores = array_merge($averageScores, $averageScore);
             }
 
             $result = [$term->name => $result];
             $results = array_merge($results, $result);
         }
 
-
-        return view('studentSessionalResults', compact('results', 'maxScores', 'minScores'));
+        return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores'));
     }
 
     public function getSubjects($student)
