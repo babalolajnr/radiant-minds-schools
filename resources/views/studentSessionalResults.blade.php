@@ -75,7 +75,7 @@
                                             <td>{{ $item->ca + $item->exam}}</td>
                                             <td>{{ $maxScores[$item->subject->name.'-'.array_search($termResult, $results)] }}
                                             <td>{{ $minScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
-                                            <td>100</td>
+                                            <td>{{ $averageScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
                                             <td>100</td>
                                         </tr>
                                         @endforeach
