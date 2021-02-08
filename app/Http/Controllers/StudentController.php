@@ -188,7 +188,7 @@ class StudentController extends Controller
         }
 
         $this->validate($request, [
-            'academicSession' => ['required']
+            'academicSession' => ['required', 'exists:academic_sessions,name'],
         ]);
 
         $student =  $student->first();
