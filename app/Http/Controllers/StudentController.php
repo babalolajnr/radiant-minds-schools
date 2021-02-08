@@ -38,7 +38,8 @@ class StudentController extends Controller
     {
         $students = Student::all()->sortByDesc('created_at');
         $academicSessions = AcademicSession::all()->sortByDesc('created_at');
-        return view('students', compact('students', 'academicSessions'));
+        $terms = Term::all()->sortByDesc('created_at');
+        return view('students', compact('students', 'academicSessions', 'terms'));
     }
 
     public function create()
