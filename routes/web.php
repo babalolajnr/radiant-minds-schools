@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
     Route::post('/results/sessional/student/{student}', [StudentController::class, 'getSessionalResults']);
+    Route::post('/results/term/student/{student}', [StudentController::class, 'getTermResults']);
     Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
