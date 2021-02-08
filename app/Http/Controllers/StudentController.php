@@ -209,23 +209,24 @@ class StudentController extends Controller
             //Get each subject highest and lowest scores    
             foreach ($result as $item) {
 
+                $scoresQuery = Result::where('academic_session_id', $academicSession->id)
+                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id);
+
                 //highest scores
-                $maxScore = Result::where('academic_session_id', $academicSession->id)
-                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->max('total');
+                $maxScore = $scoresQuery->max('total');
 
                 $maxScore = [$item->subject->name . '-' . $term->name => $maxScore];
                 $maxScores = array_merge($maxScores, $maxScore);
 
                 //Lowest scores
-                $minScore = Result::where('academic_session_id', $academicSession->id)
-                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->min('total');
+                $minScore = $scoresQuery->min('total');
 
                 $minScore = [$item->subject->name . '-' . $term->name => $minScore];
                 $minScores = array_merge($minScores, $minScore);
 
                 //Average Scores
-                $averageScore = Result::where('academic_session_id', $academicSession->id)
-                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id)->pluck('total');
+                $averageScore = $scoresQuery->pluck('total');
+
                 $averageScore = collect($averageScore)->avg();
                 $averageScore = [$item->subject->name . '-' . $term->name => $averageScore];
                 $averageScores = array_merge($averageScores, $averageScore);
@@ -267,23 +268,23 @@ class StudentController extends Controller
         //Get each subject highest and lowest scores    
         foreach ($results as $result) {
 
+            $scoresQuery = Result::where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
+                
             //highest scores
-            $maxScore = Result::where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->max('total');
+            $maxScore = $scoresQuery->max('total');
 
             $maxScore = [$result->subject->name => $maxScore];
             $maxScores = array_merge($maxScores, $maxScore);
 
             //Lowest scores
-            $minScore = Result::where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->min('total');
+            $minScore = $scoresQuery->min('total');
 
             $minScore = [$result->subject->name => $minScore];
             $minScores = array_merge($minScores, $minScore);
 
             //Average Scores
-            $averageScore = Result::where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->pluck('total');
+            $averageScore = $scoresQuery->pluck('total');
             $averageScore = collect($averageScore)->avg();
             $averageScore = [$result->subject->name => $averageScore];
             $averageScores = array_merge($averageScores, $averageScore);
