@@ -193,6 +193,7 @@ class StudentController extends Controller
 
         $student =  $student->first();
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
+        /**Validate if this exists */
         $terms = Term::all();
         $results = [];
         $maxScores = [];
@@ -235,6 +236,59 @@ class StudentController extends Controller
         }
 
         return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores'));
+    }
+
+    public function getTermResults(Request $request, $student)
+    {
+
+        $student = Student::where('admission_no', $student);
+
+        if (!$student->exists()) {
+            abort(404);
+        }
+
+        $this->validate($request, [
+            'academicSession' => ['required', 'exists:academic_sessions,name'],
+            'term' => ['required', 'exists:terms,name'],
+        ]);
+
+        $academicSession = AcademicSession::where('name', $request->academicSession)->first();
+        $term = Term::where('name', $request->term)->first();
+        $student = $student->first();
+
+        $results = Result::where('student_id', $student->id)
+            ->where('academic_session_id', $academicSession->id)
+            ->where('term_id', $term->id)->get();
+
+        $maxScores = [];
+        $minScores = [];
+        $averageScores = [];
+
+        //Get each subject highest and lowest scores    
+        foreach ($results as $result) {
+
+            //highest scores
+            $maxScore = Result::where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->max('total');
+
+            $maxScore = [$result->subject->name => $maxScore];
+            $maxScores = array_merge($maxScores, $maxScore);
+
+            //Lowest scores
+            $minScore = Result::where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->min('total');
+
+            $minScore = [$result->subject->name => $minScore];
+            $minScores = array_merge($minScores, $minScore);
+
+            //Average Scores
+            $averageScore = Result::where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $result->subject->id)->pluck('total');
+            $averageScore = collect($averageScore)->avg();
+            $averageScore = [$result->subject->name => $averageScore];
+            $averageScores = array_merge($averageScores, $averageScore);
+        }
+        return view('studentTermResults', compact('results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
     }
 
     public function getSubjects($student)
