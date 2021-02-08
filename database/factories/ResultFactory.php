@@ -26,16 +26,20 @@ class ResultFactory extends Factory
      */
     public function definition()
     {
+        $values = $this->generateValues();
+        $record = Result::where('subject_id', $values['subject']->id)
+            ->where('student_id', $values['student']->id)
+            ->where('term_id', $values['term']->id)
+            ->where('academic_session_id', $values['academicSession']->id);
 
-        do {
-            $values = $this->generateValues();
-
-            $record = Result::where('subject_id', $values['subject']->id)
-                ->where('student_id', $values['student']->id)
-                ->where('term_id', $values['term']->id)
-                ->where('academic_session_id', $values['academicSession']->id);
-                
-        } while ($record->exists());
+        if ($record->exists()) {
+            do {
+                $values = $this->generateValues();
+                $record = $record;
+            } while ($record->exists());
+        }else {
+            $values = $values;
+        }
 
         $ca = mt_rand(0, 40);
         $exam = mt_rand(0, 40);
