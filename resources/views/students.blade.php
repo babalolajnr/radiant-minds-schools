@@ -176,7 +176,7 @@
         {{-- /edit student modal --}}
 
         {{-- sessional result modal --}}
-        <div class="modal fade" id="sesionalResultModal">
+        <div class="modal fade" id="sessionalResultModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -217,6 +217,63 @@
             <!-- /.modal-dialog -->
         </div>
         {{-- /sessional result modal --}}
+
+        {{-- Term result modal --}}
+        <div class="modal fade" id="termResultModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Choose Term</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="getResult" method="POST" action="">
+                            @csrf
+                            <div class="form-group">
+                                <label>Academic Session</label>
+                                <select class="form-control select2" name="academicSession" style="width: 100%;">
+                                    @foreach ($academicSessions as $academicSession)
+                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
+                                        {{ $academicSession->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('academicSession')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
+                            </div>
+                            <div class="form-group">
+                                <label>Term</label>
+                                <select class="form-control select2" name="term" style="width: 100%;">
+                                    @foreach ($terms as $term)
+                                    <option @if (old('term')==$term ) SELECTED @endif>
+                                        {{ $term->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('term')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        {{-- /.Term result modal --}}
 
         {{-- student details modal --}}
         <div class="modal fade" id="viewModal">
@@ -343,7 +400,7 @@
                                                         <div class="btn-group">
                                                             <button type="button" id="showSessionalResultButton"
                                                                 class="btn btn-info" data-student onclick="showSessionalResultModal()">Sessional</button>
-                                                            <button type="button" class="btn btn-warning">Term</button>
+                                                            <button type="button" class="btn btn-warning" onclick="showTermResultModal()">Term</button>
                                                         </div>
                                                     </div>
 
@@ -414,9 +471,24 @@
                 
                 // fill results form
                 const ResultUrl = '/results/sessional/student/' + student.admission_no
-                $('#sesionalResultModal #getResult').attr("action", ResultUrl)
+                $('#sessionalResultModal #getResult').attr("action", ResultUrl)
 
-                $('#sesionalResultModal').modal('show')
+                $('#sessionalResultModal').modal('show')
+            }
+
+            //display term result modal
+            function showTermResultModal() {
+
+                $('#viewModal').modal('hide')
+
+                // get the student data attribute
+                const student  = $('#showSessionalResultButton').data('student')
+                
+                // fill results form
+                const ResultUrl = '/results/term/student/' + student.admission_no
+                $('#termResultModal #getResult').attr("action", ResultUrl)
+
+                $('#termResultModal').modal('show')
             }
 
             function showViewModal(data) {
