@@ -45,15 +45,17 @@ class ResultController extends Controller
             return back()->with('error', 'Record Exists');
         }
 
+        $exam = $validatedData['exam'] ?? 0;
+        $ca = $validatedData['ca'] ?? 0;
 
         Result::create([
-            'ca' => $validatedData['ca'],
-            'exam' => $validatedData['exam'],
+            'ca' => $ca,
+            'exam' => $exam,
             'term_id' => $term->id,
             'academic_session_id' => $academicSession->id,
             'subject_id' => $subject->id,
             'student_id' => $student->id,
-            'total' => $validatedData['ca'] + $validatedData['exam']
+            'total' => $exam + $ca
         ]);
 
         return response(200);
