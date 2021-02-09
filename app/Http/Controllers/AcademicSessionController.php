@@ -20,11 +20,11 @@ class AcademicSessionController extends Controller
             'name.unique' => 'Record exists'
         ];
 
-        $this->validate($request, [
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'unique:academic_sessions']
         ], $messages);
 
-        AcademicSession::create($request->all());
+        AcademicSession::create($validatedData);
         return back()->with('success', 'Academic Session Created!');
     }
 
@@ -46,7 +46,7 @@ class AcademicSessionController extends Controller
         $academicSession->update($this->validate($request, [
             'name' => ['required', 'string', 'unique:academic_sessions']
         ], $messages));
-        
+
         return redirect('/academicSessions')->with('success', 'Academic Session Updated!');
     }
 
@@ -56,10 +56,10 @@ class AcademicSessionController extends Controller
         $academicSession = AcademicSession::findOrFail($id);
         $assessments = $academicSession->assessments()->first();
 
-        if(!is_null($assessments)){
+        if (!is_null($assessments)) {
             return back()->with('error', 'Academic Session with assessments cannot be deleted!');
         }
-        
+
         $academicSession->delete();
         return back()->with('success', 'Academic Session Deleted!');
     }
