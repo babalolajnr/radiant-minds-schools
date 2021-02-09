@@ -321,5 +321,11 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $student->forceDelete();
         return response(200);
+
+        /**
+         * TODO 
+         * check if student has a guardian before deleting 
+         * then delete the guardian if it has only one child
+         */
     }
 }
