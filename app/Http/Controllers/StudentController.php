@@ -193,7 +193,6 @@ class StudentController extends Controller
 
         $student =  $student->first();
         $academicSession = AcademicSession::where('name', $request->academicSession)->first();
-        /**Validate if this exists */
         $terms = Term::all();
         $results = [];
         $maxScores = [];
@@ -270,7 +269,7 @@ class StudentController extends Controller
 
             $scoresQuery = Result::where('academic_session_id', $academicSession->id)
                 ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
-                
+
             //highest scores
             $maxScore = $scoresQuery->max('total');
 
