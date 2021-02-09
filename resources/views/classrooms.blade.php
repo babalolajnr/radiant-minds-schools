@@ -40,7 +40,6 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
@@ -86,6 +85,12 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
+                                                    <a href="view/classroom/{{ $classroom->id }}">
+                                                        <button type="button" class="btn btn-default btn-flat"
+                                                            title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </a>
                                                     <a href="edit/classroom/{{ $classroom->id }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Edit">
@@ -94,16 +99,16 @@
                                                     </a>
                                                     {{-- render if user is authorized to delete --}}
                                                     @can('delete', $classroom)
-                                                    <button type="button" class="btn btn-danger btn-flat"
-                                                        title="Delete" onclick="deleteConfirmationModal({{ $classroom }})">
+                                                    <button type="button" class="btn btn-danger btn-flat" title="Delete"
+                                                        onclick="deleteConfirmationModal({{ $classroom }})">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     @endcan
 
                                                     {{-- render if user is not authorized to delete --}}
                                                     @cannot('delete', $classroom)
-                                                    <button type="submit" class="btn btn-danger btn-flat"
-                                                        title="Delete" disabled>
+                                                    <button type="submit" class="btn btn-danger btn-flat" title="Delete"
+                                                        disabled>
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     @endcannot
@@ -189,7 +194,7 @@
             $(function () {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
-                
+
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
                     $(document).Toasts('create', {
@@ -207,7 +212,7 @@
                         body: JSON.parse(Error.dataset.errorMessage)
                     })
 
-                
+
 
             });
             $(function () {
