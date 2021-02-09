@@ -74,7 +74,7 @@
                                             <td>{{ $item->total }}</td>
                                             <td>{{ $maxScores[$item->subject->name.'-'.array_search($termResult, $results)] }}
                                             <td>{{ $minScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
-                                            <td>{{ $averageScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
+                                            <td>{{ round($averageScores[$item->subject->name.'-'.array_search($termResult, $results)], 2) }}</td>
                                             
                                             @if($item->total <= 39)
                                                 <td class="text-red-700">F</td>
