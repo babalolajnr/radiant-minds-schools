@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -44,6 +46,7 @@ class ClassroomController extends Controller
         $messages = [
             'name.unique' => 'Classroom Exists'
         ];
+
         $this->validate($request, [
             'name' => ['required', 'string', 'unique:classrooms']
         ], $messages);
@@ -51,6 +54,15 @@ class ClassroomController extends Controller
         $classroom->update($request->all());
         
         return redirect('/classrooms')->with('success', 'Classroom Updated!');
+    }
+
+    public function show($id){
+        $classroom = Classroom::findOrFail($id);
+        $students = $classroom->students->all();
+        $academicSessions = AcademicSession::all();
+        $terms = Term::all();
+
+        return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms'));
     }
 
     public function destroy($id, Classroom $classroom)
