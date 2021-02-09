@@ -115,6 +115,14 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_single_student_that_does_not_exist_cannot_be_viewed()
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create()->admission_no;
+        $response = $this->actingAs($user)->get('/view/student/igkjhr9');
+        $response->assertStatus(404);
+    }
+
     public function test_single_student_can_be_edited()
     {
         $user = User::factory()->create();
