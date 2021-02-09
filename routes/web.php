@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->group( function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     //Teacher routes
     Route::get('/create/teacher', [TeacherController::class, 'create']);
@@ -68,21 +68,21 @@ Route::middleware(['auth', 'verified'])->group( function () {
     Route::post('/update/classroom-subjects/{id}', [ClassroomController::class, 'updateSubjects']);
     Route::patch('/update/classroom/{id}', [ClassroomController::class, 'update']);
     Route::delete('/delete/classroom/{id}', [ClassroomController::class, 'destroy']);
-    
+
     //Term routes
     Route::get('/terms', [TermController::class, 'index']);
     Route::get('/edit/term/{id}', [TermController::class, 'edit']);
     Route::post('/store/term', [TermController::class, 'store']);
     Route::patch('/update/term/{id}', [TermController::class, 'update']);
     Route::delete('/delete/term/{id}', [TermController::class, 'destroy']);
-    
+
     // Subject routes
     Route::get('/subjects', [SubjectController::class, 'index']);
     Route::get('/edit/subject/{id}', [SubjectController::class, 'edit']);
     Route::post('/store/subject', [SubjectController::class, 'store']);
     Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
-    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']); 
-    
+    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']);
+
     //AcademicSession routes
     Route::get('/academicSessions', [AcademicSessionController::class, 'index']);
     Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
@@ -93,6 +93,9 @@ Route::middleware(['auth', 'verified'])->group( function () {
     //Guardian Routes
     Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);
     Route::patch('/update/guardian/{phone}', [GuardianController::class, 'update']);
+
+    //Result ROutes
+    Route::post('/store/result/{student}/{subject}', [ResultController::class, 'store']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
