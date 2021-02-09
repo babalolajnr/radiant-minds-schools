@@ -9,8 +9,8 @@ class Result extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['term_id', 'subject_id', 'student_id', 'academic_session_id', 'ca', 'exam'];
-    
+    protected $fillable = ['total', 'term_id', 'subject_id', 'student_id', 'academic_session_id', 'ca', 'exam'];
+
     public function term()
     {
         return $this->belongsTo(Term::class);
