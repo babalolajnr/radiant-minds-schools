@@ -12,6 +12,20 @@ use Illuminate\Validation\ValidationException;
 
 class ClassroomController extends Controller
 {
+    private function classroomValidation($request){
+
+        $messages = [
+            'name.unique' => 'Classroom Exists'
+        ];
+
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'unique:classrooms']
+        ], $messages);
+
+        return $validatedData;
+
+    }
+
     public function index()
     {
         $classrooms = Classroom::all();
@@ -20,43 +34,25 @@ class ClassroomController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'name.unique' => 'Classroom Exists'
-        ];
-
-        $this->validate($request, [
-            'name' => ['required', 'string', 'unique:classrooms']
-        ], $messages);
-
-        Classroom::create($request->all());
+        Classroom::create($this->classroomValidation($request));
         return back()->with('success', 'Classroom Created!');
     }
 
     public function edit($id)
     {
         $classroom = Classroom::findOrFail($id);
-
         return view('editClassroom', compact('classroom'));
     }
 
     public function update($id, Request $request)
     {
         $classroom = Classroom::findOrFail($id);
-
-        $messages = [
-            'name.unique' => 'Classroom Exists'
-        ];
-
-        $this->validate($request, [
-            'name' => ['required', 'string', 'unique:classrooms']
-        ], $messages);
-
-        $classroom->update($request->all());
-        
+        $classroom->update($this->classroomValidation($request));
         return redirect('/classrooms')->with('success', 'Classroom Updated!');
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $classroom = Classroom::findOrFail($id);
         $students = $classroom->students->all();
         $academicSessions = AcademicSession::all();
@@ -73,12 +69,12 @@ class ClassroomController extends Controller
         $classroomSubject = $classroom->subjects()->first();
 
         //test for constraints
-        if($student->exists()){
+        if ($student->exists()) {
             return back()->with('error', 'You cannot delete a classroom that has students!');
-        }else if(!is_null($classroomSubject)){
+        } else if (!is_null($classroomSubject)) {
             return back()->with('error', 'You cannot delete a classroom that has subjects assigned');
         }
-        
+
         $classroom->delete();
         return back()->with('success', 'Classroom Deleted!');
     }
@@ -88,6 +84,8 @@ class ClassroomController extends Controller
         $classroom = Classroom::findOrFail($id);
 
         $subjects = $classroom->subjects()->all();
+
+        return response(200);
     }
 
     public function updateSubjects($id, Request $request)
@@ -100,11 +98,11 @@ class ClassroomController extends Controller
 
         $subjects = $request->subjects;
 
-        foreach ($subjects as $subject){
-            
+        foreach ($subjects as $subject) {
+
             $checkUniqueness = $classroom->subjects()->where('name', $subject)->first();
-            
-            if(!is_null($checkUniqueness)){
+
+            if (!is_null($checkUniqueness)) {
                 throw ValidationException::withMessages(['subjects' => $subject . ' is already registered']);
             }
 
@@ -112,5 +110,7 @@ class ClassroomController extends Controller
 
             $classroom->subjects()->attach($subjectID);
         }
+
+        return response(200);
     }
 }
