@@ -105,11 +105,13 @@ class StudentController extends Controller
     public function show($student)
     {
         $student = Student::where('admission_no', $student);
-        if ($student->exists()) {
-            return response(200);
-        } else {
-            abort(404);
-        }
+        // if ($student->exists()) {
+        //     return response(200);
+        // } else {
+        //     abort(404);
+        // }
+
+       return $student->exists() ? response(200) : abort(404);
     }
 
     public function suspend($id)
