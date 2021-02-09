@@ -63,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group( function () {
     //Classroom ROutes
     Route::get('/classrooms', [ClassroomController::class, 'index']);
     Route::get('/edit/classroom/{id}', [ClassroomController::class, 'edit']);
+    Route::get('/view/classroom/{id}', [ClassroomController::class, 'show']);
     Route::post('/store/classroom', [ClassroomController::class, 'store']);
     Route::post('/update/classroom-subjects/{id}', [ClassroomController::class, 'updateSubjects']);
     Route::patch('/update/classroom/{id}', [ClassroomController::class, 'update']);
