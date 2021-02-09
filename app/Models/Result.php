@@ -9,7 +9,7 @@ class Result extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['mark', 'term_id', 'subject_id', 'student_id', 'academic_session_id', 'ca', 'exam'];
+    protected $fillable = ['term_id', 'subject_id', 'student_id', 'academic_session_id', 'ca', 'exam'];
     
     public function term()
     {
