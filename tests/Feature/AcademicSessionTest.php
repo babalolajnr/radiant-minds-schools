@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\AcademicSession;
+use App\Models\Result;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -17,7 +18,7 @@ class AcademicSessionTest extends TestCase
     {
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/academicSessions');
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertViewIs('academicSession');
     }
 
     public function test_academic_session_can_be_stored()
@@ -36,7 +37,7 @@ class AcademicSessionTest extends TestCase
         $user = User::factory()->create();
         $academicSession = AcademicSession::factory()->create()->id;
         $response = $this->actingAs($user)->get('/edit/academicSessions/' . $academicSession);
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertViewIs('editAcademicSession');
     }
 
     public function test_academic_session_update_method()
@@ -55,7 +56,7 @@ class AcademicSessionTest extends TestCase
         $user = User::factory()->create(['user_type' => 'master']);
         $academicSession = AcademicSession::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_admin_cannot_delete_academic_session()
@@ -64,5 +65,14 @@ class AcademicSessionTest extends TestCase
         $academicSession = AcademicSession::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
         $response->assertStatus(403);
+    }
+
+    public function test_master_cannot_delete_academic_session_with_relations()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $academicSession = AcademicSession::factory()->create()->id;
+        Result::factory()->create(['academic_session_id' => $academicSession]);
+        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
+        $response->assertStatus(302)->assertSessionHas('error');
     }
 }
