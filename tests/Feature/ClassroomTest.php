@@ -20,7 +20,7 @@ class ClassroomTest extends TestCase
     {
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/classrooms');
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertViewIs('classrooms');
     }
 
     public function test_classroom_can_be_stored()
