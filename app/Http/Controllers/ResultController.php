@@ -14,8 +14,8 @@ class ResultController extends Controller
     /**
      * there should ba a page that has all the courses the student's
      * class has and a button to fill in the subject, term, session
-     * ca and exam  
-     * 
+     * ca and exam
+     *
      */
     public function store(Request $request, $studentID, $subjectID)
     {
