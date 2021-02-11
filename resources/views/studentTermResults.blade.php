@@ -70,7 +70,7 @@
                                             <td>{{ $maxScores[$result->subject->name] }}
                                             <td>{{ $minScores[$result->subject->name] }}
                                             </td>
-                                            <td>{{ $averageScores[$result->subject->name] }}
+                                            <td>{{ round($averageScores[$result->subject->name], 2) }}
                                             </td>
                                             @if($result->total <= 39) <td class="text-red-700">F</td>
                                                 @elseif($result->total >= 40 && $result->total <= 49) <td
