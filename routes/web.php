@@ -95,7 +95,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/update/guardian/{phone}', [GuardianController::class, 'update']);
 
     //Result ROutes
-    Route::post('/store/result/{student}/{subject}', [ResultController::class, 'store']);
+    Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::get('/create/result/{student}', [ResultController::class, 'create']);
 });
 
