@@ -9,6 +9,10 @@
             href="{{ asset('TAssets/plugins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/select2/css/select2.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -39,7 +43,7 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-lg-6">
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
@@ -47,17 +51,74 @@
                             </div>
                             <form method="POST" action="/store/classroom">
                                 @csrf
-                                {{-- <div class="card-body">
+                                <div class="card-body">
                                     <div class="form-group">
-                                        <label for="Subject"></label>
-                                        <input type="text" name="subject" value="{{ old('subject') }}"
-                                            class="form-control @error('subject') is-invalid @enderror" id="classroom"
-                                            placeholder="Enter Classroom">
+                                        <label for="Subject">Subject</label>
+                                        <select class="form-control select2" name="subject" style="width: 100%;">
+                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
+                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
+                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
+                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
+                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
+                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
+                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
+                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                        </select>
                                         @error('subject')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div> --}}
+                                    <div class="form-group">
+                                        <label for="Academic Session">Academic Session</label>
+                                        <select class="form-control select2" name="academicSession" style="width: 100%;">
+                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
+                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
+                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
+                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
+                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
+                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
+                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
+                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                        </select>
+                                        @error('academicSession')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Term">Term</label>
+                                        <select class="form-control select2" name="term" style="width: 100%;">
+                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
+                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
+                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
+                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
+                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
+                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
+                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
+                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                        </select>
+                                        @error('term')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="C.A">C.A</label>
+                                        <input type="number" name="ca"
+                                            class="form-control @error('ca') is-invalid @enderror"
+                                            value="{{ old('ca') }}">
+                                        @error('ca')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Exam">Exam</label>
+                                        <input type="number" name="exam"
+                                            class="form-control @error('exam') is-invalid @enderror"
+                                            value="{{ old('exam') }}">
+                                        @error('exam')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -94,6 +155,8 @@
         </script>
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
         </script>
+        <!-- Select2 -->
+        <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script>
             $(function () {
@@ -127,7 +190,13 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            });
+            })
+
+            $(function () {
+
+                //Initialize Select2 Elements
+                $('.select2').select2()
+            })
 
         </script>
     </x-slot>
