@@ -399,9 +399,16 @@
                                                     <div>
                                                         <div class="btn-group">
                                                             <button type="button" id="showSessionalResultButton"
-                                                                class="btn btn-info" data-student onclick="showSessionalResultModal()">Sessional</button>
-                                                            <button type="button" class="btn btn-warning" onclick="showTermResultModal()">Term</button>
+                                                                class="btn btn-info" data-student
+                                                                onclick="showSessionalResultModal()">Sessional</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                onclick="showTermResultModal()">Term</button>
                                                         </div>
+                                                        <span class="ml-3" title="Add new result">
+                                                            <button type="button" id="addNewResultButton"
+                                                                class="btn btn-success"
+                                                                onclick="addNewResult()">+</button>
+                                                        </span>
                                                     </div>
 
                                                 </div>
@@ -451,7 +458,6 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-
             // Display edit modal
             function showEditModal(data) {
                 let editStudentUrl = '/edit/student/' + data.admission_no
@@ -467,8 +473,8 @@
                 $('#viewModal').modal('hide')
 
                 // get the student data attribute
-                const student  = $('#showSessionalResultButton').data('student')
-                
+                const student = $('#showSessionalResultButton').data('student')
+
                 // fill results form
                 const ResultUrl = '/results/sessional/student/' + student.admission_no
                 $('#sessionalResultModal #getResult').attr("action", ResultUrl)
@@ -482,8 +488,8 @@
                 $('#viewModal').modal('hide')
 
                 // get the student data attribute
-                const student  = $('#showSessionalResultButton').data('student')
-                
+                const student = $('#showSessionalResultButton').data('student')
+
                 // fill results form
                 const ResultUrl = '/results/term/student/' + student.admission_no
                 $('#termResultModal #getResult').attr("action", ResultUrl)
@@ -491,10 +497,19 @@
                 $('#termResultModal').modal('show')
             }
 
+            function addNewResult() {
+                const student = $('#showSessionalResultButton').data('student')
+
+                const createResultUrl = '/create/result/' + student.admission_no
+                // $('#addNewResult').attr("action", createResultUrl)
+                window.location.href = createResultUrl
+
+            }
+
             function showViewModal(data) {
                 const fullname = data.first_name + ' ' + data.last_name
                 const gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
-                
+
                 //fill student info in the modal
                 $('#viewModal .profile-username').html(fullname)
                 $('#viewModal #admissionNo').html(data.admission_no)
@@ -516,7 +531,7 @@
                 //results info
                 //set the data-attribute of the button to contain the student info
                 $('#showSessionalResultButton').data('student', data)
-                
+
                 //show modal
                 $('#viewModal').modal('show')
             }
