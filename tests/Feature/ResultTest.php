@@ -23,11 +23,12 @@ class ResultTest extends TestCase
         $academicSession = AcademicSession::factory()->create();
         $term = Term::factory()->create();
 
-        $response = $this->actingAs($user)->post('/store/result/'.$student->id.'/'.$subject->id, [
+        $response = $this->actingAs($user)->post('/store/result/'.$student->id, [
             'ca' => mt_rand(0, 40),
             'exam' => mt_rand(0, 60),
             'academicSession' => $academicSession->name,
             'term' => $term->name,
+            'subject' => $subject->name
         ]);
 
         $response->assertStatus(200);
@@ -40,10 +41,11 @@ class ResultTest extends TestCase
         $academicSession = AcademicSession::factory()->create();
         $term = Term::factory()->create();
 
-        $response = $this->actingAs($user)->post('/store/result/'.$student->id.'/'.$subject->id, [
+        $response = $this->actingAs($user)->post('/store/result/'.$student->id, [
             'ca' => mt_rand(0, 40),
             'academicSession' => $academicSession->name,
             'term' => $term->name,
+            'subject' => $subject->name
         ]);
 
         $response->assertStatus(200);
