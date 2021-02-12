@@ -7,6 +7,7 @@ use App\Models\Guardian;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 class StudentFactory extends Factory
@@ -30,7 +31,8 @@ class StudentFactory extends Factory
         if (!empty($classroom)) {
             $classroom = Arr::random($classroom);
         } else {
-            $classroom = Classroom::factory()->create()->id;
+            Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
+            $classroom = Classroom::inRandomOrder()->first();
         }
         return [
             'first_name' => $this->faker->firstName,
