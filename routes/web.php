@@ -96,6 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Result ROutes
     Route::post('/store/result/{student}/{subject}', [ResultController::class, 'store']);
+    Route::get('/create/result/{student}', [ResultController::class, 'create']);
 });
 
 require __DIR__ . '/auth.php';
