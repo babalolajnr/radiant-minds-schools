@@ -17,6 +17,12 @@ class ResultController extends Controller
      * ca and exam
      *
      */
+    public function create($student) {
+        $student = Student::findStudent($student);
+        
+        return view('createResults');
+    }
+
     public function store(Request $request, $studentID, $subjectID)
     {
         $student = Student::findOrFail($studentID);
