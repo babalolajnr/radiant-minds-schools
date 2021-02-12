@@ -19,8 +19,12 @@ class ResultController extends Controller
      */
     public function create($student) {
         $student = Student::findStudent($student);
-        
-        return view('createResults');
+        $student = $student->first();
+        $terms = Term::all();
+        $academicSessions = AcademicSession::all();
+        $subjects = $student->classroom->subjects()->get();
+
+        return view('createResults', compact('terms', 'academicSessions', 'subjects', 'student'));
     }
 
     public function store(Request $request, $studentID, $subjectID)
