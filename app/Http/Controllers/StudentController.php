@@ -143,10 +143,7 @@ class StudentController extends Controller
 
     public function edit($student)
     {
-        $student = Student::where('admission_no', $student);
-        if (!$student->exists()) {
-            abort(404);
-        }
+        $student = Student::findStudent($student);
         $student = $student->first();
         $classrooms = Classroom::pluck('name')->all();
         return view('editStudent', compact(['student', 'classrooms']));
@@ -177,11 +174,7 @@ class StudentController extends Controller
 
     public function getSessionalResults($student, Request $request)
     {
-        $student = Student::where('admission_no', $student);
-
-        if (!$student->exists()) {
-            abort(404);
-        }
+        $student = Student::findStudent($student);
 
         $this->validate($request, [
             'academicSession' => ['required', 'exists:academic_sessions,name'],
@@ -237,12 +230,7 @@ class StudentController extends Controller
     public function getTermResults(Request $request, $student)
     {
 
-        $student = Student::where('admission_no', $student);
-
-        if (!$student->exists()) {
-            abort(404);
-        }
-
+        $student = Student::findStudent($student);
         $this->validate($request, [
             'academicSession' => ['required', 'exists:academic_sessions,name'],
             'term' => ['required', 'exists:terms,name'],
@@ -289,11 +277,7 @@ class StudentController extends Controller
 
     public function getSubjects($student)
     {
-        $student = Student::where('admission_no', $student);
-
-        if (!$student->exists()) {
-            abort(404);
-        }
+        $student = Student::findStudent($student);
         $student = $student->first();
         $subjects = $student->classroom->subjects()->get();
 
