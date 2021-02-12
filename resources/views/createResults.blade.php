@@ -55,14 +55,9 @@
                                     <div class="form-group">
                                         <label for="Subject">Subject</label>
                                         <select class="form-control select2" name="subject" style="width: 100%;">
-                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
-                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
-                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
-                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
-                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
-                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
-                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
-                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                            @foreach ($subjects as $subject)
+                                            <option @if (old('subject') == $subject) SELECTED @endif>{{ $subject->name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('subject')
                                         <div class="text-danger">{{ $message }}</div>
@@ -71,14 +66,9 @@
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
                                         <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
-                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
-                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
-                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
-                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
-                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
-                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
-                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                            @foreach ($academicSessions as $academicSession)
+                                            <option @if (old('academicSession') == $academicSession) SELECTED @endif>{{ $academicSession->name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('academicSession')
                                         <div class="text-danger">{{ $message }}</div>
@@ -87,14 +77,9 @@
                                     <div class="form-group">
                                         <label for="Term">Term</label>
                                         <select class="form-control select2" name="term" style="width: 100%;">
-                                            <option @if (old('blood_group')=='A+' ) SELECTED @endif>A+</option>
-                                            <option @if (old('blood_group')=='A-' ) SELECTED @endif>A-</option>
-                                            <option @if (old('blood_group')=='B+' ) SELECTED @endif>B+</option>
-                                            <option @if (old('blood_group')=='B-' ) SELECTED @endif>B-</option>
-                                            <option @if (old('blood_group')=='O+' ) SELECTED @endif>O+</option>
-                                            <option @if (old('blood_group')=='O-' ) SELECTED @endif>O-</option>
-                                            <option @if (old('blood_group')=='AB+' ) SELECTED @endif>AB+</option>
-                                            <option @if (old('blood_group')=='AB-' ) SELECTED @endif>AB-</option>
+                                            @foreach ($terms as $term)
+                                            <option @if (old('term') == $term) SELECTED @endif>{{ $term->name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('term')
                                         <div class="text-danger">{{ $message }}</div>
