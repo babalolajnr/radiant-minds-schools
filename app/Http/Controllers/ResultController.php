@@ -27,10 +27,9 @@ class ResultController extends Controller
         return view('createResults', compact('terms', 'academicSessions', 'subjects', 'student'));
     }
 
-    public function store(Request $request, $studentID, $subjectID)
+    public function store(Request $request, $studentID)
     {
         $student = Student::findOrFail($studentID);
-        $subject = Subject::findOrFail($subjectID);
 
         $messages = [
             'between' => 'The score must be between 0 and 40',
@@ -41,12 +40,14 @@ class ResultController extends Controller
             'exam' => ['numeric', 'between:0,60'],
             'academicSession' => ['string', 'required', 'exists:academic_sessions,name'],
             'term' => ['string', 'required', 'exists:terms,name'],
+            'subject' => ['string', 'required', 'exists:subjects,name']
         ], $messages);
 
         $term = Term::where('name', $validatedData['term'])->first();
         $academicSession = AcademicSession::where('name', $validatedData['academicSession'])->first();
+        $subject = Subject::where('name', $validatedData['subject'])->first();
 
-        $record = Result::where('subject_id', $subjectID)
+        $record = Result::where('subject_id', $subject->id)
             ->where('student_id', $studentID)
             ->where('term_id', $term->id)
             ->where('academic_session_id', $academicSession->id);
