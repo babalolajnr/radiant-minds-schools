@@ -27,4 +27,15 @@ class Student extends Model
         return $this->hasMany(Result::class);
     }
 
+    //check if student exists
+    public static function findStudent($admission_no) {
+
+        $student = Student::where('admission_no', $admission_no);
+        if (!$student->exists()) {
+            abort(404);
+        }
+
+        return $student;
+    }
+
 }
