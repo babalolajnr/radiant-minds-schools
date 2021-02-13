@@ -3,12 +3,14 @@
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+            href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
+        <!-- Tempusdominus Bootstrap 4 -->
         <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+            href="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -58,6 +60,28 @@
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <div class="input-group date" id="startDate" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input"
+                                                data-target="#startDate" name="start_date"/>
+                                            <div class="input-group-append" data-target="#startDate"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <div class="input-group date" id="endDate" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input"
+                                                data-target="#endDate" name="end_date"/>
+                                            <div class="input-group-append" data-target="#endDate"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
@@ -84,7 +108,8 @@
                                             <td>
                                                 {{ $academicSession->name }}
                                                 @if($academicSession->isCurrentAcademicSession()) <span class="pl-3"
-                                                    title="Current Academic Session"><i class="fas fa-check text-green-600"></i></span>
+                                                    title="Current Academic Session"><i
+                                                        class="fas fa-check text-green-600"></i></span>
                                                 @endif
                                             </td>
                                             <td>
@@ -116,7 +141,8 @@
                                                         <i class="fas fa-toggle-on text-green-700"></i>
                                                     </button>
                                                     @else
-                                                    <a href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
+                                                    <a
+                                                        href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Set as current academic session">
                                                             <i class="fas fa-toggle-off text-red-500"></i>
@@ -194,8 +220,22 @@
         </script>
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
         </script>
+        <script src="{{ asset('TAssets/plugins/moment/moment.min.js') }}"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
+        </script>
+
         <!-- AdminLTE App -->
         <script>
+            //Date range picker
+            $('#startDate').datetimepicker({
+                format: 'L'
+            })
+
+            $('#endDate').datetimepicker({
+                format: 'L'
+            })
+
             function deleteConfirmationModal(data) {
                 let deleteUrl = '/delete/academicSessions/' + data.id
                 $('#yesDeleteConfirmation').attr("action", deleteUrl)
@@ -232,15 +272,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                // $('#example2').DataTable({
-                //     "paging": true,
-                //     "lengthChange": false,
-                //     "searching": false,
-                //     "ordering": true,
-                //     "info": true,
-                //     "autoWidth": false,
-                //     "responsive": true,
-                // });
+                
             });
 
         </script>
