@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AcademicSessionController extends Controller
 {
-    private function validateAcademicSession($request)
+    private function validateAcademicSession($request, $academicSession = null)
     {
         $messages = [
             'name.required' => 'This field is required',
@@ -15,9 +16,9 @@ class AcademicSessionController extends Controller
         ];
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'unique:academic_sessions'],
-            'start_date' => ['required', 'date', 'unique:academic_sessions'],
-            'end_date' => ['required', 'date', 'unique:academic_sessions', 'after:start_date']
+            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession)],
+            'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession)],
+            'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession), 'after:start_date']
         ], $messages);
 
         return $validatedData;
@@ -45,7 +46,7 @@ class AcademicSessionController extends Controller
     {
        
         $academicSession = AcademicSession::findOrFail($id);
-        $academicSession->update($this->validateAcademicSession($request));
+        $academicSession->update($this->validateAcademicSession($request, $academicSession));
 
         return redirect('/academicSessions')->with('success', 'Academic Session Updated!');
     }
