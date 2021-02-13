@@ -21,10 +21,9 @@ class ResultController extends Controller
         $student = Student::findStudent($student);
         $student = $student->first();
         $terms = Term::all();
-        $academicSessions = AcademicSession::all();
         $subjects = $student->classroom->subjects()->get();
 
-        return view('createResults', compact('terms', 'academicSessions', 'subjects', 'student'));
+        return view('createResults', compact('terms', 'subjects', 'student'));
     }
 
     public function store(Request $request, $studentID)
@@ -38,14 +37,13 @@ class ResultController extends Controller
         $validatedData = $request->validate([
             'ca' => ['numeric', 'between:0,40'],
             'exam' => ['numeric', 'between:0,60'],
-            'academicSession' => ['string', 'required', 'exists:academic_sessions,name'],
             'term' => ['string', 'required', 'exists:terms,name'],
             'subject' => ['string', 'required', 'exists:subjects,name']
         ], $messages);
 
         $term = Term::where('name', $validatedData['term'])->first();
-        $academicSession = AcademicSession::where('name', $validatedData['academicSession'])->first();
         $subject = Subject::where('name', $validatedData['subject'])->first();
+        $academicSession = AcademicSession::currentAcademicSession();
 
         $record = Result::where('subject_id', $subject->id)
             ->where('student_id', $studentID)
