@@ -86,6 +86,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //AcademicSession routes
     Route::get('/academicSessions', [AcademicSessionController::class, 'index']);
     Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
+    Route::get('/update/setCurrentAcademicSession/{id}', [AcademicSessionController::class, 'setCurrentAcademicSession']);
     Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
     Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
     Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
