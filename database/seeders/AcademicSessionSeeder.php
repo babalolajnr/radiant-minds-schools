@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\AcademicSession;
+use Database\Factories\AcademicSessionFactory;
 use Illuminate\Database\Seeder;
 
 class AcademicSessionSeeder extends Seeder
@@ -14,16 +15,8 @@ class AcademicSessionSeeder extends Seeder
      */
     public function run()
     {
-        $academicSessions = [
-            '2010/2011',
-            '2011/2012',
-            '2012/2013',
-        ];
 
-        foreach ($academicSessions as $academicSession) {
-            AcademicSession::create([
-                'name' => $academicSession
-            ]);
-        }
+        $academicSessions = AcademicSessionFactory::$academicSessions;
+        AcademicSession::factory()->times(count($academicSessions))->create();
     }
 }
