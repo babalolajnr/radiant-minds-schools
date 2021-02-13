@@ -83,6 +83,9 @@
                                         <tr>
                                             <td>
                                                 {{ $academicSession->name }}
+                                                @if($academicSession->isCurrentAcademicSession()) <span class="pl-3"
+                                                    title="Current Academic Session"><i class="fas fa-check text-green-600"></i></span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -107,6 +110,20 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     @endcannot
+                                                    @if($academicSession->isCurrentAcademicSession())
+                                                    <button type="button" class="btn btn-default btn-flat"
+                                                        title="Set as current academic session" disabled>
+                                                        <i class="fas fa-toggle-on text-green-700"></i>
+                                                    </button>
+                                                    @else
+                                                    <a href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
+                                                        <button type="button" class="btn btn-default btn-flat"
+                                                            title="Set as current academic session">
+                                                            <i class="fas fa-toggle-off text-red-500"></i>
+                                                        </button>
+                                                    </a>
+                                                    @endif
+
                                                 </div>
                                             </td>
                                         </tr>
