@@ -10,12 +10,15 @@ DROP TABLE IF EXISTS `academic_sessions`;
 CREATE TABLE `academic_sessions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `current_session` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `current_session` tinyint(1) DEFAULT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `academic_sessions_name_unique` (`name`),
+  UNIQUE KEY `academic_sessions_start_date_unique` (`start_date`),
+  UNIQUE KEY `academic_sessions_end_date_unique` (`end_date`),
   UNIQUE KEY `academic_sessions_current_session_unique` (`current_session`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
