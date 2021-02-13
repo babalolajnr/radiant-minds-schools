@@ -25,8 +25,15 @@ class AcademicSessionTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
+
+        $startDate = now();
+        $startDate = $startDate->toDateString();
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
+
         $response = $this->actingAs($user)->post('/store/academicSessions', [
-            'name' => $this->faker->word
+            'name' => $this->faker->word,
+            'start_date' => $startDate,
+            'end_date' => $endDate
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
