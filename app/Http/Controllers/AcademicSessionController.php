@@ -7,6 +7,22 @@ use Illuminate\Http\Request;
 
 class AcademicSessionController extends Controller
 {
+    private function validateAcademicSession($request)
+    {
+        $messages = [
+            'name.required' => 'This field is required',
+            'name.unique' => 'Record exists'
+        ];
+
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'unique:academic_sessions'],
+            'start_date' => ['required', 'date', 'unique:academic_sessions'],
+            'end_date' => ['required', 'date', 'unique:academic_sessions', 'after:start_date']
+        ], $messages);
+
+        return $validatedData;
+    }
+
     public function index()
     {
         $academicSessions = AcademicSession::all();
@@ -15,16 +31,7 @@ class AcademicSessionController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'name.required' => 'This field is required',
-            'name.unique' => 'Record exists'
-        ];
-
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'unique:academic_sessions']
-        ], $messages);
-
-        AcademicSession::create($validatedData);
+        AcademicSession::create($this->validateAcademicSession($request));
         return back()->with('success', 'Academic Session Created!');
     }
 
@@ -36,16 +43,9 @@ class AcademicSessionController extends Controller
 
     public function update($id, Request $request)
     {
-        $messages = [
-            'name.required' => 'This field is required',
-            'name.unique' => 'Record exists'
-        ];
-
+       
         $academicSession = AcademicSession::findOrFail($id);
-
-        $academicSession->update($this->validate($request, [
-            'name' => ['required', 'string', 'unique:academic_sessions']
-        ], $messages));
+        $academicSession->update($this->validateAcademicSession($request));
 
         return redirect('/academicSessions')->with('success', 'Academic Session Updated!');
     }
