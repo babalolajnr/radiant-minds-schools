@@ -17,16 +17,17 @@ class ResultTest extends TestCase
     use RefreshDatabase;
 
     public function test_user_can_store_results() {
+        //create an academic session for the test
+        AcademicSession::factory()->create(['current_session' => 1]);
+        
         $user = User::factory()->create();
         $student = Student::factory()->create();
         $subject = Subject::factory()->create();
-        $academicSession = AcademicSession::factory()->create();
         $term = Term::factory()->create();
 
         $response = $this->actingAs($user)->post('/store/result/'.$student->id, [
             'ca' => mt_rand(0, 40),
             'exam' => mt_rand(0, 60),
-            'academicSession' => $academicSession->name,
             'term' => $term->name,
             'subject' => $subject->name
         ]);
@@ -35,15 +36,16 @@ class ResultTest extends TestCase
     }
 
     public function test_user_can_store_results_with_one_assessment() {
+
+        AcademicSession::factory()->create(['current_session' => 1]);
+
         $user = User::factory()->create();
         $student = Student::factory()->create();
         $subject = Subject::factory()->create();
-        $academicSession = AcademicSession::factory()->create();
         $term = Term::factory()->create();
 
         $response = $this->actingAs($user)->post('/store/result/'.$student->id, [
             'ca' => mt_rand(0, 40),
-            'academicSession' => $academicSession->name,
             'term' => $term->name,
             'subject' => $subject->name
         ]);
