@@ -21,20 +21,16 @@ class AcademicSessionFactory extends Factory
      */
     public function definition()
     {
-        $academicSession = [
-            '2010/2011',
-            '2011/2012',
-            '2012/2013',
-        ];
+        
 
-        $name = $this->faker->unique()->randomElement($academicSession);
+        $name = $this->faker->unique()->randomElement(self::$academicSessions);
 
         $eachYear = explode("/", $name);
         $startYear = $eachYear[0];
         $startDay = mt_rand(1, 30);
         $startMonth = mt_rand(1, 12);
 
-        $startDate = $startDay.'-'.$startMonth.'-'.$startYear;
+        $startDate = $startDay . '-' . $startMonth . '-' . $startYear;
         $startDate = date('Y-m-d', strtotime($startDate));
 
         $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
@@ -45,4 +41,10 @@ class AcademicSessionFactory extends Factory
             'end_date' => $endDate,
         ];
     }
+
+    public static $academicSessions = [
+        '2010/2011',
+        '2011/2012',
+        '2012/2013',
+    ];
 }
