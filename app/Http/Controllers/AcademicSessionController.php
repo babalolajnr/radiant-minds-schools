@@ -63,4 +63,15 @@ class AcademicSessionController extends Controller
         $academicSession->delete();
         return back()->with('success', 'Academic Session Deleted!');
     }
+
+    public function setCurrentAcademicSession($id){
+        $academicSession = AcademicSession::findOrFail($id);
+
+        AcademicSession::where('current_session', 1)->update(['current_session' => null]);
+
+        $academicSession->current_session = 1;
+        $academicSession->save();
+
+        return back()->with('success', $academicSession->name.' set as current session');
+    }
 }
