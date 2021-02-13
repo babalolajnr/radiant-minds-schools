@@ -15,4 +15,16 @@ class AcademicSession extends Model
     {
         return $this->hasMany(Result::class);
     }
+
+    //get current academic Session
+    public static function currentAcademicSession()
+    {
+        $currentAcademicSession = AcademicSession::where('current_session', 1)->first();
+        return $currentAcademicSession;
+    }
+
+    public function isCurrentAcademicSession()
+    {
+        return $this->current_session == 1;
+    }
 }
