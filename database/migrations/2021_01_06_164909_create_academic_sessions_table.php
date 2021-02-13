@@ -16,7 +16,7 @@ class CreateAcademicSessionsTable extends Migration
         Schema::create('academic_sessions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('current_session')->unique()->nullable();
+            $table->boolean('current_session')->unique()->nullable();
             $table->date('start_date')->unique();
             $table->date('end_date')->unique();
             $table->timestamps();
