@@ -63,24 +63,33 @@
                                     <div class="form-group">
                                         <label>Start Date</label>
                                         <div class="input-group date" id="startDate" data-target-input="nearest">
-                                            <input type="text" class="form-control datetimepicker-input"
-                                                data-target="#startDate" name="start_date"/>
+                                            <input type="text"
+                                                class="form-control @error('start_date') is-invalid @enderror datetimepicker-input"
+                                                data-target="#startDate" value="{{ old('start_date') }}"
+                                                name="start_date" />
                                             <div class="input-group-append" data-target="#startDate"
                                                 data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
+                                        @error('start_date')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>End Date</label>
                                         <div class="input-group date" id="endDate" data-target-input="nearest">
-                                            <input type="text" class="form-control datetimepicker-input"
-                                                data-target="#endDate" name="end_date"/>
+                                            <input type="text"
+                                                class="form-control @error('end_date') is-invalid @enderror datetimepicker-input"
+                                                data-target="#endDate" value="{{ old('end_date') }}" name="end_date" />
                                             <div class="input-group-append" data-target="#endDate"
                                                 data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
+                                        @error('end_date')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
@@ -99,6 +108,8 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -111,6 +122,12 @@
                                                     title="Current Academic Session"><i
                                                         class="fas fa-check text-green-600"></i></span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                {{ $academicSession->start_date }}
+                                            </td>
+                                            <td>
+                                                {{ $academicSession->end_date }}
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -158,6 +175,8 @@
                                     <tfoot>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -229,11 +248,11 @@
         <script>
             //Date range picker
             $('#startDate').datetimepicker({
-                format: 'L'
+                format: 'YYYY-MM-DD'
             })
 
             $('#endDate').datetimepicker({
-                format: 'L'
+                format: 'YYYY-MM-DD'
             })
 
             function deleteConfirmationModal(data) {
@@ -272,7 +291,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                
+
             });
 
         </script>
