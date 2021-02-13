@@ -64,17 +64,6 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="Academic Session">Academic Session</label>
-                                        <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                            @foreach ($academicSessions as $academicSession)
-                                            <option @if (old('academicSession') == $academicSession) SELECTED @endif>{{ $academicSession->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('academicSession')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
                                         <label for="Term">Term</label>
                                         <select class="form-control select2" name="term" style="width: 100%;">
                                             @foreach ($terms as $term)
