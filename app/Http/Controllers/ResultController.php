@@ -17,7 +17,8 @@ class ResultController extends Controller
      * ca and exam
      *
      */
-    public function create($student) {
+    public function create($student)
+    {
         $student = Student::findStudent($student);
         $student = $student->first();
         $terms = Term::all();
@@ -35,8 +36,8 @@ class ResultController extends Controller
         ];
 
         $validatedData = $request->validate([
-            'ca' => ['numeric', 'between:0,40'],
-            'exam' => ['numeric', 'between:0,60'],
+            'ca' => ['required', 'numeric', 'between:0,40'],
+            'exam' => ['nullable', 'numeric', 'between:0,60'],
             'term' => ['string', 'required', 'exists:terms,name'],
             'subject' => ['string', 'required', 'exists:subjects,name']
         ], $messages);
@@ -44,6 +45,10 @@ class ResultController extends Controller
         $term = Term::where('name', $validatedData['term'])->first();
         $subject = Subject::where('name', $validatedData['subject'])->first();
         $academicSession = AcademicSession::currentAcademicSession();
+
+        if (is_null($academicSession)) {
+            return back()->with('error', 'Current academic session not selected 😢');
+        }
 
         $record = Result::where('subject_id', $subject->id)
             ->where('student_id', $studentID)
@@ -67,6 +72,6 @@ class ResultController extends Controller
             'total' => $exam + $ca
         ]);
 
-        return response(200);
+        return back()->with('success', 'Record created! 👍');
     }
 }
