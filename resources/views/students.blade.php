@@ -3,12 +3,10 @@
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -102,14 +100,12 @@
                                                     </button>
                                                     {{-- render if user is authorized to delete --}}
                                                     @can('delete', $student)
-                                                    <form action="/delete/student/{{ $student->id }}" method="POST">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-default btn-flat"
-                                                            title="Delete">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="submit" class="btn btn-default btn-flat"
+                                                        title="Delete"
+                                                        onclick="deleteConfirmationModal({{ $student }})">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    {{-- TODO: Add confirmation modal --}}
                                                     @endcan
 
                                                     {{-- render if user is not authorized to delete --}}
@@ -144,6 +140,33 @@
                 </div>
         </section>
         <!-- /.content -->
+
+        {{-- Delete confirmation modal --}}
+        <div class="modal fade" id="deleteConfirmationModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Confirmation</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete <span id="deleteItemName" class="font-bold"></span>?
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <form action="" method="POST" id="yesDeleteConfirmation">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                        </form>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
 
         {{-- edit student modal --}}
         <div class="modal fade" id="editModal">
@@ -194,7 +217,7 @@
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
                                     <option @if ($academicSession->isCurrentAcademicSession()) SELECTED @endif>
-                                        {{ $academicSession->name }} 
+                                        {{ $academicSession->name }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -295,7 +318,8 @@
                                         <div class="card-body box-profile">
                                             <div class="text-center">
                                                 <img class="profile-user-img img-fluid img-circle"
-                                                    src="{{ asset('TAssets/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
+                                                    src="{{ asset('TAssets/dist/img/user4-128x128.jpg') }}"
+                                                    alt="User profile picture">
                                             </div>
 
                                             <h3 class="profile-username text-center"></h3>
@@ -458,6 +482,12 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+            function deleteConfirmationModal(data) {
+                let deleteItemUrl = '/delete/student/' + data.id
+                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
+                $('#deleteItemName').html(data.name)
+                $('#deleteConfirmationModal').modal('show')
+            }
             // Display edit modal
             function showEditModal(data) {
                 let editStudentUrl = '/edit/student/' + data.admission_no
@@ -557,15 +587,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                // $('#example2').DataTable({
-                //     "paging": true,
-                //     "lengthChange": false,
-                //     "searching": false,
-                //     "ordering": true,
-                //     "info": true,
-                //     "autoWidth": false,
-                //     "responsive": true,
-                // });
+                
             });
 
         </script>
