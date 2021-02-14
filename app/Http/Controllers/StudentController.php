@@ -292,7 +292,7 @@ class StudentController extends Controller
 
         $student->delete();
 
-        return response(200);
+        return back()->with('success', 'Student Deleted');
     }
 
     public function forceDelete($id, Student $student)
