@@ -5,7 +5,7 @@
         <!-- Select2 -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/select2/css/select2.min.css') }}">
         <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"') }}">
+            href="{{ asset('TAssets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     </x-slot>
     <div class=" content-wrapper">
         <!-- Content Header (Page header) -->
@@ -178,7 +178,7 @@
 
             })
 
-            //launch toastr 
+            //launch toastr
             $(function () {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
