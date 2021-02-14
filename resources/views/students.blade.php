@@ -193,8 +193,8 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
+                                    <option @if ($academicSession->isCurrentAcademicSession()) SELECTED @endif>
+                                        {{ $academicSession->name }} 
                                     </option>
                                     @endforeach
                                 </select>
@@ -501,7 +501,6 @@
                 const student = $('#showSessionalResultButton').data('student')
 
                 const createResultUrl = '/create/result/' + student.admission_no
-                // $('#addNewResult').attr("action", createResultUrl)
                 window.location.href = createResultUrl
 
             }
