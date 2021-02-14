@@ -49,7 +49,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Result</h3>
                             </div>
-                            <form method="POST" action="/store/classroom">
+                            <form method="POST" action="/store/result/{{ $student->id }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
