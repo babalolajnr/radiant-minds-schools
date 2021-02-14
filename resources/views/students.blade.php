@@ -295,7 +295,7 @@
                                         <div class="card-body box-profile">
                                             <div class="text-center">
                                                 <img class="profile-user-img img-fluid img-circle"
-                                                    src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                                    src="{{ asset('TAssets/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                                             </div>
 
                                             <h3 class="profile-username text-center"></h3>
@@ -536,7 +536,7 @@
                 $('#viewModal').modal('show')
             }
 
-            //launch toastr 
+            //launch toastr
             $(function () {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
