@@ -51,8 +51,14 @@ class AcademicSessionTest extends TestCase
     {
         $user = User::factory()->create();
         $academicSession = AcademicSession::factory()->create()->id;
+        $startDate = now();
+        $startDate = $startDate->toDateString();
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
+
         $response = $this->actingAs($user)->patch('/update/academicSessions/' . $academicSession, [
-            'name' => $this->faker->word
+            'name' => $this->faker->word,
+            'start_date' => $startDate,
+            'end_date' => $endDate
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
