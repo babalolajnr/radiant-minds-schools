@@ -5,10 +5,10 @@ namespace Tests\Feature;
 use App\Models\Classroom;
 use App\Models\Subject;
 use App\Models\User;
+use Database\Seeders\SubjectSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class ClassroomTest extends TestCase
@@ -85,7 +85,7 @@ class ClassroomTest extends TestCase
 
         //if subject table is empty run subjectSeeder
         if (sizeof($subjects) < 1) {
-            Artisan::call('db:seed', ['--class' => 'SubjectSeeder']);
+            $this->seed(SubjectSeeder::class);
             $subjects = Subject::pluck('name')->all();
         }
 

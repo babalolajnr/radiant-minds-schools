@@ -8,10 +8,10 @@ use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
+use Database\Seeders\ClassroomSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 
@@ -26,7 +26,7 @@ class StudentTest extends TestCase
 
         //if classroom table is empty run ClassroomSeeder
         if (empty($classroom)) {
-            Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
+            $this->seed(ClassroomSeeder::class);
             $classroom = Classroom::pluck('name')->all();
             $classroom = Arr::random($classroom);
         } else {
@@ -132,7 +132,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_suspended()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'active'])->id;
         $response = $this->actingAs($user)->patch('/suspend/student/' . $student);
@@ -141,7 +141,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_activated()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/activate/student/' . $student);
@@ -150,7 +150,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_deactivated()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/deactivate/student/' . $student);
@@ -159,7 +159,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_updated()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create();
         $student = Student::factory()->create()->id;
         $classroom = $this->generateTestClassroom();
@@ -169,7 +169,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_deleted()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/student/' . $student);
@@ -178,7 +178,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_forceDeleted()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/forceDelete/student/' . $student);
@@ -187,7 +187,7 @@ class StudentTest extends TestCase
 
     public function test_user_can_get_student_subjects()
     {
-        $this->withoutExceptionHandling();
+        
         $user = User::factory()->create();
         $student = Student::factory()->create();
         $subject = Subject::factory()->create()->id;
