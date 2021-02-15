@@ -3,13 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\AcademicSession;
-use App\Models\Assessment;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Term;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ResultTest extends TestCase
@@ -32,7 +30,7 @@ class ResultTest extends TestCase
             'subject' => $subject->name
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_user_can_store_results_with_one_assessment() {
@@ -50,6 +48,6 @@ class ResultTest extends TestCase
             'subject' => $subject->name
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 }
