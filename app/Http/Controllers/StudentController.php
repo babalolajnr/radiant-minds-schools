@@ -14,23 +14,42 @@ use Illuminate\Validation\Rule;
 class StudentController extends Controller
 {
 
-    private function studentInfo($request)
+    private function studentInfo($validatedData)
     {
-        $classroom =  Classroom::where('name', $request->classroom)->first();
+        $classroom =  Classroom::where('name', $validatedData['classroom'])->first();
 
         return [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'sex' => $request->sex,
-            'admission_no' => $request->admission_no,
-            'lg' => $request->lg,
-            'state' => $request->state,
-            'country' => $request->country,
-            'blood_group' => $request->blood_group,
-            'date_of_birth' => $request->date_of_birth,
-            'place_of_birth' => $request->place_of_birth,
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'sex' => $validatedData['sex'],
+            'admission_no' => $validatedData['admission_no'],
+            'lg' => $validatedData['lg'],
+            'state' => $validatedData['state'],
+            'country' => $validatedData['country'],
+            'blood_group' => $validatedData['blood_group'],
+            'date_of_birth' => $validatedData['date_of_birth'],
+            'place_of_birth' => $validatedData['place_of_birth'],
             'classroom_id' => $classroom->id,
             'status' => 'active'
+        ];
+    }
+
+    private function studentValidationRules($student = null)
+    {
+        $currentDate = now();
+
+        return [
+            'first_name' => ['required', 'string', 'max:30'],
+            'last_name' => ['required', 'string', 'max:30'],
+            'sex' => ['required', 'string'],
+            'admission_no' => ['required', 'string', Rule::unique('students')->ignore($student)],
+            'lg' => ['required', 'string'],
+            'state' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'blood_group' => ['required', 'string'],
+            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
+            'place_of_birth' => ['required'],
+            'classroom' => ['required', 'string'],
         ];
     }
 
@@ -56,19 +75,8 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         // $this->authorize('create', Student::class);
-        $currentDate = now();
-        $this->validate($request, [
-            'first_name' => ['required', 'string', 'max:30'],
-            'last_name' => ['required', 'string', 'max:30'],
-            'sex' => ['required', 'string'],
-            'admission_no' => ['required', 'string', 'unique:students'],
-            'lg' => ['required', 'string'],
-            'state' => ['required', 'string'],
-            'country' => ['required', 'string'],
-            'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
-            'place_of_birth' => ['required'],
-            'classroom' => ['required', 'string'],
+       
+        $guardianValidationRules = [
             'guardian_title' => ['required', 'max:30', 'string'],
             'guardian_first_name' => ['required', 'max:30', 'string'],
             'guardian_last_name' => ['required', 'max:30', 'string'],
@@ -76,26 +84,27 @@ class StudentController extends Controller
             'guardian_phone' => ['required', 'string', 'between:10,15'],
             'guardian_occupation' => ['required', 'string'],
             'guardian_address' => ['required']
-        ]);
+        ];
+        $data = array_merge($guardianValidationRules, $this->studentValidationRules());
+        $validatedData = $request->validate($data);
 
-
-        $guardian = Guardian::where('phone', $request->guardian_phone)->first();
+        $guardian = Guardian::where('phone', $validatedData['guardian_phone'])->first();
 
         if (is_null($guardian)) {
             $guardian = Guardian::create([
-                'title' => $request->guardian_title,
-                'first_name' => $request->guardian_first_name,
-                'last_name' => $request->guardian_last_name,
-                'email' => $request->guardian_email,
-                'phone' => $request->guardian_phone,
-                'occupation' => $request->guardian_occupation,
-                'address' => $request->guardian_address,
+                'title' => $validatedData['guardian_title'],
+                'first_name' => $validatedData['guardian_first_name'],
+                'last_name' => $validatedData['guardian_last_name'],
+                'email' => $validatedData['guardian_email'],
+                'phone' => $validatedData['guardian_phone'],
+                'occupation' => $validatedData['guardian_occupation'],
+                'address' => $validatedData['guardian_address'],
             ]);
         }
 
         //assign guardian_id to an array and merge it with the original student info array
         $guardianID = ['guardian_id' => $guardian->id];
-        $studentInfo = array_merge($this->studentInfo($request), $guardianID);
+        $studentInfo = array_merge($this->studentInfo($validatedData), $guardianID);
 
         Student::create($studentInfo);
 
@@ -152,23 +161,10 @@ class StudentController extends Controller
     public function update($id, Request $request)
     {
         $student = Student::findOrFail($id);
-        $currentDate = now();
 
-        $this->validate($request, [
-            'first_name' => ['required', 'string', 'max:30'],
-            'last_name' => ['required', 'string', 'max:30'],
-            'sex' => ['required', 'string'],
-            'admission_no' => ['required', 'string', Rule::unique('students')->ignore($student)],
-            'lg' => ['required', 'string'],
-            'state' => ['required', 'string'],
-            'country' => ['required', 'string'],
-            'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
-            'place_of_birth' => ['required'],
-            'classroom' => ['required', 'string'],
-        ]);
+        $validatedData = $request->validate($this->studentValidationRules($student));
 
-        $student->update($this->studentInfo($request));
+        $student->update($this->studentInfo($validatedData));
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
