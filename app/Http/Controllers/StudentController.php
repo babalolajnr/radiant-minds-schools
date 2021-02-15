@@ -36,8 +36,6 @@ class StudentController extends Controller
 
     private function studentValidationRules($student = null)
     {
-        $currentDate = now();
-
         return [
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
@@ -47,7 +45,7 @@ class StudentController extends Controller
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
             'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:' . $currentDate],
+            'date_of_birth' => ['required', 'date', 'before:' . now()],
             'place_of_birth' => ['required'],
             'classroom' => ['required', 'string'],
         ];
@@ -85,11 +83,14 @@ class StudentController extends Controller
             'guardian_occupation' => ['required', 'string'],
             'guardian_address' => ['required']
         ];
+
+        //merge guardian and student validation rules
         $data = array_merge($guardianValidationRules, $this->studentValidationRules());
         $validatedData = $request->validate($data);
 
         $guardian = Guardian::where('phone', $validatedData['guardian_phone'])->first();
 
+        //if guardian does not exist create new guardian
         if (is_null($guardian)) {
             $guardian = Guardian::create([
                 'title' => $validatedData['guardian_title'],
@@ -102,9 +103,8 @@ class StudentController extends Controller
             ]);
         }
 
-        //assign guardian_id to an array and merge it with the original student info array
-        $guardianID = ['guardian_id' => $guardian->id];
-        $studentInfo = array_merge($this->studentInfo($validatedData), $guardianID);
+        //merge guardian id with student info
+        $studentInfo = array_merge($this->studentInfo($validatedData), ['guardian_id' => $guardian->id]);
 
         Student::create($studentInfo);
 
