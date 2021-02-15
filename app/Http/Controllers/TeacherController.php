@@ -9,6 +9,25 @@ use Illuminate\Validation\Rule;
 
 class TeacherController extends Controller
 {
+    private function teacherValidation($request, $teacher = null){
+      $validatedData = $request->validate([
+            'first_name' => ['required', 'string', 'max:30'],
+            'last_name' => ['required', 'string', 'max:30'],
+            'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'email:rfc,dns'],
+            'phone' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'max:15', 'min:10'],
+            'date_of_birth' => ['required', 'date']
+        ]);
+
+        return $validatedData;
+    }
+
+    private function generateFullNameSlug($firstName, $lastName){
+        $fullname = $firstName . ' ' . $lastName . ' ' . Str::random(5);
+        $slug = Str::of($fullname)->slug('-');
+
+        return $slug;
+    }
+
     public function index()
     {
     }
@@ -23,26 +42,13 @@ class TeacherController extends Controller
     {
         $this->authorize('create', Teacher::class);
 
-        $this->validate($request, [
-            'first_name' => ['required', 'string', 'max:30'],
-            'last_name' => ['required', 'string', 'max:30'],
-            'email' => ['required', 'string', 'unique:teachers', 'email:rfc,dns'],
-            'phone' => ['required', 'string', 'unique:teachers', 'max:15', 'min:10'],
-            'date_of_birth' => ['required', 'date']
-        ]);
+        $validatedData = $this->teacherValidation($request);
 
-        $fullname = $request->first_name . ' ' . $request->last_name . ' ' . Str::random(5);
-        $slug = Str::of($fullname)->slug('-');
+        $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
 
-        Teacher::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'date_of_birth' => $request->date_of_birth,
-            'slug' => $slug,
-            'status' => 'inactive'
-        ]);
+        $data = array_merge($validatedData, ['slug' => $slug, 'status' => 'active']);
+
+        Teacher::create($data);
 
         return response(200);
     }
@@ -51,11 +57,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::where('slug', $slug);
 
-        if ($teacher->exists()) {
-            return response(200);
-        } else {
-            abort(404);
-        }
+        return $teacher->exists() ? response(200) : abort(404);
     }
 
     public function edit($slug, Teacher $teacher)
@@ -64,11 +66,7 @@ class TeacherController extends Controller
 
         $teacher = Teacher::where('slug', $slug);
 
-        if ($teacher->exists()) {
-            return response(200);
-        } else {
-            abort(404);
-        }
+        return $teacher->exists() ? response(200) : abort(404);
     }
 
     public function update($slug, Teacher $teacher, Request $request)
@@ -77,32 +75,18 @@ class TeacherController extends Controller
 
         $teacher = Teacher::where('slug', $slug);
 
-        if ($teacher->exists()) {
-
-            $this->validate($request, [
-                'first_name' => ['required', 'string', 'max:30'],
-                'last_name' => ['required', 'string', 'max:30'],
-                'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher->first()), 'email:rfc,dns'],
-                'phone' => ['required', 'string', Rule::unique('teachers')->ignore($teacher->first()), 'max:15', 'min:10'],
-                'date_of_birth' => ['required', 'date']
-            ]);
-
-            $fullname = $request->first_name . ' ' . $request->last_name . ' ' . Str::random(5);
-            $slug = Str::of($fullname)->slug('-');
-
-            $teacher->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'date_of_birth' => $request->date_of_birth,
-                'slug' => $slug,
-            ]);
-
-            return response(200);
-        } else {
+        if (!$teacher->exists()) {
             abort(404);
         }
+        $validatedData = $this->teacherValidation($request);
+
+        $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
+        
+        $data = array_merge($validatedData, ['slug' => $slug]);
+
+        $teacher->update($data);
+
+        return response(200);
     }
 
     public function suspend($id, Teacher $teacher)
