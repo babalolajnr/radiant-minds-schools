@@ -60,7 +60,6 @@ class StudentTest extends TestCase
     public function test_student_can_be_created_with_new_guardian_info()
     {
         $user = User::factory()->create();
-
         $classroom = $this->generateTestClassroom();
         $studentInfo = $this->studentInfo($classroom);
         $guardianInfo = [
@@ -174,7 +173,7 @@ class StudentTest extends TestCase
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/student/' . $student);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_student_can_be_forceDeleted()
