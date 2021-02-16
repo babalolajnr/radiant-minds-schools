@@ -26,6 +26,7 @@ class CreateStudentsTable extends Migration
             $table->text('place_of_birth');
             $table->string('blood_group');
             $table->string('status');
+            $table->string('image')->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
 
