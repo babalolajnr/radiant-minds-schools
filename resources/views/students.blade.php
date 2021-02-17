@@ -318,8 +318,7 @@
                                         <div class="card-body box-profile">
                                             <div class="text-center">
                                                 <img class="profile-user-img img-fluid img-circle"
-                                                    src="{{ asset('TAssets/dist/img/user4-128x128.jpg') }}"
-                                                    alt="User profile picture">
+                                                    src="{{ asset('images/user1.svg') }}" alt="Student Image">
                                             </div>
 
                                             <h3 class="profile-username text-center"></h3>
@@ -343,6 +342,8 @@
                                                         data-toggle="tab">Guardian</a></li>
                                                 <li class="nav-item"><a class="nav-link" href="#results"
                                                         data-toggle="tab">Results</a></li>
+                                                <li class="nav-item"><a class="nav-link" href="#imageUpload"
+                                                        data-toggle="tab">Image Upload</a></li>
                                             </ul>
                                         </div><!-- /.card-header -->
                                         <div class="card-body">
@@ -435,6 +436,31 @@
                                                         </span>
                                                     </div>
 
+                                                </div>
+                                                <div class="tab-pane" id="imageUpload">
+                                                    <form action="" method="post" id="imageUploadForm"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="imageUpload">File input</label>
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input type="file" name="image" @error('image')
+                                                                        is-invalid @enderror class="custom-file-input">
+                                                                    <label class="custom-file-label"
+                                                                        for="imageUpload">Choose file</label>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <button type="submit">
+                                                                        <span
+                                                                            class="input-group-text">Upload</span></button>
+                                                                </div>
+                                                            </div>
+                                                            @error('image')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </form>
                                                 </div>
                                                 <!-- /.tab-pane -->
                                             </div>
@@ -561,6 +587,8 @@
                 //set the data-attribute of the button to contain the student info
                 $('#showSessionalResultButton').data('student', data)
 
+                $('#imageUploadForm').attr('action', '/store/image/' + data.id)
+
                 //show modal
                 $('#viewModal').modal('show')
             }
@@ -587,7 +615,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                
+
             });
 
         </script>
