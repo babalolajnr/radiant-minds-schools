@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use  Intervention\Image\Facades\Image;
 
 class StudentController extends Controller
 {
@@ -73,7 +74,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         // $this->authorize('create', Student::class);
-       
+
         $guardianValidationRules = [
             'guardian_title' => ['required', 'max:30', 'string'],
             'guardian_first_name' => ['required', 'max:30', 'string'],
@@ -303,5 +304,22 @@ class StudentController extends Controller
          * check if student has a guardian before deleting 
          * then delete the guardian if it has only one child
          */
+    }
+
+    public function uploadImage($id, Request $request)
+    {
+        $student = Student::findOrFail($id);
+        $validatedData = $request->validate([
+            'image' => ['required', 'image', 'unique:students,image,except,id']
+        ]);
+
+        $path = $request->file('image')
+            ->storeAs(
+                'public/students',
+                $student->first_name . $student->last_name . '.' . $request->image->extension()
+            );
+        Image::make($request->image->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
+        // return response(200);
+        return $path;
     }
 }
