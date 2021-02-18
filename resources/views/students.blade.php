@@ -318,7 +318,7 @@
                                         <div class="card-body box-profile">
                                             <div class="text-center">
                                                 <img class="profile-user-img img-fluid img-circle"
-                                                    src="{{ asset('images/user1.svg') }}" alt="Student Image">
+                                                     src="{{ asset('images/user1.svg') }}" id="studentImage" alt="Student Image">
                                             </div>
 
                                             <h3 class="profile-username text-center"></h3>
@@ -587,7 +587,10 @@
                 //set the data-attribute of the button to contain the student info
                 $('#showSessionalResultButton').data('student', data)
 
+                //set image upload form action attribute
                 $('#imageUploadForm').attr('action', '/store/image/' + data.id)
+
+                $('#studentImage').attr('src', data.image)
 
                 //show modal
                 $('#viewModal').modal('show')
