@@ -21,22 +21,25 @@ class SubjectFactory extends Factory
      */
     public function definition()
     {
-        $subjects = [
-            'Art',
-            'English',
-            'Music',
-            'History',
-            'Science',
-            'Geography',
-            'Information technology',
-            'Biology',
-            'Drama',
-            'Swimming',
-            'Physical education'
 
-        ];
         return [
-            'name' => $this->faker->randomElement($subjects),
+            'name' => $this->faker->unique()->randomElement(self::$subjects),
         ];
     }
+
+    public static $subjects = [
+        'Art',
+        'English',
+        'Music',
+        'History',
+        'Science',
+        'Geography',
+        'Information technology',
+        'Biology',
+        'Drama',
+        'Swimming',
+        'Physical education',
+        'Spanish',
+        'Statistics'
+    ];
 }
