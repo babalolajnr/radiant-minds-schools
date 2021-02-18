@@ -11,7 +11,9 @@ use App\Models\User;
 use Database\Seeders\ClassroomSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 
@@ -73,7 +75,7 @@ class StudentTest extends TestCase
         ];
         $studentInfo = array_merge($studentInfo, $guardianInfo);
         $response = $this->actingAs($user)->post('/store/student', $studentInfo);
-        
+
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
@@ -96,7 +98,6 @@ class StudentTest extends TestCase
         $studentInfo = array_merge($studentInfo, $guardianInfo);
         $response = $this->actingAs($user)->post('/store/student', $studentInfo);
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
-
     }
 
     public function test_student_controller_index_method()
@@ -132,7 +133,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_suspended()
     {
-        
+
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'active'])->id;
         $response = $this->actingAs($user)->patch('/suspend/student/' . $student);
@@ -141,7 +142,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_activated()
     {
-        
+
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/activate/student/' . $student);
@@ -150,7 +151,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_deactivated()
     {
-        
+
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/deactivate/student/' . $student);
@@ -159,7 +160,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_updated()
     {
-        
+
         $user = User::factory()->create();
         $student = Student::factory()->create()->id;
         $classroom = $this->generateTestClassroom();
@@ -169,7 +170,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_deleted()
     {
-        
+
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/delete/student/' . $student);
@@ -178,7 +179,7 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_forceDeleted()
     {
-        
+
         $user = User::factory()->create(['user_type' => 'master']);
         $student = Student::factory()->create()->id;
         $response = $this->actingAs($user)->delete('/forceDelete/student/' . $student);
@@ -187,7 +188,7 @@ class StudentTest extends TestCase
 
     public function test_user_can_get_student_subjects()
     {
-        
+
         $user = User::factory()->create();
         $student = Student::factory()->create();
         $subject = Subject::factory()->create()->id;
@@ -206,5 +207,20 @@ class StudentTest extends TestCase
             'academicSession' => $academicSession
         ]);
         $response->assertStatus(200)->assertViewIs('studentSessionalResults');
+    }
+
+    public function test_student_image_upload()
+    {
+        $this->withoutExceptionHandling();
+        Storage::fake('public/students');
+
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+        $response = $this->actingAs($user)->post('/store/image/' . $student->id, [
+            'image' => $file
+        ]);
+
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 }
