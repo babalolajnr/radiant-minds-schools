@@ -36,7 +36,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-
+                        {{-- Teacher --}}
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Class teacher</h3>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="font-semibold">
+                                    {{ $classroom->teacher->first_name . ' ' .$classroom->teacher->last_name }}
+                                </h3>
+                            </div>
+                        </div>
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
@@ -460,7 +470,7 @@
                 $('#editGuardianButton').attr("href", editGuardianUrl)
                 $('#editModal').modal('show')
             }
-            
+
             function addNewResult() {
                 const student = $('#showSessionalResultButton').data('student')
 
