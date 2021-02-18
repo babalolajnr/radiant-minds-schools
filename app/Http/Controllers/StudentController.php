@@ -9,6 +9,7 @@ use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use  Intervention\Image\Facades\Image;
 
@@ -313,13 +314,33 @@ class StudentController extends Controller
             'image' => ['required', 'image', 'unique:students,image,except,id']
         ]);
 
-        $path = $request->file('image')
-            ->storeAs(
-                'public/students',
-                $student->first_name . $student->last_name . '.' . $request->image->extension()
-            );
+        //create name from first and last name
+        $imageName = $student->first_name . $student->last_name . '.' . $request->image->extension();
+        $path = $request->file('image')->storeAs('public/students', $imageName);
         Image::make($request->image->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
-        // return response(200);
-        return $path;
+
+        //Delete previous image
+        /**
+         * This might not be necessary because the new image will overwrite the old image
+         * because we are using the same name for the images
+         * 
+         */
+
+        // if (!is_null($student->image)) {
+        //     $deletePath = $student->image;
+        //     $deletePath = str_replace('storage/', '', $deletePath);
+        //     $deletePath = 'public/'.$deletePath;
+
+        //     Storage::delete( $deletePath);
+        // }
+
+        //update image in the database
+        $filePath = 'storage/students/' . $imageName;
+        $student->image = $filePath;
+        $student->save();
+
+        return back()->with('success', 'Image uploaded successfully');
+
+        //TODO: check if an image is linked to the student before updating
     }
 }
