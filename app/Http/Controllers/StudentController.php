@@ -341,6 +341,5 @@ class StudentController extends Controller
 
         return back()->with('success', 'Image uploaded successfully');
 
-        //TODO: check if an image is linked to the student before updating
     }
 }
