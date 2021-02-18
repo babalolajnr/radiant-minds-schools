@@ -22,20 +22,23 @@ class ClassroomFactory extends Factory
      */
     public function definition()
     {
-        $classes = [
-            'Pre nursery',
-            'Nursery 1',
-            'Nursery 2',
-            'Reception',
-            'Grade 1',
-            'Grade 2',
-            'Grade 3',
-            'Grade 4',
-            'Grade 5',
-        ];
+        $class = $this->faker->unique()->randomElement(self::$classes);
         return [
-            'name' => $this->faker->randomElement($classes),
+            'name' => $class['name'],
+            'rank' => $class['rank'],
             'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
         ];
     }
+
+    public static $classes = [
+        ['name' => 'Pre nursery', 'rank' => 0],
+        ['name' => 'Nursery 1', 'rank' => 1],
+        ['name' => 'Nursery 2', 'rank' => 2],
+        ['name' => 'Reception', 'rank' => 3],
+        ['name' => 'Grade 1', 'rank' => 4],
+        ['name' => 'Grade 2', 'rank' => 5],
+        ['name' => 'Grade 3', 'rank' => 6],
+        ['name' => 'Grade 4', 'rank' => 7],
+        ['name' => 'Grade 5', 'rank' => 8]
+    ];
 }
