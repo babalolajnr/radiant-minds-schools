@@ -37,7 +37,7 @@ class ResultFactory extends Factory
                 $values = $this->generateValues();
                 $record = $record;
             } while ($record->exists());
-        }else {
+        } else {
             $values = $values;
         }
 
@@ -58,8 +58,8 @@ class ResultFactory extends Factory
     {
         $term = Term::inRandomOrder()->first();
         $academicSession = AcademicSession::inRandomOrder()->first();
-        $subject = Subject::inRandomOrder()->first();
         $student = Student::inRandomOrder()->first();
+        $subject = Subject::inRandomOrder()->first();
 
         //if any of the required values are empty seed their tables
         if (!$term) {
