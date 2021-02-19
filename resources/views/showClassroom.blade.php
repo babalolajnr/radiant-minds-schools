@@ -125,9 +125,11 @@
                                                     </button>
                                                     @endcannot
 
-                                                    <button type="button" class="btn btn-default btn-flat">
-                                                        <i class="fas fa-cogs"></i>
-                                                    </button>
+                                                    <a href="/studentSettings/{{ $student->admission_no }}">
+                                                        <button type="button" class="btn btn-default btn-flat">
+                                                            <i class="fas fa-cogs"></i>
+                                                        </button>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -565,7 +567,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-               
+
             });
 
         </script>
