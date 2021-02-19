@@ -47,12 +47,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Student Routes
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('create/student', [StudentController::class, 'create']);
+    Route::get('/studentSettings/{student}', [StudentController::class, 'showStudentSettingsView']);
     Route::get('/view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
+    Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/results/sessional/student/{student}', [StudentController::class, 'getSessionalResults']);
     Route::post('/results/term/student/{student}', [StudentController::class, 'getTermResults']);
     Route::post('/store/image/{id}', [StudentController::class, 'uploadImage']);
-    Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
     Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
