@@ -44,6 +44,7 @@
                             <div class="card-body">
                                 <div class="form-horizontal">
                                     <div class="form-group row">
+                                        {{-- Status --}}
                                         <label for="status" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
@@ -77,7 +78,31 @@
 
                                             </div>
                                         </div>
+                                        {{-- /Status --}}
                                     </div>
+                                    {{-- class --}}
+                                    <div class="form-group row">
+                                        <label for="class" class="col-sm-2 col-form-label">Class</label>
+                                        <div class="col-sm-10">
+                                            <div class="btn-group">
+                                                <form action="/promote/student/{{ $student->id }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-success btn-flat">
+                                                        Promote
+                                                    </button>
+                                                </form>
+                                                <form action="/demote/student/{{ $student->id }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-danger btn-flat">
+                                                        Demote
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- /class --}}
                                 </div>
                             </div>
                         </div>
