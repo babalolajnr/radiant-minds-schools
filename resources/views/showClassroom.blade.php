@@ -124,6 +124,10 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     @endcannot
+
+                                                    <button type="button" class="btn btn-default btn-flat">
+                                                        <i class="fas fa-cogs"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
