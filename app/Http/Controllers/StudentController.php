@@ -122,34 +122,28 @@ class StudentController extends Controller
     public function suspend($id)
     {
         $student = Student::findOrFail($id);
-
         $student->status = 'suspended';
-
         $student->save();
 
-        return response(200);
+        return back()->with('success', 'Student Suspended!');
     }
 
     public function activate($id)
     {
         $student = Student::findOrFail($id);
-
         $student->status = 'active';
-
         $student->save();
 
-        return response(200);
+        return back()->with('success', 'Student Activated!');
     }
 
     public function deactivate($id)
     {
         $student = Student::findOrFail($id);
-
         $student->status = 'inactive';
-
         $student->save();
 
-        return response(200);
+        return back()->with('success', 'Student Deactivated!');
     }
 
     public function edit($student)
@@ -163,10 +157,9 @@ class StudentController extends Controller
     public function update($id, Request $request)
     {
         $student = Student::findOrFail($id);
-
         $validatedData = $request->validate($this->studentValidationRules($student));
-
         $student->update($this->studentInfo($validatedData));
+
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
@@ -340,6 +333,13 @@ class StudentController extends Controller
         $student->save();
 
         return back()->with('success', 'Image uploaded successfully');
+    }
 
+    public function showStudentSettingsView($student)
+    {
+        $student = Student::findStudent($student);
+        $student = $student->first();
+
+        return view('studentSettings', compact('student'));
     }
 }
