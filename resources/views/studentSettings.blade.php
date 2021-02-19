@@ -39,302 +39,54 @@
                         {{-- Teacher --}}
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Student name</h3>
+                                <h3 class="card-title">{{ $student->first_name.' '.$student->last_name }}</h3>
                             </div>
                             <div class="card-body">
-                                
+                                <div class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label for="status" class="col-sm-2 col-form-label">Status</label>
+                                        <div class="col-sm-10">
+                                            <div class="btn-group">
+                                                <form action="/activate/student/{{ $student->id }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        class="btn @if ($student->status == 'active') btn-primary disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'active') disabled @endif>
+                                                        Activate
+                                                    </button>
+                                                </form>
+                                                <form action="/suspend/student/{{ $student->id }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        class="btn @if ($student->status == 'suspended') btn-primary disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'suspended') disabled @endif>
+                                                        Suspend
+                                                    </button>
+                                                </form>
+                                                <form action="/deactivate/student/{{ $student->id }}" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit"
+                                                        class="btn @if ($student->status == 'inactive') btn-primary disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'inactive') disabled @endif>
+                                                        Deactivate
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
         </section>
         <!-- /.content -->
 
-        {{-- edit student modal --}}
-        <div class="modal fade" id="editModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Student</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <a href="" id="editStudentButton">
-                            <button type="button" class="btn btn-success" title="Edit Student">Student</button>
-                        </a>
-                        <span class="px-3"></span>
-                        <a href="" id="editGuardianButton">
-                            <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
-                        </a>
-
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        {{-- /edit student modal --}}
-
-        {{-- sessional result modal --}}
-        <div class="modal fade" id="sessionalResultModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Choose Session</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form id="getResult" method="POST" action="">
-                            @csrf
-                            <div class="form-group">
-                                <label>Academic Session</label>
-                                <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                    @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        {{-- /sessional result modal --}}
-
-        {{-- Term result modal --}}
-        <div class="modal fade" id="termResultModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Choose Term</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form id="getResult" method="POST" action="">
-                            @csrf
-                            <div class="form-group">
-                                <label>Academic Session</label>
-                                <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                    @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <label>Term</label>
-                                <select class="form-control select2" name="term" style="width: 100%;">
-                                    @foreach ($terms as $term)
-                                    <option @if (old('term')==$term ) SELECTED @endif>
-                                        {{ $term->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('term')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        {{-- /.Term result modal --}}
-
-        {{-- student details modal --}}
-        <div class="modal fade" id="viewModal">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Student Details</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-3">
-
-                                    <!-- Profile Image -->
-                                    <div class="card card-primary card-outline">
-                                        <div class="card-body box-profile">
-                                            <div class="text-center">
-                                                <img class="profile-user-img img-fluid img-circle"
-                                                    src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
-                                            </div>
-
-                                            <h3 class="profile-username text-center"></h3>
-
-                                            <p class="text-muted text-center" id="admissionNo"></p>
-
-                                        </div>
-                                        <!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-md-9">
-                                    <div class="card">
-                                        <div class="card-header p-2">
-                                            <ul class="nav nav-pills">
-                                                <li class="nav-item"><a class="nav-link active" href="#about"
-                                                        data-toggle="tab">About</a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#guardianInfo"
-                                                        data-toggle="tab">Guardian</a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#results"
-                                                        data-toggle="tab">Results</a></li>
-                                            </ul>
-                                        </div><!-- /.card-header -->
-                                        <div class="card-body">
-                                            <div class="tab-content">
-                                                <div class="active tab-pane" id="about">
-                                                    <strong></i>Class</strong>
-
-                                                    <p class="text-muted" id="classroom">
-
-                                                    </p>
-
-                                                    <hr>
-
-                                                    <strong></i>Local
-                                                        government</strong>
-
-                                                    <p class="text-muted" id="lg"></p>
-
-                                                    <hr>
-
-                                                    <strong></i>State</strong>
-
-                                                    <p class="text-muted" id="state"></p>
-                                                    <hr>
-
-                                                    <strong></i>Country</strong>
-
-                                                    <p class="text-muted" id="country"></p>
-                                                    <hr>
-
-                                                    <strong></i>Date of birth</strong>
-
-                                                    <p class="text-muted" id="dob"></p>
-
-                                                    <hr>
-
-                                                    <strong></i>Place of birth</strong>
-
-                                                    <p class="text-muted" id="pob"></p>
-
-                                                    <hr>
-                                                    <strong></i>Blood Group</strong>
-
-                                                    <p class="text-muted" id="bloodGroup"></p>
-
-                                                    <hr>
-                                                    <strong></i>status</strong>
-
-                                                    <p class="text-muted" id="status"></p>
-
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                                <div class="tab-pane" id="guardianInfo">
-                                                    <strong></i>Full name</strong>
-                                                    <p class="text-muted" id="gFullname"></p>
-
-                                                    <hr>
-                                                    <strong></i>Occupation</strong>
-                                                    <p class="text-muted" id="gOccupation"></p>
-
-                                                    <hr>
-                                                    <strong></i>Email</strong>
-                                                    <p class="text-muted" id="gEmail"></p>
-
-                                                    <hr>
-                                                    <strong></i>Phone</strong>
-                                                    <p class="text-muted" id="gPhone"></p>
-
-                                                    <hr>
-                                                    <strong></i>Address</strong>
-                                                    <p class="text-muted" id="gAddress"></p>
-
-                                                </div>
-                                                <!-- /.tab-pane -->
-
-                                                <div class="tab-pane" id="results">
-                                                    <h3>Result Type</h3>
-                                                    <div>
-                                                        <div class="btn-group">
-                                                            <button type="button" id="showSessionalResultButton"
-                                                                class="btn btn-info" data-student
-                                                                onclick="showSessionalResultModal()">Sessional</button>
-                                                            <button type="button" class="btn btn-warning"
-                                                                onclick="showTermResultModal()">Term</button>
-                                                        </div>
-                                                        <span class="ml-3" title="Add new result">
-                                                            <button type="button" id="addNewResultButton"
-                                                                class="btn btn-success"
-                                                                onclick="addNewResult()">+</button>
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                            </div>
-                                            <!-- /.tab-content -->
-                                        </div><!-- /.card-body -->
-                                    </div>
-                                    <!-- /.card -->
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
     </div>
 
     <x-slot name="scripts">
@@ -463,7 +215,7 @@
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-               
+
             });
 
         </script>
