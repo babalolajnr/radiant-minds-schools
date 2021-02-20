@@ -359,8 +359,23 @@ class StudentController extends Controller
         }
 
         return back()->with('error', 'Student is in the Maximum class possible');
-
     }
 
-    // public function demote
+    public function demote($id)
+    {
+        $student = Student::findOrFail($id);
+        $classRank = $student->classroom->rank;
+        $lowestClassRank = Classroom::max('rank');
+
+        if ($classRank !== $lowestClassRank) {
+            $newClassRank = $classRank - 1;
+            $newClassId = Classroom::where('rank', $newClassRank)->first()->id;
+            $student->classroom_id = $newClassId;
+            $student->save();
+
+            return back()->with('success', 'Student Demoted!');
+        }
+
+        return back()->with('error', 'Student is in the Lowest class possible');
+    }
 }
