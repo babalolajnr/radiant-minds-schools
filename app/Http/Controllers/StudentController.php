@@ -342,4 +342,22 @@ class StudentController extends Controller
 
         return view('studentSettings', compact('student'));
     }
+
+    public function promote($id)
+    {
+        $student = Student::findOrFail($id);
+        $classRank = $student->classroom->rank;
+        $highestClassRank = Classroom::max('rank');
+
+        if ($classRank == $highestClassRank) {
+            return back()->with('error', 'Student is in the Maximum class possible');
+        } else {
+            $newClassRank = $classRank + 1;
+            $newClassId = Classroom::where('rank', $newClassRank)->first()->id;
+            $student->classroom_id = $newClassId;
+            $student->save();
+            
+            return back()->with('success', 'Student Promoted!');
+        }
+    }
 }
