@@ -74,4 +74,48 @@ class ResultController extends Controller
 
         return back()->with('success', 'Record created! 👍');
     }
+
+    public function showPerformanceReport($student, $academicSessionId, $termId)
+    {
+        $student = Student::findStudent($student);
+        $academicSession = AcademicSession::findOrFail($academicSessionId);
+        $term = Term::findOrFail($termId);
+
+        $student = $student->first();
+
+        $results = Result::where('student_id', $student->id)
+            ->where('academic_session_id', $academicSession->id)
+            ->where('term_id', $term->id)->get();
+
+        $maxScores = [];
+        $minScores = [];
+        $averageScores = [];
+
+        //Get each subject highest and lowest scores    
+        foreach ($results as $result) {
+
+            $scoresQuery = Result::where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
+
+            //highest scores
+            $maxScore = $scoresQuery->max('total');
+
+            $maxScore = [$result->subject->name => $maxScore];
+            $maxScores = array_merge($maxScores, $maxScore);
+
+            //Lowest scores
+            $minScore = $scoresQuery->min('total');
+
+            $minScore = [$result->subject->name => $minScore];
+            $minScores = array_merge($minScores, $minScore);
+
+            //Average Scores
+            $averageScore = $scoresQuery->pluck('total');
+            $averageScore = collect($averageScore)->avg();
+            $averageScore = [$result->subject->name => $averageScore];
+            $averageScores = array_merge($averageScores, $averageScore);
+        }
+        
+        return view('performanceReport', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
+    }
 }
