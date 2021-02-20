@@ -14,6 +14,6 @@ class ResultSeeder extends Seeder
      */
     public function run()
     {
-        Result::factory()->times(10)->create();
+        Result::factory()->times(300)->create();
     }
 }
