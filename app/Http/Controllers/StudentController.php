@@ -263,7 +263,7 @@ class StudentController extends Controller
             $averageScore = [$result->subject->name => $averageScore];
             $averageScores = array_merge($averageScores, $averageScore);
         }
-        return view('studentTermResults', compact('results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
+        return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
     }
 
     public function getSubjects($student)
