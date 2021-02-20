@@ -365,7 +365,7 @@ class StudentController extends Controller
     {
         $student = Student::findOrFail($id);
         $classRank = $student->classroom->rank;
-        $lowestClassRank = Classroom::max('rank');
+        $lowestClassRank = Classroom::min('rank');
 
         if ($classRank !== $lowestClassRank) {
             $newClassRank = $classRank - 1;
