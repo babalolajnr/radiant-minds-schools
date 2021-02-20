@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/activate/student/{id}', [StudentController::class, 'activate']);
     Route::patch('/deactivate/student/{id}', [StudentController::class, 'deactivate']);
     Route::patch('/promote/student/{id}', [StudentController::class, 'promote']);
+    Route::patch('/demote/student/{id}', [StudentController::class, 'demote']);
     Route::delete('/delete/student/{id}', [StudentController::class, 'destroy']);
     Route::delete('/forceDelete/student/{id}', [StudentController::class, 'forceDelete']);
 
