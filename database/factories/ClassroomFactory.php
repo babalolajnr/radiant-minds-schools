@@ -31,7 +31,6 @@ class ClassroomFactory extends Factory
     }
 
     public static $classes = [
-        ['name' => 'Pre nursery', 'rank' => 0],
         ['name' => 'Reception', 'rank' => 1],
         ['name' => 'Nursery 1', 'rank' => 2],
         ['name' => 'Nursery 2', 'rank' => 3],
