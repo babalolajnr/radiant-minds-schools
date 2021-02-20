@@ -99,12 +99,12 @@
                     <tbody>
                         <tr>
                             <td colspan="2">Total Obtained:</td>
-                            <td></td>
+                            <td>{{ $totalObtained }}</td>
 
                         </tr>
                         <tr>
                             <td colspan="2">Total Unobtained:</td>
-                            <td></td>
+                            <td>{{ $totalObtainable }}</td>
 
                         </tr>
                         <tr>
@@ -112,12 +112,22 @@
                         </tr>
                         <tr>
                             <td>%TAGE</td>
-                            <td colspan="2">50%</td>
+                            <td colspan="2">{{ round($percentage, 2) }}</td>
 
                         </tr>
                         <tr>
                             <td>GRADE</td>
-                            <td colspan="2">A</td>
+                            @if($percentage <= 39) <td colspan='2' class="text-red-700">F</td>
+                                @elseif($percentage >= 40 && $percentage <= 49) <td colspan='2' class="text-yellow-500">D</td>
+                                    @elseif($percentage >= 50 && $percentage <= 59) <td colspan='2' class="text-green-300">C
+                                        </td>
+                                        @elseif($percentage >= 60 && $percentage <= 69) <td colspan='2' class="text-green-600">B
+                                            </td>
+                                            @elseif($percentage >= 70 && $percentage <= 100) <td colspan='2' class="text-green-900">
+                                                A</td>
+                                                @else
+                                                <td colspan='2'></td>
+                                                @endif
                         </tr>
                     </tbody>
                 </table>
