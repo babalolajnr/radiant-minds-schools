@@ -102,6 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Result ROutes
     Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::get('/create/result/{student}', [ResultController::class, 'create']);
+    Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
 });
 
 require __DIR__ . '/auth.php';
