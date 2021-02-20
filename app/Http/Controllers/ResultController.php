@@ -90,6 +90,8 @@ class ResultController extends Controller
         $maxScores = [];
         $minScores = [];
         $averageScores = [];
+        $totalObtained = 0;
+        $totalObtainable = count($results) * 100;
 
         //Get each subject highest and lowest scores    
         foreach ($results as $result) {
@@ -114,8 +116,13 @@ class ResultController extends Controller
             $averageScore = collect($averageScore)->avg();
             $averageScore = [$result->subject->name => $averageScore];
             $averageScores = array_merge($averageScores, $averageScore);
+
+            //total obtained score
+            $totalObtained += $result->total;
         }
+
+        $percentage = $totalObtained/$totalObtainable * 100;
         
-        return view('performanceReport', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
+        return view('performanceReport', compact('student', 'totalObtained', 'totalObtainable', 'percentage', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
     }
 }
