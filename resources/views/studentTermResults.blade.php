@@ -3,12 +3,10 @@
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -42,12 +40,20 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Results</h3>
+                                <div class=" d-flex justify-content-between">
+                                    <div>
+                                        <h3 class="font-semibold">{{ $academicSession->name.' '.$term->name }}</h3>
+                                    </div>
+                                    <div>
+                                        <a href="/performanceReport/{{ $student->admission_no }}/{{ $academicSession->id }}/{{ $term->id }}">
+                                            <button type="button" class="btn btn-default">Performance Report</button>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <table id="results" class="table table-bordered table-striped">
                                     <thead>
-                                        <h3>{{ $academicSession->name.' '.$term->name }}</h3>
                                         <tr>
                                             <th>Subject</th>
                                             <th>C.A.<span class="text-red-500 pl-1">40</span></th>
