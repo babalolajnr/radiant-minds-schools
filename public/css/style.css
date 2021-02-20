@@ -1,0 +1,44 @@
+.bord{
+    width: 90%;
+}
+.bord1{
+    width: 25%;
+}
+.bord2{
+    width: 20%;
+}
+.bord3{
+    width: 20%;
+}
+.bord4{
+    width: 22%;
+}
+.bord5{
+    width: 22%;
+}
+.bord6{
+    width: 29%;
+}
+
+ .two .sub1{
+    width:700px;
+} 
+.two .sub2{
+    width: 370px;
+} 
+.two, .three{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.sub3, .sub4{
+    width: 530px;
+}
+.color{
+    color: #01013f;
+}
+
+.heading{
+    background-color: #01013f !important;
+    color: gold;
+}
