@@ -349,15 +349,18 @@ class StudentController extends Controller
         $classRank = $student->classroom->rank;
         $highestClassRank = Classroom::max('rank');
 
-        if ($classRank == $highestClassRank) {
-            return back()->with('error', 'Student is in the Maximum class possible');
-        } else {
+        if ($classRank !== $highestClassRank) {
             $newClassRank = $classRank + 1;
             $newClassId = Classroom::where('rank', $newClassRank)->first()->id;
             $student->classroom_id = $newClassId;
             $student->save();
-            
+
             return back()->with('success', 'Student Promoted!');
         }
+
+        return back()->with('error', 'Student is in the Maximum class possible');
+
     }
+
+    // public function demote
 }
