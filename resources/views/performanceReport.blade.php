@@ -21,28 +21,28 @@
             <small class="text-muted h4">STUDENT'S PERFORMANCE REPORT</small>
         </h1>
         <div class="one">
-            <form class="p-3">
+            <div class="p-3">
                 <div class="row mt-2">
                     <label class="col-sm-1">NAME:</label>
-                    <div class="col-sm-11 bord border-bottom "></div>
+                    <div class="col-sm-11 bord border-bottom ">{{ $student->first_name. ' ' . $student->last_name }}</div>
                 </div>
                 <div class="row mt-3">
                     <label class="col-sm-1">CLASS:</label>
-                    <div class="col-sm-3 bord1 border-bottom "></div>
+                    <div class="col-sm-3 bord1 border-bottom ">{{ $student->classroom->name }}</div>
                     <label class="col-sm-1">SESSION:</label>
-                    <div class="col-sm-3 bord2 border-bottom "></div>
+                    <div class="col-sm-3 bord2 border-bottom ">{{ $academicSession->name }}</div>
                     <label class="col-sm-2">ADMISSION NO:</label>
-                    <div class="col-sm-3 mr-5 bord3 border-bottom "></div>
+                    <div class="col-sm-3 mr-5 bord3 border-bottom ">{{ $student->admission_no }}</div>
                 </div>
                 <div class="row mt-3 mb-4">
                     <label class="col-sm-1">DOB:</label>
-                    <div class=" col-sm-3 bord4 border-bottom "></div>
+                    <div class=" col-sm-3 bord4 border-bottom ">{{ $student->date_of_birth }}</div>
                     <label class="col-sm-1">AGE:</label>
-                    <div class="col-sm=3 bord5 border-bottom "></div>
+                    <div class="col-sm=3 bord5 border-bottom ">{{ $age }}</div>
                     <label class="col-sm-1">GENDER:</label>
-                    <div class="col-sm-3 bord6 border-bottom "></div>
+                    <div class="col-sm-3 bord6 border-bottom ">{{ $student->sex }}</div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="two ">
             <div class="sub1">
