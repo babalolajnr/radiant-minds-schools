@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -98,28 +98,26 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Total Obtained:</td>
+                            <td colspan="2">Total Obtained:</td>
                             <td></td>
 
                         </tr>
                         <tr>
-                            <td>Total Unobtained:</td>
+                            <td colspan="2">Total Unobtained:</td>
                             <td></td>
 
                         </tr>
                         <tr>
-                            <td colspan="2"> Empty</td>
-
+                            <td colspan="3" class='py-3'></td>
                         </tr>
                         <tr>
                             <td>%TAGE</td>
-                            <td></td>
+                            <td colspan="2">50%</td>
 
                         </tr>
                         <tr>
                             <td>GRADE</td>
-                            <td></td>
-
+                            <td colspan="2">A</td>
                         </tr>
                     </tbody>
                 </table>
