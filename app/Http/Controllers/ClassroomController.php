@@ -57,8 +57,9 @@ class ClassroomController extends Controller
         $students = $classroom->students->all();
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
+        $subjects = $classroom->subjects->all();
 
-        return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms'));
+        return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms', 'subjects'));
     }
 
     public function destroy($id, Classroom $classroom)

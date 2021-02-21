@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -39,18 +40,18 @@
                         {{-- Teacher --}}
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Class teacher</h3>
+                                <span class="font-semibold">Class teacher</span>
                             </div>
                             <div class="card-body">
-                                <h3 class="font-semibold">
-                                    {{ $classroom->teacher->first_name . ' ' .$classroom->teacher->last_name }}
-                                </h3>
+                                <span class="">
+                                    {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
+                                </span>
                             </div>
                         </div>
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Students</h3>
+                                <span class="font-semibold">Students</span>
                             </div>
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
@@ -67,72 +68,72 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                            $no = 1;
-                                        ?>
-                                        @foreach($students as $student)
-                                        <tr>
-                                            <td>
-                                                <?php
+                                        <?php $no = 1; ?>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td>
+                                                    <?php
                                                     echo $no;
                                                     $no++;
-                                                ?>
-                                            </td>
-                                            <td>{{ $student->admission_no }}</td>
-                                            <td>
-                                                {{ $student->first_name }}
-                                            </td>
-                                            <td>
-                                                {{ $student->last_name }}
-                                            </td>
-                                            <td>
-                                                {{ $student->sex }}
-                                            </td>
-                                            <td>
-                                                {{ $student->guardian->title. ' '. $student->guardian->first_name. ' '. $student->guardian->last_name }}
-                                            </td>
-                                            <td>{{ $student->status }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button" id="viewStudentButton"
-                                                        data-admission-no={{ $student->admission_no }}
-                                                        class="btn btn-default btn-flat"
-                                                        onclick="showViewModal({{ $student }}, {{ $classroom }})"
-                                                        title="View">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button type="button" onclick="showEditModal({{ $student }})"
-                                                        class="btn btn-default btn-flat" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    {{-- render if user is authorized to delete --}}
-                                                    @can('delete', $student)
-                                                    <form action="/delete/student/{{ $student->id }}" method="POST">
-                                                        @method('DELETE')
-                                                        @csrf
+                                                    ?>
+                                                </td>
+                                                <td>{{ $student->admission_no }}</td>
+                                                <td>
+                                                    {{ $student->first_name }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->last_name }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->sex }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->guardian->title . ' ' . $student->guardian->first_name . ' ' . $student->guardian->last_name }}
+                                                </td>
+                                                <td>{{ $student->status }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" id="viewStudentButton"
+                                                            data-admission-no={{ $student->admission_no }}
+                                                            class="btn btn-default btn-flat"
+                                                            onclick="showViewModal({{ $student }}, {{ $classroom }})"
+                                                            title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                            onclick="showEditModal({{ $student }})"
+                                                            class="btn btn-default btn-flat" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        {{-- render if user is authorized to delete --}}
+                                                        @can('delete', $student)
+                                                            <form action="/delete/student/{{ $student->id }}"
+                                                                method="POST">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-default btn-flat"
+                                                                    title="Delete">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endcan
+
+                                                        {{-- render if user is not authorized to delete --}}
+                                                        @cannot('delete', $student)
                                                         <button type="submit" class="btn btn-default btn-flat"
-                                                            title="Delete">
+                                                            title="Delete" disabled>
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                    </form>
-                                                    @endcan
+                                                        @endcannot
 
-                                                    {{-- render if user is not authorized to delete --}}
-                                                    @cannot('delete', $student)
-                                                    <button type="submit" class="btn btn-default btn-flat"
-                                                        title="Delete" disabled>
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcannot
-
-                                                    <a href="/studentSettings/{{ $student->admission_no }}">
-                                                        <button type="button" class="btn btn-default btn-flat">
-                                                            <i class="fas fa-cogs"></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        <a href="/studentSettings/{{ $student->admission_no }}">
+                                                            <button type="button" class="btn btn-default btn-flat">
+                                                                <i class="fas fa-cogs"></i>
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -148,6 +149,18 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="card col-lg-6">
+                            <div class="card-header">
+                                <span class="font-semibold">Subjects</span>
+                            </div>
+                            <div class="card-body">
+                                @foreach ($subjects as $subject)
+                                    <div class="callout callout-info">
+                                        <span>{{ $subject->name }}</span>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -203,13 +216,13 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
+                                        <option @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -246,13 +259,13 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
+                                        <option @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -260,13 +273,13 @@
                                 <label>Term</label>
                                 <select class="form-control select2" name="term" style="width: 100%;">
                                     @foreach ($terms as $term)
-                                    <option @if (old('term')==$term ) SELECTED @endif>
-                                        {{ $term->name }}
-                                    </option>
+                                        <option @if (old('term') == $term) SELECTED @endif>
+                                            {{ $term->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('term')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -546,7 +559,7 @@
             }
 
             //launch toastr 
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
@@ -560,7 +573,7 @@
             });
 
             //datatables
-            $(function () {
+            $(function() {
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
