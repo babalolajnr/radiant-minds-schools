@@ -24,7 +24,8 @@
             <div class="p-3">
                 <div class="row mt-2">
                     <label class="col-sm-1">NAME:</label>
-                    <div class="col-sm-11 bord border-bottom ">{{ $student->first_name. ' ' . $student->last_name }}</div>
+                    <div class="col-sm-11 bord border-bottom ">{{ $student->first_name . ' ' . $student->last_name }}
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <label class="col-sm-1">CLASS:</label>
@@ -61,29 +62,43 @@
                     </thead>
                     <tbody>
 
-                        @foreach($results as $key => $result)
-                        <tr>
-                            <td>{{ $result->subject->name }}</td>
-                            <td>{{ $result->ca }}</td>
-                            <td>{{ $result->exam }}</td>
-                            <td>{{ $result->total }}</td>
-                            <td>{{ $maxScores[$result->subject->name] }}
-                            <td>{{ $minScores[$result->subject->name] }}
-                            </td>
-                            <td>{{ round($averageScores[$result->subject->name], 2) }}
-                            </td>
-                            @if($result->total <= 39) <td class="text-red-700">F</td>
-                                @elseif($result->total >= 40 && $result->total <= 49) <td class="text-yellow-500">D</td>
-                                    @elseif($result->total >= 50 && $result->total <= 59) <td class="text-green-300">C
-                                        </td>
-                                        @elseif($result->total >= 60 && $result->total <= 69) <td
-                                            class="text-green-600">B</td>
-                                            @elseif($result->total >= 70 && $result->total <= 100) <td
-                                                class="text-green-900">A</td>
-                                                @else
-                                                <td></td>
-                                                @endif
-                        </tr>
+                        @foreach ($results as $key => $result)
+                            <tr>
+                                <td>{{ $key }}</td>
+                                @if ($result == null)
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                @else
+                                    <td>{{ $result->ca }}</td>
+                                    <td>{{ $result->exam }}</td>
+                                    <td>{{ $result->total }}</td>
+                                    <td>{{ $maxScores[$result->subject->name] }}
+                                    <td>{{ $minScores[$result->subject->name] }}
+                                    </td>
+                                    <td>{{ round($averageScores[$result->subject->name], 2) }}
+                                    </td>
+                                    @if ($result->total <= 39)
+                                        <td class="text-red-700">F</td>
+                                    @elseif($result->total >= 40 && $result->total <= 49) <td
+                                            class="text-yellow-500">D</td>
+                                        @elseif($result->total >= 50 && $result->total <= 59) <td
+                                                class="text-green-300">C
+                                                </td>
+                                            @elseif($result->total >= 60 && $result->total <= 69) <td
+                                                    class="text-green-600">B</td>
+                                                @elseif($result->total >= 70 && $result->total <= 100) <td
+                                                        class="text-green-900">A</td>
+                                                    @else
+                                                        <td></td>
+                                    @endif
+                                @endif
+
+                            </tr>
                         @endforeach
                     </tbody>
 
@@ -117,17 +132,22 @@
                         </tr>
                         <tr>
                             <td>GRADE</td>
-                            @if($percentage <= 39) <td colspan='2' class="text-red-700">F</td>
-                                @elseif($percentage >= 40 && $percentage <= 49) <td colspan='2' class="text-yellow-500">D</td>
-                                    @elseif($percentage >= 50 && $percentage <= 59) <td colspan='2' class="text-green-300">C
+                            @if ($percentage <= 39)
+                                <td colspan='2' class="text-red-700">F</td>
+                            @elseif($percentage >= 40 && $percentage <= 49) <td colspan='2' class="text-yellow-500">
+                                    D</td>
+                                @elseif($percentage >= 50 && $percentage <= 59) <td colspan='2'
+                                        class="text-green-300">C
                                         </td>
-                                        @elseif($percentage >= 60 && $percentage <= 69) <td colspan='2' class="text-green-600">B
+                                    @elseif($percentage >= 60 && $percentage <= 69) <td colspan='2'
+                                            class="text-green-600">B
                                             </td>
-                                            @elseif($percentage >= 70 && $percentage <= 100) <td colspan='2' class="text-green-900">
+                                        @elseif($percentage >= 70 && $percentage <= 100) <td colspan='2'
+                                                class="text-green-900">
                                                 A</td>
-                                                @else
+                                            @else
                                                 <td colspan='2'></td>
-                                                @endif
+                            @endif
                         </tr>
                     </tbody>
                 </table>
