@@ -15,6 +15,11 @@ class CreatePDSTable extends Migration
     {
         Schema::create('p_d_s', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->enum('value', [1,2,3,4,5]);
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('academic_session_id')->constrained('academic_sessions')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('term_id')->constrained('terms')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
     }
