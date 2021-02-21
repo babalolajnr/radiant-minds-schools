@@ -14,4 +14,9 @@ class Term extends Model
     {
         return $this->hasMany(Result::class);
     }
+
+    public function pds()
+    {
+        return $this->hasMany(PD::class);
+    }
 }

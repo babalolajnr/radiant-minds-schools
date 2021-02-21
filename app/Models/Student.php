@@ -27,6 +27,11 @@ class Student extends Model
         return $this->hasMany(Result::class);
     }
 
+    public function pds()
+    {
+        return $this->hasMany(PD::class);
+    }
+
     //check if student exists
     public static function findStudent($admission_no) {
 

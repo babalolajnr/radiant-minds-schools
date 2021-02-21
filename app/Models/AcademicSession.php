@@ -16,6 +16,11 @@ class AcademicSession extends Model
         return $this->hasMany(Result::class);
     }
 
+    public function pds()
+    {
+        return $this->hasMany(PD::class);
+    }
+
     //get current academic Session
     public static function currentAcademicSession()
     {

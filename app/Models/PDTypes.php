@@ -11,7 +11,7 @@ class PDTypes extends Model
     protected $table = 'p_d_types';
     protected $fillable = ['name'];
 
-    public function pd()
+    public function pds()
     {
         return $this->hasMany(PD::class);
     }
