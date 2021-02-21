@@ -84,45 +84,66 @@ class ResultController extends Controller
 
         $student = $student->first();
 
-        $results = Result::where('student_id', $student->id)
-            ->where('academic_session_id', $academicSession->id)
-            ->where('term_id', $term->id)->get();
+        //Get the subjects for the student's class
+        $subjects = $student->classroom->subjects;
+        $results = [];
+
+        //create a results array from all subjects from the student's class
+        foreach ($subjects as $subject) {
+            $result = Result::where('student_id', $student->id)
+                ->where('academic_session_id', $academicSession->id)
+                ->where('term_id', $term->id)->where('subject_id', $subject->id)->first();
+
+            $result = [$subject->name => $result];
+            $results = array_merge($results, $result);
+        }
 
         $maxScores = [];
         $minScores = [];
         $averageScores = [];
         $totalObtained = 0;
-        $totalObtainable = count($results) * 100;
+        $totalObtainable = count($subjects) * 100;
         $currentDate = now()->year;
         $yearOfBirth = Carbon::createFromFormat('Y-m-d', $student->date_of_birth)->format('Y');
         $age = $currentDate - $yearOfBirth;
 
-        //Get each subject highest and lowest scores    
-        foreach ($results as $result) {
+        //Get class score statistics
+        foreach ($results as $key => $result) {
 
-            $scoresQuery = Result::where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
+            if ($result == null) {
+                $maxScore = [$key => null];
+                $maxScores = array_merge($maxScores, $maxScore);
 
-            //highest scores
-            $maxScore = $scoresQuery->max('total');
+                $minScore = [$key => null];
+                $minScores = array_merge($minScores, $minScore);
 
-            $maxScore = [$result->subject->name => $maxScore];
-            $maxScores = array_merge($maxScores, $maxScore);
+                $averageScore = [$key => null];
+                $averageScores = array_merge($averageScores, $averageScore);
+            } else {
+                $scoresQuery = Result::where('academic_session_id', $academicSession->id)
+                    ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
 
-            //Lowest scores
-            $minScore = $scoresQuery->min('total');
+                //highest scores
+                $maxScore = $scoresQuery->max('total');
 
-            $minScore = [$result->subject->name => $minScore];
-            $minScores = array_merge($minScores, $minScore);
+                $maxScore = [$key => $maxScore];
+                $maxScores = array_merge($maxScores, $maxScore);
 
-            //Average Scores
-            $averageScore = $scoresQuery->pluck('total');
-            $averageScore = collect($averageScore)->avg();
-            $averageScore = [$result->subject->name => $averageScore];
-            $averageScores = array_merge($averageScores, $averageScore);
+                //Lowest scores
+                $minScore = $scoresQuery->min('total');
 
-            //total obtained score
-            $totalObtained += $result->total;
+                $minScore = [$key => $minScore];
+                $minScores = array_merge($minScores, $minScore);
+
+                //Average Scores
+                $averageScore = $scoresQuery->pluck('total');
+                $averageScore = collect($averageScore)->avg();
+                $averageScore = [$key => $averageScore];
+                $averageScores = array_merge($averageScores, $averageScore);
+
+                //total obtained score
+                $totalObtained += $result->total;
+            }
         }
 
         $percentage = $totalObtained / $totalObtainable * 100;
