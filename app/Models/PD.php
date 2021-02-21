@@ -13,16 +13,21 @@ class PD extends Model
 
     public function student()
     {
-        $this->belongsTo(Student::class);
+       return $this->belongsTo(Student::class);
     }
 
     public function academicSession()
     {
-        $this->belongsTo(AcademicSession::class);
+       return $this->belongsTo(AcademicSession::class);
     }
 
     public function term()
     {
-        $this->belongsTo(Term::class);
+       return $this->belongsTo(Term::class);
+    }
+
+    public function pdType()
+    {
+        return $this->belongsTo(PDTypes::class);
     }
 }
