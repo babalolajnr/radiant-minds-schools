@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -58,66 +59,65 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                            $no = 1;
-                                        ?>
-                                        @foreach($students as $student)
-                                        <tr>
-                                            <td>
-                                                <?php
+                                        <?php $no = 1; ?>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td>
+                                                    <?php
                                                     echo $no;
                                                     $no++;
-                                                ?>
-                                            </td>
-                                            <td>{{ $student->admission_no }}</td>
-                                            <td>
-                                                {{ $student->first_name }}
-                                            </td>
-                                            <td>
-                                                {{ $student->last_name }}
-                                            </td>
-                                            <td>
-                                                {{ $student->sex }}
-                                            </td>
-                                            <td>
-                                                {{ $student->classroom->name }}
-                                            </td>
-                                            <td>
-                                                {{ $student->guardian->title. ' '. $student->guardian->first_name. ' '. $student->guardian->last_name }}
-                                            </td>
-                                            <td>{{ $student->status }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button" id="viewStudentButton"
-                                                        data-admission-no={{ $student->admission_no }}
-                                                        class="btn btn-default btn-flat"
-                                                        onclick="showViewModal({{ $student }})" title="View">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button type="button" onclick="showEditModal({{ $student }})"
-                                                        class="btn btn-default btn-flat" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    {{-- render if user is authorized to delete --}}
-                                                    @can('delete', $student)
-                                                    <button type="submit" class="btn btn-default btn-flat"
-                                                        title="Delete"
-                                                        onclick="deleteConfirmationModal({{ $student }})">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    {{-- TODO: Add confirmation modal --}}
-                                                    @endcan
+                                                    ?>
+                                                </td>
+                                                <td>{{ $student->admission_no }}</td>
+                                                <td>
+                                                    {{ $student->first_name }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->last_name }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->sex }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->classroom->name }}
+                                                </td>
+                                                <td>
+                                                    {{ $student->guardian->title . ' ' . $student->guardian->first_name . ' ' . $student->guardian->last_name }}
+                                                </td>
+                                                <td>{{ $student->status }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" id="viewStudentButton"
+                                                            data-admission-no={{ $student->admission_no }}
+                                                            class="btn btn-default btn-flat"
+                                                            onclick="showViewModal({{ $student }})" title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                            onclick="showEditModal({{ $student }})"
+                                                            class="btn btn-default btn-flat" title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        {{-- render if user is authorized to delete --}}
+                                                        @can('delete', $student)
+                                                            <button type="submit" class="btn btn-default btn-flat"
+                                                                title="Delete"
+                                                                onclick="deleteConfirmationModal({{ $student }})">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                            {{-- TODO: Add confirmation modal --}}
+                                                        @endcan
 
-                                                    {{-- render if user is not authorized to delete --}}
-                                                    @cannot('delete', $student)
-                                                    <button type="submit" class="btn btn-default btn-flat"
-                                                        title="Delete" disabled>
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcannot
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        {{-- render if user is not authorized to delete --}}
+                                                        @cannot('delete', $student)
+                                                        <button type="submit" class="btn btn-default btn-flat"
+                                                            title="Delete" disabled>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                        @endcannot
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -216,13 +216,13 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                    <option @if ($academicSession->isCurrentAcademicSession()) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
+                                        <option @if ($academicSession->isCurrentAcademicSession()) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -259,13 +259,13 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" name="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession')==$academicSession ) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
+                                        <option @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('academicSession')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -273,13 +273,13 @@
                                 <label>Term</label>
                                 <select class="form-control select2" name="term" style="width: 100%;">
                                     @foreach ($terms as $term)
-                                    <option @if (old('term')==$term ) SELECTED @endif>
-                                        {{ $term->name }}
-                                    </option>
+                                        <option @if (old('term') == $term) SELECTED @endif>
+                                            {{ $term->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('term')
-                                <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
 
                             </div>
@@ -350,11 +350,11 @@
                                             <div class="tab-content">
                                                 <div class="active tab-pane" id="about">
                                                     <strong></i>Class</strong>
+                                                    <a href="" id="classLink">
+                                                        <p class="text-muted" id="classroom">
 
-                                                    <p class="text-muted" id="classroom">
-
-                                                    </p>
-
+                                                        </p>
+                                                    </a>
                                                     <hr>
 
                                                     <strong></i>Local
@@ -457,7 +457,7 @@
                                                                 </div>
                                                             </div>
                                                             @error('image')
-                                                            <div class="text-danger">{{ $message }}</div>
+                                                                <div class="text-danger">{{ $message }}</div>
                                                             @enderror
                                                         </div>
                                                     </form>
@@ -597,12 +597,15 @@
                     $('#studentImage').attr('src', data.image)
                 }
 
+                const classLink = '/view/classroom/' + data.classroom.id
+                $('#classLink').attr('href', classLink)
+
                 //show modal
                 $('#viewModal').modal('show')
             }
 
             //launch toastr
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
@@ -616,7 +619,7 @@
             });
 
             //datatables
-            $(function () {
+            $(function() {
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
