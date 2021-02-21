@@ -597,6 +597,7 @@
                     $('#studentImage').attr('src', data.image)
                 }
 
+                //class link
                 const classLink = '/view/classroom/' + data.classroom.id
                 $('#classLink').attr('href', classLink)
 
