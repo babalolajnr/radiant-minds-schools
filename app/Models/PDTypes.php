@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PDTypes extends Model
 {
     use HasFactory;
+    protected $table = 'p_d_types';
+    protected $fillable = ['name'];
+
+    public function pd()
+    {
+        return $this->hasMany(PD::class);
+    }
 }
