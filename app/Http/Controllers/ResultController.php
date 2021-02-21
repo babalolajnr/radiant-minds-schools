@@ -7,6 +7,7 @@ use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Term;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
@@ -92,6 +93,9 @@ class ResultController extends Controller
         $averageScores = [];
         $totalObtained = 0;
         $totalObtainable = count($results) * 100;
+        $currentDate = now()->year;
+        $yearOfBirth = Carbon::createFromFormat('Y-m-d', $student->date_of_birth)->format('Y');
+        $age = $currentDate - $yearOfBirth;
 
         //Get each subject highest and lowest scores    
         foreach ($results as $result) {
@@ -121,8 +125,20 @@ class ResultController extends Controller
             $totalObtained += $result->total;
         }
 
-        $percentage = $totalObtained/$totalObtainable * 100;
-        
-        return view('performanceReport', compact('student', 'totalObtained', 'totalObtainable', 'percentage', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
+        $percentage = $totalObtained / $totalObtainable * 100;
+
+        return view('performanceReport', compact(
+            'student',
+            'totalObtained',
+            'totalObtainable',
+            'percentage',
+            'results',
+            'academicSession',
+            'term',
+            'maxScores',
+            'averageScores',
+            'minScores',
+            'age'
+        ));
     }
 }
