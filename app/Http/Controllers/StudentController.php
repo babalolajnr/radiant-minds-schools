@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
+use App\Models\PDTypes;
 use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
@@ -339,8 +340,9 @@ class StudentController extends Controller
     {
         $student = Student::findStudent($student);
         $student = $student->first();
+        $pdTypes = PDTypes::all();
 
-        return view('studentSettings', compact('student'));
+        return view('studentSettings', compact('student', 'pdTypes'));
     }
 
     public function promote($id)
