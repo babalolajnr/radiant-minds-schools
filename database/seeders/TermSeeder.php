@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Term;
+use Database\Factories\TermFactory;
 use Illuminate\Database\Seeder;
 
 class TermSeeder extends Seeder
@@ -14,17 +15,6 @@ class TermSeeder extends Seeder
      */
     public function run()
     {
-        $terms = [
-            'First Term',
-            'Second Term',
-            'Third Term',
-        ];
-        foreach ($terms as $term) {
-            Term::create(
-                [
-                    'name' => $term,
-                ]
-            );
-        }
+        Term::factory()->times(count(TermFactory::$terms))->create();
     }
 }
