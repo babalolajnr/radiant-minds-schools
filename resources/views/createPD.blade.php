@@ -46,7 +46,9 @@
                                 <h3 class="card-title">{{ $student->first_name . ' ' . $student->last_name }}</h3>
                             </div>
                             {{-- PD --}}
-                            <form action="">
+
+                            <form action="/store/pd/{{ $student->id }}" method="POST">
+                                @csrf
                                 <div class="card-body">
                                     <!-- radio -->
                                     @foreach ($pdTypes as $pdType)
@@ -54,7 +56,11 @@
                                             <label for="customRange1">{{ $pdType->name }}<span
                                                     class="font-light pl-4">range(1-5)</span></label>
                                             <input type="range" class="custom-range" min="1" max="5"
-                                                name="{{ $pdType->slug }}" id="{{ $pdType->slug }}">
+                                                name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}">
+                                            {{-- @error('pdTypes.{{ $pdType->slug }}')
+                                                Error
+                                            @enderror --}}
+                                            @if ($errors->has('pdTypes.{{ $pdType->slug }}')) Error @endif
                                         </div>
                                     @endforeach
                                     <div class="form-group">
