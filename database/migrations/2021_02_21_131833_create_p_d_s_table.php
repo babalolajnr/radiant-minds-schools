@@ -17,7 +17,6 @@ class CreatePDSTable extends Migration
             $table->id();
             $table->enum('value', [1,2,3,4,5]);
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('p_d_type_id')->constrained('p_d_types')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('academic_session_id')->constrained('academic_sessions')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('term_id')->constrained('terms')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
