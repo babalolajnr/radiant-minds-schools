@@ -21,13 +21,14 @@ class TermFactory extends Factory
      */
     public function definition()
     {
-        $terms = [
-            'First Term',
-            'Second Term',
-            'Third Term',
-        ];
         return [
-            'name' => $this->faker->unique()->randomElement($terms),
+            'name' => $this->faker->unique()->randomElement(self::$terms),
         ];
     }
+
+    public static $terms = [
+        'First Term',
+        'Second Term',
+        'Third Term',
+    ];
 }
