@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -41,7 +42,7 @@
                         {{-- Teacher --}}
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ $student->first_name.' '.$student->last_name }}</h3>
+                                <h3 class="card-title">{{ $student->first_name . ' ' . $student->last_name }}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-horizontal">
@@ -53,27 +54,30 @@
                                                 <form action="/activate/student/{{ $student->id }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit"
-                                                        class="btn @if ($student->status == 'active') btn-primary disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'active') disabled @endif>
+                                                    <button type="submit" class="btn @if ($student->status == 'active') btn-primary
+                                                    disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'active') disabled
+                                                        @endif>
                                                         Activate
                                                     </button>
                                                 </form>
                                                 <form action="/suspend/student/{{ $student->id }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit"
-                                                        class="btn @if ($student->status == 'suspended') btn-primary disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'suspended') disabled @endif>
+                                                    <button type="submit" class="btn @if ($student->status == 'suspended') btn-primary
+                                                    disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'suspended') disabled
+                                                        @endif>
                                                         Suspend
                                                     </button>
                                                 </form>
                                                 <form action="/deactivate/student/{{ $student->id }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit"
-                                                        class="btn @if ($student->status == 'inactive') btn-primary disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'inactive') disabled @endif>
+                                                    <button type="submit" class="btn @if ($student->status == 'inactive') btn-primary
+                                                    disabled @else btn-default @endif btn-flat"
+                                                        @if ($student->status == 'inactive') disabled
+                                                        @endif>
                                                         Deactivate
                                                     </button>
                                                 </form>
@@ -105,6 +109,20 @@
                                         </div>
                                     </div>
                                     {{-- /class --}}
+
+                                    {{-- PD --}}
+                                    <div class="form-group row">
+                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor Domain(Current
+                                            Session)</label>
+                                        <div class="col-sm-6">
+                                            <a href="/create/pd/{{ $student->id }}">
+                                                <button type="button" class="btn btn-info btn-flat">
+                                                    Create Psychomotor domain
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {{-- /PD --}}
                                 </div>
                             </div>
                         </div>
@@ -143,85 +161,8 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            // Display edit modal
-            function showEditModal(data) {
-                let editStudentUrl = '/edit/student/' + data.admission_no
-                let editGuardianUrl = '/edit/guardian/' + data.guardian.phone
-                $('#editStudentButton').attr("href", editStudentUrl)
-                $('#editGuardianButton').attr("href", editGuardianUrl)
-                $('#editModal').modal('show')
-            }
-
-            function addNewResult() {
-                const student = $('#showSessionalResultButton').data('student')
-
-                const createResultUrl = '/create/result/' + student.admission_no
-                window.location.href = createResultUrl
-
-            }
-
-            // display sessional result modal
-            function showSessionalResultModal() {
-
-                $('#viewModal').modal('hide')
-
-                // get the student data attribute
-                const student = $('#showSessionalResultButton').data('student')
-
-                // fill results form
-                const ResultUrl = '/results/sessional/student/' + student.admission_no
-                $('#sessionalResultModal #getResult').attr("action", ResultUrl)
-
-                $('#sessionalResultModal').modal('show')
-            }
-
-            //display term result modal
-            function showTermResultModal() {
-
-                $('#viewModal').modal('hide')
-
-                // get the student data attribute
-                const student = $('#showSessionalResultButton').data('student')
-
-                // fill results form
-                const ResultUrl = '/results/term/student/' + student.admission_no
-                $('#termResultModal #getResult').attr("action", ResultUrl)
-
-                $('#termResultModal').modal('show')
-            }
-
-            function showViewModal(data, classroom) {
-                const fullname = data.first_name + ' ' + data.last_name
-                const gFullname = data.guardian.title + ' ' + data.guardian.first_name + ' ' + data.guardian.last_name
-
-                //fill student info in the modal
-                $('#viewModal .profile-username').html(fullname)
-                $('#viewModal #admissionNo').html(data.admission_no)
-                $('#viewModal #classroom').html(classroom.name)
-                $('#viewModal #lg').html(data.lg)
-                $('#viewModal #state').html(data.state)
-                $('#viewModal #dob').html(data.date_of_birth)
-                $('#viewModal #pob').html(data.place_of_birth)
-                $('#viewModal #bloodGroup').html(data.blood_group)
-                $('#viewModal #status').html(data.status)
-
-                //fill guardian info in the modal
-                $('#viewModal #gFullname').html(gFullname)
-                $('#viewModal #gOccupation').html(data.guardian.occupation)
-                $('#viewModal #gEmail').html(data.guardian.email)
-                $('#viewModal #gPhone').html(data.guardian.phone)
-                $('#viewModal #gAddress').html(data.guardian.address)
-
-                //results info
-                //set the data-attribute of the button to contain the student info
-                $('#showSessionalResultButton').data('student', data)
-
-                //show modal
-                $('#viewModal').modal('show')
-            }
-
             //launch toastr 
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
 
@@ -241,17 +182,6 @@
                         subtitle: 'Close',
                         body: JSON.parse(Error.dataset.errorMessage)
                     })
-
-            });
-
-            //datatables
-            $(function () {
-                $("#example1").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print"]
-                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             });
 
