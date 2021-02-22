@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\PDTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PDTypesFactory extends Factory
 {
@@ -21,8 +22,20 @@ class PDTypesFactory extends Factory
      */
     public function definition()
     {
+        $pdType = $this->faker->unique()->randomElement(self::$pdTypes);
+        $slug = Str::of($pdType)->slug('-');
         return [
-            //
+            'name' => $pdType,
+            'slug' => $slug
         ];
     }
+
+    public static $pdTypes = [
+        'Handwriting',
+        'Fluency',
+        'Sports',
+        'Crafts',
+        'Drawing',
+        'Public Speaking'
+    ];
 }
