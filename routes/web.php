@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\PDController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -103,6 +104,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::get('/create/result/{student}', [ResultController::class, 'create']);
     Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
+
+    //Pychomotor Domain Routes
+    Route::get('/create/pd/{id}', [PDController::class, 'create']);
+
 });
 
 require __DIR__ . '/auth.php';
