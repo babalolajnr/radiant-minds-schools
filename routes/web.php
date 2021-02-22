@@ -107,6 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Pychomotor Domain Routes
     Route::get('/create/pd/{id}', [PDController::class, 'create']);
+    Route::post('/store/pd/{id}', [PDController::class, 'store']);
 
 });
 
