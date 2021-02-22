@@ -6,7 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
-use App\Models\PDTypes;
+use App\Models\PDType;
 use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
@@ -340,7 +340,7 @@ class StudentController extends Controller
     {
         $student = Student::findStudent($student);
         $student = $student->first();
-        $pdTypes = PDTypes::all();
+        $pdTypes = PDType::all();
 
         return view('studentSettings', compact('student', 'pdTypes'));
     }

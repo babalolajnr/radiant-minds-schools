@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\PDTypes;
+use App\Models\PDType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -13,7 +13,7 @@ class PDTypesFactory extends Factory
      *
      * @var string
      */
-    protected $model = PDTypes::class;
+    protected $model = PDType::class;
 
     /**
      * Define the model's default state.

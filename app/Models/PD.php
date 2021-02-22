@@ -32,6 +32,6 @@ class PD extends Model
 
    public function pdType()
    {
-      return $this->belongsTo(PDTypes::class);
+      return $this->belongsTo(PDType::class);
    }
 }

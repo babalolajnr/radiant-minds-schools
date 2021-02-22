@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PDTypes extends Model
+class PDType extends Model
 {
     use HasFactory;
     protected $table = 'p_d_types';
