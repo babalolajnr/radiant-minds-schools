@@ -112,8 +112,7 @@
 
                                     {{-- PD --}}
                                     <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor Domain(Current
-                                            Session)</label>
+                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor Domain({{ $currentAcademicSession->name }})</label>
                                         <div class="col-sm-6">
                                             <a href="/create/pd/{{ $student->id }}">
                                                 <button type="button" class="btn btn-info btn-flat">
