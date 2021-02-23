@@ -34,9 +34,11 @@ class StudentFactory extends Factory
             Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
             $classroom = Classroom::inRandomOrder()->first();
         }
+
+        $guardian = Guardian::factory()->create();
         return [
             'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
+            'last_name' => $guardian->last_name,
             'sex' => $this->faker->randomElement(['M', 'F']),
             'admission_no' => Str::random(6),
             'lg' => $this->faker->state,
@@ -46,7 +48,7 @@ class StudentFactory extends Factory
             'classroom_id' => $classroom,
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
             'place_of_birth' => $this->faker->address,
-            'guardian_id' => Guardian::factory()->create()->id,
+            'guardian_id' => $guardian->id,
             'status' => $this->faker->randomElement(['active', 'suspended', 'inactive'])
         ];
     }
