@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class SubjectFactory extends Factory
 {
@@ -22,8 +23,12 @@ class SubjectFactory extends Factory
     public function definition()
     {
 
+        $subject = $this->faker->unique()->randomElement(self::$subjects);
+        $slug = Str::of($subject)->slug('-');
+
         return [
-            'name' => $this->faker->unique()->randomElement(self::$subjects),
+            'name' => $subject,
+            'slug' => $slug
         ];
     }
 
