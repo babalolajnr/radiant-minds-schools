@@ -12,7 +12,8 @@ use Illuminate\Validation\ValidationException;
 
 class ClassroomController extends Controller
 {
-    private function classroomValidation($request){
+    private function classroomValidation($request)
+    {
 
         $messages = [
             'name.unique' => 'Classroom Exists'
@@ -23,7 +24,6 @@ class ClassroomController extends Controller
         ], $messages);
 
         return $validatedData;
-
     }
 
     public function index()
@@ -108,20 +108,17 @@ class ClassroomController extends Controller
         ]);
 
         $subjects = $request->subjects;
+        $subjectIds = [];
 
         foreach ($subjects as $subject) {
 
-            $checkUniqueness = $classroom->subjects()->where('name', $subject)->first();
-
-            if (!is_null($checkUniqueness)) {
-                throw ValidationException::withMessages(['subjects' => $subject . ' is already registered']);
-            }
-
-            $subjectID = Subject::where('name', $subject)->first()->id;
-
-            $classroom->subjects()->attach($subjectID);
+            $subjectId = Subject::where('name', $subject)->first()->id;
+            array_push($subjectIds, $subjectId);
         }
 
-        return response(200);
+        $classroom->subjects()->sync($subjectIds);
+
+
+        return back()->with('success', 'Subjects set successfully');
     }
 }
