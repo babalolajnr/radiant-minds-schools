@@ -153,7 +153,14 @@
                         </div>
                         <div class="card col-lg-6">
                             <div class="card-header">
-                                <span class="font-semibold">Subjects</span>
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <span class="font-semibold">Subjects</span>
+                                    <span>
+                                        <a href="/set/classroom-subjects/{{ $classroom->id }}"><button
+                                                class="btn btn-primary">Set Subjects</button>
+                                        </a>
+                                    </span>
+                                </div>
                             </div>
                             <div class="card-body">
                                 @foreach ($subjects as $subject)
