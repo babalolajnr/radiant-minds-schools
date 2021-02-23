@@ -116,6 +116,7 @@ class ClassroomController extends Controller
             array_push($subjectIds, $subjectId);
         }
 
+        //insert all subjectIds to the related class on the pivot table
         $classroom->subjects()->sync($subjectIds);
 
 
