@@ -48,7 +48,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Select Subjects</h3>
                             </div>
-                            <form method="POST" action="">
+                            <form method="POST" action="/update/classroom-subjects/{{ $classroom->id }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
