@@ -4,3 +4,5 @@
 - Add confirmation dialog to the Promote and demote buttons in the students settings
 -̶ c̶r̶e̶a̶t̶e̶ p̶y̶s̶c̶h̶o̶d̶o̶m̶a̶i̶n̶ t̶y̶p̶e̶s̶ f̶a̶c̶t̶o̶r̶y̶ a̶n̶d̶ s̶e̶e̶d̶e̶r̶
 - check out how to continue from where the user left off before signing out
+- create class subject form
+- add slug field to subjects table
