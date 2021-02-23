@@ -80,13 +80,23 @@ class ClassroomController extends Controller
         return back()->with('success', 'Classroom Deleted!');
     }
 
-    public function editSubjects($id)
+    public function setSubjects($id)
     {
         $classroom = Classroom::findOrFail($id);
 
-        $subjects = $classroom->subjects()->all();
+        $subjects = Subject::all();
+        $relations = [];
 
-        return response(200);
+        //loop subjects and get the ones that are related to the classroom
+        foreach ($subjects as $subject) {
+            $relation = $subject->classrooms()->where('classroom_id', $id)->exists();
+            $relations = array_merge($relations, [$subject->name => $relation]);
+        }
+
+        //set array as collection for it to be showable in the view
+        $relations = collect($relations);
+
+        return view('setSubjects', compact('relations', 'classroom'));
     }
 
     public function updateSubjects($id, Request $request)
