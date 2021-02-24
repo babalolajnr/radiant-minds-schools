@@ -44,7 +44,9 @@
                             </div>
                             <div class="card-body">
                                 <span class="">
-                                    {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
+                                    @if ($classroom->teacher)
+                                        {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
+                                    @endif
                                 </span>
                             </div>
                         </div>
