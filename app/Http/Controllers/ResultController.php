@@ -23,13 +23,17 @@ class ResultController extends Controller
         $student = Student::findStudent($student);
         $student = $student->first();
         $terms = Term::all();
-        $subjects = $student->classroom->subjects()->get();
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $subjects = $student->classroom->subjects()->where('academic_session_id',  $currentAcademicSession->id)->get();
 
         return view('createResults', compact('terms', 'subjects', 'student'));
     }
 
     public function store(Request $request, $studentID)
     {
+        /**
+         * NOTE: Result can only be stored for the current academic session
+         */
         $student = Student::findOrFail($studentID);
 
         $messages = [
@@ -48,7 +52,7 @@ class ResultController extends Controller
         $academicSession = AcademicSession::currentAcademicSession();
 
         if (is_null($academicSession)) {
-            return back()->with('error', 'Current academic session not selected 😢');
+            return back()->with('error', 'Current academic session has not been set 😢');
         }
 
         $record = Result::where('subject_id', $subject->id)
@@ -84,8 +88,8 @@ class ResultController extends Controller
 
         $student = $student->first();
 
-        //Get the subjects for the student's class
-        $subjects = $student->classroom->subjects;
+        //Get the subjects for the student's class in the selected academic session
+        $subjects = $student->classroom->subjects()->where('academic_session_id',  $academicSession->id)->get();
         $results = [];
 
         //create a results array from all subjects from the student's class
