@@ -13,7 +13,7 @@ class Classroom extends Model
 
     public function subjects()
     {
-        return $this->belongsToMany(Subject::class)->withTimestamps();
+        return $this->belongsToMany(Subject::class)->withPivot('academic_session_id')->withTimestamps();
     }
 
     public function students()
