@@ -57,7 +57,8 @@ class ClassroomController extends Controller
         $students = $classroom->students->all();
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
-        $subjects = $classroom->subjects->all();
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $subjects = $classroom->subjects()->where('academic_session_id', $currentAcademicSession->id)->get();
 
         return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms', 'subjects'));
     }
@@ -86,10 +87,11 @@ class ClassroomController extends Controller
 
         $subjects = Subject::all();
         $relations = [];
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
 
         //loop subjects and get the ones that are related to the classroom
         foreach ($subjects as $subject) {
-            $relation = $subject->classrooms()->where('classroom_id', $id)->exists();
+            $relation = $subject->classrooms()->where('classroom_id', $id)->where('academic_session_id', $currentAcademicSession->id)->exists();
             $relations = array_merge($relations, [$subject->name => $relation]);
         }
 
