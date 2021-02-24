@@ -34,7 +34,10 @@ class ClassroomController extends Controller
 
     public function store(Request $request)
     {
-        Classroom::create($this->classroomValidation($request));
+        $maxRank = Classroom::max('rank');
+        $rank = ['rank' => $maxRank + 1];
+        $data = array_merge($rank, $this->classroomValidation($request));
+        Classroom::create($data);
         return back()->with('success', 'Classroom Created!');
     }
 
@@ -111,15 +114,19 @@ class ClassroomController extends Controller
 
         $subjects = $request->subjects;
         $subjectIds = [];
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $academicSessions = [];
 
         foreach ($subjects as $subject) {
-
             $subjectId = Subject::where('name', $subject)->first()->id;
             array_push($subjectIds, $subjectId);
+            array_push($academicSessions, ['academic_session_id' => $currentAcademicSession->id]);
         }
 
+        //combine the two arrays to form an associative array in order to sync the subjects and academic session
+        $data = array_combine($subjectIds, $academicSessions);
         //insert all subjectIds to the related class on the pivot table
-        $classroom->subjects()->sync($subjectIds);
+        $classroom->subjects()->sync($data);
 
 
         return back()->with('success', 'Subjects set successfully');
