@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Subject;
 use Database\Factories\ClassroomFactory;
@@ -19,24 +20,49 @@ class ClassroomSubjectSeeder extends Seeder
     public function run()
     {
 
-        $classrooms = Classroom::all();
-        $subject = Subject::inRandomOrder()->first();
+        $classroom = Classroom::first();
+        $subject = Subject::first();
+        $academicSession = AcademicSession::first();
 
-        if (empty($classrooms)) {
+        if (is_null($classroom)) {
             Artisan::call('db:seed', ['--class' => 'ClassroomSeeder']);
-            $classrooms = Classroom::all();
+        }
+
+        if (is_null($academicSession)) {
+            Artisan::call('db:seed', ['--class' => 'AcademicSessionSeeder']);
         }
 
         if (is_null($subject)) {
             Artisan::call('db:seed', ['--class' => 'SubjectSeeder']);
         }
 
-        $subjects = Subject::pluck('id')->all();
+        $subjects = Subject::all();
+        $classrooms = Classroom::all();
+        $academicSessions = AcademicSession::all();
 
-        foreach ($classrooms as $classroom) {
-            $syncSubjects = Arr::random($subjects, 9);
-            $classroom->subjects()->sync($syncSubjects);
+        /**
+         * generate 9 random subject for a classroom for each academic session
+         */
+        foreach ($academicSessions as $academicSession) {
+            foreach ($classrooms as $classroom) {
+                $syncSubjects = $subjects->random(9);
+                foreach ($syncSubjects as $syncSubject) {
+                    /**get a row that has the current academic_session_id and the subject_id that is about to be 
+                    attahched
+                     */
+                    $row = $classroom->subjects()->where('academic_session_id', $academicSession->id)->where('subject_id', $syncSubject->id);
+                    $allSubjects = $classroom->subjects()->where('academic_session_id', $academicSession->id);
+
+                    /**
+                     * if the row does not exists and the number of subjects in the classroom is less than 9
+                     * then it can be attached to the current classroom
+                     */
+                    if (!$row->exists() && $allSubjects->count() < 9) {
+                        $data = [$syncSubject->id => ['academic_session_id' => $academicSession->id]];
+                        $classroom->subjects()->attach($data);
+                    }
+                }
+            }
         }
-
     }
 }
