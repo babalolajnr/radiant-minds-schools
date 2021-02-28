@@ -29,7 +29,7 @@ class ClassroomController extends Controller
 
     public function index()
     {
-        $classrooms = Classroom::all();
+        $classrooms = Classroom::all()->sortBy('rank');
         return view('classrooms', compact('classrooms'));
     }
 
