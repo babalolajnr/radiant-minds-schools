@@ -112,13 +112,13 @@
 
                                     {{-- PD --}}
                                     <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor Domain({{ $currentAcademicSession->name }})</label>
+                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor
+                                            Domain({{ $currentAcademicSession->name }})</label>
                                         <div class="col-sm-6">
-                                            <a href="/create/pd/{{ $student->id }}">
-                                                <button type="button" class="btn btn-info btn-flat">
-                                                    Create Psychomotor domain
-                                                </button>
-                                            </a>
+                                            <button type="button" onclick="showChooseTermModal()"
+                                                class="btn btn-info btn-flat">
+                                                Create Psychomotor domain
+                                            </button>
                                         </div>
                                     </div>
                                     {{-- /PD --}}
@@ -131,6 +131,31 @@
         </section>
         <!-- /.content -->
 
+    </div>
+    {{-- choose term modal --}}
+    <div class="modal fade" id="chooseTerm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Choose Term</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach ($terms as $term)
+                        <a href="/create/pd/{{ $student->id }}/{{ $term->id }}">
+                            <button type="button" class="btn btn-primary">{{ $term->name }}</button>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
 
     <x-slot name="scripts">
@@ -183,6 +208,10 @@
                     })
 
             });
+
+            function showChooseTermModal() {
+                $('#chooseTerm').modal('show')
+            }
 
         </script>
     </x-slot>
