@@ -45,6 +45,15 @@
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="rank">Rank</label>
+                                        <input type="number" name="rank" value="{{ old('rank', $classroom->rank) }}"
+                                            class="form-control @error('rank') is-invalid @enderror"
+                                            id="rank" placeholder="Enter Rank">
+                                        @error('rank')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
