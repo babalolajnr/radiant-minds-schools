@@ -107,8 +107,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
 
     //Pychomotor Domain Routes
-    Route::get('/create/pd/{id}', [PDController::class, 'create']);
-    Route::post('/store/pd/{id}', [PDController::class, 'store']);
+    Route::get('/create/pd/{id}/{termId}', [PDController::class, 'create']);
+    Route::post('/store/pd/{id}/{termId}', [PDController::class, 'store']);
 
 });
 
