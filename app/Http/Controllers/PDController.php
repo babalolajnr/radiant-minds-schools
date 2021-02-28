@@ -8,27 +8,35 @@ use App\Models\PDType;
 use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class PDController extends Controller
 {
-    public function create($id)
+    public function create($id, $termId)
     {
         $student = Student::findOrFail($id);
+        $term = Term::findOrFail($termId);
         $pdTypes = PDType::all();
-        $terms = Term::all();
-        return view('createPD', compact('pdTypes', 'student', 'terms'));
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $studentPDs = $student->pds()->where('academic_session_id', $currentAcademicSession->id)->where('term_id', $termId)->get();
+        $pdTypesValues = [];
+
+        foreach ($studentPDs as $studentPD) {
+            $pdTypeValue = [$studentPD->p_d_type_id => $studentPD->value];
+            $pdTypesValues += $pdTypeValue;
+        }
+        return view('createPD', compact('pdTypes', 'student', 'pdTypesValues', 'term'));
     }
 
-    public function store($id, Request $request)
+    //remove term here cos it's redundant
+    public function store($id, $termId, Request $request)
     {
         $student = Student::findOrFail($id);
+        $term = Term::findOrFail($termId);
+
         $validatedData = $request->validate([
             'pdTypes.*' => ['required', 'numeric', 'min:1', 'max:5'],
-            'term' => ['required', 'string', 'exists:terms,name']
         ]);
 
-        $term = Term::where('name', $validatedData['term'])->first();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
 
         foreach ($validatedData['pdTypes'] as $pdType => $value) {
