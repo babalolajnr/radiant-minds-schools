@@ -341,9 +341,10 @@ class StudentController extends Controller
         $student = Student::findStudent($student);
         $student = $student->first();
         $pdTypes = PDType::all();
+        $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
 
-        return view('studentSettings', compact('student', 'pdTypes', 'currentAcademicSession'));
+        return view('studentSettings', compact('student', 'pdTypes', 'currentAcademicSession', 'terms'));
     }
 
     public function promote($id)
