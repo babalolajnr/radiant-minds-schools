@@ -54,9 +54,7 @@ class ClassroomController extends Controller
         $classrooms = Classroom::all();
         $maxRank = $classrooms->max('rank');
         $currentRank = $classroom->rank;
-        // $minRank = $classrooms->min('rank');
-
-        // dd($request->all(), $minRank, $maxRank);
+        
         $validatedData = $request->validate([
             'name' => ['required', 'string', Rule::unique('classrooms')->ignore($classroom)],
             'rank' => ['required', 'numeric', 'min:1', 'max:' . $maxRank]
