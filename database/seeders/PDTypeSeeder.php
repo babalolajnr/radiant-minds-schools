@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\PDType;
-use Database\Factories\PDTypesFactory;
+use Database\Factories\PDTypeFactory;
 use Illuminate\Database\Seeder;
 
-class PDTypesSeeder extends Seeder
+class PDTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class PDTypesSeeder extends Seeder
      */
     public function run()
     {
-        PDType::factory()->times(count(PDTypesFactory::$pdTypes))->create();
+        PDType::factory()->times(count(PDTypeFactory::$pdTypes))->create();
     }
 }
