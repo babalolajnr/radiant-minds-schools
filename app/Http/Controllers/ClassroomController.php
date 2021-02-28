@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Term;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class ClassroomController extends Controller
@@ -50,7 +51,30 @@ class ClassroomController extends Controller
     public function update($id, Request $request)
     {
         $classroom = Classroom::findOrFail($id);
-        $classroom->update($this->classroomValidation($request));
+        $classrooms = Classroom::all();
+        $maxRank = $classrooms->max('rank');
+        $currentRank = $classroom->rank;
+        // $minRank = $classrooms->min('rank');
+
+        // dd($request->all(), $minRank, $maxRank);
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', Rule::unique('classrooms')->ignore($classroom)],
+            'rank' => ['required', 'numeric', 'min:1', 'max:' . $maxRank]
+        ]);
+
+        $rank = $validatedData['rank'];
+        $row = Classroom::where('rank', $rank)->first();
+
+        //if row exists
+        if (!is_null($row)) {
+            $row->rank = 0;
+            $row->save();
+            $classroom->update($validatedData);
+            $row->rank = $currentRank;
+            $row->save();
+        }
+
+        $classroom->update($validatedData);
         return redirect('/classrooms')->with('success', 'Classroom Updated!');
     }
 
