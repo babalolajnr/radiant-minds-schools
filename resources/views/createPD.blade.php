@@ -47,7 +47,7 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="/store/pd/{{ $student->id }}" method="POST">
+                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
@@ -56,22 +56,12 @@
                                             <label for="customRange1">{{ $pdType->name }}<span
                                                     class="font-light pl-4">range(1-5)</span></label>
                                             <input type="range" class="custom-range" min="1" max="5"
-                                                name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}">
-                                            {{-- @error('pdTypes.{{ $pdType->slug }}')
-                                                Error
-                                            @enderror --}}
-                                            @if ($errors->has('pdTypes.{{ $pdType->slug }}')) Error @endif
+                                                name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}" @if (array_key_exists($pdType->id, $pdTypesValues)) value="{{ $pdTypesValues[$pdType->id] }}" @endif>
+
+                                            @if ($errors->has('pdTypes.{{ $pdType->slug }}')) Error
+                                            @endif
                                         </div>
                                     @endforeach
-                                    <div class="form-group">
-                                        <label for="term">Term</label>
-                                        <select class="custom-select form-control-border border-width-2" id="term"
-                                            name="term">
-                                            @foreach ($terms as $term)
-                                                <option>{{ $term->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="form-group">
