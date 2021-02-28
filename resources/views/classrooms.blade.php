@@ -73,6 +73,7 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
+                                            <th>Rank</th>
                                             <th>Name</th>
                                             <th>Action</th>
                                         </tr>
@@ -80,6 +81,9 @@
                                     <tbody>
                                         @foreach($classrooms as $classroom)
                                         <tr>
+                                            <td>
+                                                {{ $classroom->rank }}
+                                            </td>
                                             <td>
                                                 {{ $classroom->name }}
                                             </td>
@@ -119,6 +123,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th>Rank</th>
                                             <th>Name</th>
                                             <th>Action</th>
                                         </tr>
