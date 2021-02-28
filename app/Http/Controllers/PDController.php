@@ -20,6 +20,7 @@ class PDController extends Controller
         $studentPDs = $student->pds()->where('academic_session_id', $currentAcademicSession->id)->where('term_id', $termId)->get();
         $pdTypesValues = [];
 
+        //create an associative array of pdtypeid and value from the pd model
         foreach ($studentPDs as $studentPD) {
             $pdTypeValue = [$studentPD->p_d_type_id => $studentPD->value];
             $pdTypesValues += $pdTypeValue;
