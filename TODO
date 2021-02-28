@@ -10,3 +10,4 @@
 - add academic session name to sessional results view
 - a̶d̶d̶ r̶a̶n̶k̶ t̶o̶ t̶h̶e̶ e̶d̶i̶t̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ p̶a̶g̶e̶
 - add guard on show method in the classroom controller to display an error if the current academic session is not set
+- add pd assessment to student details modal
