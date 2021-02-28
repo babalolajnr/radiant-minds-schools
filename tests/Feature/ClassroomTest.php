@@ -42,10 +42,17 @@ class ClassroomTest extends TestCase
 
     public function test_classroom_update_method()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $classroom = Classroom::factory()->create()->id;
+        $this->seed('ClassroomSeeder');
+        $classrooms = Classroom::all();
+        $classroom = $classrooms->random()->id;
+        $maxRank = $classrooms->max('rank');
+        $minRank = $classrooms->min('rank');
+        $rank = mt_rand($minRank, $maxRank);
         $response = $this->actingAs($user)->patch('/update/classroom/' . $classroom, [
-            'name' => $this->faker->word
+            'name' => $this->faker->word,
+            'rank' => $rank
         ]);
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
@@ -76,7 +83,6 @@ class ClassroomTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        
     }
 
     private function generateTestSubjects()
