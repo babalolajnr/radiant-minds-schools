@@ -90,6 +90,11 @@ class ResultController extends Controller
 
         //Get the subjects for the student's class in the selected academic session
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $academicSession->id)->get();
+
+        //Check if the class has subjects
+        if (count($subjects) < 1) {
+            return redirect('/view/classroom/'.$student->classroom->id)->with('error', 'The Student Class does not have subjects set');
+        }
         $results = [];
 
         //create a results array from all subjects from the student's class
