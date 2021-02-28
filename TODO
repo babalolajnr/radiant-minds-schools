@@ -10,3 +10,5 @@
 - r̶e̶f̶a̶c̶t̶o̶r̶/̶o̶p̶t̶i̶m̶i̶z̶e̶ r̶e̶s̶u̶l̶t̶ f̶a̶c̶t̶o̶r̶y̶
 - add a notice on the create result page that result can only be created for the current academic session
 - add academic session name to sessional results view
+- a̶d̶d̶ r̶a̶n̶k̶ t̶o̶ t̶h̶e̶ e̶d̶i̶t̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ p̶a̶g̶e̶
+- add guard on show method in the classroom controller to display an error if the current academic session is not set
