@@ -6,13 +6,16 @@
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <span id="success" {{ session('success') ? 'data-success = true' : false }}
             data-success-message='{{ json_encode(session('success')) }}'></span>
+        <span id="error" {{ session('error') ? 'data-error = true' : false }}
+            data-error-message='{{ json_encode(session('error')) }}'></span>
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -42,10 +45,12 @@
                             <div class="card-header">
                                 <div class=" d-flex justify-content-between">
                                     <div>
-                                        <h3 class="font-semibold">{{ $academicSession->name.' '.$term->name }}</h3>
+                                        <h3 class="font-semibold">{{ $academicSession->name . ' ' . $term->name }}
+                                        </h3>
                                     </div>
                                     <div>
-                                        <a href="/performanceReport/{{ $student->admission_no }}/{{ $academicSession->id }}/{{ $term->id }}">
+                                        <a
+                                            href="/performanceReport/{{ $student->admission_no }}/{{ $academicSession->id }}/{{ $term->id }}">
                                             <button type="button" class="btn btn-default">Performance Report</button>
                                         </a>
                                     </div>
@@ -67,30 +72,31 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach($results as $key => $result)
-                                        <tr>
-                                            <td>{{ $result->subject->name }}</td>
-                                            <td>{{ $result->ca }}</td>
-                                            <td>{{ $result->exam }}</td>
-                                            <td>{{ $result->total }}</td>
-                                            <td>{{ $maxScores[$result->subject->name] }}
-                                            <td>{{ $minScores[$result->subject->name] }}
-                                            </td>
-                                            <td>{{ round($averageScores[$result->subject->name], 2) }}
-                                            </td>
-                                            @if($result->total <= 39) <td class="text-red-700">F</td>
+                                        @foreach ($results as $key => $result)
+                                            <tr>
+                                                <td>{{ $result->subject->name }}</td>
+                                                <td>{{ $result->ca }}</td>
+                                                <td>{{ $result->exam }}</td>
+                                                <td>{{ $result->total }}</td>
+                                                <td>{{ $maxScores[$result->subject->name] }}
+                                                <td>{{ $minScores[$result->subject->name] }}
+                                                </td>
+                                                <td>{{ round($averageScores[$result->subject->name], 2) }}
+                                                </td>
+                                                @if ($result->total <= 39)
+                                                    <td class="text-red-700">F</td>
                                                 @elseif($result->total >= 40 && $result->total <= 49) <td
-                                                    class="text-yellow-500">D</td>
+                                                        class="text-yellow-500">D</td>
                                                     @elseif($result->total >= 50 && $result->total <= 59) <td
-                                                        class="text-green-300">C</td>
+                                                            class="text-green-300">C</td>
                                                         @elseif($result->total >= 60 && $result->total <= 69) <td
-                                                            class="text-green-600">B</td>
-                                                            @elseif($result->total >= 70 && $result->total <= 100) <td
-                                                                class="text-green-900">A</td>
+                                                                class="text-green-600">B</td>
+                                                            @elseif($result->total >= 70 && $result->total <= 100)
+                                                                    <td class="text-green-900">A</td>
                                                                 @else
-                                                                <td></td>
-                                                                @endif
-                                        </tr>
+                                                                    <td></td>
+                                                @endif
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -143,8 +149,10 @@
         <!-- AdminLTE App -->
         <script>
             //launch toastr 
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
+                let Error = document.getElementById('error')
+
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
                     $(document).Toasts('create', {
@@ -154,10 +162,17 @@
                         body: JSON.parse(Success.dataset.successMessage)
                     })
 
+                if (Error.dataset.error == 'true')
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        subtitle: 'Close',
+                        body: JSON.parse(Error.dataset.errorMessage)
+                    })
             });
 
             //datatables
-            $(function () {
+            $(function() {
                 $("#results").DataTable({
                     "responsive": true,
                     "lengthChange": false,
