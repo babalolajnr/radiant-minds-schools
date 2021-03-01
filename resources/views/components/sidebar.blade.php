@@ -9,7 +9,7 @@
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image"> 
+                <div class="image">
                     <i class="fas fa-user text-white"></i>
                 </div>
                 <div class="info">
@@ -79,6 +79,12 @@
                                 <a href="create/student" class="nav-link">
                                     <i class="nav-icon fas fa-plus"></i>
                                     <p>New Student</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/pdTypes" class="nav-link">
+                                    <i class="nav-icon fas fa-biking"></i>
+                                    <p>Pychomotor domains</p>
                                 </a>
                             </li>
 
