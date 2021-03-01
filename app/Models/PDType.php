@@ -9,7 +9,7 @@ class PDType extends Model
 {
     use HasFactory;
     protected $table = 'p_d_types';
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
     public function pds()
     {
