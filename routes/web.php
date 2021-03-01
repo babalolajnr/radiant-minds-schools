@@ -5,6 +5,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\PDController;
+use App\Http\Controllers\PDTypesController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -109,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Pychomotor Domain Routes
     Route::get('/create/pd/{id}/{termId}', [PDController::class, 'create']);
     Route::post('/store/pd/{id}/{termId}', [PDController::class, 'store']);
+
+    //Pychomotor domain type routes
+    Route::get('/pdTypes', [PDTypesController::class, 'index']);
 
 });
 
