@@ -51,7 +51,6 @@ class TeacherTest extends TestCase
 
     public function test_admin_can_update_teacher()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'admin']);
         $teacher = Teacher::factory()->create();
         $response = $this->actingAs($user)->patch('/update/teacher/' . $teacher->slug, [
