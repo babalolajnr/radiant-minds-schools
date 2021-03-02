@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SubjectController extends Controller
 {
@@ -15,11 +16,14 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validatedData =  $request->validate([
             'name' => ['required', 'string', 'unique:subjects']
         ]);
 
-        Subject::create($request->all());
+        $slug = Str::of($validatedData['name'])->slug('-');
+        $slug = ['slug' => $slug];
+        $data = $validatedData + $slug;
+        Subject::create($data);
         return response(200);
     }
 
