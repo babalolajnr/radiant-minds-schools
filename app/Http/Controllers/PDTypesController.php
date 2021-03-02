@@ -38,6 +38,6 @@ class PDTypesController extends Controller
     public function edit($slug)
     {
         $pdType = PDType::where('slug', $slug)->first();
-        return view('editPD', compact('pdType'));
+        return view('editPDType', compact('pdType'));
     }
 }
