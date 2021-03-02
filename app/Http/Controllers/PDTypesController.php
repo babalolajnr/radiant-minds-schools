@@ -52,4 +52,16 @@ class PDTypesController extends Controller
         $pdType->update($data);
         return redirect('/pdTypes')->with('success', 'Pychomotor domain type updated');
     }
+
+    public function destroy($id)
+    {
+        $pdType = PDType::findOrFail($id);
+        $relations = $pdType->pds()->exists();
+
+        if ($relations) {
+            return back()->with('error', 'You are not allowed to delete ' . $pdType->name . ' because it has related models');
+        }
+        $pdType->delete();
+        return back()->with('success', 'Deleted!');
+    }
 }
