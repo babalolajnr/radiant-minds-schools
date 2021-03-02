@@ -87,7 +87,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     
-                                                    <a href="edit/pdType/{{ $pdType->id }}">
+                                                    <a href="edit/pdType/{{ $pdType->slug }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Edit">
                                                             <i class="fa fa-edit"></i>
