@@ -6,7 +6,6 @@ use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\Student;
-use App\Models\Subject;
 use App\Models\User;
 use Database\Seeders\ClassroomSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -177,13 +176,14 @@ class StudentTest extends TestCase
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
-    public function test_student_can_be_forceDeleted()
+    public function test_student_can_be_deleted_if_guardian_has_more_than_one_child()
     {
-
         $user = User::factory()->create(['user_type' => 'master']);
-        $student = Student::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/forceDelete/student/' . $student);
-        $response->assertStatus(200);
+        $guardian = Guardian::factory()->create()->id;
+        $student = Student::factory()->times(2)->create(['guardian_id' => $guardian]);
+        $student = $student->random();
+        $response = $this->actingAs($user)->delete('/delete/student/' . $student->id);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     // public function test_user_can_get_student_subjects()
