@@ -113,8 +113,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Pychomotor domain type routes
     Route::get('/pdTypes', [PDTypesController::class, 'index']);
-    Route::post('/store/pdType', [PDTypesController::class, 'store']);
     Route::get('/edit/pdType/{slug}', [PDTypesController::class, 'edit']);
+    Route::post('/store/pdType', [PDTypesController::class, 'store']);
+    Route::patch('/update/pdType/{id}', [PDTypesController::class, 'update']);
 
 });
 
