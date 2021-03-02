@@ -267,14 +267,14 @@ class StudentController extends Controller
         return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
     }
 
-    public function getSubjects($student)
-    {
-        $student = Student::findStudent($student);
-        $student = $student->first();
-        $subjects = $student->classroom->subjects()->get();
+    // public function getSubjects($student)
+    // {
+    //     $student = Student::findStudent($student);
+    //     $student = $student->first();
+    //     $subjects = $student->classroom->subjects()->get();
 
-        return response(200);
-    }
+    //     return response(200);
+    // }
 
     public function destroy($id, Student $student)
     {
