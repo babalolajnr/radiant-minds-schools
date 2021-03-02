@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 
 class SubjectTest extends TestCase
 {
@@ -22,10 +23,12 @@ class SubjectTest extends TestCase
 
     public function test_subject_can_be_stored()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
+        $name = $this->faker->word;
+        $slug = Str::of($name)->slug('-');
         $response = $this->actingAs($user)->post('/store/subject', [
-            'name' => $this->faker->word
+            'name' => $name,
+            'slug' => $slug
         ]);
         $response->assertStatus(200);
     }
