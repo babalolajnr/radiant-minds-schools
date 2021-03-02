@@ -11,3 +11,8 @@
 - a̶d̶d̶ r̶a̶n̶k̶ t̶o̶ t̶h̶e̶ e̶d̶i̶t̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ p̶a̶g̶e̶
 - add guard on show method in the classroom controller to display an error if the current academic session is not set
 - a̶d̶d̶ p̶d̶ a̶s̶s̶e̶s̶s̶m̶e̶n̶t̶ t̶o̶ s̶t̶u̶d̶e̶n̶t̶ d̶e̶t̶a̶i̶l̶s̶ m̶o̶d̶a̶l̶
+- add destroy method for guardian
+- add destroy method for result
+- add update method for result
+- add destroy method for pd
+- add update method for pd
