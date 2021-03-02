@@ -281,8 +281,18 @@ class StudentController extends Controller
         $this->authorize('delete', $student);
 
         $student = Student::findOrFail($id);
+        $guardian = $student->guardian()->first();
+        $guardianChildren = $guardian->children()->get();
 
-        $student->delete();
+        /**if guardian has more than one child delete only the student's 
+         * data else delete the student and the guargian's data
+         */
+        if (count($guardianChildren) > 1) {
+            $student->delete();
+        } else {
+            $student->delete();
+            $guardian->delete();
+        }
 
         return back()->with('success', 'Student Deleted');
     }
