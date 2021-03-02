@@ -34,4 +34,10 @@ class PDTypesController extends Controller
         PDType::create($data);
         return back()->with('success', 'Pyschomotor Domain created!');
     }
+
+    public function edit($slug)
+    {
+        $pdType = PDType::where('slug', $slug)->first();
+        return view('editPD', compact('pdType'));
+    }
 }
