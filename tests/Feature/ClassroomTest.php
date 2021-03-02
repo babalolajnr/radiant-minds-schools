@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Subject;
 use App\Models\User;
@@ -78,11 +79,12 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create();
         $subjects = $this->generateTestSubjects();
         $classroom = Classroom::factory()->create()->id;
+        AcademicSession::factory()->create(['current_session' => 1]);
         $response = $this->actingAs($user)->post('/update/classroom-subjects/' . $classroom, [
             'subjects' => $subjects
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     private function generateTestSubjects()
