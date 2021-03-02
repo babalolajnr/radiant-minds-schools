@@ -83,6 +83,11 @@ class ClassroomController extends Controller
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
+
+        if(is_null($currentAcademicSession)){
+            return back()->with('error', 'Current Academic session is not set!');
+        }
+        
         $subjects = $classroom->subjects()->where('academic_session_id', $currentAcademicSession->id)->get();
 
         return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms', 'subjects'));
