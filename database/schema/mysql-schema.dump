@@ -191,7 +191,6 @@ CREATE TABLE `students` (
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
   `guardian_id` bigint(20) unsigned NOT NULL,
   `classroom_id` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
