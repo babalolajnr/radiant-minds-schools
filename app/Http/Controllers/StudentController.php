@@ -284,6 +284,15 @@ class StudentController extends Controller
         $guardian = $student->guardian()->first();
         $guardianChildren = $guardian->children()->get();
 
+        //delete student image if it exists
+        if (!is_null($student->image)) {
+            $deletePath = $student->image;
+            $deletePath = str_replace('storage/', '', $deletePath);
+            $deletePath = 'public/' . $deletePath;
+
+            Storage::delete($deletePath);
+        }
+        
         /**if guardian has more than one child delete only the student's 
          * data else delete the student and the guargian's data
          */
