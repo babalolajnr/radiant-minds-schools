@@ -45,12 +45,12 @@ class ClassroomSubjectSeeder extends Seeder
          */
         foreach ($academicSessions as $academicSession) {
             foreach ($classrooms as $classroom) {
-                $syncSubjects = $subjects->random(9);
-                foreach ($syncSubjects as $syncSubject) {
+                $randomSubjects = $subjects->random(9);
+                foreach ($randomSubjects as $randomSubject) {
                     /**get a row that has the current academic_session_id and the subject_id that is about to be 
                     attahched
                      */
-                    $row = $classroom->subjects()->where('academic_session_id', $academicSession->id)->where('subject_id', $syncSubject->id);
+                    $row = $classroom->subjects()->where('academic_session_id', $academicSession->id)->where('subject_id', $randomSubject->id);
                     $allSubjects = $classroom->subjects()->where('academic_session_id', $academicSession->id);
 
                     /**
@@ -58,7 +58,7 @@ class ClassroomSubjectSeeder extends Seeder
                      * then it can be attached to the current classroom
                      */
                     if (!$row->exists() && $allSubjects->count() < 9) {
-                        $data = [$syncSubject->id => ['academic_session_id' => $academicSession->id]];
+                        $data = [$randomSubject->id => ['academic_session_id' => $academicSession->id]];
                         $classroom->subjects()->attach($data);
                     }
                 }
