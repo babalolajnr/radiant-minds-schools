@@ -287,20 +287,6 @@ class StudentController extends Controller
         return back()->with('success', 'Student Deleted');
     }
 
-    public function forceDelete($id, Student $student)
-    {
-        $this->authorize('forceDelete', $student);
-        $student = Student::findOrFail($id);
-        $student->forceDelete();
-        return response(200);
-
-        /**
-         * TODO 
-         * check if student has a guardian before deleting 
-         * then delete the guardian if it has only one child
-         */
-    }
-
     public function uploadImage($id, Request $request)
     {
         $student = Student::findOrFail($id);
