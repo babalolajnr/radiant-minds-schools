@@ -137,7 +137,7 @@ class StudentTest extends TestCase
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'active'])->id;
         $response = $this->actingAs($user)->patch('/suspend/student/' . $student);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_student_can_be_activated()
@@ -146,7 +146,7 @@ class StudentTest extends TestCase
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/activate/student/' . $student);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_student_can_be_deactivated()
@@ -155,7 +155,7 @@ class StudentTest extends TestCase
         $user = User::factory()->create();
         $student = Student::factory()->create(['status' => 'suspended'])->id;
         $response = $this->actingAs($user)->patch('/deactivate/student/' . $student);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_student_can_be_updated()
@@ -186,16 +186,16 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_can_get_student_subjects()
-    {
+    // public function test_user_can_get_student_subjects()
+    // {
 
-        $user = User::factory()->create();
-        $student = Student::factory()->create();
-        $subject = Subject::factory()->create()->id;
-        $student->classroom->subjects()->sync([$subject]);
-        $response = $this->actingAs($user)->get('/student-subjects/' . $student->admission_no);
-        $response->assertStatus(200);
-    }
+    //     $user = User::factory()->create();
+    //     $student = Student::factory()->create();
+    //     $subject = Subject::factory()->create()->id;
+    //     $student->classroom->subjects()->sync([$subject]); 
+    //     $response = $this->actingAs($user)->get('/student-subjects/' . $student->admission_no);
+    //     $response->assertStatus(200);
+    // }
 
     public function test_user_can_get_student_sessional_results()
     {
