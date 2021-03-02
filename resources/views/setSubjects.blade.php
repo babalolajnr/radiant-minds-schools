@@ -48,6 +48,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Select Subjects</h3>
                             </div>
+                            @if(!$relations->isEmpty())
                             <form method="POST" action="/update/classroom-subjects/{{ $classroom->id }}">
                                 @csrf
                                 <div class="card-body">
@@ -66,6 +67,13 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
+                            @else
+                            @csrf
+                            <div class="card-body">
+                                <h5 class="text-center">No subjects available.</h5>
+                            </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>
