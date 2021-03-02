@@ -116,6 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/edit/pdType/{slug}', [PDTypesController::class, 'edit']);
     Route::post('/store/pdType', [PDTypesController::class, 'store']);
     Route::patch('/update/pdType/{id}', [PDTypesController::class, 'update']);
+    Route::delete('/delete/pdType/{id}', [PDTypesController::class, 'destroy']);
 
 });
 
