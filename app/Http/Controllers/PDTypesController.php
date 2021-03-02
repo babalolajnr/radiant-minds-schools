@@ -40,4 +40,16 @@ class PDTypesController extends Controller
         $pdType = PDType::where('slug', $slug)->first();
         return view('editPDType', compact('pdType'));
     }
+
+    public function update($id, Request $request)
+    {
+        $pdType = PDType::findOrFail($id);
+        $validatedData = $this->validatePDType($request, $pdType);
+        $slug = Str::of($validatedData['name'])->slug('-');
+        $slug = ['slug' => $slug];
+        $data = array_merge($validatedData, $slug);
+
+        $pdType->update($data);
+        return redirect('/pdTypes')->with('success', 'Pychomotor domain type updated');
+    }
 }
