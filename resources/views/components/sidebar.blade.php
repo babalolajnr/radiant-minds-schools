@@ -1,20 +1,16 @@
     <!-- Well begun is half done. - Aristotle -->
     <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/dashboard" class="brand-link">
+        <a href="/dashboard" class="brand-link d-flex justify-content-center">
             <span class="brand-text font-weight-bold">Radiant Minds Schools</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <i class="fas fa-user text-white"></i>
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">{{ Auth::user()->first_name }}</a>
-                </div>
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
+                <i class="fas fa-user text-white"></i>
+                <a href="#" class="pl-2">{{ Auth::user()->first_name }}</a>
             </div>
 
             <!-- SidebarSearch Form -->
@@ -100,7 +96,8 @@
         <div class="sidebar-custom d-flex">
             <form action="/logout" method="post">
                 @csrf
-                <button type="submit" class="btn btn-link" title="Logout"><i class="fas fa-sign-out-alt text-danger"></i></button>
+                <button type="submit" class="btn btn-link" title="Logout"><i
+                        class="fas fa-sign-out-alt text-danger"></i></button>
             </form>
             <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Help</a>
         </div>
