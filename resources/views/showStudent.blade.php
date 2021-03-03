@@ -44,15 +44,19 @@
                             <div class="card card-primary card-outline">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle" src="@if ($student->image) {{ $student->image }} @else
-                                        {{ asset('TAssets/dist/img/user4-128x128.jpg') }} @endif"
+                                    <img class="profile-user-img img-fluid img-circle" src="@if ($student->image) {{ asset($student->image) }} @else
+                                        {{ asset('images/user1.svg') }} @endif"
                                         alt="student image">
                                     </div>
 
-                                    <h3 class="profile-username text-center"></h3>
+                                    <h3 class="profile-username text-center">
+                                        {{ $student->first_name . ' ' . $student->last_name }}
+                                    </h3>
 
-                                    <p class="text-muted text-center" id="admissionNo"></p>
-
+                                    <p class="text-muted text-center" id="admissionNo">{{ $student->admission_no }}
+                                    </p>
+                                    <div class="d-flex justify-content-center"><button class="btn btn-primary"
+                                            data-toggle="modal" data-target="#editModal">Edit</button></div>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -73,6 +77,7 @@
                                         <li class="nav-item"><a class="nav-link" href="#imageUpload"
                                                 data-toggle="tab">Image Upload</a></li>
                                     </ul>
+
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="tab-content">
@@ -155,10 +160,10 @@
                                             <div>
                                                 <div class="btn-group">
                                                     <button type="button" id="showSessionalResultButton"
-                                                        class="btn btn-info" data-student
-                                                        onclick="showSessionalResultModal()">Sessional</button>
-                                                    <button type="button" class="btn btn-warning"
-                                                        onclick="showTermResultModal()">Term</button>
+                                                        class="btn btn-info" data-toggle="modal"
+                                                        data-target="#sessionalResultModal">Sessional</button>
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                        data-target="#sessionalResultModal">Term</button>
                                                 </div>
                                                 <span class="ml-3" title="Add new result">
                                                     <a href="/create/result/{{ $student->admission_no }}">
@@ -171,8 +176,8 @@
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="imageUpload">
-                                            <form action="" method="post" id="imageUploadForm"
-                                                enctype="multipart/form-data">
+                                            <form action="/store/image/{{ $student->id }}" method="post"
+                                                id="imageUploadForm" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="form-group">
                                                     <label for="imageUpload">File input</label>
@@ -321,11 +326,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a href="" id="editStudentButton">
+                    <a href="/edit/student/{{ $student->admission_no }}" id="editStudentButton">
                         <button type="button" class="btn btn-success" title="Edit Student">Student</button>
                     </a>
                     <span class="px-3"></span>
-                    <a href="" id="editGuardianButton">
+                    <a href="/edit/guardian/{{ $student->guardian->phone }}" id="editGuardianButton">
                         <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
                     </a>
 
@@ -344,24 +349,7 @@
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script>
-            // Display edit modal
-            function showEditModal(data) {
-                let editStudentUrl = '/edit/student/' + data.admission_no
-                let editGuardianUrl = '/edit/guardian/' + data.guardian.phone
-                $('#editStudentButton').attr("href", editStudentUrl)
-                $('#editGuardianButton').attr("href", editGuardianUrl)
-                $('#editModal').modal('show')
-            }
-            // display sessional result modal
-            function showSessionalResultModal() {
-                $('#sessionalResultModal').modal('show')
-            }
-
-            //display term result modal
-            function showTermResultModal() {
-                $('#termResultModal').modal('show')
-            }
-
+            
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
