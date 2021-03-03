@@ -47,7 +47,7 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">New Result</h3>
+                                <h3 class="card-title">New Result<span class="text-sm text-muted"> for current academic session ({{ $currentAcademicSession->name }})</span></h3>
                             </div>
                             <form method="POST" action="/store/result/{{ $student->id }}">
                                 @csrf
