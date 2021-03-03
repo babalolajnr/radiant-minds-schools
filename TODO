@@ -1,5 +1,5 @@
 -̶ C̶r̶e̶a̶t̶e̶ P̶D̶ c̶r̶e̶a̶t̶e̶ v̶i̶e̶w̶
-- Add confirmation dialog to the Promote and demote buttons in the students settings
+- A̶d̶d̶ c̶o̶n̶f̶i̶r̶m̶a̶t̶i̶o̶n̶ d̶i̶a̶l̶o̶g̶ t̶o̶ t̶h̶e̶ P̶r̶o̶m̶o̶t̶e̶ a̶n̶d̶ d̶e̶m̶o̶t̶e̶ b̶u̶t̶t̶o̶n̶s̶ i̶n̶ t̶h̶e̶ s̶t̶u̶d̶e̶n̶t̶s̶ s̶e̶t̶t̶i̶n̶g̶s̶
 -̶ c̶r̶e̶a̶t̶e̶ p̶y̶s̶c̶h̶o̶d̶o̶m̶a̶i̶n̶ t̶y̶p̶e̶s̶ f̶a̶c̶t̶o̶r̶y̶ a̶n̶d̶ s̶e̶e̶d̶e̶r̶
 - check out how to continue from where the user left off before signing out
 - c̶r̶e̶a̶t̶e̶ c̶l̶a̶s̶s̶ s̶u̶b̶j̶e̶c̶t̶ f̶o̶r̶m̶
@@ -15,3 +15,5 @@
 - add update method for result
 - add destroy method for pd
 - add update method for pd
+- add student delete confirmation to classroom view
+- make result academic session selection only display academic sessions in which the student has a result
