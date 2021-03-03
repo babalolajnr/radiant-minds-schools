@@ -26,7 +26,7 @@ class ResultController extends Controller
         $currentAcademicSession = AcademicSession::currentAcademicSession();
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $currentAcademicSession->id)->get();
 
-        return view('createResults', compact('terms', 'subjects', 'student'));
+        return view('createResults', compact('terms', 'subjects', 'student', 'currentAcademicSession'));
     }
 
     public function store(Request $request, $studentID)
