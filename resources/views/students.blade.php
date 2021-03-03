@@ -87,12 +87,12 @@
                                                 <td>{{ $student->status }}</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button type="button" id="viewStudentButton"
-                                                            data-admission-no={{ $student->admission_no }}
-                                                            class="btn btn-default btn-flat"
-                                                            onclick="showViewModal({{ $student }})" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
+                                                        <a href="/view/student/{{ $student->admission_no }}">
+                                                            <button type="button" id="" class="btn btn-default btn-flat"
+                                                                title="Student detailed view">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </a>
                                                         {{-- render if user is authorized to delete --}}
                                                         @can('delete', $student)
                                                             <button type="submit" class="btn btn-default btn-flat"
