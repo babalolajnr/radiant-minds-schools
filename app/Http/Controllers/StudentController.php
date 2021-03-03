@@ -117,7 +117,15 @@ class StudentController extends Controller
     public function show($student)
     {
         $student = Student::where('admission_no', $student);
-        return $student->exists() ? response(200) : abort(404);
+
+        if (!$student->exists()) {
+            abort(404);
+        }
+
+        $student = $student->first();
+        $academicSessions = AcademicSession::all();
+        $terms = Term::all();
+        return  view('showStudent', compact('student', 'academicSessions', 'terms'));
     }
 
     public function suspend($id)
@@ -292,7 +300,7 @@ class StudentController extends Controller
 
             Storage::delete($deletePath);
         }
-        
+
         /**if guardian has more than one child delete only the student's 
          * data else delete the student and the guargian's data
          */
