@@ -71,33 +71,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                        @foreach ($results as $key => $result)
-                                            <tr>
-                                                <td>{{ $result->subject->name }}</td>
-                                                <td>{{ $result->ca }}</td>
-                                                <td>{{ $result->exam }}</td>
-                                                <td>{{ $result->total }}</td>
-                                                <td>{{ $maxScores[$result->subject->name] }}
-                                                <td>{{ $minScores[$result->subject->name] }}
-                                                </td>
-                                                <td>{{ round($averageScores[$result->subject->name], 2) }}
-                                                </td>
-                                                @if ($result->total <= 39)
-                                                    <td class="text-red-700">F</td>
-                                                @elseif($result->total >= 40 && $result->total <= 49) <td
-                                                        class="text-yellow-500">D</td>
-                                                    @elseif($result->total >= 50 && $result->total <= 59) <td
-                                                            class="text-green-300">C</td>
-                                                        @elseif($result->total >= 60 && $result->total <= 69) <td
-                                                                class="text-green-600">B</td>
-                                                            @elseif($result->total >= 70 && $result->total <= 100)
-                                                                    <td class="text-green-900">A</td>
-                                                                @else
-                                                                    <td></td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
+                                        @if (!$results->isEmpty())
+                                            @foreach ($results as $key => $result)
+                                                <tr>
+                                                    <td>{{ $result->subject->name }}</td>
+                                                    <td>{{ $result->ca }}</td>
+                                                    <td>{{ $result->exam }}</td>
+                                                    <td>{{ $result->total }}</td>
+                                                    <td>{{ $maxScores[$result->subject->name] }}
+                                                    <td>{{ $minScores[$result->subject->name] }}
+                                                    </td>
+                                                    <td>{{ round($averageScores[$result->subject->name], 2) }}
+                                                    </td>
+                                                    @if ($result->total <= 39)
+                                                        <td class="text-red-700">F</td>
+                                                    @elseif($result->total >= 40 && $result->total <= 49) <td
+                                                            class="text-yellow-500">D</td>
+                                                        @elseif($result->total >= 50 && $result->total <= 59) <td
+                                                                class="text-green-300">C</td>
+                                                            @elseif($result->total >= 60 && $result->total <= 69)
+                                                                    <td class="text-green-600">B</td>
+                                                                @elseif($result->total >= 70 && $result->total <=
+                                                                        100) <td class="text-green-900">A</td>
+                                                                    @else
+                                                                        <td></td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            No results for this Term 😢
+                                        @endif
                                     </tbody>
                                     <tfoot>
                                         <tr>
