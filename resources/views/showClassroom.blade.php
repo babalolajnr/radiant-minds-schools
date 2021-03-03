@@ -171,6 +171,32 @@
         </section>
         <!-- /.content -->
     </div>
+    {{-- Delete confirmation modal --}}
+    <div class="modal fade" id="deleteConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <span id="deleteItemName" class="font-bold"></span>?
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <form action="" method="POST" id="yesDeleteConfirmation">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
     <x-slot name="scripts">
         <!-- Toastr -->
