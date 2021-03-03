@@ -49,8 +49,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Student Routes
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('create/student', [StudentController::class, 'create']);
+    /**
+     * {student} stands for admission number 
+     * so wherever you see it in the routes 
+     * that's what it means. I don't know what
+     * I was thinking when i decided to name it like that
+     * but I am too lazy to change it now.
+     */
     Route::get('/studentSettings/{student}', [StudentController::class, 'showStudentSettingsView']);
-    Route::get('/view/student/{student}', [StudentController::class, 'show']);
+    Route::get('view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
     Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
     Route::post('/results/sessional/student/{student}', [StudentController::class, 'getSessionalResults']);
