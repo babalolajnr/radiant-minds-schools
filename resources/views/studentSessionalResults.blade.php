@@ -3,8 +3,7 @@
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet"
@@ -45,68 +44,72 @@
                                 <h3 class="card-title">Results</h3>
                             </div>
                             <div class="card-body">
-                                @foreach($results as $key => $termResult)
-                                
-                                {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
-                                <table
-                                    id="{{ $key }}"
-                                    class="table table-bordered table-striped">
-                                    <thead>
-                                        <h3>{{ $key }}</h3>
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th>C.A.<span class="text-red-500 pl-1">40</span></th>
-                                            <th>Exam<span class="text-red-500 pl-1">60</span></th>
-                                            <th>Total<span class="text-red-500 pl-1">100</span></th>
-                                            <th>Highest Score</th>
-                                            <th>Lowest Score</th>
-                                            <th>Class Average</th>
-                                            <th>Grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                @if (!empty($results))
+                                    @foreach ($results as $key => $termResult)
 
-                                        @foreach($termResult as $itemKey => $item)
-                                        <tr>
-                                            <td>{{ $item->subject->name }}</td>
-                                            <td>{{ $item->ca }}</td>
-                                            <td>{{ $item->exam }}</td>
-                                            <td>{{ $item->total }}</td>
-                                            <td>{{ $maxScores[$item->subject->name.'-'.array_search($termResult, $results)] }}
-                                            <td>{{ $minScores[$item->subject->name.'-'.array_search($termResult, $results)] }}</td>
-                                            <td>{{ round($averageScores[$item->subject->name.'-'.array_search($termResult, $results)], 2) }}</td>
-                                            
-                                            @if($item->total <= 39)
-                                                <td class="text-red-700">F</td>
-                                            @elseif($item->total >= 40 && $item->total <= 49)
-                                                <td class="text-yellow-500">D</td>
-                                            @elseif($item->total >= 50 && $item->total <= 59)
-                                                <td class="text-green-300">C</td>
-                                            @elseif($item->total >= 60 && $item->total <= 69)
-                                                <td class="text-green-600">B</td>
-                                            @elseif($item->total >= 70 && $item->total <= 100)
-                                                <td class="text-green-900">A</td>
-                                            @else
-                                                <td></td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Subject</th>
-                                            <th>C.A.<span class="text-red-500 pl-1">40</span></th>
-                                            <th>Exam<span class="text-red-500 pl-1">60</span></th>
-                                            <th>Total<span class="text-red-500 pl-1">100</span></th>
-                                            <th>Highest Score</th>
-                                            <th>Lowest Score</th>
-                                            <th>Class Average</th>
-                                            <th>Grade</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <hr class="py-4">
-                                @endforeach
+                                        {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
+                                        <table id="{{ $key }}" class="table table-bordered table-striped">
+                                            <thead>
+                                                <h3>{{ $key }}</h3>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>C.A.<span class="text-red-500 pl-1">40</span></th>
+                                                    <th>Exam<span class="text-red-500 pl-1">60</span></th>
+                                                    <th>Total<span class="text-red-500 pl-1">100</span></th>
+                                                    <th>Highest Score</th>
+                                                    <th>Lowest Score</th>
+                                                    <th>Class Average</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach ($termResult as $itemKey => $item)
+                                                    <tr>
+                                                        <td>{{ $item->subject->name }}</td>
+                                                        <td>{{ $item->ca }}</td>
+                                                        <td>{{ $item->exam }}</td>
+                                                        <td>{{ $item->total }}</td>
+                                                        <td>{{ $maxScores[$item->subject->name . '-' . array_search($termResult, $results)] }}
+                                                        <td>{{ $minScores[$item->subject->name . '-' . array_search($termResult, $results)] }}
+                                                        </td>
+                                                        <td>{{ round($averageScores[$item->subject->name . '-' . array_search($termResult, $results)], 2) }}
+                                                        </td>
+
+                                                        @if ($item->total <= 39)
+                                                            <td class="text-red-700">F</td>
+                                                        @elseif($item->total >= 40 && $item->total <= 49) <td
+                                                                class="text-yellow-500">D</td>
+                                                            @elseif($item->total >= 50 && $item->total <= 59) <td
+                                                                    class="text-green-300">C</td>
+                                                                @elseif($item->total >= 60 && $item->total <= 69)
+                                                                        <td class="text-green-600">B</td>
+                                                                    @elseif($item->total >= 70 && $item->total <=
+                                                                            100) <td class="text-green-900">A</td>
+                                                                        @else
+                                                                            <td></td>
+                                                        @endif
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>C.A.<span class="text-red-500 pl-1">40</span></th>
+                                                    <th>Exam<span class="text-red-500 pl-1">60</span></th>
+                                                    <th>Total<span class="text-red-500 pl-1">100</span></th>
+                                                    <th>Highest Score</th>
+                                                    <th>Lowest Score</th>
+                                                    <th>Class Average</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <hr class="py-4">
+                                    @endforeach
+                                @else
+                                    No results for this academic session 😢
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -143,7 +146,7 @@
         <!-- AdminLTE App -->
         <script>
             //launch toastr 
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
@@ -157,9 +160,9 @@
             });
 
             //datatables
-            $(function () {
+            $(function() {
                 // looping through all the tables to assign dynamic numeric id to the datatables initialization
-                $('table').each(function () {
+                $('table').each(function() {
 
                     const tableID = $(this).attr('id')
                     $("#" + tableID).DataTable({
