@@ -97,8 +97,11 @@
         </div>
         <!-- /.sidebar -->
 
-        <div class="sidebar-custom">
-            <a href="#" class="btn btn-link"><i class="fas fa-cogs"></i></a>
+        <div class="sidebar-custom d-flex">
+            <form action="/logout" method="post">
+                @csrf
+                <button type="submit" class="btn btn-link" title="Logout"><i class="fas fa-sign-out-alt text-danger"></i></button>
+            </form>
             <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Help</a>
         </div>
         <!-- /.sidebar-custom -->
