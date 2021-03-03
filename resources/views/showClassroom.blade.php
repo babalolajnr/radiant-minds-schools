@@ -106,15 +106,11 @@
 
                                                         {{-- render if user is authorized to delete --}}
                                                         @can('delete', $student)
-                                                            <form action="/delete/student/{{ $student->id }}"
-                                                                method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-default btn-flat"
-                                                                    title="Delete">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                            <button type="submit" class="btn btn-default btn-flat"
+                                                                title="Delete"
+                                                                onclick="deleteConfirmationModal({{ $student }})">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
                                                         @endcan
 
                                                         {{-- render if user is not authorized to delete --}}
@@ -203,6 +199,12 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+            function deleteConfirmationModal(data) {
+                let deleteItemUrl = '/delete/student/' + data.id
+                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
+                $('#deleteItemName').html(data.name)
+                $('#deleteConfirmationModal').modal('show')
+            }
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
