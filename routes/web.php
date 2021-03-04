@@ -60,8 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('view/student/{student}', [StudentController::class, 'show']);
     Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
     Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
-    Route::post('/results/sessional/student/{student}', [StudentController::class, 'getSessionalResults']);
-    Route::post('/results/term/student/{student}', [StudentController::class, 'getTermResults']);
+    Route::get('/results/sessional/{student}/{academicSession}', [StudentController::class, 'getSessionalResults'])->where('academicSession', '.*');
+    Route::post('/results/term/{student}', [StudentController::class, 'getTermResults']);
     Route::post('/store/image/{id}', [StudentController::class, 'uploadImage']);
     Route::post('/store/student', [StudentController::class, 'store']);
     Route::patch('/update/student/{id}', [StudentController::class, 'update']);
