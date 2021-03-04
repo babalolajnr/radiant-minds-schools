@@ -18,7 +18,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Results</h1>
+                        <h1>Results {{ $academicSession->name }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -60,6 +60,7 @@
                                                     <th>Lowest Score</th>
                                                     <th>Class Average</th>
                                                     <th>Grade</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -89,6 +90,23 @@
                                                                         @else
                                                                             <td></td>
                                                         @endif
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="/edit/result/{{ $item->id }}">
+                                                                    <button type="button" id=""
+                                                                        class="btn btn-default btn-flat"
+                                                                        title="Student detailed view">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </button>
+                                                                </a>
+                                                                <button type="submit" class="btn btn-default btn-flat"
+                                                                    title="Delete"
+                                                                    onclick="deleteConfirmationModal({{ $item }})">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -102,6 +120,7 @@
                                                     <th>Lowest Score</th>
                                                     <th>Class Average</th>
                                                     <th>Grade</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -117,7 +136,32 @@
         </section>
         <!-- /.content -->
     </div>
-
+    {{-- Delete confirmation modal --}}
+    <div class="modal fade" id="deleteConfirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <span id="deleteItemName" class="font-bold"></span> result?
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <form action="" method="POST" id="yesDeleteConfirmation">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <x-slot name="scripts">
         <!-- Toastr -->
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
@@ -145,6 +189,13 @@
         </script>
         <!-- AdminLTE App -->
         <script>
+            function deleteConfirmationModal(data) {
+                let deleteItemUrl = '/delete/result/' + data.id
+                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
+                $('#deleteItemName').html(data.subject.name)
+                $('#deleteConfirmationModal').modal('show')
+            }
+
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
