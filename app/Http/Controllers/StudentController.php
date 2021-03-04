@@ -172,16 +172,18 @@ class StudentController extends Controller
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getSessionalResults($student, Request $request)
+    public function getSessionalResults($student, $academicSession)
     {
         $student = Student::findStudent($student);
+        $academicSession = AcademicSession::where('name', $academicSession);
 
-        $this->validate($request, [
-            'academicSession' => ['required', 'exists:academic_sessions,name'],
-        ]);
+        if (!$academicSession->exists()) {
+            abort(404);
+        }
+
+        $academicSession = $academicSession->first();
 
         $student =  $student->first();
-        $academicSession = AcademicSession::where('name', $request->academicSession)->first();
         $terms = Term::all();
         $results = [];
         $maxScores = [];
