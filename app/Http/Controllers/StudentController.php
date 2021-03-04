@@ -172,16 +172,10 @@ class StudentController extends Controller
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getSessionalResults($student, $academicSession)
+    public function getSessionalResults($student, $academicSessionId)
     {
         $student = Student::findStudent($student);
-        $academicSession = AcademicSession::where('name', $academicSession);
-
-        if (!$academicSession->exists()) {
-            abort(404);
-        }
-
-        $academicSession = $academicSession->first();
+        $academicSession = AcademicSession::findOrFail($academicSessionId);
 
         $student =  $student->first();
         $terms = Term::all();
@@ -229,17 +223,12 @@ class StudentController extends Controller
         return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession'));
     }
 
-    public function getTermResults(Request $request, $student)
+    public function getTermResults($student, $termId, $academicSessionId)
     {
 
         $student = Student::findStudent($student);
-        $this->validate($request, [
-            'academicSession' => ['required', 'exists:academic_sessions,name'],
-            'term' => ['required', 'exists:terms,name'],
-        ]);
-
-        $academicSession = AcademicSession::where('name', $request->academicSession)->first();
-        $term = Term::where('name', $request->term)->first();
+        $academicSession = AcademicSession::findOrFail($academicSessionId);
+        $term = Term::findOrFail($termId);
         $student = $student->first();
 
         $results = Result::where('student_id', $student->id)
