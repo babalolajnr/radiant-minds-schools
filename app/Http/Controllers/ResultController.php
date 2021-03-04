@@ -178,6 +178,21 @@ class ResultController extends Controller
         return view('editResult', compact('result'));
     }
 
+    public function update($id, Request $request)
+    {
+        $result = Result::findOrFail($id);
+        $validatedData = $request->validate([
+            'ca' => ['required', 'numeric', 'between:0,40'],
+            'exam' => ['nullable', 'numeric', 'between:0,60'],
+        ]);
+        $exam = $validatedData['exam'] ?? 0;
+        $ca = $validatedData['ca'] ?? 0;
+        $total = $exam + $ca;
+        $total = ['total' => $total];
+        $result->update($validatedData + $total);
+        return back()->with('success', 'Result Updated!');
+    }
+
     public function destroy($id)
     {
         $result = Result::findOrFail($id);
