@@ -224,27 +224,20 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="getSessionalResult" method="POST"
-                            action="/results/sessional/student/{{ $student->admission_no }}">
-                            @csrf
-                            <div class="form-group">
-                                <label>Academic Session</label>
-                                <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                    @foreach ($academicSessions as $academicSession)
-                                        <option @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                            {{ $academicSession->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('academicSession')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
+                        <div class="form-group">
+                            <label>Academic Session</label>
+                            <select class="form-control select2" id="academicSession" style="width: 100%;">
+                                @foreach ($academicSessions as $academicSession)
+                                    <option @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                        {{ $academicSession->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" onclick="getSessionalResult({{ $student }})"
+                                class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -349,7 +342,6 @@
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script>
-            
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
@@ -373,6 +365,13 @@
                     })
 
             });
+
+            function getSessionalResult(student) {
+                let selected = $('#sessionalResultModal #academicSession').find(":selected").text()
+                selected = selected.trim()
+                const sessionalResultUrl = '/results/sessional/' + student.admission_no + '/' + selected
+                window.location.href = sessionalResultUrl
+            }
 
         </script>
     </x-slot>
