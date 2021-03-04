@@ -224,7 +224,7 @@ class StudentController extends Controller
             $results = array_merge($results, $result);
         }
 
-        return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores'));
+        return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession'));
     }
 
     public function getTermResults(Request $request, $student)
