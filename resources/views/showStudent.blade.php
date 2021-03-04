@@ -163,7 +163,7 @@
                                                         class="btn btn-info" data-toggle="modal"
                                                         data-target="#sessionalResultModal">Sessional</button>
                                                     <button type="button" class="btn btn-warning" data-toggle="modal"
-                                                        data-target="#sessionalResultModal">Term</button>
+                                                        data-target="#termResultModal">Term</button>
                                                 </div>
                                                 <span class="ml-3" title="Add new result">
                                                     <a href="/create/result/{{ $student->admission_no }}">
