@@ -93,7 +93,7 @@ class ResultController extends Controller
 
         //Check if the class has subjects
         if (count($subjects) < 1) {
-            return redirect('/view/classroom/'.$student->classroom->id)->with('error', 'The Student Class does not have subjects set');
+            return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The Student Class does not have subjects set');
         }
         $results = [];
 
@@ -170,6 +170,12 @@ class ResultController extends Controller
             'minScores',
             'age'
         ));
+    }
+
+    public function edit($id)
+    {
+        $result = Result::findOrFail($id);
+        return view('editResult', compact('result'));
     }
 
     public function destroy($id)
