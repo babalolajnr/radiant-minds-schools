@@ -171,4 +171,12 @@ class ResultController extends Controller
             'age'
         ));
     }
+
+    public function destroy($id)
+    {
+        $result = Result::findOrFail($id);
+        $result->delete();
+
+        return back()->with('success', 'Result Deleted');
+    }
 }
