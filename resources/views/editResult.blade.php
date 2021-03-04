@@ -44,24 +44,25 @@
                             </div>
                             <form method="POST" action="/update/result/{{ $result->id }}">
                                 @csrf
+                                @method('PATCH')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Subject">Subject</label>
-                                        <select class="form-control select2" name="subject" style="width: 100%;" disabled>
+                                        <select class="form-control select2" style="width: 100%;" disabled>
                                             <option SELECTED>{{ $result->subject->name }}</option>
                                         </select>
-                                        @error('subject')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="Term">Term</label>
-                                        <select class="form-control select2" name="term" style="width: 100%;" disabled>
+                                        <select class="form-control select2" style="width: 100%;" disabled>
                                             <option SELECTED >{{ $result->term->name }}</option>
                                         </select>
-                                        @error('term')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Academic Session">Academic Session</label>
+                                        <select class="form-control select2" style="width: 100%;" disabled>
+                                            <option SELECTED >{{ $result->academicSession->name }}</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="C.A">C.A</label>
