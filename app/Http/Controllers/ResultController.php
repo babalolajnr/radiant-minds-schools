@@ -175,6 +175,9 @@ class ResultController extends Controller
     public function edit($id)
     {
         $result = Result::findOrFail($id);
+        
+        //store previous url in session to be used for redirect after update
+        session(['resultsPage' => url()->previous()]);
         return view('editResult', compact('result'));
     }
 
@@ -190,7 +193,9 @@ class ResultController extends Controller
         $total = $exam + $ca;
         $total = ['total' => $total];
         $result->update($validatedData + $total);
-        return back()->with('success', 'Result Updated!');
+
+        //return to previously viewed route b4 edit page
+        return redirect($request->session()->get('resultsPage'))->with('success', 'Result Updated!');
     }
 
     public function destroy($id)
