@@ -228,7 +228,7 @@
                             <label>Academic Session</label>
                             <select class="form-control select2" id="academicSession" style="width: 100%;">
                                 @foreach ($academicSessions as $academicSession)
-                                    <option @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                    <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
                                         {{ $academicSession->name }}
                                     </option>
                                 @endforeach
@@ -260,42 +260,30 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
-                        <form id="getTermResult" method="POST"
-                            action="/results/term/student/{{ $student->admission_no }}">
-                            @csrf
-                            <div class="form-group">
-                                <label>Academic Session</label>
-                                <select class="form-control select2" name="academicSession" style="width: 100%;">
-                                    @foreach ($academicSessions as $academicSession)
-                                        <option @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                            {{ $academicSession->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('academicSession')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <label>Term</label>
-                                <select class="form-control select2" name="term" style="width: 100%;">
-                                    @foreach ($terms as $term)
-                                        <option @if (old('term') == $term) SELECTED @endif>
-                                            {{ $term->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('term')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
+                        <div class="form-group">
+                            <label>Academic Session</label>
+                            <select class="form-control select2" id="termResultAcademicSession" style="width: 100%;">
+                                @foreach ($academicSessions as $academicSession)
+                                    <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                        {{ $academicSession->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Term</label>
+                            <select class="form-control select2" id="term" style="width: 100%;">
+                                @foreach ($terms as $term)
+                                    <option value="{{ $term->id }}" @if (old('term') == $term) SELECTED @endif>
+                                        {{ $term->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" onclick="getTermResult({{ $student }})"
+                                class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -367,9 +355,16 @@
             });
 
             function getSessionalResult(student) {
-                let selected = $('#sessionalResultModal #academicSession').find(":selected").text()
-                selected = selected.trim()
+                let selected = $('#sessionalResultModal #academicSession').val()
                 const sessionalResultUrl = '/results/sessional/' + student.admission_no + '/' + selected
+                window.location.href = sessionalResultUrl
+            }
+
+            function getTermResult(student) {
+                let selectedAcademicSession = $('#termResultModal #termResultAcademicSession').val()
+                let selectedTerm = $('#termResultModal #term').val()
+                const sessionalResultUrl = '/results/term/' + student.admission_no + '/' + selectedTerm + '/' +
+                    selectedAcademicSession
                 window.location.href = sessionalResultUrl
             }
 
