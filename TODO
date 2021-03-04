@@ -6,10 +6,10 @@
 - a̶d̶d̶ s̶l̶u̶g̶ f̶i̶e̶l̶d̶ t̶o̶ s̶u̶b̶j̶e̶c̶t̶s̶ t̶a̶b̶l̶e̶
 - a̶d̶d̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶ i̶d̶ t̶o̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶S̶u̶b̶j̶e̶c̶t̶ p̶i̶v̶o̶t̶ t̶a̶b̶l̶e̶
 - r̶e̶f̶a̶c̶t̶o̶r̶/̶o̶p̶t̶i̶m̶i̶z̶e̶ r̶e̶s̶u̶l̶t̶ f̶a̶c̶t̶o̶r̶y̶
-- add a notice on the create result page that result can only be created for the current academic session
-- add academic session name to sessional results view
+- a̶d̶d̶ a̶ n̶o̶t̶i̶c̶e̶ o̶n̶ t̶h̶e̶ c̶r̶e̶a̶t̶e̶ r̶e̶s̶u̶l̶t̶ p̶a̶g̶e̶ t̶h̶a̶t̶ r̶e̶s̶u̶l̶t̶ c̶a̶n̶ o̶n̶l̶y̶ b̶e̶ c̶r̶e̶a̶t̶e̶d̶ f̶o̶r̶ t̶h̶e̶ c̶u̶r̶r̶e̶n̶t̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶
+- a̶d̶d̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶ n̶a̶m̶e̶ t̶o̶ s̶e̶s̶s̶i̶o̶n̶a̶l̶ r̶e̶s̶u̶l̶t̶s̶ v̶i̶e̶w̶
 - a̶d̶d̶ r̶a̶n̶k̶ t̶o̶ t̶h̶e̶ e̶d̶i̶t̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ p̶a̶g̶e̶
-- add guard on show method in the classroom controller to display an error if the current academic session is not set
+- a̶d̶d̶ g̶u̶a̶r̶d̶ o̶n̶ s̶h̶o̶w̶ m̶e̶t̶h̶o̶d̶ i̶n̶ t̶h̶e̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ c̶o̶n̶t̶r̶o̶l̶l̶e̶r̶ t̶o̶ d̶i̶s̶p̶l̶a̶y̶ a̶n̶ e̶r̶r̶o̶r̶ i̶f̶ t̶h̶e̶ c̶u̶r̶r̶e̶n̶t̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶ i̶s̶ n̶o̶t̶ s̶e̶t̶
 - a̶d̶d̶ p̶d̶ a̶s̶s̶e̶s̶s̶m̶e̶n̶t̶ t̶o̶ s̶t̶u̶d̶e̶n̶t̶ d̶e̶t̶a̶i̶l̶s̶ m̶o̶d̶a̶l̶
 - add destroy method for result
 - add update method for result
