@@ -94,9 +94,8 @@
                                                             <div class="btn-group">
                                                                 <a href="/edit/result/{{ $item->id }}">
                                                                     <button type="button" id=""
-                                                                        class="btn btn-default btn-flat"
-                                                                        title="Student detailed view">
-                                                                        <i class="fas fa-eye"></i>
+                                                                        class="btn btn-default btn-flat" title="Edit">
+                                                                        <i class="fas fa-edit"></i>
                                                                     </button>
                                                                 </a>
                                                                 <button type="submit" class="btn btn-default btn-flat"
