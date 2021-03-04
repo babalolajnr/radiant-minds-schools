@@ -65,7 +65,7 @@ class StudentController extends Controller
     public function create()
     {
         $classrooms = Classroom::pluck('name')->all();
-        return view('newStudent', compact('classrooms'));
+        return view('createStudent', compact('classrooms'));
     }
 
     /**
