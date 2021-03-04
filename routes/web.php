@@ -113,7 +113,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::get('/create/result/{student}', [ResultController::class, 'create']);
     Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
-
+    Route::delete('/delete/result/{id}', [ResultController::class, 'destroy']);
+    
     //Pychomotor Domain Routes
     Route::get('/create/pd/{id}/{termId}', [PDController::class, 'create']);
     Route::post('/store/pd/{id}/{termId}', [PDController::class, 'store']);
