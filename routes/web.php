@@ -114,6 +114,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
     Route::get('/edit/result/{id}', [ResultController::class, 'edit']);
     Route::post('/store/result/{student}', [ResultController::class, 'store']);
+    Route::patch('/update/result/{id}', [ResultController::class, 'update']);
     Route::delete('/delete/result/{id}', [ResultController::class, 'destroy']);
 
     //Pychomotor Domain Routes
