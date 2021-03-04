@@ -110,11 +110,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/update/guardian/{phone}', [GuardianController::class, 'update']);
 
     //Result ROutes
-    Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::get('/create/result/{student}', [ResultController::class, 'create']);
     Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
+    Route::get('/edit/result/{id}', [ResultController::class, 'edit']);
+    Route::post('/store/result/{student}', [ResultController::class, 'store']);
     Route::delete('/delete/result/{id}', [ResultController::class, 'destroy']);
-    
+
     //Pychomotor Domain Routes
     Route::get('/create/pd/{id}/{termId}', [PDController::class, 'create']);
     Route::post('/store/pd/{id}/{termId}', [PDController::class, 'store']);
@@ -125,7 +126,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store/pdType', [PDTypesController::class, 'store']);
     Route::patch('/update/pdType/{id}', [PDTypesController::class, 'update']);
     Route::delete('/delete/pdType/{id}', [PDTypesController::class, 'destroy']);
-
 });
 
 require __DIR__ . '/auth.php';
