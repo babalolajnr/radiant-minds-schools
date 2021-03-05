@@ -93,7 +93,7 @@ class ResultController extends Controller
 
         //Check if the class has subjects
         if (count($subjects) < 1) {
-            return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The student\'s class does not have subjects set');
+            return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The student\'s class does not have subjects set for the selected academic session');
         }
         $results = [];
 
