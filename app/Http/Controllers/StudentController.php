@@ -123,7 +123,22 @@ class StudentController extends Controller
         }
 
         $student = $student->first();
-        $academicSessions = AcademicSession::all();
+
+        //get unique results that has unique academic sessions
+        $results = Result::where('student_id', $student->id)->get()->unique('academic_session_id');
+
+        //reset the keys to consecutively numbered indexes
+        $results = $results->values()->all();
+
+        $academicSessions = [];
+
+        foreach ($results as $result) {
+            $academicSession = $result->academicSession;
+            array_push($academicSessions, $academicSession);
+        }
+        
+        $academicSessions = collect($academicSessions);
+
         $terms = Term::all();
         return  view('showStudent', compact('student', 'academicSessions', 'terms'));
     }
