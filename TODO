@@ -17,3 +17,5 @@
 - add update method for pd
 - a̶d̶d̶ s̶t̶u̶d̶e̶n̶t̶ d̶e̶l̶e̶t̶e̶ c̶o̶n̶f̶i̶r̶m̶a̶t̶i̶o̶n̶ t̶o̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ v̶i̶e̶w̶
 - make result academic session selection only display academic sessions in which the student has a result
+- add pd to performance report
+- add an add result button to results page for easier access
