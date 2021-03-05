@@ -93,7 +93,7 @@ class ResultController extends Controller
 
         //Check if the class has subjects
         if (count($subjects) < 1) {
-            return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The Student Class does not have subjects set');
+            return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The student\'s class does not have subjects set');
         }
         $results = [];
 
@@ -175,7 +175,7 @@ class ResultController extends Controller
     public function edit($id)
     {
         $result = Result::findOrFail($id);
-        
+
         //store previous url in session to be used for redirect after update
         session(['resultsPage' => url()->previous()]);
         return view('editResult', compact('result'));
