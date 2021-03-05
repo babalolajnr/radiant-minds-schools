@@ -117,6 +117,8 @@ class ClassroomController extends Controller
 
         $subjects = Subject::all();
         $relations = [];
+
+        //subjects can only be set for the current academic session
         $currentAcademicSession = AcademicSession::currentAcademicSession();
 
         //loop subjects and get the ones that are related to the classroom
