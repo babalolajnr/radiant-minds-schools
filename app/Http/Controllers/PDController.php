@@ -11,13 +11,25 @@ use Illuminate\Http\Request;
 
 class PDController extends Controller
 {
-    public function create($id, $termId)
+    /**
+     * This method accepts an optional academic session id parameter
+     * if the request does not have academic session id it defaults to the
+     * current academic session
+     * 
+     * 
+     */
+    public function create($id, $termId, $academicSessionId = null)
     {
         $student = Student::findOrFail($id);
         $term = Term::findOrFail($termId);
         $pdTypes = PDType::all();
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
-        $studentPDs = $student->pds()->where('academic_session_id', $currentAcademicSession->id)->where('term_id', $termId)->get();
+
+        if (is_null($academicSessionId)) {
+            $academicSession = AcademicSession::currentAcademicSession();
+        }
+        $academicSession = AcademicSession::findOrFail($academicSessionId);
+
+        $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $termId)->get();
         $pdTypesValues = [];
 
         //create an associative array of pdtypeid and value from the pd model
@@ -28,7 +40,12 @@ class PDController extends Controller
         return view('createPD', compact('pdTypes', 'student', 'pdTypesValues', 'term'));
     }
 
-    //remove term here cos it's redundant
+    /**
+     * this method stores pds id they don't exist
+     * and updates them if they do. It should probably be called
+     * storeOrUpdate but I would probably change it later. It also
+     * recieves an optional academic session id parameter
+     */
     public function store($id, $termId, Request $request)
     {
         $student = Student::findOrFail($id);
