@@ -51,17 +51,26 @@
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
-                                    @foreach ($pdTypes as $pdType)
-                                        <div class="form-group">
-                                            <label for="customRange1">{{ $pdType->name }}<span
-                                                    class="font-light pl-4">range(1-5)</span></label>
-                                            <input type="range" class="custom-range" min="1" max="5"
-                                                name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}" @if (array_key_exists($pdType->id, $pdTypesValues)) value="{{ $pdTypesValues[$pdType->id] }}" @endif>
-
-                                            @if ($errors->has('pdTypes.{{ $pdType->slug }}')) Error
-                                            @endif
-                                        </div>
-                                    @endforeach
+                                    @if (!is_null($pdTypesValues))
+                                        @foreach ($pdTypes as $pdType)
+                                            <div class="form-group">
+                                                <label for="customRange1">{{ $pdType->name }}<span
+                                                        class="font-light pl-4">range(1-5)</span></label>
+                                                <input type="range" class="custom-range" min="1" max="5"
+                                                    name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}"
+                                                    @if (array_key_exists($pdType->id, $pdTypesValues)) value="{{ $pdTypesValues[$pdType->id] }}" @endif>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        @foreach ($pdTypes as $pdType)
+                                            <div class="form-group">
+                                                <label for="customRange1">{{ $pdType->name }}<span
+                                                        class="font-light pl-4">range(1-5)</span></label>
+                                                <input type="range" class="custom-range" min="1" max="5"
+                                                    name="pdTypes[{{ $pdType->slug }}]" id="{{ $pdType->slug }}">
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                                 <div class="card-footer">
                                     <div class="form-group">
