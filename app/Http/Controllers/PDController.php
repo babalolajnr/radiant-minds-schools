@@ -27,16 +27,25 @@ class PDController extends Controller
         if (is_null($academicSessionId)) {
             $academicSession = AcademicSession::currentAcademicSession();
         }
+        
         $academicSession = AcademicSession::findOrFail($academicSessionId);
 
-        $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $termId)->get();
-        $pdTypesValues = [];
+        $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $termId);
+        if ($studentPDs->exists()) {
+            $pdTypesValues = [];
 
-        //create an associative array of pdtypeid and value from the pd model
-        foreach ($studentPDs as $studentPD) {
-            $pdTypeValue = [$studentPD->p_d_type_id => $studentPD->value];
-            $pdTypesValues += $pdTypeValue;
+            $studentPDs = $studentPDs->get();
+
+            //create an associative array of pdtypeid and value from the pd model
+            foreach ($studentPDs as $studentPD) {
+                $pdTypeValue = [$studentPD->p_d_type_id => $studentPD->value];
+                $pdTypesValues += $pdTypeValue;
+            }
+        } else {
+            $pdTypesValues = null;
         }
+
+
         return view('createPD', compact('pdTypes', 'student', 'pdTypesValues', 'term'));
     }
 
@@ -46,7 +55,7 @@ class PDController extends Controller
      * storeOrUpdate but I would probably change it later. It also
      * recieves an optional academic session id parameter
      */
-    public function store($id, $termId, Request $request)
+    public function store($id, $termId, Request $request, $academicSessionId = null)
     {
         $student = Student::findOrFail($id);
         $term = Term::findOrFail($termId);
@@ -55,14 +64,18 @@ class PDController extends Controller
             'pdTypes.*' => ['required', 'numeric', 'min:1', 'max:5'],
         ]);
 
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        if (is_null($academicSessionId)) {
+            $academicSession = AcademicSession::currentAcademicSession();
+        }
+
+        $academicSession = AcademicSession::findOrFail($academicSessionId);
 
         foreach ($validatedData['pdTypes'] as $pdType => $value) {
             $pdType = PDType::where('slug', $pdType)->first();
             PD::updateOrCreate(
                 [
                     'student_id' => $student->id,
-                    'academic_session_id' => $currentAcademicSession->id,
+                    'academic_session_id' => $academicSession->id,
                     'term_id' => $term->id,
                     'p_d_type_id' => $pdType->id,
                 ],
