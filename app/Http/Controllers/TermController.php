@@ -23,9 +23,8 @@ class TermController extends Controller
 
     public function edit($id)
     {
-
         $term = Term::findOrFail($id);
-        return response(200);
+        return view('editTerm', compact('term'));
     }
 
     public function update($id, Request $request)
@@ -33,15 +32,24 @@ class TermController extends Controller
         $term = Term::findOrFail($id);
         $validatedData = $this->validateTerm($request, $term);
         $term->update($validatedData);
-        return response(200);
+        return redirect('/terms')->with('success', 'Term updated!');
     }
 
     public function destroy($id, Term $term)
     {
-        $this->authorize('delete', $term);
+        // $this->authorize('delete', $term);
         $term = Term::findOrFail($id);
-        $term->delete();
-        return response(200);
+
+        try {
+            $term->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Term can not be deleted because some resource are dependent on it!');
+            }
+        }
+
+        return back()->with('success', 'Term deleted!');
     }
 
     private function validateTerm($request, $term = null)
