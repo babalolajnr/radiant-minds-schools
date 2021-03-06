@@ -119,7 +119,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Pychomotor Domain Routes
     Route::get('/create/pd/{id}/{termId}/{academicSessionId?}', [PDController::class, 'create']);
-    Route::post('/store/pd/{id}/{termId}', [PDController::class, 'store']);
+    Route::post('/store/pd/{id}/{termId}/{academicSessionId?}', [PDController::class, 'store']);
 
     //Pychomotor domain type routes
     Route::get('/pdTypes', [PDTypesController::class, 'index']);
