@@ -89,7 +89,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="edit/terms/{{ $term->id }}">
+                                                        <a href="edit/term/{{ $term->id }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -171,24 +171,14 @@
         </script>
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
         </script>
-        <script src="{{ asset('TAssets/plugins/moment/moment.min.js') }}"></script>
         <!-- Tempusdominus Bootstrap 4 -->
         <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
         </script>
 
         <!-- AdminLTE App -->
         <script>
-            //Date range picker
-            $('#startDate').datetimepicker({
-                format: 'YYYY-MM-DD'
-            })
-
-            $('#endDate').datetimepicker({
-                format: 'YYYY-MM-DD'
-            })
-
             function deleteConfirmationModal(data) {
-                let deleteUrl = '/delete/terms/' + data.id
+                let deleteUrl = '/delete/term/' + data.id
                 $('#yesDeleteConfirmation').attr("action", deleteUrl)
                 $('#deleteItemName').html(data.name)
                 $('#deleteConfirmationModal').modal('show')
