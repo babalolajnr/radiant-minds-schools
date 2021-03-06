@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('TAssets/plugins/fontawesome-free/css/all.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -260,54 +262,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Handwriting</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fluency</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Sports</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Crafts</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Drawing</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Public speaking</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        @foreach ($pds as $key => $pd)
+                            <tr>
+                                <td>{{ $key }}</td>
+                                <td>
+                                    @if ($pd == '5') <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pd == '4') <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pd == '3') <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pd == '2') <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pd == '1') <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
