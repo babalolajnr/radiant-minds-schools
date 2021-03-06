@@ -19,3 +19,6 @@
 - m̶a̶k̶e̶ r̶e̶s̶u̶l̶t̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶ s̶e̶l̶e̶c̶t̶i̶o̶n̶ o̶n̶l̶y̶ d̶i̶s̶p̶l̶a̶y̶ a̶c̶a̶d̶e̶m̶i̶c̶ s̶e̶s̶s̶i̶o̶n̶s̶ i̶n̶ w̶h̶i̶c̶h̶ t̶h̶e̶ s̶t̶u̶d̶e̶n̶t̶ h̶a̶s̶ a̶ r̶e̶s̶u̶l̶t̶
 - a̶d̶d̶ p̶d̶ t̶o̶ p̶e̶r̶f̶o̶r̶m̶a̶n̶c̶e̶ r̶e̶p̶o̶r̶t̶
 - add an add result button to results page for easier access
+- add subjects view
+- a̶d̶d̶ t̶e̶r̶m̶s̶ v̶i̶e̶w̶
+- add soft delete for student
