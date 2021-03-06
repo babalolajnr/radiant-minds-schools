@@ -84,9 +84,11 @@
                                         <div class="active tab-pane" id="about">
                                             <strong></i>Class</strong>
 
-                                            <p class="text-muted" id="classroom">
-                                                {{ $student->classroom->name }}
-                                            </p>
+                                            <a href="/view/classroom/{{ $student->classroom->id }}">
+                                                <p class="text-info" id="classroom">
+                                                    {{ $student->classroom->name }}
+                                                </p>
+                                            </a>
 
                                             <hr>
 
@@ -224,20 +226,24 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Academic Session</label>
-                            <select class="form-control select2" id="academicSession" style="width: 100%;">
-                                @foreach ($academicSessions as $academicSession)
-                                    <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="button" onclick="getSessionalResult({{ $student }})"
-                                class="btn btn-primary">Submit</button>
-                        </div>
+                        @if (!$academicSessions->isEmpty())
+                            <div class="form-group">
+                                <label>Academic Session</label>
+                                <select class="form-control select2" id="academicSession" style="width: 100%;">
+                                    @foreach ($academicSessions as $academicSession)
+                                        <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" onclick="getSessionalResult({{ $student }})"
+                                    class="btn btn-primary">Submit</button>
+                            </div>
+                        @else
+                            <h5 class="text-center">No result is available 😥</h5>
+                        @endif
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -260,30 +266,35 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Academic Session</label>
-                            <select class="form-control select2" id="termResultAcademicSession" style="width: 100%;">
-                                @foreach ($academicSessions as $academicSession)
-                                    <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                        {{ $academicSession->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Term</label>
-                            <select class="form-control select2" id="term" style="width: 100%;">
-                                @foreach ($terms as $term)
-                                    <option value="{{ $term->id }}" @if (old('term') == $term) SELECTED @endif>
-                                        {{ $term->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="button" onclick="getTermResult({{ $student }})"
-                                class="btn btn-primary">Submit</button>
-                        </div>
+                        @if (!$academicSessions->isEmpty())
+                            <div class="form-group">
+                                <label>Academic Session</label>
+                                <select class="form-control select2" id="termResultAcademicSession"
+                                    style="width: 100%;">
+                                    @foreach ($academicSessions as $academicSession)
+                                        <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                            {{ $academicSession->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Term</label>
+                                <select class="form-control select2" id="term" style="width: 100%;">
+                                    @foreach ($terms as $term)
+                                        <option value="{{ $term->id }}" @if (old('term') == $term) SELECTED @endif>
+                                            {{ $term->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" onclick="getTermResult({{ $student }})"
+                                    class="btn btn-primary">Submit</button>
+                            </div>
+                        @else
+                            <h5 class="text-center">No result is available 😥</h5>
+                        @endif
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
