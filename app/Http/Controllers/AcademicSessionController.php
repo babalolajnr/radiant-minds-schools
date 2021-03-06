@@ -61,7 +61,7 @@ class AcademicSessionController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() == 23000) {
                 //SQLSTATE[23000]: Integrity constraint violation
-                return back()->with('error', 'Academic session can not be deleted because some resource are dependent on it!');
+                return back()->with('error', 'Academic session can not be deleted because some resources are dependent on it!');
             }
         }
         return back()->with('success', 'Academic Session Deleted!');
