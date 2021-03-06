@@ -49,8 +49,20 @@
                             </li>
                             <li class="nav-item">
                                 <a href="/classrooms" class="nav-link">
-                                    <i class="nav-icon fa fa-list-alt"></i>
+                                    <i class="nav-icon fas fa-chalkboard"></i>
                                     <p>Classrooms</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/terms" class="nav-link">
+                                    <i class="nav-icon fas fa-clock"></i>
+                                    <p>Terms</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/subjects" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>Subjects</p>
                                 </a>
                             </li>
                         </ul>
