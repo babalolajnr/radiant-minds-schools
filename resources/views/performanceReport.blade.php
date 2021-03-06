@@ -262,27 +262,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($pds as $key => $pd)
+                        @foreach ($pdTypes as $pdType)
                             <tr>
-                                <td>{{ $key }}</td>
+                                <td>{{ $pdType->name }}</td>
                                 <td>
-                                    @if ($pd == '5') <i class="fas fa-check"></i>
+                                    @if (array_key_exists($pdType->name, $pds) && $pds[$pdType->name] == '5')
+                                        <i class="fas fa-check"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($pd == '4') <i class="fas fa-check"></i>
+                                    @if (array_key_exists($pdType->name, $pds) && $pds[$pdType->name] == '4')
+                                        <i class="fas fa-check"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($pd == '3') <i class="fas fa-check"></i>
+                                    @if (array_key_exists($pdType->name, $pds) && $pds[$pdType->name] == '3')
+                                        <i class="fas fa-check"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($pd == '2') <i class="fas fa-check"></i>
+                                    @if (array_key_exists($pdType->name, $pds) && $pds[$pdType->name] == '2')
+                                        <i class="fas fa-check"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($pd == '1') <i class="fas fa-check"></i>
+                                    @if (array_key_exists($pdType->name, $pds) && $pds[$pdType->name] == '1')
+                                        <i class="fas fa-check"></i>
                                     @endif
                                 </td>
                             </tr>
