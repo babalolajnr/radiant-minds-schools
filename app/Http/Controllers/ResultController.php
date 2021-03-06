@@ -90,6 +90,8 @@ class ResultController extends Controller
 
         $student = $student->first();
 
+        $pdTypes = PDType::all();
+
         // get pds for the academic session and term
         $pds = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->get();
         
@@ -196,7 +198,8 @@ class ResultController extends Controller
             'averageScores',
             'minScores',
             'age',
-            'pds'
+            'pds',
+            'pdTypes'
         ));
     }
 
