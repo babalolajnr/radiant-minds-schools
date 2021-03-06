@@ -24,11 +24,7 @@ class PDController extends Controller
         $term = Term::findOrFail($termId);
         $pdTypes = PDType::all();
 
-        if (is_null($academicSessionId)) {
-            $academicSession = AcademicSession::currentAcademicSession();
-        }
-        
-        $academicSession = AcademicSession::findOrFail($academicSessionId);
+        $academicSession = is_null($academicSessionId) ? AcademicSession::currentAcademicSession() : AcademicSession::findOrFail($academicSessionId);
 
         $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $termId);
         if ($studentPDs->exists()) {
@@ -45,15 +41,20 @@ class PDController extends Controller
             $pdTypesValues = null;
         }
 
+        // $currentAcademicSession = AcademicSession::currentAcademicSession();
 
-        return view('createPD', compact('pdTypes', 'student', 'pdTypesValues', 'term'));
+        return view('createPD', compact('pdTypes', 'student', 'pdTypesValues', 'term', 'academicSession'));
     }
 
     /**
      * this method stores pds id they don't exist
      * and updates them if they do. It should probably be called
      * storeOrUpdate but I would probably change it later. It also
-     * recieves an optional academic session id parameter
+     * recieves an optional academic session id parameter.
+     * 
+     * If the optional academic session id parameter is null, it
+     * uses the current academic session to store the pdType else it
+     * uses the academic session from the url
      */
     public function store($id, $termId, Request $request, $academicSessionId = null)
     {
@@ -64,11 +65,8 @@ class PDController extends Controller
             'pdTypes.*' => ['required', 'numeric', 'min:1', 'max:5'],
         ]);
 
-        if (is_null($academicSessionId)) {
-            $academicSession = AcademicSession::currentAcademicSession();
-        }
-
-        $academicSession = AcademicSession::findOrFail($academicSessionId);
+        $academicSession = is_null($academicSessionId) ?
+            AcademicSession::currentAcademicSession() : AcademicSession::findOrFail($academicSessionId);
 
         foreach ($validatedData['pdTypes'] as $pdType => $value) {
             $pdType = PDType::where('slug', $pdType)->first();
@@ -83,6 +81,6 @@ class PDController extends Controller
             );
         }
 
-        return back()->with('success', 'Record Added for current session');
+        return back()->with('success', 'Record Added');
     }
 }
