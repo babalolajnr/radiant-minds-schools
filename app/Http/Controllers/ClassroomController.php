@@ -54,7 +54,7 @@ class ClassroomController extends Controller
         $classrooms = Classroom::all();
         $maxRank = $classrooms->max('rank');
         $currentRank = $classroom->rank;
-        
+
         $validatedData = $request->validate([
             'name' => ['required', 'string', Rule::unique('classrooms')->ignore($classroom)],
             'rank' => ['required', 'numeric', 'min:1', 'max:' . $maxRank]
@@ -84,10 +84,10 @@ class ClassroomController extends Controller
         $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
 
-        if(is_null($currentAcademicSession)){
+        if (is_null($currentAcademicSession)) {
             return back()->with('error', 'Current Academic session is not set!');
         }
-        
+
         $subjects = $classroom->subjects()->where('academic_session_id', $currentAcademicSession->id)->get();
 
         return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms', 'subjects'));
@@ -97,17 +97,16 @@ class ClassroomController extends Controller
     {
         $this->authorize('delete', $classroom);
         $classroom = Classroom::findOrFail($id);
-        $student = Student::where('classroom_id', $classroom->id);
-        $classroomSubject = $classroom->subjects()->first();
 
-        //test for constraints
-        if ($student->exists()) {
-            return back()->with('error', 'You cannot delete a classroom that has students!');
-        } else if (!is_null($classroomSubject)) {
-            return back()->with('error', 'You cannot delete a classroom that has subjects assigned');
+        try {
+            $classroom->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Classroom can not be deleted because some resource are dependent on it!');
+            }
         }
 
-        $classroom->delete();
         return back()->with('success', 'Classroom Deleted!');
     }
 

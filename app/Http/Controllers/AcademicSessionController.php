@@ -44,7 +44,7 @@ class AcademicSessionController extends Controller
 
     public function update($id, Request $request)
     {
-       
+
         $academicSession = AcademicSession::findOrFail($id);
         $academicSession->update($this->validateAcademicSession($request, $academicSession));
 
@@ -55,17 +55,20 @@ class AcademicSessionController extends Controller
     {
         $this->authorize('delete', $academicSession);
         $academicSession = AcademicSession::findOrFail($id);
-        $results = $academicSession->results()->first();
 
-        if (!is_null($results)) {
-            return back()->with('error', 'Academic Session with results cannot be deleted!');
+        try {
+            $academicSession->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Academic session can not be deleted because some resource are dependent on it!');
+            }
         }
-
-        $academicSession->delete();
         return back()->with('success', 'Academic Session Deleted!');
     }
 
-    public function setCurrentAcademicSession($id){
+    public function setCurrentAcademicSession($id)
+    {
         $academicSession = AcademicSession::findOrFail($id);
 
         AcademicSession::where('current_session', 1)->update(['current_session' => null]);
@@ -73,6 +76,6 @@ class AcademicSessionController extends Controller
         $academicSession->current_session = 1;
         $academicSession->save();
 
-        return back()->with('success', $academicSession->name.' set as current session');
+        return back()->with('success', $academicSession->name . ' set as current session');
     }
 }

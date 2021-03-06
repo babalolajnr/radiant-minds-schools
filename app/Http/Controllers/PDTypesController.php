@@ -56,12 +56,15 @@ class PDTypesController extends Controller
     public function destroy($id)
     {
         $pdType = PDType::findOrFail($id);
-        $relations = $pdType->pds()->exists();
-
-        if ($relations) {
-            return back()->with('error', 'You are not allowed to delete ' . $pdType->name . ' because it has related models');
+        
+        try {
+            $pdType->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Pychodomain Type can not be deleted because some resource are dependent on it!');
+            }
         }
-        $pdType->delete();
         return back()->with('success', 'Deleted!');
     }
 }
