@@ -47,7 +47,7 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}" method="POST">
+                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}@if (!$academicSession->isCurrentAcademicSession())/{{ $academicSession->id }} @endif" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
