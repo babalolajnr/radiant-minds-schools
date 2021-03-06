@@ -114,7 +114,7 @@
                                         <div class="col-sm-6">
                                             <button type="button" onclick="showChooseTermModal()"
                                                 class="btn btn-info btn-flat">
-                                                Create Psychomotor domain
+                                                Create/Update Psychomotor domains
                                             </button>
                                         </div>
                                     </div>
