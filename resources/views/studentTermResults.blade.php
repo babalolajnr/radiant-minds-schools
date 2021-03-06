@@ -51,7 +51,10 @@
                                     <div>
                                         <a
                                             href="/performanceReport/{{ $student->admission_no }}/{{ $academicSession->id }}/{{ $term->id }}">
-                                            <button type="button" class="btn btn-default">Performance Report</button>
+                                            <button type="button" class="btn btn-info">Performance Report</button>
+                                        </a>
+                                        <a href="/create/pd/{{ $student->id }}/{{ $term->id }}/{{ $academicSession->id }}">
+                                            <button type="button" class="btn btn-primary" title="Create or Update Pychodomain for the result's academic session and term">Create/Update PD</button>
                                         </a>
                                     </div>
                                 </div>
