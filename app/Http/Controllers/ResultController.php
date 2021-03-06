@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
+use App\Models\PD;
+use App\Models\PDType;
 use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
@@ -88,6 +90,30 @@ class ResultController extends Controller
 
         $student = $student->first();
 
+        // get pds for the academic session and term
+        $pds = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->get();
+        
+        $pdTypeIds = [];
+        $values = [];
+
+        //for each of the pds push the pdTypeId and pd value into two separate arrays
+        foreach ($pds as $pd) {
+            $pdTypeId = $pd->p_d_type_id;
+            $value = $pd->value;
+            array_push($pdTypeIds, $pdTypeId);
+            array_push($values, $value);
+        }
+
+        //for each pdTypeId get the name and push it into an array
+        $pdTypeNames = [];
+        foreach ($pdTypeIds as $pdTypeId) {
+            $pdTypeName = PDType::find($pdTypeId)->name;
+            array_push($pdTypeNames, $pdTypeName);
+        }
+
+        //comnine the values array and the names array to form a new associative pds array
+        $pds = array_combine($pdTypeNames, $values);
+
         //Get the subjects for the student's class in the selected academic session
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $academicSession->id)->get();
 
@@ -95,6 +121,7 @@ class ResultController extends Controller
         if (count($subjects) < 1) {
             return redirect('/view/classroom/' . $student->classroom->id)->with('error', 'The student\'s class does not have subjects set for the selected academic session');
         }
+        
         $results = [];
 
         //create a results array from all subjects from the student's class
@@ -168,7 +195,8 @@ class ResultController extends Controller
             'maxScores',
             'averageScores',
             'minScores',
-            'age'
+            'age',
+            'pds'
         ));
     }
 
