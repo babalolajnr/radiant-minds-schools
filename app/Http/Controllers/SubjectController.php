@@ -11,20 +11,23 @@ class SubjectController extends Controller
     public function index()
     {
         $subjects = Subject::all();
-        return response(200);
+        return view('subjects', compact('subjects'));
     }
 
     public function store(Request $request)
     {
+        $messages = [
+            'name.unique' => 'Subject Exists'
+        ];
         $validatedData =  $request->validate([
             'name' => ['required', 'string', 'unique:subjects']
-        ]);
+        ], $messages);
 
         $slug = Str::of($validatedData['name'])->slug('-');
         $slug = ['slug' => $slug];
         $data = $validatedData + $slug;
         Subject::create($data);
-        return response(200);
+        return back()->with('success', 'Subject Added!');
     }
 
     public function edit($id)
