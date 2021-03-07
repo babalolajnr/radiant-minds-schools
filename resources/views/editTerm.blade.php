@@ -8,6 +8,8 @@
         <!-- Content Header (Page header) -->
         <span id="success" {{ session('success') ? 'data-success = true' : false }}
             data-success-message='{{ json_encode(session('success')) }}'></span>
+        <span id="error" {{ session('error') ? 'data-error = true' : false }}
+            data-error-message='{{ json_encode(session('error')) }}'></span>
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -35,18 +37,17 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit {{ $term->name }}</h3>
                             </div>
-                            <form id="editAcademicSession" method="POST"
-                                action="/update/term/{{ $term->id }}">
+                            <form id="editAcademicSession" method="POST" action="/update/term/{{ $term->id }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="term">Term</label>
                                         <input type="text" name="name" value="{{ old('name', $term->name) }}"
-                                            class="form-control @error('name') is-invalid @enderror"
-                                            id="term" placeholder="Enter term">
+                                            class="form-control @error('name') is-invalid @enderror" id="term"
+                                            placeholder="Enter term">
                                         @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -67,6 +68,30 @@
         <!-- Tempusdominus Bootstrap 4 -->
         <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
         </script>
+        <script>
+            $(function() {
+                let Success = document.getElementById('success')
+                let Error = document.getElementById('error')
 
+                // if data-success = 'true' display alert
+                if (Success.dataset.success == 'true')
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        subtitle: 'Close',
+                        body: JSON.parse(Success.dataset.successMessage)
+                    })
+
+                if (Error.dataset.error == 'true')
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        subtitle: 'Close',
+                        body: JSON.parse(Error.dataset.errorMessage)
+                    })
+
+            });
+
+        </script>
     </x-slot>
 </x-app-layout>
