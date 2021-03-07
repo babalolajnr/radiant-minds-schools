@@ -5,9 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class SubjectController extends Controller
 {
+    private function validateSubject($request, $subject = null)
+    {
+        $messages = [
+            'name.unique' => 'Subject Exists'
+        ];
+
+        $validatedData =  $request->validate([
+            'name' => ['required', 'string', Rule::unique('subjects')->ignore($subject)]
+        ], $messages);
+
+        return $validatedData;
+    }
+
     public function index()
     {
         $subjects = Subject::all();
@@ -16,13 +30,8 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'name.unique' => 'Subject Exists'
-        ];
-        $validatedData =  $request->validate([
-            'name' => ['required', 'string', 'unique:subjects']
-        ], $messages);
 
+        $validatedData = $this->validateSubject($request);
         $slug = Str::of($validatedData['name'])->slug('-');
         $slug = ['slug' => $slug];
         $data = $validatedData + $slug;
@@ -34,14 +43,20 @@ class SubjectController extends Controller
     {
 
         $subject = Subject::findOrFail($id);
-        return response(200);
+        return view('editSubject', compact('subject'));
     }
 
     public function update($id, Request $request)
     {
         $subject = Subject::findOrFail($id);
-        $subject->update($request->all());
-        return response(200);
+
+        $validatedData = $this->validateSubject($request);
+        $slug = Str::of($validatedData['name'])->slug('-');
+        $slug = ['slug' => $slug];
+        $data = $validatedData + $slug;
+
+        $subject->update($data);
+        return redirect('/subjects')->with('success', 'Subject Updated!');
     }
 
     public function destroy($id, Subject $subject)
