@@ -3,8 +3,7 @@
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/toastr/toastr.min.css') }}">
         <!-- DataTables -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet"
@@ -25,9 +24,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                            <li class="breadcrumb-item active">Fixed Layout</li>
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
                                             class="form-control @error('name') is-invalid @enderror" id="classroom"
                                             placeholder="Enter Classroom">
                                         @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -79,46 +77,47 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($classrooms as $classroom)
-                                        <tr>
-                                            <td>
-                                                {{ $classroom->rank }}
-                                            </td>
-                                            <td>
-                                                {{ $classroom->name }}
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="view/classroom/{{ $classroom->id }}">
-                                                        <button type="button" class="btn btn-default btn-flat"
-                                                            title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="edit/classroom/{{ $classroom->id }}">
-                                                        <button type="button" class="btn btn-default btn-flat"
-                                                            title="Edit">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    {{-- render if user is authorized to delete --}}
-                                                    @can('delete', $classroom)
-                                                    <button type="button" class="btn btn-danger btn-flat" title="Delete"
-                                                        onclick="deleteConfirmationModal({{ $classroom }})">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcan
+                                        @foreach ($classrooms as $classroom)
+                                            <tr>
+                                                <td>
+                                                    {{ $classroom->rank }}
+                                                </td>
+                                                <td>
+                                                    {{ $classroom->name }}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="view/classroom/{{ $classroom->id }}">
+                                                            <button type="button" class="btn btn-default btn-flat"
+                                                                title="View">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a href="edit/classroom/{{ $classroom->id }}">
+                                                            <button type="button" class="btn btn-default btn-flat"
+                                                                title="Edit">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                        {{-- render if user is authorized to delete --}}
+                                                        @can('delete', $classroom)
+                                                            <button type="button" class="btn btn-danger btn-flat"
+                                                                title="Delete"
+                                                                onclick="deleteConfirmationModal({{ $classroom }})">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        @endcan
 
-                                                    {{-- render if user is not authorized to delete --}}
-                                                    @cannot('delete', $classroom)
-                                                    <button type="submit" class="btn btn-danger btn-flat" title="Delete"
-                                                        disabled>
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcannot
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        {{-- render if user is not authorized to delete --}}
+                                                        @cannot('delete', $classroom)
+                                                        <button type="submit" class="btn btn-danger btn-flat"
+                                                            title="Delete" disabled>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                        @endcannot
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -196,7 +195,7 @@
                 $('#deleteItemName').html(data.name)
                 $('#deleteConfirmationModal').modal('show')
             }
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
 
@@ -220,14 +219,14 @@
 
 
             });
-            $(function () {
+            $(function() {
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-               
+
             });
 
         </script>

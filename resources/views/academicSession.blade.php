@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
         <!-- Tempusdominus Bootstrap 4 -->
         <link rel="stylesheet"
@@ -27,9 +28,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                            <li class="breadcrumb-item active">Fixed Layout</li>
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                                             class="form-control @error('name') is-invalid @enderror"
                                             id="academicSession" placeholder="Enter Academic Session">
                                         @error('name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -73,7 +73,7 @@
                                             </div>
                                         </div>
                                         @error('start_date')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -81,14 +81,15 @@
                                         <div class="input-group date" id="endDate" data-target-input="nearest">
                                             <input type="text"
                                                 class="form-control @error('end_date') is-invalid @enderror datetimepicker-input"
-                                                data-target="#endDate" value="{{ old('end_date') }}" name="end_date" />
+                                                data-target="#endDate" value="{{ old('end_date') }}"
+                                                name="end_date" />
                                             <div class="input-group-append" data-target="#endDate"
                                                 data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
                                         @error('end_date')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -114,62 +115,63 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($academicSessions as $academicSession)
-                                        <tr>
-                                            <td>
-                                                {{ $academicSession->name }}
-                                                @if($academicSession->isCurrentAcademicSession()) <span class="pl-3"
-                                                    title="Current Academic Session"><i
-                                                        class="fas fa-check text-green-600"></i></span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                {{ $academicSession->start_date }}
-                                            </td>
-                                            <td>
-                                                {{ $academicSession->end_date }}
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="edit/academicSessions/{{ $academicSession->id }}">
-                                                        <button type="button" class="btn btn-default btn-flat"
-                                                            title="Edit">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    {{-- render if user is authorized to delete --}}
-                                                    @can('delete', $academicSession)
-                                                    <button type="button" class="btn btn-danger btn-flat" title="Delete"
-                                                        onclick="deleteConfirmationModal({{ $academicSession }})">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcan
-
-                                                    {{-- render if user is not authorized to delete --}}
-                                                    @cannot('delete', $academicSession)
-                                                    <button type="submit" class="btn btn-danger btn-flat" title="Delete"
-                                                        disabled>
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                    @endcannot
-                                                    @if($academicSession->isCurrentAcademicSession())
-                                                    <button type="button" class="btn btn-default btn-flat"
-                                                        title="Set as current academic session" disabled>
-                                                        <i class="fas fa-toggle-on text-green-700"></i>
-                                                    </button>
-                                                    @else
-                                                    <a
-                                                        href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
-                                                        <button type="button" class="btn btn-default btn-flat"
-                                                            title="Set as current academic session">
-                                                            <i class="fas fa-toggle-off text-red-500"></i>
-                                                        </button>
-                                                    </a>
+                                        @foreach ($academicSessions as $academicSession)
+                                            <tr>
+                                                <td>
+                                                    {{ $academicSession->name }}
+                                                    @if ($academicSession->isCurrentAcademicSession()) <span
+                                                            class="pl-3" title="Current Academic Session"><i
+                                                                class="fas fa-check text-green-600"></i></span>
                                                     @endif
+                                                </td>
+                                                <td>
+                                                    {{ $academicSession->start_date }}
+                                                </td>
+                                                <td>
+                                                    {{ $academicSession->end_date }}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="edit/academicSessions/{{ $academicSession->id }}">
+                                                            <button type="button" class="btn btn-default btn-flat"
+                                                                title="Edit">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                        {{-- render if user is authorized to delete --}}
+                                                        @can('delete', $academicSession)
+                                                            <button type="button" class="btn btn-danger btn-flat"
+                                                                title="Delete"
+                                                                onclick="deleteConfirmationModal({{ $academicSession }})">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        @endcan
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        {{-- render if user is not authorized to delete --}}
+                                                        @cannot('delete', $academicSession)
+                                                        <button type="submit" class="btn btn-danger btn-flat"
+                                                            title="Delete" disabled>
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                        @endcannot
+                                                        @if ($academicSession->isCurrentAcademicSession())
+                                                            <button type="button" class="btn btn-default btn-flat"
+                                                                title="Set as current academic session" disabled>
+                                                                <i class="fas fa-toggle-on text-green-700"></i>
+                                                            </button>
+                                                        @else
+                                                            <a
+                                                                href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
+                                                                <button type="button" class="btn btn-default btn-flat"
+                                                                    title="Set as current academic session">
+                                                                    <i class="fas fa-toggle-off text-red-500"></i>
+                                                                </button>
+                                                            </a>
+                                                        @endif
+
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -262,7 +264,7 @@
                 $('#deleteConfirmationModal').modal('show')
             }
 
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
 
@@ -284,7 +286,7 @@
 
 
             });
-            $(function () {
+            $(function() {
                 $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,

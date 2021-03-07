@@ -25,9 +25,10 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                            <li class="breadcrumb-item active">Fixed Layout</li>
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            </ol>
                         </ol>
                     </div>
                 </div>
@@ -47,7 +48,7 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}@if (!$academicSession->isCurrentAcademicSession())/{{ $academicSession->id }} @endif" method="POST">
+                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}@if (!$academicSession->isCurrentAcademicSession()) /{{ $academicSession->id }} @endif" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
