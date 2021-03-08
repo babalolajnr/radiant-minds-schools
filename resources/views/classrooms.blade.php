@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
@@ -43,7 +43,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Classroom</h3>
                             </div>
-                            <form id="addClassroom" method="POST" action="/store/classroom">
+                            <form id="addClassroom" method="POST" action="{{ route('classroom.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -87,13 +87,14 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="view/classroom/{{ $classroom->id }}">
+                                                        <a
+                                                            href="{{ route('classroom.show', ['id' => $classroom->id]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="View">
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
                                                         </a>
-                                                        <a href="edit/classroom/{{ $classroom->id }}">
+                                                        <a href="{{ route('classroom.edit', ['id' => $classroom->id]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -103,7 +104,7 @@
                                                         @can('delete', $classroom)
                                                             <button type="button" class="btn btn-danger btn-flat"
                                                                 title="Delete"
-                                                                onclick="deleteConfirmationModal({{ $classroom }})">
+                                                                onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['id' => $classroom->id]) }}', '{{ $classroom->name }}')">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         @endcan
@@ -189,10 +190,10 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteClassroomUrl = '/delete/classroom/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteClassroomUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, name) {
+                
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
             $(function() {

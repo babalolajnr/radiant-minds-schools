@@ -42,25 +42,25 @@
                         </a>
                         <ul class="nav nav-treeview" style="display: block;">
                             <li class="nav-item">
-                                <a href="/academicSessions" class="nav-link">
+                                <a href="{{ route('academic-session.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-calendar"></i>
                                     <p>Academic Sessions</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/classrooms" class="nav-link">
+                                <a href="{{ route('classroom.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-chalkboard"></i>
                                     <p>Classrooms</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/terms" class="nav-link">
+                                <a href="{{ route('term.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-clock"></i>
                                     <p>Terms</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/subjects" class="nav-link">
+                                <a href="{{ route('subject.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>Subjects</p>
                                 </a>
@@ -78,19 +78,19 @@
                         </a>
                         <ul class="nav nav-treeview" style="display: block;">
                             <li class="nav-item">
-                                <a href="/students" class="nav-link">
+                                <a href="{{ route('student.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-user-graduate"></i>
                                     <p>Students</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/create/student" class="nav-link">
+                                <a href="{{ route('student.create') }}" class="nav-link">
                                     <i class="nav-icon fas fa-plus"></i>
                                     <p>New Student</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/pdTypes" class="nav-link">
+                                <a href="{{ route('pd-type.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-biking"></i>
                                     <p>Pychomotor domains</p>
                                 </a>

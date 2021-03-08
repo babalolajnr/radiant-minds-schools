@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
@@ -48,7 +48,8 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Academic Session</h3>
                             </div>
-                            <form id="addAcademicSession" method="POST" action="/store/academicSessions">
+                            <form id="addAcademicSession" method="POST"
+                                action="{{ route('academic-session.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -132,7 +133,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="edit/academicSessions/{{ $academicSession->id }}">
+                                                        <a
+                                                            href="{{ route('academic-session.edit', ['id' => $academicSession->id]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -142,7 +144,7 @@
                                                         @can('delete', $academicSession)
                                                             <button type="button" class="btn btn-danger btn-flat"
                                                                 title="Delete"
-                                                                onclick="deleteConfirmationModal({{ $academicSession }})">
+                                                                onclick="deleteConfirmationModal('{{ route('academic-session.destroy', ['id' => $academicSession->id]) }}', '{{ $academicSession->name }}')">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         @endcan
@@ -154,6 +156,7 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                         @endcannot
+
                                                         @if ($academicSession->isCurrentAcademicSession())
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Set as current academic session" disabled>
@@ -161,7 +164,7 @@
                                                             </button>
                                                         @else
                                                             <a
-                                                                href="/update/setCurrentAcademicSession/{{ $academicSession->id }}">
+                                                                href="{{ route('academic-session.set.current', ['id' => $academicSession->id]) }}">
                                                                 <button type="button" class="btn btn-default btn-flat"
                                                                     title="Set as current academic session">
                                                                     <i class="fas fa-toggle-off text-red-500"></i>
@@ -257,10 +260,9 @@
                 format: 'YYYY-MM-DD'
             })
 
-            function deleteConfirmationModal(data) {
-                let deleteUrl = '/delete/academicSessions/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, name) {
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
 
