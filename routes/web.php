@@ -122,8 +122,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('guardians')->name('guardian.')->group(function () {
         //Guardian Routes
-        Route::get('/edit/{phone}', [GuardianController::class, 'edit'])->name('edit.phone');
-        Route::patch('/update/{phone}', [GuardianController::class, 'update'])->name('update.phone');
+        Route::get('/edit/{phone}', [GuardianController::class, 'edit'])->name('edit');
+        Route::patch('/update/{phone}', [GuardianController::class, 'update'])->name('update');
     });
 
 
