@@ -111,7 +111,7 @@ class StudentController extends Controller
 
         Student::create($studentInfo);
 
-        return redirect('/students')->with('success', 'Student Added!');
+        return redirect()->route('student.index')->with('success', 'Student Added!');
     }
 
     public function show($student)

@@ -43,6 +43,6 @@ class GuardianController extends Controller
 
         $guardian = Guardian::where('phone', $request->phone)->first();
 
-        return redirect('/edit/guardian/' . $guardian->phone)->with('success', 'Guardian updated!');
+        return redirect()->route('guardian.edit', ['phone' => $guardian->phone])->with('success', 'Guardian updated!');
     }
 }

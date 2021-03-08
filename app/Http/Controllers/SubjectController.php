@@ -56,7 +56,7 @@ class SubjectController extends Controller
         $data = $validatedData + $slug;
 
         $subject->update($data);
-        return redirect('/subjects')->with('success', 'Subject Updated!');
+        return redirect()->route('subject.index')->with('success', 'Subject Updated!');
     }
 
     public function destroy($id, Subject $subject)

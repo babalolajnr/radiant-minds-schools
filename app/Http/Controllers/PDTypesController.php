@@ -50,7 +50,7 @@ class PDTypesController extends Controller
         $data = array_merge($validatedData, $slug);
 
         $pdType->update($data);
-        return redirect('/pdTypes')->with('success', 'Pychomotor domain type updated');
+        return redirect()->route('pd-type.index')->with('success', 'Pychomotor domain type updated');
     }
 
     public function destroy($id)

@@ -32,7 +32,7 @@ class TermController extends Controller
         $term = Term::findOrFail($id);
         $validatedData = $this->validateTerm($request, $term);
         $term->update($validatedData);
-        return redirect('/terms')->with('success', 'Term updated!');
+        return redirect()->route('term.index')->with('success', 'Term updated!');
     }
 
     public function destroy($id, Term $term)

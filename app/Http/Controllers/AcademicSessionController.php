@@ -48,7 +48,7 @@ class AcademicSessionController extends Controller
         $academicSession = AcademicSession::findOrFail($id);
         $academicSession->update($this->validateAcademicSession($request, $academicSession));
 
-        return redirect('/academicSessions')->with('success', 'Academic Session Updated!');
+        return redirect()->route('academic-session.index')->with('success', 'Academic Session Updated!');
     }
 
     public function destroy($id, AcademicSession $academicSession)
