@@ -33,100 +33,126 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    //Teacher routes
-    Route::get('/create/teacher', [TeacherController::class, 'create']);
-    Route::get('/view/teacher/{slug}', [TeacherController::class, 'show']);
-    Route::get('/edit/teacher/{slug}', [TeacherController::class, 'edit']);
-    Route::post('/store/teacher', [TeacherController::class, 'store']);
-    Route::patch('/update/teacher/{slug}', [TeacherController::class, 'update']);
-    Route::patch('/suspend/teacher/{id}', [TeacherController::class, 'suspend']);
-    Route::patch('/activate/teacher/{id}', [TeacherController::class, 'activate']);
-    Route::patch('/deactivate/teacher/{id}', [TeacherController::class, 'deactivate']);
-    Route::patch('/restore/teacher/{id}', [TeacherController::class, 'restore']);
-    Route::delete('/delete/teacher/{id}', [TeacherController::class, 'destroy']);
-    Route::delete('/forceDelete/teacher/{id}', [TeacherController::class, 'forceDelete']);
+    Route::prefix('teachers')->name('teacher.')->group(function () {
+        //Teacher routes
+        Route::get('/create', [TeacherController::class, 'create'])->name('create');
+        Route::get('/view/{slug}', [TeacherController::class, 'show'])->name('show');
+        Route::get('/edit/{slug}', [TeacherController::class, 'edit'])->name('edit');
+        Route::post('/store', [TeacherController::class, 'store'])->name('store');
+        Route::patch('/update/{slug}', [TeacherController::class, 'update'])->name('update');
+        Route::patch('/suspend/{id}', [TeacherController::class, 'suspend'])->name('suspend');
+        Route::patch('/activate/{id}', [TeacherController::class, 'activate'])->name('activate');
+        Route::patch('/deactivate/{id}', [TeacherController::class, 'deactivate'])->name('deactivate');
+        Route::patch('/restore/{id}', [TeacherController::class, 'restore'])->name('restore');
+        Route::delete('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
+        Route::delete('/force-delete/{id}', [TeacherController::class, 'forceDelete'])->name('force.delete');
+    });
 
-    //Student Routes
-    Route::get('/students', [StudentController::class, 'index']);
-    Route::get('create/student', [StudentController::class, 'create']);
-    /**
-     * {student} stands for admission number 
-     * so wherever you see it in the routes 
-     * that's what it means. I don't know what
-     * I was thinking when i decided to name it like that
-     * but I am too lazy to change it now.
-     */
-    Route::get('/studentSettings/{student}', [StudentController::class, 'showStudentSettingsView']);
-    Route::get('view/student/{student}', [StudentController::class, 'show']);
-    Route::get('/edit/student/{student}', [StudentController::class, 'edit']);
-    Route::get('/student-subjects/{student}', [StudentController::class, 'getSubjects']);
-    Route::get('/results/sessional/{student}/{academicSessionId}', [StudentController::class, 'getSessionalResults']);
-    Route::get('/results/term/{student}/{termId}/{academicSessionId}', [StudentController::class, 'getTermResults']);
-    Route::post('/store/image/{id}', [StudentController::class, 'uploadImage']);
-    Route::post('/store/student', [StudentController::class, 'store']);
-    Route::patch('/update/student/{id}', [StudentController::class, 'update']);
-    Route::patch('/suspend/student/{id}', [StudentController::class, 'suspend']);
-    Route::patch('/activate/student/{id}', [StudentController::class, 'activate']);
-    Route::patch('/deactivate/student/{id}', [StudentController::class, 'deactivate']);
-    Route::patch('/promote/student/{id}', [StudentController::class, 'promote']);
-    Route::patch('/demote/student/{id}', [StudentController::class, 'demote']);
-    Route::delete('/delete/student/{id}', [StudentController::class, 'destroy']);
-    Route::delete('/forceDelete/student/{id}', [StudentController::class, 'forceDelete']);
 
-    //Classroom ROutes
-    Route::get('/classrooms', [ClassroomController::class, 'index']);
-    Route::get('/edit/classroom/{id}', [ClassroomController::class, 'edit']);
-    Route::get('/view/classroom/{id}', [ClassroomController::class, 'show']);
-    Route::get('/set/classroom-subjects/{id}', [ClassroomController::class, 'setSubjects']);
-    Route::post('/store/classroom', [ClassroomController::class, 'store']);
-    Route::post('/update/classroom-subjects/{id}', [ClassroomController::class, 'updateSubjects']);
-    Route::patch('/update/classroom/{id}', [ClassroomController::class, 'update']);
-    Route::delete('/delete/classroom/{id}', [ClassroomController::class, 'destroy']);
+    Route::prefix('students')->name('student.')->group(function () {
+        //Student Routes
+        Route::get('/index', [StudentController::class, 'index'])->name('index');
+        Route::get('/create', [StudentController::class, 'create'])->name('create');
+        /**
+         * {student} stands for admission number
+         * so wherever you see it in the routes
+         * that's what it means. I don't know what
+         * I was thinking when i decided to name it like that
+         * but I am too lazy to change it now.
+         */
+        Route::get('/student-settings/{student}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
+        Route::get('view/{student}', [StudentController::class, 'show'])->name('show');
+        Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit');
+        Route::get('subjects/{student}', [StudentController::class, 'getSubjects'])->name('get.subjects');
+        Route::get('/results/sessional/{student}/{academicSessionId}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results');
+        Route::get('/results/term/{student}/{termId}/{academicSessionId}', [StudentController::class, 'getTermResults'])->name('get.term.results');
+        Route::post('/store/image/{id}', [StudentController::class, 'uploadImage'])->name('upload.image');
+        Route::post('/store', [StudentController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [StudentController::class, 'update'])->name('update');
+        Route::patch('/suspend/{id}', [StudentController::class, 'suspend'])->name('suspend');
+        Route::patch('/activate/{id}', [StudentController::class, 'activate'])->name('activate');
+        Route::patch('/deactivate/{id}', [StudentController::class, 'deactivate'])->name('deactivate');
+        Route::patch('/promote/{id}', [StudentController::class, 'promote'])->name('promote');
+        Route::patch('/demote/{id}', [StudentController::class, 'demote'])->name('demote');
+        Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('destroy');
+        Route::delete('/force-delete/{id}', [StudentController::class, 'forceDelete'])->name('force.delete');
+    });
 
-    //Term routes
-    Route::get('/terms', [TermController::class, 'index']);
-    Route::get('/edit/term/{id}', [TermController::class, 'edit']);
-    Route::post('/store/term', [TermController::class, 'store']);
-    Route::patch('/update/term/{id}', [TermController::class, 'update']);
-    Route::delete('/delete/term/{id}', [TermController::class, 'destroy']);
+    Route::prefix('classrooms')->name('classroom.')->group(function () {
+        //Classroom Routes
+        Route::get('/', [ClassroomController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [ClassroomController::class, 'edit'])->name('edit');
+        Route::get('/view/{id}', [ClassroomController::class, 'show'])->name('show');
+        Route::get('/set-subjects/{id}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
+        Route::post('/store', [ClassroomController::class, 'store'])->name('store');
+        Route::post('/update-subjects/{id}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
+        Route::patch('/update/{id}', [ClassroomController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ClassroomController::class, 'destroy'])->name('destroy');
+    });
 
-    // Subject routes
-    Route::get('/subjects', [SubjectController::class, 'index']);
-    Route::get('/edit/subject/{id}', [SubjectController::class, 'edit']);
-    Route::post('/store/subject', [SubjectController::class, 'store']);
-    Route::patch('/update/subject/{id}', [SubjectController::class, 'update']);
-    Route::delete('/delete/subject/{id}', [SubjectController::class, 'destroy']);
+    Route::prefix('terms')->name('term.')->group(function () {
+        //Term routes
+        Route::get('/', [TermController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [TermController::class, 'edit'])->name('edit');
+        Route::post('/store', [TermController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [TermController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [TermController::class, 'destroy'])->name('destroy');
+    });
 
-    //AcademicSession routes
-    Route::get('/academicSessions', [AcademicSessionController::class, 'index']);
-    Route::get('/edit/academicSessions/{id}', [AcademicSessionController::class, 'edit']);
-    Route::get('/update/setCurrentAcademicSession/{id}', [AcademicSessionController::class, 'setCurrentAcademicSession']);
-    Route::post('/store/academicSessions', [AcademicSessionController::class, 'store']);
-    Route::patch('/update/academicSessions/{id}', [AcademicSessionController::class, 'update']);
-    Route::delete('/delete/academicSessions/{id}', [AcademicSessionController::class, 'destroy']);
 
-    //Guardian Routes
-    Route::get('/edit/guardian/{phone}', [GuardianController::class, 'edit']);
-    Route::patch('/update/guardian/{phone}', [GuardianController::class, 'update']);
+    Route::prefix('subjects')->name('subject.')->group(function () {
+        // Subject routes
+        Route::get('/', [SubjectController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [SubjectController::class, 'edit'])->name('edit');
+        Route::post('/store', [SubjectController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [SubjectController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [SubjectController::class, 'destroy'])->name('destroy');
+    });
 
-    //Result ROutes
-    Route::get('/create/result/{student}', [ResultController::class, 'create']);
-    Route::get('/performanceReport/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport']);
-    Route::get('/edit/result/{id}', [ResultController::class, 'edit']);
-    Route::post('/store/result/{student}', [ResultController::class, 'store']);
-    Route::patch('/update/result/{id}', [ResultController::class, 'update']);
-    Route::delete('/delete/result/{id}', [ResultController::class, 'destroy']);
 
-    //Pychomotor Domain Routes
-    Route::get('/create/pd/{id}/{termId}/{academicSessionId?}', [PDController::class, 'create']);
-    Route::post('/store/pd/{id}/{termId}/{academicSessionId?}', [PDController::class, 'store']);
+    Route::prefix('academic-sessions')->name('academic-session.')->group(function () {
+        //AcademicSession routes
+        Route::get('/', [AcademicSessionController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [AcademicSessionController::class, 'edit'])->name('edit');
+        Route::get('/set-current/{id}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current');
+        Route::post('/store', [AcademicSessionController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [AcademicSessionController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [AcademicSessionController::class, 'destroy'])->name('destroy');
+    });
 
-    //Pychomotor domain type routes
-    Route::get('/pdTypes', [PDTypesController::class, 'index']);
-    Route::get('/edit/pdType/{slug}', [PDTypesController::class, 'edit']);
-    Route::post('/store/pdType', [PDTypesController::class, 'store']);
-    Route::patch('/update/pdType/{id}', [PDTypesController::class, 'update']);
-    Route::delete('/delete/pdType/{id}', [PDTypesController::class, 'destroy']);
+    Route::prefix('guardians')->name('guardian.')->group(function () {
+        //Guardian Routes
+        Route::get('/edit/{phone}', [GuardianController::class, 'edit'])->name('edit.phone');
+        Route::patch('/update/{phone}', [GuardianController::class, 'update'])->name('update.phone');
+    });
+
+
+    Route::prefix('results')->name('result.')->group(function () {
+        //Result ROutes
+        Route::get('/create/{student}', [ResultController::class, 'create'])->name('create');
+        Route::get('/performance-report/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
+        Route::get('/edit/{id}', [ResultController::class, 'edit'])->name('edit');
+        Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [ResultController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ResultController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('pds')->name('pd.')->group(function () {
+        //Pychomotor Domain Routes
+        Route::get('/create/{id}/{termId}/{academicSessionId?}', [PDController::class, 'create'])->name('create');
+        Route::post('/store/{id}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('pd-types')->name('pd-type.')->group(function () {
+        //Pychomotor domain type routes
+        Route::get('/', [PDTypesController::class, 'index'])->name('index');
+        Route::get('/edit/{slug}', [PDTypesController::class, 'edit'])->name('edit');
+        Route::post('/store', [PDTypesController::class, 'store'])->name('store');
+        Route::patch('/update/{id}', [PDTypesController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [PDTypesController::class, 'destroy'])->name('destroy');
+    });
 });
+
+
 
 require __DIR__ . '/auth.php';
