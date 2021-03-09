@@ -48,7 +48,8 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="/store/pd/{{ $student->id }}/{{ $term->id }}@if (!$academicSession->isCurrentAcademicSession()) /{{ $academicSession->id }} @endif" method="POST">
+                            <form action="@if (!$academicSession->isCurrentAcademicSession()) {{ route('pd.store', ['id' => $student->id, 'termId' => $term->id, 'academicSessionId' => $academicSession->id]) }}
+                            @else {{ route('pd.store', ['id' => $student->id, 'termId' => $term->id]) }} @endif" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->

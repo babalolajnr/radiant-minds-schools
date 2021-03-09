@@ -35,7 +35,7 @@
                                 <h3 class="card-title">Edit {{ $academicSession->name }} Academic Session</h3>
                             </div>
                             <form id="editAcademicSession" method="POST"
-                                action="/update/academicSessions/{{ $academicSession->id }}">
+                                action="{{ route('academic-session.update', ['id' => $academicSession->id]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">

@@ -35,7 +35,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Student</h3>
                             </div>
-                            <form id="addNewStudent" method="POST" action="/store/student">
+                            <form id="addNewStudent" method="POST" action="{{ route('student.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">

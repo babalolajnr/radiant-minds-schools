@@ -41,7 +41,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Result</h3>
                             </div>
-                            <form method="POST" action="/update/result/{{ $result->id }}">
+                            <form method="POST" action="{{ route('result.update', ['id' => $result->id]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">

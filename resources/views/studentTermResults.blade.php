@@ -50,11 +50,14 @@
                                     </div>
                                     <div>
                                         <a
-                                            href="/performanceReport/{{ $student->admission_no }}/{{ $academicSession->id }}/{{ $term->id }}">
+                                            href="{{ route('result.show.performance', ['student' => $student->admission_no, 'termId' => $term->id, 'academicSessionId' => $academicSession->id]) }}">
                                             <button type="button" class="btn btn-info">Performance Report</button>
                                         </a>
-                                        <a href="/create/pd/{{ $student->id }}/{{ $term->id }}/{{ $academicSession->id }}">
-                                            <button type="button" class="btn btn-primary" title="Create or Update Pychodomain for the result's academic session and term">Create/Update PD</button>
+                                        <a
+                                            href="{{ route('pd.create', ['id' => $student->id, 'termId' => $term->id, 'academicSessionId' => $academicSession->id]) }}">
+                                            <button type="button" class="btn btn-primary"
+                                                title="Create or Update Pychodomain for the result's academic session and term">Create/Update
+                                                PD</button>
                                         </a>
                                     </div>
                                 </div>
@@ -102,7 +105,8 @@
                                                     @endif
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="/edit/result/{{ $result->id }}">
+                                                            <a
+                                                                href="{{ route('result.edit', ['id' => $result->id]) }}">
                                                                 <button type="button" id=""
                                                                     class="btn btn-default btn-flat" title="Edit">
                                                                     <i class="fas fa-edit"></i>
@@ -110,7 +114,7 @@
                                                             </a>
                                                             <button type="submit" class="btn btn-default btn-flat"
                                                                 title="Delete"
-                                                                onclick="deleteConfirmationModal({{ $result }})">
+                                                                onclick="deleteConfirmationModal('{{ route('result.destroy', ['id' => $result->id]) }}', '{{ $result->subject->name }}')">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
 
@@ -197,10 +201,9 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteItemUrl = '/delete/result/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
-                $('#deleteItemName').html(data.subject.name)
+            function deleteConfirmationModal(url, name) {
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
             //launch toastr 

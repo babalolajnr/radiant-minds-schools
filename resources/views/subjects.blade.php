@@ -48,7 +48,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Subject</h3>
                             </div>
-                            <form method="POST" action="/store/subject">
+                            <form method="POST" action="{{ route('subject.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -88,7 +88,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="edit/subject/{{ $subject->id }}">
+                                                        <a href="{{ route('subject.edit', ['id' => $subject->id]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -97,7 +97,7 @@
 
                                                         <button type="button" class="btn btn-danger btn-flat"
                                                             title="Delete"
-                                                            onclick="deleteConfirmationModal({{ $subject }})">
+                                                            onclick="deleteConfirmationModal('{{ route('subject.destroy', ['id' => $subject->id]) }}', {{ $subject->name }})">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -176,10 +176,9 @@
 
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteUrl = '/delete/subject/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, name) {
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
 

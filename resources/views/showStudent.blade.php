@@ -23,8 +23,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -83,7 +83,8 @@
                                         <div class="active tab-pane" id="about">
                                             <strong></i>Class</strong>
 
-                                            <a href="/view/classroom/{{ $student->classroom->id }}">
+                                            <a
+                                                href="{{ route('classroom.show', ['id' => $student->classroom->id]) }}">
                                                 <p class="text-info" id="classroom">
                                                     {{ $student->classroom->name }}
                                                 </p>
@@ -167,7 +168,8 @@
                                                         data-target="#termResultModal">Term</button>
                                                 </div>
                                                 <span class="ml-3" title="Add new result">
-                                                    <a href="/create/result/{{ $student->admission_no }}">
+                                                    <a
+                                                        href="{{ route('result.create', ['student' => $student->admission_no]) }}">
                                                         <button type="button" id="addNewResultButton"
                                                             class="btn btn-success">Create Result</button>
                                                     </a>
@@ -177,7 +179,7 @@
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="imageUpload">
-                                            <form action="/store/image/{{ $student->id }}" method="post"
+                                            <form action="{{ route('student.upload.image', ['id' => $student->id]) }}" method="post"
                                                 id="imageUploadForm" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="form-group">

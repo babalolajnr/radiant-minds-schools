@@ -107,10 +107,11 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteItemUrl = '/delete/student/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
-                $('#deleteItemName').html(data.name)
+           function deleteConfirmationModal(url, data) {
+                let name = data.first_name + ' ' + data.last_name
+
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
 

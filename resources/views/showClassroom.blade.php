@@ -25,7 +25,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                                 <span class="font-semibold">Students</span>
                             </div>
                             <div class="card-body">
-                                <x-students-table :students="$students"/>
+                                <x-students-table :students="$students" />
                             </div>
                         </div>
                         <div class="card col-lg-6">
@@ -65,7 +65,7 @@
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <span class="font-semibold">Subjects</span>
                                     <span>
-                                        <a href="/set/classroom-subjects/{{ $classroom->id }}"><button
+                                        <a href="{{ route('classroom.set.subjects', ['id' => $classroom->id]) }}"><button
                                                 class="btn btn-primary">Set Subjects</button>
                                         </a>
                                     </span>
@@ -138,10 +138,11 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteItemUrl = '/delete/student/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, data) {
+                let name = data.first_name + ' ' + data.last_name
+
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
             //launch toastr 

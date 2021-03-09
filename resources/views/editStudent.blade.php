@@ -15,12 +15,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Edit Student ({{ $student->first_name . ' ' . $student->last_name}})</h1>
+                        <h1>Edit Student ({{ $student->first_name . ' ' . $student->last_name }})</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -37,24 +37,27 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Student</h3>
                             </div>
-                            <form id="updateStudent" method="POST" action="/update/student/{{ $student->id }}">
+                            <form id="updateStudent" method="POST"
+                                action="{{ route('student.update', ['id' => $student->id]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>First name</label>
                                         <input type="text" name="first_name"
-                                            class="form-control @error('first_name') is-invalid @enderror" value="{{ old('first_name', $student->first_name) }}">
+                                            class="form-control @error('first_name') is-invalid @enderror"
+                                            value="{{ old('first_name', $student->first_name) }}">
                                         @error('first_name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Last name</label>
                                         <input type="text" name="last_name"
-                                            class="form-control @error('last_name') is-invalid @enderror" value="{{ old('last_name', $student->last_name) }}">
+                                            class="form-control @error('last_name') is-invalid @enderror"
+                                            value="{{ old('last_name', $student->last_name) }}">
                                         @error('last_name')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -64,39 +67,43 @@
                                             <option @if (old('sex', $student->sex) == 'F') SELECTED @endif>F</option>
                                         </select>
                                         @error('sex')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Admission Number</label>
                                         <input type="text" name="admission_no"
-                                            class="form-control @error('admission_no') is-invalid @enderror" value="{{ old('admission_no', $student->admission_no) }}">
+                                            class="form-control @error('admission_no') is-invalid @enderror"
+                                            value="{{ old('admission_no', $student->admission_no) }}">
                                         @error('admission_no')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Local government</label>
                                         <input type="text" name="lg"
-                                            class="form-control @error('lg') is-invalid @enderror" value="{{ old('lg', $student->lg) }}">
+                                            class="form-control @error('lg') is-invalid @enderror"
+                                            value="{{ old('lg', $student->lg) }}">
                                         @error('lg')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>State</label>
                                         <input type="text" name="state"
-                                            class="form-control @error('state') is-invalid @enderror" value="{{ old('state', $student->state) }}">
+                                            class="form-control @error('state') is-invalid @enderror"
+                                            value="{{ old('state', $student->state) }}">
                                         @error('state')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Country</label>
                                         <input type="text" name="country"
-                                            class="form-control @error('country') is-invalid @enderror" value="{{ old('country', $student->country) }}">
+                                            class="form-control @error('country') is-invalid @enderror"
+                                            value="{{ old('country', $student->country) }}">
                                         @error('country')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -122,9 +129,10 @@
                                             <input type="text"
                                                 class="form-control @error('date_of_birth') is-invalid @enderror"
                                                 data-inputmask-alias="datetime" name="date_of_birth"
-                                                data-inputmask-inputformat="yyyy-mm-dd" data-mask value="{{ old('date_of_birth', $student->date_of_birth) }}">
+                                                data-inputmask-inputformat="yyyy-mm-dd" data-mask
+                                                value="{{ old('date_of_birth', $student->date_of_birth) }}">
                                             @error('date_of_birth')
-                                            <div class="text-danger">{{ $message }}</div>
+                                                <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <!-- /.input group -->
@@ -132,16 +140,17 @@
                                     <div class="form-group">
                                         <label>Place of birth</label>
                                         <input type="text" name="place_of_birth"
-                                            class="form-control @error('place_of_birth') is-invalid @enderror" value="{{ old('place_of_birth', $student->place_of_birth) }}">
+                                            class="form-control @error('place_of_birth') is-invalid @enderror"
+                                            value="{{ old('place_of_birth', $student->place_of_birth) }}">
                                         @error('place_of_birth')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Class</label>
                                         <select class="form-control select2" name="classroom" style="width: 100%;">
                                             @foreach ($classrooms as $classroom)
-                                            <option @if (old('classroom', $student->classroom->name) == $classroom) SELECTED @endif>{{ $classroom }}</option>
+                                                <option @if (old('classroom', $student->classroom->name) == $classroom) SELECTED @endif>{{ $classroom }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -166,7 +175,7 @@
         <script src="{{ asset('TAssets/plugins/moment/moment.min.js') }}"></script>
         <script src="{{ asset('TAssets/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
         <script>
-            $(function () {
+            $(function() {
                 //Initialize Select2 Elements
                 $('.select2').select2()
                 $('#datemask').inputmask('yyyy-mm-dd', {
@@ -178,7 +187,7 @@
             })
 
             //launch toastr
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')

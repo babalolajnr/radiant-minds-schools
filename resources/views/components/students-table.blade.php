@@ -39,7 +39,7 @@
                     <td>{{ $student->status }}</td>
                     <td>
                         <div class="btn-group">
-                            <a href="/view/student/{{ $student->admission_no }}">
+                            <a href="{{ route('student.show', ['student' => $student->admission_no]) }}">
                                 <button type="button" id="" class="btn btn-default btn-flat"
                                     title="Student detailed view">
                                     <i class="fas fa-eye"></i>
@@ -49,7 +49,7 @@
                             {{-- render if user is authorized to delete --}}
                             @can('delete', $student)
                                 <button type="submit" class="btn btn-default btn-flat" title="Delete"
-                                    onclick="deleteConfirmationModal({{ $student }})">
+                                    onclick="deleteConfirmationModal('{{ route('student.destroy', ['id' => $student->id]) }}', {{ $student }})">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             @endcan
@@ -61,7 +61,8 @@
                             </button>
                             @endcannot
 
-                            <a href="/studentSettings/{{ $student->admission_no }}">
+                            <a
+                                href="{{ route('student.show.student.settingsView', ['student' => $student->admission_no]) }}">
                                 <button type="button" class="btn btn-default btn-flat">
                                     <i class="fas fa-cogs"></i>
                                 </button>

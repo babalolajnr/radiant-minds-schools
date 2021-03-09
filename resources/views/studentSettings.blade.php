@@ -50,7 +50,7 @@
                                         <label for="status" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
-                                                <form action="/activate/student/{{ $student->id }}" method="post">
+                                                <form action="{{ route('student.activate', ['id' => $student->id]) }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'active') btn-primary
@@ -60,7 +60,7 @@
                                                         Activate
                                                     </button>
                                                 </form>
-                                                <form action="/suspend/student/{{ $student->id }}" method="post">
+                                                <form action="{{ route('student.suspend', ['id' => $student->id]) }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'suspended') btn-primary
@@ -70,7 +70,7 @@
                                                         Suspend
                                                     </button>
                                                 </form>
-                                                <form action="/deactivate/student/{{ $student->id }}" method="post">
+                                                <form action="{{ route('student.deactivate', ['id' => $student->id]) }}" method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'inactive') btn-primary
@@ -140,7 +140,7 @@
                 </div>
                 <div class="modal-body">
                     @foreach ($terms as $term)
-                        <a href="/create/pd/{{ $student->id }}/{{ $term->id }}">
+                        <a href="{{ route('pd.create', ['id' => $student->id, 'termId' => $term->id]) }}">
                             <button type="button" class="btn btn-primary">{{ $term->name }}</button>
                         </a>
                     @endforeach

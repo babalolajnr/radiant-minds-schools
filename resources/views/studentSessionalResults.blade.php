@@ -23,7 +23,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                                                                 </a>
                                                                 <button type="submit" class="btn btn-default btn-flat"
                                                                     title="Delete"
-                                                                    onclick="deleteConfirmationModal({{ $item }})">
+                                                                    onclick="deleteConfirmationModal('{{ route('result.destroy', ['id' => $item->id]) }}', '{{ $item->subject->name }}')">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
 
@@ -187,10 +187,9 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteItemUrl = '/delete/result/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteItemUrl)
-                $('#deleteItemName').html(data.subject.name)
+            function deleteConfirmationModal(url, name) {
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
 

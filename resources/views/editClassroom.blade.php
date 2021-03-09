@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Classroom <span class="font-semibold">{{ $classroom->name }}</span></h3>
                             </div>
-                            <form id="editClassroom" method="POST" action="/update/classroom/{{ $classroom->id }}">
+                            <form id="editClassroom" method="POST" action="{{ route('classroom.update', ['id' => $classroom->id]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">

@@ -29,7 +29,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Term</h3>
                             </div>
-                            <form method="POST" action="/store/term">
+                            <form method="POST" action="{{ route('term.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -97,7 +97,7 @@
 
                                                         <button type="button" class="btn btn-danger btn-flat"
                                                             title="Delete"
-                                                            onclick="deleteConfirmationModal({{ $term }})">
+                                                            onclick="deleteConfirmationModal('{{ route('term.destroy', ['id' => $term->id]) }}', {{ $term->name }})">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -176,10 +176,9 @@
 
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deleteUrl = '/delete/term/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deleteUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, name) {
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
 

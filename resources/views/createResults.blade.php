@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                             <li class="breadcrumb-item active">New Result</li>
                         </ol>
@@ -40,31 +40,33 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">New Result<span class="text-sm text-muted"> for current academic session ({{ $currentAcademicSession->name }})</span></h3>
+                                <h3 class="card-title">New Result<span class="text-sm text-muted"> for current academic
+                                        session ({{ $currentAcademicSession->name }})</span></h3>
                             </div>
-                            <form method="POST" action="/store/result/{{ $student->id }}">
+                            <form method="POST" action="{{ route('result.store', ['student' => $student->admission_no]) }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Subject">Subject</label>
                                         <select class="form-control select2" name="subject" style="width: 100%;">
                                             @foreach ($subjects as $subject)
-                                            <option @if (old('subject') == $subject) SELECTED @endif>{{ $subject->name }}</option>
+                                                <option @if (old('subject') == $subject) SELECTED @endif>{{ $subject->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('subject')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="Term">Term</label>
                                         <select class="form-control select2" name="term" style="width: 100%;">
                                             @foreach ($terms as $term)
-                                            <option @if (old('term') == $term) SELECTED @endif>{{ $term->name }}</option>
+                                                <option @if (old('term') == $term) SELECTED @endif>{{ $term->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('term')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -73,7 +75,7 @@
                                             class="form-control @error('ca') is-invalid @enderror"
                                             value="{{ old('ca') }}">
                                         @error('ca')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
@@ -82,7 +84,7 @@
                                             class="form-control @error('exam') is-invalid @enderror"
                                             value="{{ old('exam') }}">
                                         @error('exam')
-                                        <div class="text-danger">{{ $message }}</div>
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -104,7 +106,7 @@
         <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script>
-            $(function () {
+            $(function() {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
 
@@ -128,7 +130,7 @@
 
 
             });
-            $(function () {
+            $(function() {
 
                 //Initialize Select2 Elements
                 $('.select2').select2()

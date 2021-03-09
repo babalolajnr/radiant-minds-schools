@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Pychomotor Domain Type</h3>
                             </div>
-                            <form id="" method="POST" action="/update/pdType/{{ $pdType->id }}">
+                            <form id="" method="POST" action="{{ route('pd-type.update', ['id' => $pdType->id]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">

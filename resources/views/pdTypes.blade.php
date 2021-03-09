@@ -44,7 +44,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Pychomotor Domain Type</h3>
                             </div>
-                            <form id="addPDType" method="POST" action="/store/pdType">
+                            <form id="addPDType" method="POST" action="{{ route('pd-type.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -94,7 +94,7 @@
                                                     </a>
 
                                                     <button type="button" class="btn btn-danger btn-flat" title="Delete"
-                                                        onclick="deleteConfirmationModal({{ $pdType }})">
+                                                        onclick="deleteConfirmationModal('{{ route('pd-type.destroy', ['id' => $pdType->id]) }}', '{{ $pdType->name }}')">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
 
@@ -171,10 +171,10 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function deleteConfirmationModal(data) {
-                let deletePDTypeUrl = '/delete/pdType/' + data.id
-                $('#yesDeleteConfirmation').attr("action", deletePDTypeUrl)
-                $('#deleteItemName').html(data.name)
+            function deleteConfirmationModal(url, name) {
+
+                $('#yesDeleteConfirmation').attr("action", url)
+                $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
             $(function () {
