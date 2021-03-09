@@ -179,8 +179,9 @@
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="imageUpload">
-                                            <form action="{{ route('student.upload.image', ['id' => $student->id]) }}" method="post"
-                                                id="imageUploadForm" enctype="multipart/form-data">
+                                            <form
+                                                action="{{ route('student.upload.image', ['id' => $student->id]) }}"
+                                                method="post" id="imageUploadForm" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="form-group">
                                                     <label for="imageUpload">File input</label>
@@ -319,11 +320,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <a href="/edit/student/{{ $student->admission_no }}" id="editStudentButton">
+                    <a href="{{ route('student.edit', ['student' => $student->admission_no]) }}"
+                        id="editStudentButton">
                         <button type="button" class="btn btn-success" title="Edit Student">Student</button>
                     </a>
                     <span class="px-3"></span>
-                    <a href="/edit/guardian/{{ $student->guardian->phone }}" id="editGuardianButton">
+                    <a href="{{ route('guardian.edit', ['phone' => $student->guardian->phone]) }}"
+                        id="editGuardianButton">
                         <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
                     </a>
 
