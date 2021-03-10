@@ -305,7 +305,7 @@ class StudentController extends Controller
     {
         $this->authorize('delete', $student);
 
-        $student = Student::findOrFail($id);
+        $student = Student::withTrashed()->findOrFail($id);
         $guardian = $student->guardian()->first();
         $guardianChildren = $guardian->children()->get();
 
