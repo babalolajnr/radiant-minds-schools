@@ -25,7 +25,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -50,7 +50,9 @@
                                         <label for="status" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
-                                                <form action="{{ route('student.activate', ['id' => $student->id]) }}" method="post">
+                                                <form
+                                                    action="{{ route('student.activate', ['id' => $student->id]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'active') btn-primary
@@ -60,7 +62,8 @@
                                                         Activate
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('student.suspend', ['id' => $student->id]) }}" method="post">
+                                                <form action="{{ route('student.suspend', ['id' => $student->id]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'suspended') btn-primary
@@ -70,7 +73,9 @@
                                                         Suspend
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('student.deactivate', ['id' => $student->id]) }}" method="post">
+                                                <form
+                                                    action="{{ route('student.deactivate', ['id' => $student->id]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->status == 'inactive') btn-primary
@@ -91,13 +96,13 @@
                                         <div class="col-sm-10">
                                             <div class="btn-group">
                                                 <button type="button"
-                                                    onclick="changeClassConfirmationModal({{ $student }}, 'promote')"
+                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['id' => $student->id]) }}', {{ $student }}, 'promote')"
                                                     class="btn btn-success btn-flat">
                                                     Promote
                                                 </button>
 
                                                 <button type="button"
-                                                    onclick="changeClassConfirmationModal({{ $student }}, 'demote')"
+                                                    onclick="changeClassConfirmationModal('{{ route('student.demote', ['id' => $student->id]) }}',{{ $student }}, 'demote')"
                                                     class="btn btn-danger btn-flat">
                                                     Demote
                                                 </button>
@@ -207,23 +212,21 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-            function changeClassConfirmationModal(data, action) {
+            function changeClassConfirmationModal(url, data, action) {
 
                 const studentName = data.first_name + ' ' + data.last_name
 
+                $('#changeClassForm').attr("action", url)
+
                 if (action == 'promote') {
-                    let promoteStudentUrl = '/promote/student/' + data.id
-                    $('#changeClassForm').attr("action", promoteStudentUrl)
                     $('#confirmationModalStudentName').html(action + ' ' + studentName)
-                    $('#changeClassConfirmationModal').modal('show')
                 } else if (action == 'demote') {
-                    let demoteStudentUrl = '/demote/student/' + data.id
-                    $('#changeClassForm').attr("action", demoteStudentUrl)
                     $('#confirmationModalStudentName').html(action + ' ' + studentName)
-                    $('#changeClassConfirmationModal').modal('show')
                 }
+
+                $('#changeClassConfirmationModal').modal('show')
             }
-            
+
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
