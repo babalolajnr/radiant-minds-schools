@@ -23,7 +23,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -40,7 +40,14 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Students</h3>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">Students</h5>
+                                    <div>
+                                        <a href="{{ route('student.show.trashed') }}">
+                                            <button class="btn btn-warning">Trash</button>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <x-students-table :students="$students" />
@@ -107,7 +114,7 @@
         </script>
         <!-- AdminLTE App -->
         <script>
-           function deleteConfirmationModal(url, data) {
+            function deleteConfirmationModal(url, data) {
                 let name = data.first_name + ' ' + data.last_name
 
                 $('#yesDeleteConfirmation').attr("action", url)
@@ -118,6 +125,8 @@
             //launch toastr
             $(function() {
                 let Success = document.getElementById('success')
+                let Error = document.getElementById('error')
+
                 // if data-success = 'true' display alert
                 if (Success.dataset.success == 'true')
                     $(document).Toasts('create', {
@@ -126,7 +135,14 @@
                         subtitle: 'Close',
                         body: JSON.parse(Success.dataset.successMessage)
                     })
-
+                    
+                if (Error.dataset.error == 'true')
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        subtitle: 'Close',
+                        body: JSON.parse(Error.dataset.errorMessage)
+                    })
             });
 
             //datatables
