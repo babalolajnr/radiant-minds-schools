@@ -415,5 +415,9 @@ class StudentController extends Controller
         return back()->with('error', 'Student is in the Lowest class possible');
     }
 
-    
+    public function showTrashed(){
+        $students = Student::onlyTrashed()->get();
+
+        return view('studentTrash', compact('students'));
+    }
 }
