@@ -368,13 +368,16 @@ class StudentController extends Controller
         return back()->with('success', 'Image uploaded successfully');
     }
 
-    public function showStudentSettingsView($student)
+    public function showStudentSettingsView(Student $student)
     {
-        $student = Student::findStudent($student);
-        $student = $student->first();
+        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        
+        if(is_null($currentAcademicSession)){
+            return back()->with('error', 'Current Academic Session is not set');            
+        }
+
         $pdTypes = PDType::all();
         $terms = Term::all();
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
 
         return view('studentSettings', compact('student', 'pdTypes', 'currentAcademicSession', 'terms'));
     }
