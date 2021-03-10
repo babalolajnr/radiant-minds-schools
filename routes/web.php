@@ -75,6 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/deactivate/{id}', [StudentController::class, 'deactivate'])->name('deactivate');
         Route::patch('/promote/{id}', [StudentController::class, 'promote'])->name('promote');
         Route::patch('/demote/{id}', [StudentController::class, 'demote'])->name('demote');
+        Route::patch('/restore/{id}', [StudentController::class, 'restore'])->name('restore');
         Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('destroy');
         Route::delete('/force-delete/{id}', [StudentController::class, 'forceDelete'])->name('force.delete');
     });
