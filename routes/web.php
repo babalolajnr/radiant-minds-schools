@@ -66,6 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('subjects/{student}', [StudentController::class, 'getSubjects'])->name('get.subjects');
         Route::get('/results/sessional/{student}/{academicSessionId}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results');
         Route::get('/results/term/{student}/{termId}/{academicSessionId}', [StudentController::class, 'getTermResults'])->name('get.term.results');
+        Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
         Route::post('/store/image/{id}', [StudentController::class, 'uploadImage'])->name('upload.image');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
         Route::patch('/update/{id}', [StudentController::class, 'update'])->name('update');
