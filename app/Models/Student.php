@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Student extends Model
 {
     use HasFactory;
-
+    use SoftDeletes;
+    
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function guardian()
@@ -31,7 +34,8 @@ class Student extends Model
     }
 
     //check if student exists
-    public static function findStudent($admission_no) {
+    public static function findStudent($admission_no)
+    {
 
         $student = Student::where('admission_no', $admission_no);
         if (!$student->exists()) {
@@ -40,5 +44,4 @@ class Student extends Model
 
         return $student;
     }
-
 }
