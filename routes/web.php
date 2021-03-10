@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
          * I was thinking when i decided to name it like that
          * but I am too lazy to change it now.
          */
-        Route::get('/student-settings/{student}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
+        Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
         Route::get('view/{student}', [StudentController::class, 'show'])->name('show');
         Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit');
         Route::get('subjects/{student}', [StudentController::class, 'getSubjects'])->name('get.subjects');
