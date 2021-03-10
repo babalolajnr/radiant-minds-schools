@@ -89,7 +89,7 @@
                                                             @can('delete', $student)
                                                                 <button type="submit" class="btn btn-default btn-flat"
                                                                     title="Delete"
-                                                                    onclick="deleteConfirmationModal('{{ route('student.destroy', ['id' => $student->id]) }}', {{ $student }})">
+                                                                    onclick="deleteConfirmationModal('{{ route('student.force.delete', ['id' => $student->id]) }}', {{ $student }})">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
                                                             @endcan
