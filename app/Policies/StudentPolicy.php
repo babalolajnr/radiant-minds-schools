@@ -65,7 +65,7 @@ class StudentPolicy
      */
     public function delete(User $user, Student $student)
     {
-        return $user->isMaster();
+        return $user->isAdmin() || $user->isMaster();
     }
 
     /**
@@ -77,7 +77,7 @@ class StudentPolicy
      */
     public function restore(User $user, Student $student)
     {
-        return $user->isMaster();
+        return $user->isAdmin() || $user->isMaster();
     }
 
     /**
@@ -89,6 +89,6 @@ class StudentPolicy
      */
     public function forceDelete(User $user, Student $student)
     {
-        return $user->isMaster();
+        return $user->isAdmin() || $user->isMaster();
     }
 }
