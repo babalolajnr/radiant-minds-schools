@@ -136,7 +136,7 @@ class StudentController extends Controller
             $academicSession = $result->academicSession;
             array_push($academicSessions, $academicSession);
         }
-        
+
         $academicSessions = collect($academicSessions);
 
         $terms = Term::all();
@@ -295,6 +295,17 @@ class StudentController extends Controller
         $this->authorize('delete', $student);
 
         $student = Student::findOrFail($id);
+
+        $student->delete();
+
+        return back()->with('success', 'Student deleted');
+    }
+
+    public function forceDelete($id, Student $student)
+    {
+        $this->authorize('delete', $student);
+
+        $student = Student::findOrFail($id);
         $guardian = $student->guardian()->first();
         $guardianChildren = $guardian->children()->get();
 
@@ -311,13 +322,15 @@ class StudentController extends Controller
          * data else delete the student and the guargian's data
          */
         if (count($guardianChildren) > 1) {
-            $student->delete();
+            $student->forceDelete();
         } else {
-            $student->delete();
+            $student->forceDelete();
             $guardian->delete();
         }
 
-        return back()->with('success', 'Student Deleted');
+        $student->delete();
+
+        return back()->with('success', 'Student deleted permanently');
     }
 
     public function uploadImage($id, Request $request)
@@ -401,4 +414,6 @@ class StudentController extends Controller
 
         return back()->with('error', 'Student is in the Lowest class possible');
     }
+
+    
 }
