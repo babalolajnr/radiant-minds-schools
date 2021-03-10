@@ -74,14 +74,16 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a
-                                                                href="{{ route('student.show', ['student' => $student->admission_no]) }}">
-                                                                <button type="button" id=""
-                                                                    class="btn btn-default btn-flat"
+                                                            <form
+                                                                action="{{ route('student.restore', ['id' => $student->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="btn btn-default btn-flat"
                                                                     title="Restore">
                                                                     <i class="fas fa-trash-restore"></i>
                                                                 </button>
-                                                            </a>
+                                                            </form>
 
                                                             {{-- render if user is authorized to delete --}}
                                                             @can('delete', $student)
@@ -135,7 +137,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        This student <span id="deleteItemName" class="font-bold"></span>'s record will be gone forever and
+                        This student <span id="deleteItemName" class="font-bold"></span>'s record will be gone forever
+                        and
                         cannot be recovered. Are you sure you want to proceed?
                     </div>
                     <div class="modal-footer justify-content-between">
