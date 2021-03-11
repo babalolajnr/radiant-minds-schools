@@ -54,9 +54,6 @@
     <script src="{{ asset('TAssets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('TAssets/dist/js/adminlte.min.js')}}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('TAssets/dist/js/demo.js')}}"></script>
-
     {{ $scripts }}
 </body>
 
