@@ -326,7 +326,7 @@
                         <button type="button" class="btn btn-success" title="Edit Student">Student</button>
                     </a>
                     <span class="px-3"></span>
-                    <a href="{{ route('guardian.edit', ['phone' => $student->guardian->phone]) }}"
+                    <a href="{{ route('guardian.edit', ['guardian' => $student->guardian]) }}"
                         id="editGuardianButton">
                         <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
                     </a>
