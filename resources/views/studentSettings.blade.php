@@ -51,7 +51,7 @@
                                         <div class="col-sm-10">
                                             <div class="btn-group">
                                                 <form
-                                                    action="{{ route('student.activate', ['id' => $student->id]) }}"
+                                                    action="{{ route('student.activate', ['student' => $student]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PATCH')
@@ -62,7 +62,7 @@
                                                         Activate
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('student.suspend', ['id' => $student->id]) }}"
+                                                <form action="{{ route('student.suspend', ['student' => $student]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PATCH')
@@ -74,7 +74,7 @@
                                                     </button>
                                                 </form>
                                                 <form
-                                                    action="{{ route('student.deactivate', ['id' => $student->id]) }}"
+                                                    action="{{ route('student.deactivate', ['student' => $student]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PATCH')
@@ -96,13 +96,13 @@
                                         <div class="col-sm-10">
                                             <div class="btn-group">
                                                 <button type="button"
-                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['id' => $student->id]) }}', {{ $student }}, 'promote')"
+                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}', {{ $student }}, 'promote')"
                                                     class="btn btn-success btn-flat">
                                                     Promote
                                                 </button>
 
                                                 <button type="button"
-                                                    onclick="changeClassConfirmationModal('{{ route('student.demote', ['id' => $student->id]) }}',{{ $student }}, 'demote')"
+                                                    onclick="changeClassConfirmationModal('{{ route('student.demote', ['student' => $student]) }}',{{ $student }}, 'demote')"
                                                     class="btn btn-danger btn-flat">
                                                     Demote
                                                 </button>
@@ -145,7 +145,7 @@
                 </div>
                 <div class="modal-body">
                     @foreach ($terms as $term)
-                        <a href="{{ route('pd.create', ['id' => $student->id, 'termId' => $term->id]) }}">
+                        <a href="{{ route('pd.create', ['student' => $student, 'termId' => $term->id]) }}">
                             <button type="button" class="btn btn-primary">{{ $term->name }}</button>
                         </a>
                     @endforeach

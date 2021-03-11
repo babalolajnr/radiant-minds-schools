@@ -65,7 +65,7 @@
                                 <div class="d-flex justify-content-between align-items-baseline">
                                     <span class="font-semibold">Subjects</span>
                                     <span>
-                                        <a href="{{ route('classroom.set.subjects', ['id' => $classroom->id]) }}"><button
+                                        <a href="{{ route('classroom.set.subjects', ['classroom' => $classroom]) }}"><button
                                                 class="btn btn-primary">Set Subjects</button>
                                         </a>
                                     </span>
