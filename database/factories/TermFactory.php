@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Term;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class TermFactory extends Factory
 {
@@ -21,8 +22,11 @@ class TermFactory extends Factory
      */
     public function definition()
     {
+        $name = $this->faker->unique()->randomElement(self::$terms);
+        $slug = Str::of($name)->slug('-');
         return [
-            'name' => $this->faker->unique()->randomElement(self::$terms),
+            'name' => $name,
+            'slug' => $slug
         ];
     }
 
