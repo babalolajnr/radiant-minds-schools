@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class TermController extends Controller
 {
@@ -17,28 +18,27 @@ class TermController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validateTerm($request);
-        Term::create($validatedData);
-        return back()->with('success', 'Term created!');
+        $slug = ['slug' =>  Str::of($validatedData['name'])->slug('-')];
+        Term::create($validatedData + $slug);
+        return redirect()->back()->with('success', 'Term created!');
     }
 
-    public function edit($id)
+    public function edit(Term $term)
     {
-        $term = Term::findOrFail($id);
         return view('editTerm', compact('term'));
     }
 
-    public function update($id, Request $request)
+    public function update(Term $term, Request $request)
     {
-        $term = Term::findOrFail($id);
         $validatedData = $this->validateTerm($request, $term);
-        $term->update($validatedData);
+        $slug = ['slug' =>  Str::of($validatedData['name'])->slug('-')];
+        $term->update($validatedData + $slug);
         return redirect()->route('term.index')->with('success', 'Term updated!');
     }
 
-    public function destroy($id, Term $term)
+    public function destroy(Term $term)
     {
         // $this->authorize('delete', $term);
-        $term = Term::findOrFail($id);
 
         try {
             $term->delete();
@@ -49,7 +49,7 @@ class TermController extends Controller
             }
         }
 
-        return back()->with('success', 'Term deleted!');
+        return redirect()->back()->with('success', 'Term deleted!');
     }
 
     private function validateTerm($request, $term = null)
