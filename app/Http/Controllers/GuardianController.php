@@ -8,26 +8,13 @@ use Illuminate\Validation\Rule;
 
 class GuardianController extends Controller
 {
-    private function findGuardian($guardian)
+    public function edit(Guardian $guardian)
     {
-        $guardian = Guardian::where('phone', $guardian);
-        if (!$guardian->exists()) {
-            abort(404);
-        }
-
-        return $guardian;
-    }
-
-    public function edit($guardian)
-    {
-        $guardian = $this->findGuardian($guardian)->first();
         return view('editGuardian', compact(['guardian']));
     }
 
-    public function update($guardian, Request $request)
+    public function update(Guardian $guardian, Request $request)
     {
-
-        $guardian = $this->findGuardian($guardian)->first();
 
         $validatedData = $request->validate([
             'title' => ['required', 'max:30', 'string'],
@@ -43,6 +30,6 @@ class GuardianController extends Controller
 
         $guardian = Guardian::where('phone', $request->phone)->first();
 
-        return redirect()->route('guardian.edit', ['phone' => $guardian->phone])->with('success', 'Guardian updated!');
+        return redirect()->route('guardian.edit', ['guardian' => $guardian])->with('success', 'Guardian updated!');
     }
 }
