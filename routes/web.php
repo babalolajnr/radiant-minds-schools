@@ -61,35 +61,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
          * but I am too lazy to change it now.
          */
         Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
-        Route::get('view/{student}', [StudentController::class, 'show'])->name('show');
-        Route::get('/edit/{student}', [StudentController::class, 'edit'])->name('edit');
-        Route::get('subjects/{student}', [StudentController::class, 'getSubjects'])->name('get.subjects');
-        Route::get('/results/sessional/{student}/{academicSessionId}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results');
+        Route::get('view/{student:admission_no}', [StudentController::class, 'show'])->name('show');
+        Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
+        Route::get('/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results')->where('academicSessionName', '.*');
         Route::get('/results/term/{student}/{termId}/{academicSessionId}', [StudentController::class, 'getTermResults'])->name('get.term.results');
         Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
-        Route::post('/store/image/{id}', [StudentController::class, 'uploadImage'])->name('upload.image');
+        Route::post('/store/image/{student}', [StudentController::class, 'uploadImage'])->name('upload.image');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [StudentController::class, 'update'])->name('update');
-        Route::patch('/suspend/{id}', [StudentController::class, 'suspend'])->name('suspend');
-        Route::patch('/activate/{id}', [StudentController::class, 'activate'])->name('activate');
-        Route::patch('/deactivate/{id}', [StudentController::class, 'deactivate'])->name('deactivate');
-        Route::patch('/promote/{id}', [StudentController::class, 'promote'])->name('promote');
-        Route::patch('/demote/{id}', [StudentController::class, 'demote'])->name('demote');
+        Route::patch('/update/{student}', [StudentController::class, 'update'])->name('update');
+        Route::patch('/suspend/{student}', [StudentController::class, 'suspend'])->name('suspend');
+        Route::patch('/activate/{student}', [StudentController::class, 'activate'])->name('activate');
+        Route::patch('/deactivate/{student}', [StudentController::class, 'deactivate'])->name('deactivate');
+        Route::patch('/promote/{student}', [StudentController::class, 'promote'])->name('promote');
+        Route::patch('/demote/{student}', [StudentController::class, 'demote'])->name('demote');
         Route::patch('/restore/{id}', [StudentController::class, 'restore'])->name('restore');
-        Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('destroy');
+        Route::delete('/delete/{student}', [StudentController::class, 'destroy'])->name('destroy');
         Route::delete('/force-delete/{id}', [StudentController::class, 'forceDelete'])->name('force.delete');
     });
 
     Route::prefix('classrooms')->name('classroom.')->group(function () {
         //Classroom Routes
         Route::get('/', [ClassroomController::class, 'index'])->name('index');
-        Route::get('/edit/{id}', [ClassroomController::class, 'edit'])->name('edit');
-        Route::get('/view/{id}', [ClassroomController::class, 'show'])->name('show');
-        Route::get('/set-subjects/{id}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
+        Route::get('/edit/{classroom}', [ClassroomController::class, 'edit'])->name('edit');
+        Route::get('/view/{classroom}', [ClassroomController::class, 'show'])->name('show');
+        Route::get('/set-subjects/{classroom}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
         Route::post('/store', [ClassroomController::class, 'store'])->name('store');
-        Route::post('/update-subjects/{id}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
-        Route::patch('/update/{id}', [ClassroomController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [ClassroomController::class, 'destroy'])->name('destroy');
+        Route::post('/update-subjects/{classroom}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
+        Route::patch('/update/{classroom}', [ClassroomController::class, 'update'])->name('update');
+        Route::delete('/delete/{classroom}', [ClassroomController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('terms')->name('term.')->group(function () {
@@ -131,7 +130,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('results')->name('result.')->group(function () {
         //Result ROutes
-        Route::get('/create/{student}', [ResultController::class, 'create'])->name('create');
+        Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
         Route::get('/performance-report/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
         Route::get('/edit/{id}', [ResultController::class, 'edit'])->name('edit');
         Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
