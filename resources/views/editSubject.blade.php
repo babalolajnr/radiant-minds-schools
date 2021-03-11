@@ -1,8 +1,5 @@
 <x-app-layout>
     <x-slot name="styles">
-        <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     </x-slot>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -37,7 +34,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit {{ $subject->name }}</h3>
                             </div>
-                            <form id="" method="POST" action="{{ route('subject.update', ['id' => $subject->id]) }}">
+                            <form id="" method="POST" action="{{ route('subject.update', ['subject' => $subject]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">
@@ -65,9 +62,6 @@
         <!-- /.content -->
     </div>
     <x-slot name="scripts">
-        <!-- Tempusdominus Bootstrap 4 -->
-        <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
-        </script>
         <script>
             $(function() {
                 let Success = document.getElementById('success')

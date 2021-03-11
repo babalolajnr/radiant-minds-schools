@@ -134,7 +134,7 @@
                                                 <td>
                                                     <div class="btn-group">
                                                         <a
-                                                            href="{{ route('academic-session.edit', ['id' => $academicSession]) }}">
+                                                            href="{{ route('academic-session.edit', ['academicSession' => $academicSession]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -144,7 +144,7 @@
                                                         @can('delete', $academicSession)
                                                             <button type="button" class="btn btn-danger btn-flat"
                                                                 title="Delete"
-                                                                onclick="deleteConfirmationModal('{{ route('academic-session.destroy', ['id' => $academicSession]) }}', '{{ $academicSession->name }}')">
+                                                                onclick="deleteConfirmationModal('{{ route('academic-session.destroy', ['academicSession' => $academicSession]) }}', '{{ $academicSession->name }}')">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         @endcan
@@ -164,7 +164,7 @@
                                                             </button>
                                                         @else
                                                             <a
-                                                                href="{{ route('academic-session.set.current', ['id' => $academicSession]) }}">
+                                                                href="{{ route('academic-session.set.current', ['academicSession' => $academicSession]) }}">
                                                                 <button type="button" class="btn btn-default btn-flat"
                                                                     title="Set as current academic session">
                                                                     <i class="fas fa-toggle-off text-red-500"></i>
