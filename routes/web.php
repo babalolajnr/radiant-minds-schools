@@ -82,13 +82,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('classrooms')->name('classroom.')->group(function () {
         //Classroom Routes
         Route::get('/', [ClassroomController::class, 'index'])->name('index');
-        Route::get('/edit/{classroom}', [ClassroomController::class, 'edit'])->name('edit');
-        Route::get('/view/{classroom}', [ClassroomController::class, 'show'])->name('show');
-        Route::get('/set-subjects/{classroom}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
+        Route::get('/edit/{classroom:slug}', [ClassroomController::class, 'edit'])->name('edit');
+        Route::get('/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('show');
+        Route::get('/set-subjects/{classroom:slug}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
         Route::post('/store', [ClassroomController::class, 'store'])->name('store');
-        Route::post('/update-subjects/{classroom}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
-        Route::patch('/update/{classroom}', [ClassroomController::class, 'update'])->name('update');
-        Route::delete('/delete/{classroom}', [ClassroomController::class, 'destroy'])->name('destroy');
+        Route::post('/update-subjects/{classroom:slug}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
+        Route::patch('/update/{classroom:slug}', [ClassroomController::class, 'update'])->name('update');
+        Route::delete('/delete/{classroom:slug}', [ClassroomController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('terms')->name('term.')->group(function () {
@@ -140,7 +140,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('pds')->name('pd.')->group(function () {
         //Pychomotor Domain Routes
-        Route::get('/create/{id}/{termId}/{academicSessionId?}', [PDController::class, 'create'])->name('create');
+        Route::get('/create/{student}/{termId}/{academicSessionId?}', [PDController::class, 'create'])->name('create');
         Route::post('/store/{id}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
     });
 
