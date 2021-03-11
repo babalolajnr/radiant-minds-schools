@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Classroom;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ClassroomFactory extends Factory
 {
@@ -23,9 +24,11 @@ class ClassroomFactory extends Factory
     public function definition()
     {
         $class = $this->faker->unique()->randomElement(self::$classes);
+        $slug = Str::of($class['name'])->slug('-');
         return [
             'name' => $class['name'],
             'rank' => $class['rank'],
+            'slug' => $slug,
             'teacher_id' => Teacher::factory()->create(['status' => 'active'])->id
         ];
     }
