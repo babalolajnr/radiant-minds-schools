@@ -16,9 +16,9 @@ class AcademicSessionController extends Controller
         ];
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession)],
-            'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession)],
-            'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession), 'after:start_date']
+            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession->id)],
+            'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession->id)],
+            'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession->id), 'after:start_date']
         ], $messages);
 
         return $validatedData;
@@ -36,25 +36,22 @@ class AcademicSessionController extends Controller
         return back()->with('success', 'Academic Session Created!');
     }
 
-    public function edit($id)
+    public function edit(AcademicSession $academicSession)
     {
-        $academicSession = AcademicSession::findOrFail($id);
         return view('editAcademicSession', compact('academicSession'));
     }
 
-    public function update($id, Request $request)
+    public function update(AcademicSession $academicSession, Request $request)
     {
 
-        $academicSession = AcademicSession::findOrFail($id);
         $academicSession->update($this->validateAcademicSession($request, $academicSession));
 
         return redirect()->route('academic-session.index')->with('success', 'Academic Session Updated!');
     }
 
-    public function destroy($id, AcademicSession $academicSession)
+    public function destroy(AcademicSession $academicSession)
     {
         $this->authorize('delete', $academicSession);
-        $academicSession = AcademicSession::findOrFail($id);
 
         try {
             $academicSession->delete();
@@ -67,10 +64,8 @@ class AcademicSessionController extends Controller
         return back()->with('success', 'Academic Session Deleted!');
     }
 
-    public function setCurrentAcademicSession($id)
+    public function setCurrentAcademicSession(AcademicSession $academicSession)
     {
-        $academicSession = AcademicSession::findOrFail($id);
-
         AcademicSession::where('current_session', 1)->update(['current_session' => null]);
 
         $academicSession->current_session = 1;
