@@ -84,7 +84,7 @@
                                             <strong></i>Class</strong>
 
                                             <a
-                                                href="{{ route('classroom.show', ['id' => $student->classroom->id]) }}">
+                                                href="{{ route('classroom.show', ['classroom' => $student->classroom]) }}">
                                                 <p class="text-info" id="classroom">
                                                     {{ $student->classroom->name }}
                                                 </p>
@@ -168,8 +168,7 @@
                                                         data-target="#termResultModal">Term</button>
                                                 </div>
                                                 <span class="ml-3" title="Add new result">
-                                                    <a
-                                                        href="{{ route('result.create', ['student' => $student->admission_no]) }}">
+                                                    <a href="{{ route('result.create', ['student' => $student]) }}">
                                                         <button type="button" id="addNewResultButton"
                                                             class="btn btn-success">Create Result</button>
                                                     </a>
@@ -180,7 +179,7 @@
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="imageUpload">
                                             <form
-                                                action="{{ route('student.upload.image', ['id' => $student->id]) }}"
+                                                action="{{ route('student.upload.image', ['student' => $student]) }}"
                                                 method="post" id="imageUploadForm" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="form-group">
@@ -233,14 +232,16 @@
                                 <label>Academic Session</label>
                                 <select class="form-control select2" id="academicSession" style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                        <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
+                                        <option
+                                            value="{{ route('student.get.sessional.results', ['student' => $student, 'academicSessionName' => $academicSession->name]) }}"
+                                            @if (old('academicSession') == $academicSession) SELECTED @endif>
                                             {{ $academicSession->name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button type="button" onclick="getSessionalResult({{ $student }})"
+                                <button type="button" onclick="getSessionalResult()"
                                     class="btn btn-primary">Submit</button>
                             </div>
                         @else
@@ -369,10 +370,10 @@
 
             });
 
-            function getSessionalResult(student) {
+            function getSessionalResult() {
                 let selected = $('#sessionalResultModal #academicSession').val()
-                const sessionalResultUrl = '/results/sessional/' + student.admission_no + '/' + selected
-                window.location.href = sessionalResultUrl
+                // console.log(selected)
+                window.location.href = selected
             }
 
             function getTermResult(student) {

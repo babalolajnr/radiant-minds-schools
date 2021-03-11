@@ -43,7 +43,7 @@
                                 <h3 class="card-title">New Result<span class="text-sm text-muted"> for current academic
                                         session ({{ $currentAcademicSession->name }})</span></h3>
                             </div>
-                            <form method="POST" action="{{ route('result.store', ['student' => $student->admission_no]) }}">
+                            <form method="POST" action="{{ route('result.store', ['student' => $student]) }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">

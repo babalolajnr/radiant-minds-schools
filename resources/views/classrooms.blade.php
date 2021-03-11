@@ -88,13 +88,13 @@
                                                 <td>
                                                     <div class="btn-group">
                                                         <a
-                                                            href="{{ route('classroom.show', ['id' => $classroom->id]) }}">
+                                                            href="{{ route('classroom.show', ['classroom' => $classroom]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="View">
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
                                                         </a>
-                                                        <a href="{{ route('classroom.edit', ['id' => $classroom->id]) }}">
+                                                        <a href="{{ route('classroom.edit', ['classroom' => $classroom]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -104,7 +104,7 @@
                                                         @can('delete', $classroom)
                                                             <button type="button" class="btn btn-danger btn-flat"
                                                                 title="Delete"
-                                                                onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['id' => $classroom->id]) }}', '{{ $classroom->name }}')">
+                                                                onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['classroom' => $classroom]) }}', '{{ $classroom->name }}')">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
                                                         @endcan
