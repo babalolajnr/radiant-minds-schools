@@ -16,7 +16,7 @@ class SubjectController extends Controller
         ];
 
         $validatedData =  $request->validate([
-            'name' => ['required', 'string', Rule::unique('subjects')->ignore($subject)]
+            'name' => ['required', 'string', Rule::unique('subjects')->ignore($subject->id)]
         ], $messages);
 
         return $validatedData;
@@ -39,18 +39,14 @@ class SubjectController extends Controller
         return back()->with('success', 'Subject Added!');
     }
 
-    public function edit($id)
+    public function edit(Subject $subject)
     {
-
-        $subject = Subject::findOrFail($id);
         return view('editSubject', compact('subject'));
     }
 
-    public function update($id, Request $request)
+    public function update(Subject $subject, Request $request)
     {
-        $subject = Subject::findOrFail($id);
-
-        $validatedData = $this->validateSubject($request);
+        $validatedData = $this->validateSubject($request, $subject);
         $slug = Str::of($validatedData['name'])->slug('-');
         $slug = ['slug' => $slug];
         $data = $validatedData + $slug;
@@ -59,10 +55,9 @@ class SubjectController extends Controller
         return redirect()->route('subject.index')->with('success', 'Subject Updated!');
     }
 
-    public function destroy($id, Subject $subject)
+    public function destroy(Subject $subject)
     {
         $this->authorize('delete', $subject);
-        $subject = Subject::findOrFail($id);
 
         try {
             $subject->delete();
