@@ -9,7 +9,7 @@ class Classroom extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'rank'];
+    protected $fillable = ['name', 'rank', 'slug'];
 
     public function subjects()
     {
