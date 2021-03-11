@@ -114,16 +114,8 @@ class StudentController extends Controller
         return redirect()->route('student.index')->with('success', 'Student Added!');
     }
 
-    public function show($student)
+    public function show(Student $student)
     {
-        $student = Student::where('admission_no', $student);
-
-        if (!$student->exists()) {
-            abort(404);
-        }
-
-        $student = $student->first();
-
         //get unique results that has unique academic sessions
         $results = Result::where('student_id', $student->id)->get()->unique('academic_session_id');
 
@@ -143,56 +135,51 @@ class StudentController extends Controller
         return  view('showStudent', compact('student', 'academicSessions', 'terms'));
     }
 
-    public function suspend($id)
+    public function suspend(Student $student)
     {
-        $student = Student::findOrFail($id);
         $student->status = 'suspended';
         $student->save();
 
         return back()->with('success', 'Student Suspended!');
     }
 
-    public function activate($id)
+    public function activate(Student $student)
     {
-        $student = Student::findOrFail($id);
+
         $student->status = 'active';
         $student->save();
 
         return back()->with('success', 'Student Activated!');
     }
 
-    public function deactivate($id)
+    public function deactivate(Student $student)
     {
-        $student = Student::findOrFail($id);
+
         $student->status = 'inactive';
         $student->save();
 
         return back()->with('success', 'Student Deactivated!');
     }
 
-    public function edit($student)
+    public function edit(Student $student)
     {
-        $student = Student::findStudent($student);
-        $student = $student->first();
         $classrooms = Classroom::pluck('name')->all();
         return view('editStudent', compact(['student', 'classrooms']));
     }
 
-    public function update($id, Request $request)
+    public function update(Student $student, Request $request)
     {
-        $student = Student::findOrFail($id);
+
         $validatedData = $request->validate($this->studentValidationRules($student));
         $student->update($this->studentInfo($validatedData));
 
         return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
     }
 
-    public function getSessionalResults($student, $academicSessionId)
+    public function getSessionalResults(Student $student, $academicSessionName)
     {
-        $student = Student::findStudent($student);
-        $academicSession = AcademicSession::findOrFail($academicSessionId);
+        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
 
-        $student =  $student->first();
         $terms = Term::all();
         $results = [];
         $maxScores = [];
@@ -290,11 +277,9 @@ class StudentController extends Controller
     //     return response(200);
     // }
 
-    public function destroy($id, Student $student)
+    public function destroy(Student $student)
     {
         $this->authorize('delete', $student);
-
-        $student = Student::findOrFail($id);
 
         $student->delete();
 
@@ -333,9 +318,9 @@ class StudentController extends Controller
         return back()->with('success', 'Student deleted permanently');
     }
 
-    public function uploadImage($id, Request $request)
+    public function uploadImage(Student $student, Request $request)
     {
-        $student = Student::findOrFail($id);
+
         $validatedData = $request->validate([
             'image' => ['required', 'image', 'unique:students,image,except,id']
         ]);
@@ -371,9 +356,9 @@ class StudentController extends Controller
     public function showStudentSettingsView(Student $student)
     {
         $currentAcademicSession = AcademicSession::currentAcademicSession();
-        
-        if(is_null($currentAcademicSession)){
-            return back()->with('error', 'Current Academic Session is not set');            
+
+        if (is_null($currentAcademicSession)) {
+            return back()->with('error', 'Current Academic Session is not set');
         }
 
         $pdTypes = PDType::all();
@@ -382,9 +367,9 @@ class StudentController extends Controller
         return view('studentSettings', compact('student', 'pdTypes', 'currentAcademicSession', 'terms'));
     }
 
-    public function promote($id)
+    public function promote(Student $student)
     {
-        $student = Student::findOrFail($id);
+
         $classRank = $student->classroom->rank;
         $highestClassRank = Classroom::max('rank');
 
@@ -400,9 +385,9 @@ class StudentController extends Controller
         return back()->with('error', 'Student is in the Maximum class possible');
     }
 
-    public function demote($id)
+    public function demote(Student $student)
     {
-        $student = Student::findOrFail($id);
+
         $classRank = $student->classroom->rank;
         $lowestClassRank = Classroom::min('rank');
 
