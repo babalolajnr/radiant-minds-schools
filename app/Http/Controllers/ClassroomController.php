@@ -113,6 +113,20 @@ class ClassroomController extends Controller
             }
         }
 
+        /**
+         * update the rank of the other classes
+         * 
+         * get all the classes sorted by their current rank
+         * and then loop through them to update their ranks
+         * while incrementing the rank
+         */
+        $classrooms = Classroom::all()->sortBy('rank');
+        $rank = 1;
+        foreach ($classrooms as $classroom) {
+            $classroom->update(['rank' => $rank]);
+            $rank++;
+        }
+
         return back()->with('success', 'Classroom Deleted!');
     }
 
