@@ -9,7 +9,7 @@ use App\Models\Subject;
 use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class ClassroomController extends Controller
 {
@@ -37,7 +37,9 @@ class ClassroomController extends Controller
     {
         $maxRank = Classroom::max('rank');
         $rank = ['rank' => $maxRank + 1];
-        $data = array_merge($rank, $this->classroomValidation($request));
+        $validatedData = $this->classroomValidation($request);
+        $slug = ['slug' => Str::of($validatedData['name'])->slug('-')];
+        $data = $rank + $slug + $validatedData;
         Classroom::create($data);
         return back()->with('success', 'Classroom Created!');
     }
