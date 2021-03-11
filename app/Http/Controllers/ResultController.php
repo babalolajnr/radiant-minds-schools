@@ -20,12 +20,15 @@ class ResultController extends Controller
      * ca and exam
      *
      */
-    public function create($student)
+    public function create(Student $student)
     {
-        $student = Student::findStudent($student);
-        $student = $student->first();
         $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
+
+        if (is_null($currentAcademicSession)) {
+            return back()->with('error', 'Current Academic Session is not set');
+        }
+        
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $currentAcademicSession->id)->get();
 
         return view('createResults', compact('terms', 'subjects', 'student', 'currentAcademicSession'));
