@@ -94,20 +94,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('terms')->name('term.')->group(function () {
         //Term routes
         Route::get('/', [TermController::class, 'index'])->name('index');
-        Route::get('/edit/{id}', [TermController::class, 'edit'])->name('edit');
+        Route::get('/edit/{term:slug}', [TermController::class, 'edit'])->name('edit');
         Route::post('/store', [TermController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [TermController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [TermController::class, 'destroy'])->name('destroy');
+        Route::patch('/update/{term:slug}', [TermController::class, 'update'])->name('update');
+        Route::delete('/delete/{term:slug}', [TermController::class, 'destroy'])->name('destroy');
     });
 
 
     Route::prefix('subjects')->name('subject.')->group(function () {
         // Subject routes
         Route::get('/', [SubjectController::class, 'index'])->name('index');
-        Route::get('/edit/{id}', [SubjectController::class, 'edit'])->name('edit');
+        Route::get('/edit/{subject:slug}', [SubjectController::class, 'edit'])->name('edit');
         Route::post('/store', [SubjectController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [SubjectController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [SubjectController::class, 'destroy'])->name('destroy');
+        Route::patch('/update/{subject:slug}', [SubjectController::class, 'update'])->name('update');
+        Route::delete('/delete/{subject:slug}', [SubjectController::class, 'destroy'])->name('destroy');
     });
 
 
