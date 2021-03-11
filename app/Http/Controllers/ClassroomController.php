@@ -44,15 +44,13 @@ class ClassroomController extends Controller
         return back()->with('success', 'Classroom Created!');
     }
 
-    public function edit($id)
+    public function edit(Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
         return view('editClassroom', compact('classroom'));
     }
 
-    public function update($id, Request $request)
+    public function update(Classroom $classroom, Request $request)
     {
-        $classroom = Classroom::findOrFail($id);
         $classrooms = Classroom::all();
         $maxRank = $classrooms->max('rank');
         $currentRank = $classroom->rank;
@@ -62,25 +60,32 @@ class ClassroomController extends Controller
             'rank' => ['required', 'numeric', 'min:1', 'max:' . $maxRank]
         ]);
 
+        /** 
+         * get row where rank is equal to the posted rank and if it exists
+         * set the rank of the row to 0, then update the classroom that need to be updated
+         * to avoid unique constraint error. Set the row whose rank was set to 0
+         * to the previous rank of the updated classroom model.
+         */
         $rank = $validatedData['rank'];
         $row = Classroom::where('rank', $rank)->first();
+        $slug = ['slug' => Str::of($validatedData['name'])->slug('-')];
 
         //if row exists
         if (!is_null($row)) {
             $row->rank = 0;
             $row->save();
-            $classroom->update($validatedData);
+            $classroom->update($validatedData + $slug);
             $row->rank = $currentRank;
             $row->save();
+        } else {
+            $classroom->update($validatedData + $slug);
         }
 
-        $classroom->update($validatedData);
         return redirect('/classrooms')->with('success', 'Classroom Updated!');
     }
 
-    public function show($id)
+    public function show(Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
         $students = $classroom->students->all();
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
@@ -95,10 +100,9 @@ class ClassroomController extends Controller
         return view('showClassroom', compact('students', 'classroom', 'academicSessions', 'terms', 'subjects'));
     }
 
-    public function destroy($id, Classroom $classroom)
+    public function destroy(Classroom $classroom)
     {
         $this->authorize('delete', $classroom);
-        $classroom = Classroom::findOrFail($id);
 
         try {
             $classroom->delete();
@@ -112,10 +116,8 @@ class ClassroomController extends Controller
         return back()->with('success', 'Classroom Deleted!');
     }
 
-    public function setSubjects($id)
+    public function setSubjects(Classroom $classroom)
     {
-        $classroom = Classroom::findOrFail($id);
-
         $subjects = Subject::all();
         $relations = [];
 
@@ -124,7 +126,7 @@ class ClassroomController extends Controller
 
         //loop subjects and get the ones that are related to the classroom
         foreach ($subjects as $subject) {
-            $relation = $subject->classrooms()->where('classroom_id', $id)->where('academic_session_id', $currentAcademicSession->id)->exists();
+            $relation = $subject->classrooms()->where('classroom_id', $classroom->id)->where('academic_session_id', $currentAcademicSession->id)->exists();
             $relations = array_merge($relations, [$subject->name => $relation]);
         }
 
@@ -134,10 +136,8 @@ class ClassroomController extends Controller
         return view('setSubjects', compact('relations', 'classroom'));
     }
 
-    public function updateSubjects($id, Request $request)
+    public function updateSubjects(Classroom $classroom, Request $request)
     {
-        $classroom = Classroom::findOrFail($id);
-
         $this->validate($request, [
             'subjects' => ['required']
         ]);
