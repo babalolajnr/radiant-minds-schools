@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Term extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
     public function Results()
     {
