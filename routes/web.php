@@ -114,11 +114,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('academic-sessions')->name('academic-session.')->group(function () {
         //AcademicSession routes
         Route::get('/', [AcademicSessionController::class, 'index'])->name('index');
-        Route::get('/edit/{id}', [AcademicSessionController::class, 'edit'])->name('edit');
-        Route::get('/set-current/{id}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current');
+        Route::get('/edit/{academicSession:name}', [AcademicSessionController::class, 'edit'])->name('edit')->where('academicSession', '.*');
+        Route::get('/set-current/{academicSession:name}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current')->where('academicSession', '.*');
         Route::post('/store', [AcademicSessionController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [AcademicSessionController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [AcademicSessionController::class, 'destroy'])->name('destroy');
+        Route::patch('/update/{academicSession:name}', [AcademicSessionController::class, 'update'])->name('update')->where('academicSession', '.*');
+        Route::delete('/delete/{academicSession:name}', [AcademicSessionController::class, 'destroy'])->name('destroy')->where('academicSession', '.*');
     });
 
     Route::prefix('guardians')->name('guardian.')->group(function () {
