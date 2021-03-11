@@ -9,9 +9,6 @@
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
-        <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet"
-            href="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -88,7 +85,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('subject.edit', ['id' => $subject->id]) }}">
+                                                        <a
+                                                            href="{{ route('subject.edit', ['subject' => $subject]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
@@ -97,7 +95,7 @@
 
                                                         <button type="button" class="btn btn-danger btn-flat"
                                                             title="Delete"
-                                                            onclick="deleteConfirmationModal('{{ route('subject.destroy', ['id' => $subject->id]) }}', {{ $subject->name }})">
+                                                            onclick="deleteConfirmationModal('{{ route('subject.destroy', ['subject' => $subject]) }}', '{{ $subject->name }}')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -169,9 +167,6 @@
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.print.min.js') }}">
         </script>
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
-        </script>
-        <!-- Tempusdominus Bootstrap 4 -->
-        <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
         </script>
 
         <!-- AdminLTE App -->
