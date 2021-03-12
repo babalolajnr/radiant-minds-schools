@@ -53,27 +53,21 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function show($slug)
+    public function show(Teacher $teacher)
     {
-        $teacher = Teacher::where('slug', $slug);
+        return $teacher->exists() ? response(200) : abort(404);
+    }
+
+    public function edit(Teacher $teacher)
+    {
+        $this->authorize('update', $teacher);
 
         return $teacher->exists() ? response(200) : abort(404);
     }
 
-    public function edit($slug, Teacher $teacher)
+    public function update(Teacher $teacher, Request $request)
     {
         $this->authorize('update', $teacher);
-
-        $teacher = Teacher::where('slug', $slug);
-
-        return $teacher->exists() ? response(200) : abort(404);
-    }
-
-    public function update($slug, Teacher $teacher, Request $request)
-    {
-        $this->authorize('update', $teacher);
-
-        $teacher = Teacher::where('slug', $slug);
 
         if (!$teacher->exists()) {
             abort(404);
@@ -89,11 +83,9 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function suspend($id, Teacher $teacher)
+    public function suspend(Teacher $teacher)
     {
         $this->authorize('suspend', $teacher);
-
-        $teacher = Teacher::findOrFail($id);
 
         $teacher->status = 'suspended';
 
@@ -102,11 +94,9 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function activate($id, Teacher $teacher)
+    public function activate(Teacher $teacher)
     {
         $this->authorize('activate', $teacher);
-
-        $teacher = Teacher::findOrFail($id);
 
         $teacher->status = 'active';
 
@@ -115,11 +105,9 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function deactivate($id, Teacher $teacher)
+    public function deactivate(Teacher $teacher)
     {
         $this->authorize('deactivate', $teacher);
-
-        $teacher = Teacher::findOrFail($id);
 
         $teacher->status = 'inactive';
 
@@ -128,11 +116,9 @@ class TeacherController extends Controller
         return response(200);
     }
 
-    public function destroy($id, Teacher $teacher)
+    public function destroy(Teacher $teacher)
     {
         $this->authorize('delete', $teacher);
-
-        $teacher = Teacher::findOrFail($id);
 
         $teacher->delete();
 
@@ -146,7 +132,6 @@ class TeacherController extends Controller
         $teacher = Teacher::findOrFail($id);
 
         $teacher->forceDelete();
-
         return response(200);
     }
 
