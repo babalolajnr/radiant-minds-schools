@@ -84,7 +84,7 @@ class ResultController extends Controller
         return back()->with('success', 'Record created! 👍');
     }
 
-    public function showPerformanceReport(Student $student,  $termSlug, $academicSessionName,)
+    public function showPerformanceReport(Student $student,  $termSlug, $academicSessionName)
     {
         $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
         $term = Term::where('slug', $termSlug)->firstOrFail();
