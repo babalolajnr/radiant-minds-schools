@@ -36,10 +36,13 @@ class StudentFactory extends Factory
         }
 
         $guardian = Guardian::factory()->create();
+        $sex = $this->faker->randomElement(['M', 'F']);
+        $firstName = $sex == 'M' ? $this->faker->firstNameMale : $this->faker->firstNameFemale;
+        
         return [
-            'first_name' => $this->faker->firstName,
+            'first_name' => $firstName,
             'last_name' => $guardian->last_name,
-            'sex' => $this->faker->randomElement(['M', 'F']),
+            'sex' => $sex,
             'admission_no' => Str::random(6),
             'lg' => $this->faker->state,
             'state' => $this->faker->state,
