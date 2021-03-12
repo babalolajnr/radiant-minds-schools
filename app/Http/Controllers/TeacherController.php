@@ -15,7 +15,7 @@ class TeacherController extends Controller
             'last_name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'email:rfc,dns'],
             'phone' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'max:15', 'min:10'],
-            'date_of_birth' => ['required', 'date']
+            'date_of_birth' => ['required', 'date', 'before:' . now()]
         ]);
 
         return $validatedData;
@@ -30,12 +30,14 @@ class TeacherController extends Controller
 
     public function index()
     {
+        $teachers = Teacher::all();
+        return view('teachers', compact('teachers'));
     }
 
     public function create()
     {
         $this->authorize('create', Teacher::class);
-        return response(200);
+        return view('createTeacher');
     }
 
     public function store(Request $request)
@@ -50,7 +52,7 @@ class TeacherController extends Controller
 
         Teacher::create($data);
 
-        return response(200);
+        return redirect()->route('teacher.index')->with('success', 'Teacher Created');
     }
 
     public function show(Teacher $teacher)
