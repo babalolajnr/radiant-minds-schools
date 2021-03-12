@@ -35,15 +35,13 @@ class PDTypesController extends Controller
         return back()->with('success', 'Pyschomotor Domain created!');
     }
 
-    public function edit($slug)
+    public function edit(PDType $pdType)
     {
-        $pdType = PDType::where('slug', $slug)->first();
         return view('editPDType', compact('pdType'));
     }
 
-    public function update($id, Request $request)
+    public function update(PDType $pdType, Request $request)
     {
-        $pdType = PDType::findOrFail($id);
         $validatedData = $this->validatePDType($request, $pdType);
         $slug = Str::of($validatedData['name'])->slug('-');
         $slug = ['slug' => $slug];
@@ -53,9 +51,8 @@ class PDTypesController extends Controller
         return redirect()->route('pd-type.index')->with('success', 'Pychomotor domain type updated');
     }
 
-    public function destroy($id)
+    public function destroy(PDType $pdType)
     {
-        $pdType = PDType::findOrFail($id);
         
         try {
             $pdType->delete();
