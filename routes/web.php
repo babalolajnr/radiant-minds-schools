@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('teachers')->name('teacher.')->group(function () {
         //Teacher routes
+        Route::get('/', [TeacherController::class, 'index'])->name('index');
         Route::get('/create', [TeacherController::class, 'create'])->name('create');
         Route::get('/view/{teacher:slug}', [TeacherController::class, 'show'])->name('show');
         Route::get('/edit/{teacher:slug}', [TeacherController::class, 'edit'])->name('edit');
