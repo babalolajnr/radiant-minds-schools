@@ -9,8 +9,9 @@ use Illuminate\Validation\Rule;
 
 class TeacherController extends Controller
 {
-    private function teacherValidation($request, $teacher = null){
-      $validatedData = $request->validate([
+    private function teacherValidation($request, $teacher = null)
+    {
+        $validatedData = $request->validate([
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'email:rfc,dns'],
@@ -21,7 +22,8 @@ class TeacherController extends Controller
         return $validatedData;
     }
 
-    private function generateFullNameSlug($firstName, $lastName){
+    private function generateFullNameSlug($firstName, $lastName)
+    {
         $fullname = $firstName . ' ' . $lastName . ' ' . Str::random(5);
         $slug = Str::of($fullname)->slug('-');
 
@@ -57,32 +59,33 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
-        return $teacher->exists() ? response(200) : abort(404);
+        return view('showTeacher', compact('teacher'));
     }
 
     public function edit(Teacher $teacher)
     {
         $this->authorize('update', $teacher);
 
-        return $teacher->exists() ? response(200) : abort(404);
+        return view('editTeacher', compact('teacher'));
     }
 
     public function update(Teacher $teacher, Request $request)
     {
         $this->authorize('update', $teacher);
 
-        if (!$teacher->exists()) {
-            abort(404);
-        }
-        $validatedData = $this->teacherValidation($request);
+        $validatedData = $this->teacherValidation($request, $teacher);
 
-        $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
-        
-        $data = array_merge($validatedData, ['slug' => $slug]);
+        //check if either the first or last name has changed to generate a new slug
+        if ($teacher->first_name != $validatedData['first_name'] || $teacher->last_name != $validatedData['last_name']) {
+            $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
+            $data = array_merge($validatedData, ['slug' => $slug]);
+        } else {
+            $data = $validatedData;
+        }
 
         $teacher->update($data);
 
-        return response(200);
+        return redirect()->route('teacher.edit', ['teacher' => $teacher])->with('success', 'Teacher Updated!');
     }
 
     public function suspend(Teacher $teacher)
@@ -93,7 +96,7 @@ class TeacherController extends Controller
 
         $teacher->save();
 
-        return response(200);
+        return redirect()->back()->with('success', 'Teacher Suspended!');
     }
 
     public function activate(Teacher $teacher)
@@ -104,7 +107,7 @@ class TeacherController extends Controller
 
         $teacher->save();
 
-        return response(200);
+        return redirect()->back()->with('success', 'Teacher Activated!');
     }
 
     public function deactivate(Teacher $teacher)
@@ -115,7 +118,7 @@ class TeacherController extends Controller
 
         $teacher->save();
 
-        return response(200);
+        return redirect()->back()->with('success', 'Teacher Deactivated!');
     }
 
     public function destroy(Teacher $teacher)
@@ -124,27 +127,27 @@ class TeacherController extends Controller
 
         $teacher->delete();
 
-        return response(200);
+        return redirect()->back()->with('success', 'Teacher Deleted!');
     }
 
-    public function forceDelete($id, Teacher $teacher)
-    {
-        $this->authorize('forceDelete', $teacher);
+    // public function forceDelete($id, Teacher $teacher)
+    // {
+    //     $this->authorize('forceDelete', $teacher);
 
-        $teacher = Teacher::findOrFail($id);
+    //     $teacher = Teacher::findOrFail($id);
 
-        $teacher->forceDelete();
-        return response(200);
-    }
+    //     $teacher->forceDelete();
+    //     return response(200);
+    // }
 
-    public function restore($id, Teacher $teacher)
-    {
-        $this->authorize('restore', $teacher);
+    // public function restore($id, Teacher $teacher)
+    // {
+    //     $this->authorize('restore', $teacher);
 
-        $teacher = Teacher::onlyTrashed()->findOrFail($id);
+    //     $teacher = Teacher::onlyTrashed()->findOrFail($id);
 
-        $teacher->restore();
+    //     $teacher->restore();
 
-        return response(200);
-    }
+    //     return response(200);
+    // }
 }
