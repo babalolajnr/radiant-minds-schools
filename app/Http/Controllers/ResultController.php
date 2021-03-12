@@ -28,18 +28,17 @@ class ResultController extends Controller
         if (is_null($currentAcademicSession)) {
             return back()->with('error', 'Current Academic Session is not set');
         }
-        
+
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $currentAcademicSession->id)->get();
 
         return view('createResults', compact('terms', 'subjects', 'student', 'currentAcademicSession'));
     }
 
-    public function store(Request $request, $studentID)
+    public function store(Request $request, Student $student)
     {
         /**
          * NOTE: Result can only be stored for the current academic session
          */
-        $student = Student::findOrFail($studentID);
 
         $messages = [
             'between' => 'The score must be between 0 and 40',
@@ -61,7 +60,7 @@ class ResultController extends Controller
         }
 
         $record = Result::where('subject_id', $subject->id)
-            ->where('student_id', $studentID)
+            ->where('student_id', $student->id)
             ->where('term_id', $term->id)
             ->where('academic_session_id', $academicSession->id);
 
@@ -85,13 +84,10 @@ class ResultController extends Controller
         return back()->with('success', 'Record created! 👍');
     }
 
-    public function showPerformanceReport($student, $academicSessionId, $termId)
+    public function showPerformanceReport(Student $student,  $termSlug, $academicSessionName,)
     {
-        $student = Student::findStudent($student);
-        $academicSession = AcademicSession::findOrFail($academicSessionId);
-        $term = Term::findOrFail($termId);
-
-        $student = $student->first();
+        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $term = Term::where('slug', $termSlug)->firstOrFail();
 
         $pdTypes = PDType::all();
 
@@ -102,7 +98,7 @@ class ResultController extends Controller
 
         //Check if the class has subjects
         if (count($subjects) < 1) {
-            return redirect()->route('classroom.show', ['id' => $student->classroom->id])->with('error', 'The student\'s class does not have subjects set for the selected academic session');
+            return redirect()->route('classroom.show', ['classroom' => $student->classroom])->with('error', 'The student\'s class does not have subjects set for the selected academic session');
         }
 
         $results = [];
@@ -184,18 +180,15 @@ class ResultController extends Controller
         ));
     }
 
-    public function edit($id)
+    public function edit(Result $result)
     {
-        $result = Result::findOrFail($id);
-
         //store previous url in session to be used for redirect after update
         session(['resultsPage' => url()->previous()]);
         return view('editResult', compact('result'));
     }
 
-    public function update($id, Request $request)
+    public function update(Result $result, Request $request)
     {
-        $result = Result::findOrFail($id);
         $validatedData = $request->validate([
             'ca' => ['required', 'numeric', 'between:0,40'],
             'exam' => ['nullable', 'numeric', 'between:0,60'],
@@ -210,11 +203,9 @@ class ResultController extends Controller
         return redirect($request->session()->get('resultsPage'))->with('success', 'Result Updated!');
     }
 
-    public function destroy($id)
+    public function destroy(Result $result, Request $request)
     {
-        $result = Result::findOrFail($id);
         $result->delete();
-
         return back()->with('success', 'Result Deleted');
     }
 
