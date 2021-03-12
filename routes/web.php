@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('view/{student:admission_no}', [StudentController::class, 'show'])->name('show');
         Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
         Route::get('/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results')->where('academicSessionName', '.*');
-        Route::get('/results/term/{student}/{termId}/{academicSessionId}', [StudentController::class, 'getTermResults'])->name('get.term.results');
+        Route::get('/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('get.term.results')->where('academicSessionName', '.*');
         Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
         Route::post('/store/image/{student}', [StudentController::class, 'uploadImage'])->name('upload.image');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
@@ -131,26 +131,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('results')->name('result.')->group(function () {
         //Result ROutes
         Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
-        Route::get('/performance-report/{student}/{academicSessionId}/{termId}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
-        Route::get('/edit/{id}', [ResultController::class, 'edit'])->name('edit');
+        Route::get('/performance-report/{student:admission_no}/{termSlug}/{academicSessionName}', [ResultController::class, 'showPerformanceReport'])->name('show.performance')->where('academicSessionName', '.*');
+        Route::get('/edit/{result}', [ResultController::class, 'edit'])->name('edit');
         Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [ResultController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [ResultController::class, 'destroy'])->name('destroy');
+        Route::patch('/update/{result}', [ResultController::class, 'update'])->name('update');
+        Route::delete('/delete/{result}', [ResultController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('pds')->name('pd.')->group(function () {
         //Pychomotor Domain Routes
-        Route::get('/create/{student}/{termId}/{academicSessionId?}', [PDController::class, 'create'])->name('create');
-        Route::post('/store/{id}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
+        Route::get('/create/{student}/{termSlug}/{academicSessionName?}', [PDController::class, 'create'])->name('create')->where('academicSessionName', '.*');
+        Route::post('/store/{student}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
     });
 
     Route::prefix('pd-types')->name('pd-type.')->group(function () {
         //Pychomotor domain type routes
         Route::get('/', [PDTypesController::class, 'index'])->name('index');
-        Route::get('/edit/{slug}', [PDTypesController::class, 'edit'])->name('edit');
+        Route::get('/edit/{pdType:slug}', [PDTypesController::class, 'edit'])->name('edit');
         Route::post('/store', [PDTypesController::class, 'store'])->name('store');
-        Route::patch('/update/{id}', [PDTypesController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [PDTypesController::class, 'destroy'])->name('destroy');
+        Route::patch('/update/{pdType}', [PDTypesController::class, 'update'])->name('update');
+        Route::delete('/delete/{pdType}', [PDTypesController::class, 'destroy'])->name('destroy');
     });
 });
 
