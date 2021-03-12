@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Edit Pychomotor Domain Type</h3>
                             </div>
-                            <form id="" method="POST" action="{{ route('pd-type.update', ['id' => $pdType->id]) }}">
+                            <form id="" method="POST" action="{{ route('pd-type.update', ['pdType' => $pdType]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">

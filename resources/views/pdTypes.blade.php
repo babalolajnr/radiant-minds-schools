@@ -86,7 +86,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     
-                                                    <a href="edit/pdType/{{ $pdType->slug }}">
+                                                    <a href="{{ route('pd-type.edit', ['pdType' => $pdType]) }}">
                                                         <button type="button" class="btn btn-default btn-flat"
                                                             title="Edit">
                                                             <i class="fa fa-edit"></i>
@@ -94,7 +94,7 @@
                                                     </a>
 
                                                     <button type="button" class="btn btn-danger btn-flat" title="Delete"
-                                                        onclick="deleteConfirmationModal('{{ route('pd-type.destroy', ['id' => $pdType->id]) }}', '{{ $pdType->name }}')">
+                                                        onclick="deleteConfirmationModal('{{ route('pd-type.destroy', ['pdType' => $pdType]) }}', '{{ $pdType->name }}')">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
 

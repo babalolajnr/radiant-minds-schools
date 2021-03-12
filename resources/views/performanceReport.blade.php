@@ -136,15 +136,15 @@
                             <td>GRADE</td>
                             @if ($percentage <= 39)
                                 <td colspan='2' class="text-red-700">F</td>
-                            @elseif($percentage >= 40 && $percentage <= 49) <td colspan='2' class="text-yellow-500">
+                            @elseif($percentage > 39 && $percentage <= 49) <td colspan='2' class="text-yellow-500">
                                     D</td>
-                                @elseif($percentage >= 50 && $percentage <= 59) <td colspan='2'
+                                @elseif($percentage > 49 && $percentage <= 59) <td colspan='2'
                                         class="text-green-300">C
                                         </td>
-                                    @elseif($percentage >= 60 && $percentage <= 69) <td colspan='2'
+                                    @elseif($percentage > 59 && $percentage <= 69) <td colspan='2'
                                             class="text-green-600">B
                                             </td>
-                                        @elseif($percentage >= 70 && $percentage <= 100) <td colspan='2'
+                                        @elseif($percentage > 69 && $percentage <= 100) <td colspan='2'
                                                 class="text-green-900">
                                                 A</td>
                                             @else

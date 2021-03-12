@@ -48,7 +48,7 @@
                                 <h3 class="card-title">Select Subjects</h3>
                             </div>
                             @if(!$relations->isEmpty())
-                            <form method="POST" action="{{ route('classroom.update.subjects', ['id' => $classroom->id]) }}">
+                            <form method="POST" action="{{ route('classroom.update.subjects', ['classroom' => $classroom]) }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">

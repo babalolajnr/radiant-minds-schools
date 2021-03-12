@@ -271,23 +271,16 @@
                     <div class="modal-body">
                         @if (!$academicSessions->isEmpty())
                             <div class="form-group">
-                                <label>Academic Session</label>
+                                <label>Academic Session & Term</label>
                                 <select class="form-control select2" id="termResultAcademicSession"
                                     style="width: 100%;">
                                     @foreach ($academicSessions as $academicSession)
-                                        <option value="{{ $academicSession->id }}" @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                            {{ $academicSession->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Term</label>
-                                <select class="form-control select2" id="term" style="width: 100%;">
-                                    @foreach ($terms as $term)
-                                        <option value="{{ $term->id }}" @if (old('term') == $term) SELECTED @endif>
-                                            {{ $term->name }}
-                                        </option>
+                                        @foreach ($terms as $term)
+                                            <option
+                                                value="{{ route('student.get.term.results', ['student' => $student, 'academicSessionName' => $academicSession->name, 'termSlug' => $term->slug]) }}">
+                                                {{ $academicSession->name }} {{ $term->name }}
+                                            </option>
+                                        @endforeach
                                     @endforeach
                                 </select>
                             </div>
@@ -372,16 +365,12 @@
 
             function getSessionalResult() {
                 let selected = $('#sessionalResultModal #academicSession').val()
-                // console.log(selected)
                 window.location.href = selected
             }
 
             function getTermResult(student) {
-                let selectedAcademicSession = $('#termResultModal #termResultAcademicSession').val()
-                let selectedTerm = $('#termResultModal #term').val()
-                const sessionalResultUrl = '/results/term/' + student.admission_no + '/' + selectedTerm + '/' +
-                    selectedAcademicSession
-                window.location.href = sessionalResultUrl
+                let selected = $('#termResultModal #termResultAcademicSession').val()
+                window.location.href = selected
             }
 
         </script>
