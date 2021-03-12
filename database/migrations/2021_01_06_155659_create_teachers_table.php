@@ -20,6 +20,7 @@ class CreateTeachersTable extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('status');
+            $table->enum('sex', ['M', 'F']);
             $table->string('date_of_birth');
             $table->string('slug')->unique();
             $table->timestamps();
