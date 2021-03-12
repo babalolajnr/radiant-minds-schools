@@ -36,15 +36,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('teachers')->name('teacher.')->group(function () {
         //Teacher routes
         Route::get('/create', [TeacherController::class, 'create'])->name('create');
-        Route::get('/view/{slug}', [TeacherController::class, 'show'])->name('show');
-        Route::get('/edit/{slug}', [TeacherController::class, 'edit'])->name('edit');
+        Route::get('/view/{teacher:slug}', [TeacherController::class, 'show'])->name('show');
+        Route::get('/edit/{teacher:slug}', [TeacherController::class, 'edit'])->name('edit');
         Route::post('/store', [TeacherController::class, 'store'])->name('store');
-        Route::patch('/update/{slug}', [TeacherController::class, 'update'])->name('update');
-        Route::patch('/suspend/{id}', [TeacherController::class, 'suspend'])->name('suspend');
-        Route::patch('/activate/{id}', [TeacherController::class, 'activate'])->name('activate');
-        Route::patch('/deactivate/{id}', [TeacherController::class, 'deactivate'])->name('deactivate');
+        Route::patch('/update/{teacher:slug}', [TeacherController::class, 'update'])->name('update');
+        Route::patch('/suspend/{teacher}', [TeacherController::class, 'suspend'])->name('suspend');
+        Route::patch('/activate/{teacher}', [TeacherController::class, 'activate'])->name('activate');
+        Route::patch('/deactivate/{teacher}', [TeacherController::class, 'deactivate'])->name('deactivate');
         Route::patch('/restore/{id}', [TeacherController::class, 'restore'])->name('restore');
-        Route::delete('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
+        Route::delete('/delete/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
         Route::delete('/force-delete/{id}', [TeacherController::class, 'forceDelete'])->name('force.delete');
     });
 
