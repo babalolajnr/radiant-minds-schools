@@ -225,12 +225,11 @@ class StudentController extends Controller
         return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession'));
     }
 
-    public function getTermResults($student, $termId, $academicSessionId)
+    public function getTermResults(Student $student, $termSlug, $academicSessionName)
     {
 
-        $student = Student::findStudent($student);
-        $academicSession = AcademicSession::findOrFail($academicSessionId);
-        $term = Term::findOrFail($termId);
+        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $term = Term::where('slug', $termSlug)->firstOrFail();
         $student = $student->first();
 
         $results = Result::where('student_id', $student->id)
