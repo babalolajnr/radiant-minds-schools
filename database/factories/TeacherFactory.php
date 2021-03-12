@@ -22,13 +22,16 @@ class TeacherFactory extends Factory
      */
     public function definition()
     {
-        $firstName = $this->faker->firstName;
+        $sex = $this->faker->randomElement(['M', 'F']);
+
+        $firstName = $sex == 'M' ? $this->faker->firstNameMale : $this->faker->firstNameFemale;
         $lastName = $this->faker->lastName;
         $fullname = $firstName . ' ' . $lastName . ' ' . Str::random(5);
         $slug = Str::of($fullname)->slug('-');
         return [
             'first_name' => $firstName,
             'last_name' => $lastName,
+            'sex' => $sex,
             'slug' => $slug,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
