@@ -2,7 +2,7 @@
     <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/dashboard" class="brand-link d-flex justify-content-center">
-            <span class="brand-text font-weight-bold">Radiant Minds Schools</span>
+            <span class="brand-text font-weight-bold">{{ config('app.name', 'App Name') }}</span>
         </a>
 
         <!-- Sidebar -->
