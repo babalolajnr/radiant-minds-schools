@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'APP') }}</title>
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Google Font: Source Sans Pro -->
@@ -39,11 +39,6 @@
         <!-- footer -->
         <x-footer />
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
