@@ -120,7 +120,7 @@
 
                         </tr>
                         <tr>
-                            <td colspan="2">Total Unobtained:</td>
+                            <td colspan="2">Total Obtainable:</td>
                             <td>{{ $totalObtainable }}</td>
 
                         </tr>
