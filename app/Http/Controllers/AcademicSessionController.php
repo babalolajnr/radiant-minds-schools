@@ -16,9 +16,9 @@ class AcademicSessionController extends Controller
         ];
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession->id)],
-            'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession->id)],
-            'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession->id), 'after:start_date']
+            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession)],
+            'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession)],
+            'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession), 'after:start_date']
         ], $messages);
 
         return $validatedData;

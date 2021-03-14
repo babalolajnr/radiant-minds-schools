@@ -16,7 +16,7 @@ class SubjectController extends Controller
         ];
 
         $validatedData =  $request->validate([
-            'name' => ['required', 'string', Rule::unique('subjects')->ignore($subject->id)]
+            'name' => ['required', 'string', Rule::unique('subjects')->ignore($subject)]
         ], $messages);
 
         return $validatedData;
