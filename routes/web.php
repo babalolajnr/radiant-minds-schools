@@ -10,6 +10,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::prefix('users')->name('user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::delete('/delete/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
 
     Route::prefix('teachers')->name('teacher.')->group(function () {
         //Teacher routes
