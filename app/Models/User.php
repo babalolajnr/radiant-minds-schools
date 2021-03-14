@@ -19,7 +19,6 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
-        'user_type',
         'email',
         'password',
     ];
@@ -51,5 +50,10 @@ class User extends Authenticatable
     public function isMaster()
     {
         return $this->user_type == 'master';
+    }
+
+    public function isActive()
+    {
+        return $this->status == 'active';
     }
 }
