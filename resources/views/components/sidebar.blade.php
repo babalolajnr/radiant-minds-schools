@@ -104,23 +104,25 @@
 
                         </ul>
                     </li>
-                    <li class="nav-item menu-is-opening menu-open">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-cog"></i>
-                            <p>
-                                App Management
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview" style="display: block;">
-                            <li class="nav-item">
-                                <a href="{{ route('user.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-users"></i>
-                                    <p>Users</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if (Auth::user()->isMaster())
+                        <li class="nav-item menu-is-opening menu-open">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    App Management
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: block;">
+                                <li class="nav-item">
+                                    <a href="{{ route('user.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>Users</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
