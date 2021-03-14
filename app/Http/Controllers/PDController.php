@@ -18,15 +18,14 @@ class PDController extends Controller
      * 
      * 
      */
-    public function create($id, $termId, $academicSessionId = null)
+    public function create(Student $student, $termSlug, $academicSessionName = null)
     {
-        $student = Student::findOrFail($id);
-        $term = Term::findOrFail($termId);
+        $term = Term::where('slug', $termSlug)->firstOrFail();
         $pdTypes = PDType::all();
 
-        $academicSession = is_null($academicSessionId) ? AcademicSession::currentAcademicSession() : AcademicSession::findOrFail($academicSessionId);
+        $academicSession = is_null($academicSessionName) ? AcademicSession::currentAcademicSession() : AcademicSession::where('name', $academicSessionName)->firstOrFail();
 
-        $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $termId);
+        $studentPDs = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
         if ($studentPDs->exists()) {
             $pdTypesValues = [];
 
@@ -56,9 +55,8 @@ class PDController extends Controller
      * uses the current academic session to store the pdType else it
      * uses the academic session from the url
      */
-    public function store($id, $termId, Request $request, $academicSessionId = null)
+    public function store(Student $student, $termId, Request $request, $academicSessionId = null)
     {
-        $student = Student::findOrFail($id);
         $term = Term::findOrFail($termId);
 
         $validatedData = $request->validate([
