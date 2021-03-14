@@ -28,11 +28,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'isActive'])->group(function () {
 
-Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('students')->name('student.')->group(function () {
         //Student Routes
-        Route::get('/index', [StudentController::class, 'index'])->name('index');
+        Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('/create', [StudentController::class, 'create'])->name('create');
         /**
          * {student} stands for admission number
