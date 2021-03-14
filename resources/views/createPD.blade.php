@@ -48,8 +48,8 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="@if (!$academicSession->isCurrentAcademicSession()) {{ route('pd.store', ['id' => $student, 'termId' => $term, 'academicSessionId' => $academicSession->id]) }}
-                            @else {{ route('pd.store', ['id' => $student, 'termId' => $term]) }} @endif" method="POST">
+                            <form action="@if (!$academicSession->isCurrentAcademicSession()) {{ route('pd.store', ['student' => $student, 'termId' => $term, 'academicSessionId' => $academicSession->id]) }}
+                            @else {{ route('pd.store', ['student' => $student, 'termId' => $term]) }} @endif" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->

@@ -145,7 +145,7 @@
                 </div>
                 <div class="modal-body">
                     @foreach ($terms as $term)
-                        <a href="{{ route('pd.create', ['student' => $student, 'termId' => $term->id]) }}">
+                        <a href="{{ route('pd.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
                             <button type="button" class="btn btn-primary">{{ $term->name }}</button>
                         </a>
                     @endforeach
