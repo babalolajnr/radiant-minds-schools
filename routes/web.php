@@ -141,7 +141,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('pds')->name('pd.')->group(function () {
         //Pychomotor Domain Routes
-        Route::get('/create/{student}/{termSlug}/{academicSessionName?}', [PDController::class, 'create'])->name('create')->where('academicSessionName', '.*');
+        Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [PDController::class, 'create'])->name('create')->where('academicSessionName', '.*');
         Route::post('/store/{student}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
     });
 
