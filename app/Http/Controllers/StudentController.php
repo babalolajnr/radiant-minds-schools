@@ -230,7 +230,6 @@ class StudentController extends Controller
 
         $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
         $term = Term::where('slug', $termSlug)->firstOrFail();
-        $student = $student->first();
 
         $results = Result::where('student_id', $student->id)
             ->where('academic_session_id', $academicSession->id)
