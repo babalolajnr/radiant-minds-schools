@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Babalola',
             'user_type' => 'master',
             'status' => 'active',
+            'is_verified' => true,
             'email' => 'babalolajnr@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('11111111'), // 8 ones
