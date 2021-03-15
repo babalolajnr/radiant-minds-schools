@@ -96,23 +96,32 @@
                                                                         class="fas fa-check"></i>
                                                                 </button>
                                                             </form>
-
-                                                            {{-- render if user is authorized to delete --}}
-                                                            @can('delete', $user)
+                                                            @if ($user->isAdmin())
+                                                                <form
+                                                                    action="{{ route('user.toggle-status', ['user' => $user]) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <button type="submit"
+                                                                        class="btn btn-default btn-flat"
+                                                                        title="@if ($user->isActive()) 
+                                                                        Deactivate User
+                                                                    @else
+                                                                        Activate User @endif" >
+                                                                        @if ($user->isActive()) <i
+                                                                            class="far fa-lightbulb"></i> @else <i
+                                                                                class="fas fa-lightbulb text-yellow-400"></i>
+                                                                        @endif
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                            @if ($user->isAdmin())
                                                                 <button type="submit" class="btn btn-danger btn-flat"
                                                                     title="Delete"
                                                                     onclick="deleteConfirmationModal('{{ route('user.destroy', ['user' => $user]) }}', {{ $user }})">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
-                                                            @endcan
-
-                                                            {{-- render if user is not authorized to delete --}}
-                                                            @cannot('delete', $user)
-                                                            <button type="submit" class="btn btn-danger btn-flat"
-                                                                title="Delete" disabled>
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                            @endcannot
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
