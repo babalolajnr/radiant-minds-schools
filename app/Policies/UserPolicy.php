@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isMaster();
     }
 
     /**
@@ -64,19 +64,13 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return $user->isMaster();
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
+   
+    public function verify(User $user)
     {
-        //
+        return $user->isMaster();
     }
 
     /**
