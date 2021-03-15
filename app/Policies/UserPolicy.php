@@ -73,6 +73,11 @@ class UserPolicy
         return $user->isMaster();
     }
 
+    public function toggleStatus(User $user)
+    {
+        return $user->isMaster();
+    }
+
     /**
      * Determine whether the user can permanently delete the model.
      *
