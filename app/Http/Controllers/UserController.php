@@ -35,7 +35,22 @@ class UserController extends Controller
         return back()->with('success', 'User Verified');
     }
 
-   
+    public function toggleStatus(User $user)
+    {
+        $this->authorize('toggleStatus', $user);
+
+        if ($user->status == 'active') {
+            $user->status = 'inactive';
+            $action = 'deactivated';
+        } else {
+            $user->status = 'active';
+            $action = 'activated';
+        }
+
+        $user->save();
+
+        return back()->with('success', 'User ' . $action . '!');
+    }
 
     /**
      * Display the specified resource.
