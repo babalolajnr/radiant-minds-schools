@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::patch('/verify/{user:email}', [UserController::class, 'verify'])->name('verify');
+        Route::patch('/toggle-status/{user:email}', [UserController::class, 'toggleStatus'])->name('toggle-status');
         Route::delete('/delete/{user:email}', [UserController::class, 'destroy'])->name('destroy');
     });
 
