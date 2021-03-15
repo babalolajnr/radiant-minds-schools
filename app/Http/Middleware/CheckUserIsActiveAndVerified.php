@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckUserIsActive
+class CheckUserIsActiveAndVerified
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckUserIsActive
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->isActive()) {
+        if (!auth()->user()->isActive() || !auth()->user()->isVerified()) {
             return response()->view('deactivated');
         }
         return $next($request);
