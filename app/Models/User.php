@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->status == 'active';
     }
+
+    public function isVerified()
+    {
+        return $this->is_verified == true;
+    }
 }
