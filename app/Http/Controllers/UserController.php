@@ -19,25 +19,23 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Verify a new user.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function verify(User $user)
     {
-        //
+        $this->authorize('verify', $user);
+
+        $user->is_verified = true;
+        $user->status = 'active';
+
+        $user->save();
+
+        return back()->with('success', 'User Verified');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+   
 
     /**
      * Display the specified resource.
