@@ -289,8 +289,8 @@ class StudentController extends Controller
         $this->authorize('delete', $student);
 
         $student = Student::withTrashed()->findOrFail($id);
-        $guardian = $student->guardian()->first();
-        $guardianChildren = $guardian->children()->get();
+        $guardian = $student->guardian;
+        $guardianChildren = $guardian->children()->withTrashed()->get();
 
         //delete student image if it exists
         if (!is_null($student->image)) {
@@ -310,8 +310,6 @@ class StudentController extends Controller
             $student->forceDelete();
             $guardian->delete();
         }
-
-        $student->delete();
 
         return back()->with('success', 'Student deleted permanently');
     }
