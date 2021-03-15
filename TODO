@@ -33,3 +33,4 @@
 - remove suspend action from student and teachers
 - add alumni page
 - add graduated_at column to students table
+- add notification for new user event
