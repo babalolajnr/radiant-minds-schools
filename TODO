@@ -28,4 +28,8 @@
 - r̶e̶f̶a̶c̶t̶o̶r̶ s̶t̶u̶d̶e̶n̶t̶ p̶r̶o̶m̶o̶t̶i̶o̶n̶ a̶n̶d̶ d̶e̶m̶o̶t̶i̶o̶n̶ m̶e̶t̶h̶o̶d̶s̶
 - add affective domain
 - add attendance
-- refactor registration system
+- r̶e̶f̶a̶c̶t̶o̶r̶ r̶e̶g̶i̶s̶t̶r̶a̶t̶i̶o̶n̶ s̶y̶s̶t̶e̶m̶
+- add student graduation action
+- remove suspend action from student and teachers
+- add alumni page
+- add graduated_at column to students table
