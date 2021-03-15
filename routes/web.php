@@ -36,7 +36,8 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('users')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::delete('/delete/{user}', [UserController::class, 'destroy'])->name('destroy');
+        Route::patch('/verify/{user:email}', [UserController::class, 'verify'])->name('verify');
+        Route::delete('/delete/{user:email}', [UserController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('teachers')->name('teacher.')->group(function () {
