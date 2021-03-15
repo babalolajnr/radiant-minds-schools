@@ -54,6 +54,7 @@
                                                 <th>First name</th>
                                                 <th>Last name</th>
                                                 <th>User type</th>
+                                                <th>Verified</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -75,21 +76,30 @@
                                                         {{ $user->last_name }}
                                                     </td>
                                                     <td>{{ $user->user_type }}</td>
+                                                    <td class="text-center">
+                                                        @if ($user->isVerified())
+                                                            <i class="fas fa-check-circle"></i>
+                                                        @else
+                                                            <i class="far fa-times-circle"></i>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $user->status }}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            {{-- <a
-                                                                href="{{ route('user.show', ['user' => $user]) }}">
-                                                                <button type="button" id=""
-                                                                    class="btn btn-default btn-flat"
-                                                                    title="Student detailed view">
-                                                                    <i class="fas fa-eye"></i>
+                                                            <form
+                                                                action="{{ route('user.verify', ['user' => $user]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <button type="submit" class="btn btn-success btn-flat"
+                                                                    title="Verify User" @if ($user->isVerified()) disabled @endif> <i
+                                                                        class="fas fa-check"></i>
                                                                 </button>
-                                                            </a> --}}
+                                                            </form>
 
                                                             {{-- render if user is authorized to delete --}}
                                                             @can('delete', $user)
-                                                                <button type="submit" class="btn btn-default btn-flat"
+                                                                <button type="submit" class="btn btn-danger btn-flat"
                                                                     title="Delete"
                                                                     onclick="deleteConfirmationModal('{{ route('user.destroy', ['user' => $user]) }}', {{ $user }})">
                                                                     <i class="fas fa-trash"></i>
@@ -98,7 +108,7 @@
 
                                                             {{-- render if user is not authorized to delete --}}
                                                             @cannot('delete', $user)
-                                                            <button type="submit" class="btn btn-default btn-flat"
+                                                            <button type="submit" class="btn btn-danger btn-flat"
                                                                 title="Delete" disabled>
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
@@ -114,6 +124,7 @@
                                                 <th>First name</th>
                                                 <th>Last name</th>
                                                 <th>User type</th>
+                                                <th>Verified</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
