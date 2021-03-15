@@ -28,7 +28,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified', 'isActive'])->group(function () {
+Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard');
