@@ -53,6 +53,7 @@
                                                 <th>S/N</th>
                                                 <th>First name</th>
                                                 <th>Last name</th>
+                                                <th>Email</th>
                                                 <th>User type</th>
                                                 <th>Verified</th>
                                                 <th>Status</th>
@@ -74,6 +75,9 @@
                                                     </td>
                                                     <td>
                                                         {{ $user->last_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $user->email }}
                                                     </td>
                                                     <td>{{ $user->user_type }}</td>
                                                     <td class="text-center">
@@ -132,6 +136,7 @@
                                                 <th>S/N</th>
                                                 <th>First name</th>
                                                 <th>Last name</th>
+                                                <th>Email</th>
                                                 <th>User type</th>
                                                 <th>Verified</th>
                                                 <th>Status</th>
