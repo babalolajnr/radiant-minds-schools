@@ -97,8 +97,7 @@
         <p>> <span>ERROR CODE</span>: "<i>HTTP 403 Forbidden</i>"</p>
         <p>> <span>ERROR DESCRIPTION</span>: "<i>Access Denied. You Do Not Have The Permission To Access This Page On
                 This Server</i>"</p>
-        <p>> <span>ERROR POSSIBLY CAUSED BY</span>: [<b>Your account might have been deactivated by the
-                Administrator</b>...]</p>
+        <p>> <span>ERROR POSSIBLY CAUSED BY</span>: [<b>Your account is either not verified or not activated</b>...]</p>
         <p>> <span>POSSIBLE SOLUTION</span>: [<b>Contact the administrator to rectify the issue </b>]
         </p>
         <p>> <span>HAVE A NICE DAY :-)</span></p>
