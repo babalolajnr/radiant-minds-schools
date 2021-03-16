@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'is_verified' => true,
             'email' => 'babalolajnr@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('11111111'), // 8 ones
+            'password' => bcrypt('11111111'), // 8 ones
             'remember_token' => Str::random(10),
         ]);
     }
