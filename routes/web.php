@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AcademicSessionController;
+use App\Http\Controllers\ADController;
+use App\Http\Controllers\ADTypeController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\PDController;
-use App\Http\Controllers\PDTypesController;
+use App\Http\Controllers\PDTypeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -62,13 +64,6 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         //Student Routes
         Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('/create', [StudentController::class, 'create'])->name('create');
-        /**
-         * {student} stands for admission number
-         * so wherever you see it in the routes
-         * that's what it means. I don't know what
-         * I was thinking when i decided to name it like that
-         * but I am too lazy to change it now.
-         */
         Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
         Route::get('view/{student:admission_no}', [StudentController::class, 'show'])->name('show');
         Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
@@ -155,11 +150,26 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('pd-types')->name('pd-type.')->group(function () {
         //Pychomotor domain type routes
-        Route::get('/', [PDTypesController::class, 'index'])->name('index');
-        Route::get('/edit/{pdType:slug}', [PDTypesController::class, 'edit'])->name('edit');
-        Route::post('/store', [PDTypesController::class, 'store'])->name('store');
-        Route::patch('/update/{pdType}', [PDTypesController::class, 'update'])->name('update');
-        Route::delete('/delete/{pdType}', [PDTypesController::class, 'destroy'])->name('destroy');
+        Route::get('/', [PDTypeController::class, 'index'])->name('index');
+        Route::get('/edit/{pdType:slug}', [PDTypeController::class, 'edit'])->name('edit');
+        Route::post('/store', [PDTypeController::class, 'store'])->name('store');
+        Route::patch('/update/{pdType}', [PDTypeController::class, 'update'])->name('update');
+        Route::delete('/delete/{pdType}', [PDTypeController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('ads')->name('ad.')->group(function () {
+        //Affective Domain Routes
+        Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [ADController::class, 'create'])->name('create')->where('academicSessionName', '.*');
+        Route::post('/store/{student}/{termId}/{academicSessionId?}', [ADController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('ad-types')->name('ad-type.')->group(function () {
+        //Affective domain type routes
+        Route::get('/', [ADTypeController::class, 'index'])->name('index');
+        Route::get('/edit/{adType:slug}', [ADTypeController::class, 'edit'])->name('edit');
+        Route::post('/store', [ADTypeController::class, 'store'])->name('store');
+        Route::patch('/update/{adType}', [ADTypeController::class, 'update'])->name('update');
+        Route::delete('/delete/{adType}', [ADTypeController::class, 'destroy'])->name('destroy');
     });
 });
 
