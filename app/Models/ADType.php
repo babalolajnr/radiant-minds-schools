@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ADType extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'slug'];
+
+    public function ads()
+    {
+        return $this->hasMany(AD::class);
+    }
 }
