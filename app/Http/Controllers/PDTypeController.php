@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
-class PDTypesController extends Controller
+class PDTypeController extends Controller
 {
     private function validatePDType($request, $pdType = null)
     {
