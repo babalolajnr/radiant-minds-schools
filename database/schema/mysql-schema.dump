@@ -4,6 +4,43 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `a_d_s`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `a_d_s` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `value` enum('1','2','3','4','5') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `student_id` bigint(20) unsigned NOT NULL,
+  `academic_session_id` bigint(20) unsigned NOT NULL,
+  `term_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `a_d_type_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `a_d_s_student_id_foreign` (`student_id`),
+  KEY `a_d_s_academic_session_id_foreign` (`academic_session_id`),
+  KEY `a_d_s_term_id_foreign` (`term_id`),
+  KEY `a_d_s_a_d_type_id_foreign` (`a_d_type_id`),
+  CONSTRAINT `a_d_s_a_d_type_id_foreign` FOREIGN KEY (`a_d_type_id`) REFERENCES `a_d_types` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `a_d_s_academic_session_id_foreign` FOREIGN KEY (`academic_session_id`) REFERENCES `academic_sessions` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `a_d_s_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `a_d_s_term_id_foreign` FOREIGN KEY (`term_id`) REFERENCES `terms` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `a_d_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `a_d_types` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `a_d_types_name_unique` (`name`),
+  UNIQUE KEY `a_d_types_slug_unique` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `academic_sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -300,3 +337,6 @@ INSERT INTO `migrations` VALUES (16,'2021_02_21_131833_create_p_d_s_table',1);
 INSERT INTO `migrations` VALUES (17,'2021_02_21_142048_create_p_d_types_table',1);
 INSERT INTO `migrations` VALUES (18,'2021_02_22_115227_add_foreign_keys_to_p_d_s_table',1);
 INSERT INTO `migrations` VALUES (19,'2021_02_23_160918_add_foreign_keys_to_classroom_subject_table',1);
+INSERT INTO `migrations` VALUES (20,'2021_03_15_182222_create_a_d_s_table',1);
+INSERT INTO `migrations` VALUES (21,'2021_03_16_065627_create_a_d_types_table',1);
+INSERT INTO `migrations` VALUES (22,'2021_03_16_070401_add_a_d_type_id_to_a_d_s_table',1);
