@@ -56,8 +56,14 @@
                                         <a
                                             href="{{ route('pd.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
                                             <button type="button" class="btn btn-primary"
-                                                title="Create or Update Pychodomain for the result's academic session and term">Create/Update
+                                                title="Create or Update Pychomotor domain for the result's academic session and term">Create/Update
                                                 PD</button>
+                                        </a>
+                                        <a
+                                            href="{{ route('ad.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            <button type="button" class="btn btn-success"
+                                                title="Create or Update Affective domain for the result's academic session and term">Create/Update
+                                                AD</button>
                                         </a>
                                     </div>
                                 </div>
