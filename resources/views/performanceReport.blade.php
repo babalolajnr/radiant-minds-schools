@@ -309,70 +309,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Punctuality</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Attendance</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Neatness</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Politeness</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Attentiveness</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Self control/Calmness</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Obedience</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Relationship with others</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        @foreach ($adTypes as $adType)
+                            <tr>
+                                <td>{{ $adType->name }}</td>
+                                <td>
+                                    @if (array_key_exists($adType->name, $ads) && $ads[$adType->name] == '5')
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (array_key_exists($adType->name, $ads) && $ads[$adType->name] == '4')
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (array_key_exists($adType->name, $ads) && $ads[$adType->name] == '3')
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (array_key_exists($adType->name, $ads) && $ads[$adType->name] == '2')
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (array_key_exists($adType->name, $ads) && $ads[$adType->name] == '1')
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
