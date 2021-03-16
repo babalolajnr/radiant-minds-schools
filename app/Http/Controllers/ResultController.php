@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
+use App\Models\ADType;
 use App\Models\PD;
 use App\Models\PDType;
 use App\Models\Result;
@@ -90,8 +91,9 @@ class ResultController extends Controller
         $term = Term::where('slug', $termSlug)->firstOrFail();
 
         $pdTypes = PDType::all();
-
         $pds = $this->getPds($student, $academicSession, $term);
+        $adTypes = ADType::all();
+        $ads = $this->getAds($student, $academicSession, $term);
 
         //Get the subjects for the student's class in the selected academic session
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $academicSession->id)->get();
@@ -176,7 +178,9 @@ class ResultController extends Controller
             'minScores',
             'age',
             'pds',
-            'pdTypes'
+            'pdTypes',
+            'ads',
+            'adTypes'
         ));
     }
 
@@ -236,5 +240,34 @@ class ResultController extends Controller
         $pds = array_combine($pdTypeNames, $values);
 
         return $pds;
+    }
+
+    private function getAds($student, $academicSession, $term)
+    {
+        // get ads for the academic session and term
+        $ads = $student->ads()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->get();
+
+        $adTypeIds = [];
+        $values = [];
+
+        //for each of the ads push the adTypeId and pd value into two separate arrays
+        foreach ($ads as $ad) {
+            $adTypeId = $ad->a_d_type_id;
+            $value = $ad->value;
+            array_push($adTypeIds, $adTypeId);
+            array_push($values, $value);
+        }
+
+        //for each adTypeId get the name and push it into an array
+        $adTypeNames = [];
+        foreach ($adTypeIds as $adTypeId) {
+            $adTypeName = ADType::find($adTypeId)->name;
+            array_push($adTypeNames, $adTypeName);
+        }
+
+        //comnine the values array and the names array to form a new associative ads array
+        $ads = array_combine($adTypeNames, $values);
+
+        return $ads;
     }
 }
