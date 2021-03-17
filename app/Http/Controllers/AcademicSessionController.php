@@ -51,8 +51,6 @@ class AcademicSessionController extends Controller
 
     public function destroy(AcademicSession $academicSession)
     {
-        $this->authorize('delete', $academicSession);
-
         try {
             $academicSession->delete();
         } catch (\Illuminate\Database\QueryException $e) {
