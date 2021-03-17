@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\AcademicSession;
 use App\Models\Classroom;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use Database\Seeders\SubjectSeeder;
@@ -51,7 +52,7 @@ class ClassroomTest extends TestCase
         $maxRank = $classrooms->max('rank');
         $minRank = $classrooms->min('rank');
         $rank = mt_rand($minRank, $maxRank);
-        $response = $this->actingAs($user)->patch(route('classroom.update', ['classroom' => $classroom]) , [
+        $response = $this->actingAs($user)->patch(route('classroom.update', ['classroom' => $classroom]), [
             'name' => $this->faker->word,
             'rank' => $rank
         ]);
@@ -63,7 +64,16 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create();
         $classroom = Classroom::factory()->create();
         $response = $this->actingAs($user)->delete(route('classroom.destroy', ['classroom' => $classroom]));
-        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_user_cannot_delete_a_classroom_with_relations()
+    {
+        $user = User::factory()->create();
+        $classroom = Classroom::factory()->create();
+        Student::factory()->create(['classroom_id' => $classroom->id]);
+        $response = $this->actingAs($user)->delete(route('classroom.destroy', ['classroom' => $classroom]));
+        $response->assertStatus(302)->assertSessionHas('error');
     }
 
     public function test_classroom_subjects_can_be_updated()
