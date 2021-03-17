@@ -17,8 +17,7 @@ class GuardianTest extends TestCase
     {
         $user = User::factory()->create();
         $guardian = Guardian::factory()->create();
-
-        $response = $this->actingAs($user)->get('/edit/guardian/' . $guardian->phone);
+        $response = $this->actingAs($user)->get(route('guardian.edit', ['guardian' => $guardian]));
         $response->assertStatus(200)->assertViewIs('editGuardian');
     }
 
@@ -27,7 +26,7 @@ class GuardianTest extends TestCase
         $user = User::factory()->create();
         $guardian = Guardian::factory()->create();
 
-        $response = $this->actingAs($user)->patch('/update/guardian/' . $guardian->phone, [
+        $response = $this->actingAs($user)->patch(route('guardian.update', ['guardian' => $guardian]), [
             'title' => $this->faker->title,
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -39,5 +38,4 @@ class GuardianTest extends TestCase
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
-
 }
