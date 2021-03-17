@@ -17,7 +17,7 @@ class AcademicSessionTest extends TestCase
     public function test_academic_session_index_method()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/academicSessions');
+        $response = $this->actingAs($user)->get(route('academic-session.index'));
         $response->assertStatus(200)->assertViewIs('academicSession');
     }
 
@@ -30,7 +30,7 @@ class AcademicSessionTest extends TestCase
         $startDate = $startDate->toDateString();
         $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
 
-        $response = $this->actingAs($user)->post('/store/academicSessions', [
+        $response = $this->actingAs($user)->post(route('academic-session.store'), [
             'name' => $this->faker->word,
             'start_date' => $startDate,
             'end_date' => $endDate
@@ -42,20 +42,20 @@ class AcademicSessionTest extends TestCase
     public function test_academic_session_edit_method()
     {
         $user = User::factory()->create();
-        $academicSession = AcademicSession::factory()->create()->id;
-        $response = $this->actingAs($user)->get('/edit/academicSessions/' . $academicSession);
+        $academicSession = AcademicSession::factory()->create();
+        $response = $this->actingAs($user)->get(route('academic-session.edit', ['academicSession' => $academicSession]));
         $response->assertStatus(200)->assertViewIs('editAcademicSession');
     }
 
     public function test_academic_session_update_method()
     {
         $user = User::factory()->create();
-        $academicSession = AcademicSession::factory()->create()->id;
+        $academicSession = AcademicSession::factory()->create();
         $startDate = now();
         $startDate = $startDate->toDateString();
         $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
 
-        $response = $this->actingAs($user)->patch('/update/academicSessions/' . $academicSession, [
+        $response = $this->actingAs($user)->patch(route('academic-session.update', ['academicSession' => $academicSession]), [
             'name' => $this->faker->word,
             'start_date' => $startDate,
             'end_date' => $endDate
@@ -64,28 +64,13 @@ class AcademicSessionTest extends TestCase
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
-    public function test_master_can_delete_a_academic_session()
+    public function test_user_cannot_delete_academic_session_with_relations()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
-        $academicSession = AcademicSession::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
-        $response->assertStatus(302)->assertSessionHas('success');
-    }
-
-    public function test_admin_cannot_delete_academic_session()
-    {
-        $user = User::factory()->create(['user_type' => 'admin']);
-        $academicSession = AcademicSession::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
-        $response->assertStatus(403);
-    }
-
-    public function test_master_cannot_delete_academic_session_with_relations()
-    {
-        $user = User::factory()->create(['user_type' => 'master']);
-        $academicSession = AcademicSession::factory()->create()->id;
+        $academicSession = AcademicSession::factory()->create();
         Result::factory()->create(['academic_session_id' => $academicSession]);
-        $response = $this->actingAs($user)->delete('/delete/academicSessions/' . $academicSession);
+        $response = $this->actingAs($user)->delete(route('academic-session.destroy', ['academicSession' => $academicSession]));
         $response->assertStatus(302)->assertSessionHas('error');
     }
 }
