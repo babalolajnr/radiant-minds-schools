@@ -102,8 +102,6 @@ class ClassroomController extends Controller
 
     public function destroy(Classroom $classroom)
     {
-        $this->authorize('delete', $classroom);
-
         try {
             $classroom->delete();
         } catch (\Illuminate\Database\QueryException $e) {
@@ -130,12 +128,15 @@ class ClassroomController extends Controller
         return back()->with('success', 'Classroom Deleted!');
     }
 
+    /**
+     * This method return the setSubjects view
+     */
     public function setSubjects(Classroom $classroom)
     {
         $subjects = Subject::all();
         $relations = [];
 
-        //subjects can only be set for the current academic session
+        //NOTE: subjects can only be set for the current academic session
         $currentAcademicSession = AcademicSession::currentAcademicSession();
 
         //loop subjects and get the ones that are related to the classroom
@@ -150,6 +151,9 @@ class ClassroomController extends Controller
         return view('setSubjects', compact('relations', 'classroom'));
     }
 
+    /**
+     * This method stores or update subjects for the given classroom
+     */
     public function updateSubjects(Classroom $classroom, Request $request)
     {
         $this->validate($request, [
