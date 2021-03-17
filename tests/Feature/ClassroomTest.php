@@ -20,14 +20,14 @@ class ClassroomTest extends TestCase
     public function test_classroom_index_method()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/classrooms');
+        $response = $this->actingAs($user)->get(route('classroom.index'));
         $response->assertStatus(200)->assertViewIs('classrooms');
     }
 
     public function test_classroom_can_be_stored()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->post('/store/classroom', [
+        $response = $this->actingAs($user)->post(route('classroom.store'), [
             'name' => $this->faker->word
         ]);
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
@@ -36,8 +36,8 @@ class ClassroomTest extends TestCase
     public function test_classroom_edit_method()
     {
         $user = User::factory()->create();
-        $classroom = Classroom::factory()->create()->id;
-        $response = $this->actingAs($user)->get('/edit/classroom/' . $classroom);
+        $classroom = Classroom::factory()->create();
+        $response = $this->actingAs($user)->get(route('classroom.edit', ['classroom' => $classroom]));
         $response->assertStatus(200)->assertViewIs('editClassroom');
     }
 
@@ -47,44 +47,44 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create();
         $this->seed('ClassroomSeeder');
         $classrooms = Classroom::all();
-        $classroom = $classrooms->random()->id;
+        $classroom = $classrooms->random();
         $maxRank = $classrooms->max('rank');
         $minRank = $classrooms->min('rank');
         $rank = mt_rand($minRank, $maxRank);
-        $response = $this->actingAs($user)->patch('/update/classroom/' . $classroom, [
+        $response = $this->actingAs($user)->patch(route('classroom.update', ['classroom' => $classroom]) , [
             'name' => $this->faker->word,
             'rank' => $rank
         ]);
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
-    public function test_master_can_delete_a_classroom()
+    public function test_user_can_delete_a_classroom()
     {
-        $user = User::factory()->create(['user_type' => 'master']);
-        $classroom = Classroom::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
+        $user = User::factory()->create();
+        $classroom = Classroom::factory()->create();
+        $response = $this->actingAs($user)->delete(route('classroom.destroy', ['classroom' => $classroom]));
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
-    }
-
-    public function test_admin_cannot_delete_classroom()
-    {
-        $user = User::factory()->create(['user_type' => 'admin']);
-        $classroom = Classroom::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/classroom/' . $classroom);
-        $response->assertStatus(403);
     }
 
     public function test_classroom_subjects_can_be_updated()
     {
         $user = User::factory()->create();
         $subjects = $this->generateTestSubjects();
-        $classroom = Classroom::factory()->create()->id;
+        $classroom = Classroom::factory()->create();
         AcademicSession::factory()->create(['current_session' => 1]);
-        $response = $this->actingAs($user)->post('/update/classroom-subjects/' . $classroom, [
+        $response = $this->actingAs($user)->post(route('classroom.update.subjects', ['classroom' => $classroom]), [
             'subjects' => $subjects
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success');
+    }
+    public function test_classroom_subjects_can_be_set()
+    {
+        $classroom = Classroom::factory()->create();
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get(route('classroom.set.subjects', ['classroom' => $classroom]));
+
+        $response->assertStatus(200)->assertViewIs('setSubjects');
     }
 
     private function generateTestSubjects()
