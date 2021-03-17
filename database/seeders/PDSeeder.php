@@ -40,12 +40,11 @@ class PDSeeder extends Seeder
                     ->where('academic_session_id', $values['academicSession']->id);
             }
 
-            $value = mt_rand(1,5);
             PD::create([
                 'term_id' => $values['term']->id,
                 'academic_session_id' => $values['academicSession']->id,
                 'student_id' => $values['student']->id,
-                'value' => $value,
+                'value' => mt_rand(1,5),
                 'p_d_type_id' => $values['pdType']->id
             ]);
         }
