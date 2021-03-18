@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\Term;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -178,5 +179,14 @@ class ClassroomController extends Controller
 
 
         return back()->with('success', 'Subjects set successfully');
+    }
+
+    public function assignTeacher(Classroom $classroom, $teacherSlug)
+    {
+        $teacher = Teacher::where('slug', $teacherSlug)->firstOrFail();
+        $classroom->teacher_id = $teacher->id;
+        $classroom->save();
+
+        return back()->with('success', '{$teacher->first_name} {$teacher->last_name} assigned to {$classroom->name}');
     }
 }
