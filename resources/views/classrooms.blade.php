@@ -94,28 +94,19 @@
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
                                                         </a>
-                                                        <a href="{{ route('classroom.edit', ['classroom' => $classroom]) }}">
+                                                        <a
+                                                            href="{{ route('classroom.edit', ['classroom' => $classroom]) }}">
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Edit">
                                                                 <i class="fa fa-edit"></i>
                                                             </button>
                                                         </a>
-                                                        {{-- render if user is authorized to delete --}}
-                                                        @can('delete', $classroom)
-                                                            <button type="button" class="btn btn-danger btn-flat"
-                                                                title="Delete"
-                                                                onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['classroom' => $classroom]) }}', '{{ $classroom->name }}')">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        @endcan
-
-                                                        {{-- render if user is not authorized to delete --}}
-                                                        @cannot('delete', $classroom)
-                                                        <button type="submit" class="btn btn-danger btn-flat"
-                                                            title="Delete" disabled>
+                                                        
+                                                        <button type="button" class="btn btn-danger btn-flat"
+                                                            title="Delete"
+                                                            onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['classroom' => $classroom]) }}', '{{ $classroom->name }}')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                        @endcannot
                                                     </div>
                                                 </td>
                                             </tr>
@@ -191,7 +182,7 @@
         <!-- AdminLTE App -->
         <script>
             function deleteConfirmationModal(url, name) {
-                
+
                 $('#yesDeleteConfirmation').attr("action", url)
                 $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
