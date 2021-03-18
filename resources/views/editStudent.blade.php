@@ -38,7 +38,7 @@
                                 <h3 class="card-title">Edit Student</h3>
                             </div>
                             <form id="updateStudent" method="POST"
-                                action="{{ route('student.update', ['id' => $student->id]) }}">
+                                action="{{ route('student.update', ['student' => $student]) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="card-body">
