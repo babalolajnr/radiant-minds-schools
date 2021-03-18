@@ -75,8 +75,6 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->authorize('create', Student::class);
-
         $guardianValidationRules = [
             'guardian_title' => ['required', 'max:30', 'string'],
             'guardian_first_name' => ['required', 'max:30', 'string'],
@@ -266,15 +264,6 @@ class StudentController extends Controller
         return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
     }
 
-    // public function getSubjects($student)
-    // {
-    //     $student = Student::findStudent($student);
-    //     $student = $student->first();
-    //     $subjects = $student->classroom->subjects()->get();
-
-    //     return response(200);
-    // }
-
     public function destroy(Student $student)
     {
         $this->authorize('delete', $student);
@@ -325,21 +314,6 @@ class StudentController extends Controller
         $imageName = $student->first_name . $student->last_name . '.' . $request->image->extension();
         $path = $request->file('image')->storeAs('public/students', $imageName);
         Image::make($request->image->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
-
-        //Delete previous image
-        /**
-         * This might not be necessary because the new image will overwrite the old image
-         * because we are using the same name for the images
-         * 
-         */
-
-        // if (!is_null($student->image)) {
-        //     $deletePath = $student->image;
-        //     $deletePath = str_replace('storage/', '', $deletePath);
-        //     $deletePath = 'public/'.$deletePath;
-
-        //     Storage::delete( $deletePath);
-        // }
 
         //update image in the database
         $filePath = 'storage/students/' . $imageName;
