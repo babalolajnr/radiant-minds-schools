@@ -187,6 +187,6 @@ class ClassroomController extends Controller
         $classroom->teacher_id = $teacher->id;
         $classroom->save();
 
-        return back()->with('success', '{$teacher->first_name} {$teacher->last_name} assigned to {$classroom->name}');
+        return back()->with('success', "{$teacher->first_name} {$teacher->last_name} assigned to {$classroom->name}");
     }
 }
