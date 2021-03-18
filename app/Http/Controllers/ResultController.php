@@ -207,7 +207,7 @@ class ResultController extends Controller
         return redirect($request->session()->get('resultsPage'))->with('success', 'Result Updated!');
     }
 
-    public function destroy(Result $result, Request $request)
+    public function destroy(Result $result)
     {
         $result->delete();
         return back()->with('success', 'Result Deleted');
