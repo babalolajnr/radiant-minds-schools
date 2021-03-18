@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\User;
 use Database\Seeders\SubjectSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -88,6 +89,7 @@ class ClassroomTest extends TestCase
 
         $response->assertStatus(302)->assertSessionHas('success');
     }
+
     public function test_classroom_subjects_can_be_set()
     {
         $classroom = Classroom::factory()->create();
@@ -95,6 +97,15 @@ class ClassroomTest extends TestCase
         $response = $this->actingAs($user)->get(route('classroom.set.subjects', ['classroom' => $classroom]));
 
         $response->assertStatus(200)->assertViewIs('setSubjects');
+    }
+
+    public function test_teacher_can_be_assigned_to_classroom()
+    {
+        $classroom = Classroom::factory()->create();
+        $user = User::factory()->create();
+        $teacher = Teacher::factory()->create();
+        $response = $this->actingAs($user)->patch(route('classroom.assign.teacher', ['classroom' => $classroom, 'teacherSlug' => $teacher->slug]));
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     private function generateTestSubjects()
