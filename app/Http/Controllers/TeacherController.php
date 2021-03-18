@@ -38,14 +38,11 @@ class TeacherController extends Controller
 
     public function create()
     {
-        $this->authorize('create', Teacher::class);
         return view('createTeacher');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create', Teacher::class);
-
         $validatedData = $this->teacherValidation($request);
 
         $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
@@ -64,15 +61,11 @@ class TeacherController extends Controller
 
     public function edit(Teacher $teacher)
     {
-        $this->authorize('update', $teacher);
-
         return view('editTeacher', compact('teacher'));
     }
 
     public function update(Teacher $teacher, Request $request)
     {
-        $this->authorize('update', $teacher);
-
         $validatedData = $this->teacherValidation($request, $teacher);
 
         //check if either the first or last name has changed to generate a new slug
@@ -90,10 +83,7 @@ class TeacherController extends Controller
 
     public function suspend(Teacher $teacher)
     {
-        $this->authorize('suspend', $teacher);
-
         $teacher->status = 'suspended';
-
         $teacher->save();
 
         return redirect()->back()->with('success', 'Teacher Suspended!');
@@ -101,10 +91,7 @@ class TeacherController extends Controller
 
     public function activate(Teacher $teacher)
     {
-        $this->authorize('activate', $teacher);
-
         $teacher->status = 'active';
-
         $teacher->save();
 
         return redirect()->back()->with('success', 'Teacher Activated!');
@@ -112,10 +99,7 @@ class TeacherController extends Controller
 
     public function deactivate(Teacher $teacher)
     {
-        $this->authorize('deactivate', $teacher);
-
         $teacher->status = 'inactive';
-
         $teacher->save();
 
         return redirect()->back()->with('success', 'Teacher Deactivated!');
@@ -123,31 +107,7 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher)
     {
-        $this->authorize('delete', $teacher);
-
         $teacher->delete();
-
         return redirect()->back()->with('success', 'Teacher Deleted!');
     }
-
-    // public function forceDelete($id, Teacher $teacher)
-    // {
-    //     $this->authorize('forceDelete', $teacher);
-
-    //     $teacher = Teacher::findOrFail($id);
-
-    //     $teacher->forceDelete();
-    //     return response(200);
-    // }
-
-    // public function restore($id, Teacher $teacher)
-    // {
-    //     $this->authorize('restore', $teacher);
-
-    //     $teacher = Teacher::onlyTrashed()->findOrFail($id);
-
-    //     $teacher->restore();
-
-    //     return response(200);
-    // }
 }
