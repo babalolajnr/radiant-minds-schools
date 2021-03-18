@@ -16,7 +16,7 @@ class TermTest extends TestCase
     public function test_term_index_method()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/terms');
+        $response = $this->actingAs($user)->get(route('term.index'));
         $response->assertStatus(200);
     }
 
@@ -24,43 +24,36 @@ class TermTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->post('/store/term', [
+        $response = $this->actingAs($user)->post(route('term.store'), [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
     public function test_term_edit_method()
     {
         $user = User::factory()->create();
-        $term = Term::factory()->create()->id;
-        $response = $this->actingAs($user)->get('/edit/term/' . $term);
+        $term = Term::factory()->create();
+        $response = $this->actingAs($user)->get(route('term.edit', ['term' => $term]));
         $response->assertStatus(200);
     }
 
     public function test_term_update_method()
     {
         $user = User::factory()->create();
-        $term = Term::factory()->create()->id;
-        $response = $this->actingAs($user)->patch('/update/term/' . $term, [
+        $term = Term::factory()->create();
+        $response = $this->actingAs($user)->patch(route('term.update', ['term' => $term]), [
             'name' => $this->faker->word
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
-    public function test_master_can_delete_a_term()
+    public function test_user_can_delete_a_term()
     {
-        $user = User::factory()->create(['user_type' => 'master']);
-        $term = Term::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/term/' . $term);
-        $response->assertStatus(200);
+        $user = User::factory()->create();
+        $term = Term::factory()->create();
+        $response = $this->actingAs($user)->delete(route('term.destroy', ['term' => $term]));
+        $response->assertStatus(302)->assertSessionHas('success');
     }
 
-    public function test_admin_cannot_delete_term()
-    {
-        $user = User::factory()->create(['user_type' => 'admin']);
-        $term = Term::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/term/' . $term);
-        $response->assertStatus(403);
-    }
 }
