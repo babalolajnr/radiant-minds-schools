@@ -57,8 +57,6 @@ class SubjectController extends Controller
 
     public function destroy(Subject $subject)
     {
-        $this->authorize('delete', $subject);
-
         try {
             $subject->delete();
         } catch (\Illuminate\Database\QueryException $e) {
