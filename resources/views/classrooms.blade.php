@@ -73,6 +73,7 @@
                                         <tr>
                                             <th>Rank</th>
                                             <th>Name</th>
+                                            <th>Class teacher</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -84,6 +85,10 @@
                                                 </td>
                                                 <td>
                                                     {{ $classroom->name }}
+                                                </td>
+
+                                                <td>
+                                                    {{ "{$classroom->teacher->first_name} {$classroom->teacher->last_name}" }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -101,7 +106,7 @@
                                                                 <i class="fa fa-edit"></i>
                                                             </button>
                                                         </a>
-                                                        
+
                                                         <button type="button" class="btn btn-danger btn-flat"
                                                             title="Delete"
                                                             onclick="deleteConfirmationModal('{{ route('classroom.destroy', ['classroom' => $classroom]) }}', '{{ $classroom->name }}')">
@@ -116,6 +121,7 @@
                                         <tr>
                                             <th>Rank</th>
                                             <th>Name</th>
+                                            <th>Class teacher</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
