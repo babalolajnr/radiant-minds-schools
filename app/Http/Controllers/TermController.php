@@ -38,8 +38,6 @@ class TermController extends Controller
 
     public function destroy(Term $term)
     {
-        // $this->authorize('delete', $term);
-
         try {
             $term->delete();
         } catch (\Illuminate\Database\QueryException $e) {
