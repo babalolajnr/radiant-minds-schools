@@ -87,8 +87,9 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::get('/edit/{classroom:slug}', [ClassroomController::class, 'edit'])->name('edit');
         Route::get('/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('show');
         Route::get('/set-subjects/{classroom:slug}', [ClassroomController::class, 'setSubjects'])->name('set.subjects');
-        Route::post('/store', [ClassroomController::class, 'store'])->name('store');
         Route::post('/update-subjects/{classroom:slug}', [ClassroomController::class, 'updateSubjects'])->name('update.subjects');
+        Route::post('/store', [ClassroomController::class, 'store'])->name('store');
+        Route::patch('/assign-teacher/{classroom:slug}/{teacherSlug}', [ClassroomController::class, 'assignTeacher'])->name('assign.teacher');
         Route::patch('/update/{classroom:slug}', [ClassroomController::class, 'update'])->name('update');
         Route::delete('/delete/{classroom:slug}', [ClassroomController::class, 'destroy'])->name('destroy');
     });
