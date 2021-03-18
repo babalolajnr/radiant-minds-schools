@@ -73,7 +73,7 @@ class StudentTest extends TestCase
             'guardian_address' => $this->faker->address
         ];
         $studentInfo = array_merge($studentInfo, $guardianInfo);
-        $response = $this->actingAs($user)->post('/store/student', $studentInfo);
+        $response = $this->actingAs($user)->post(route('student.store'), $studentInfo);
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
@@ -95,38 +95,38 @@ class StudentTest extends TestCase
             'guardian_address' => $this->faker->address
         ];
         $studentInfo = array_merge($studentInfo, $guardianInfo);
-        $response = $this->actingAs($user)->post('/store/student', $studentInfo);
+        $response = $this->actingAs($user)->post(route('student.store'), $studentInfo);
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
     public function test_student_controller_index_method()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/students');
+        $response = $this->actingAs($user)->get(route('student.index'));
         $response->assertStatus(200);
     }
 
     public function test_single_student_can_be_viewed()
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create()->admission_no;
-        $response = $this->actingAs($user)->get('/view/student/' . $student);
+        $student = Student::factory()->create();
+        $response = $this->actingAs($user)->get(route('student.show', ['student' => $student]));
         $response->assertStatus(200);
     }
 
     public function test_single_student_that_does_not_exist_cannot_be_viewed()
     {
         $user = User::factory()->create();
-        $student = Student::factory()->create()->admission_no;
-        $response = $this->actingAs($user)->get('/view/student/igkjhr9');
+        $response = $this->actingAs($user)->get(route('student.show', ['student' => 'asdsef']));
         $response->assertStatus(404);
     }
 
     public function test_single_student_can_be_edited()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $student = Student::factory()->create()->admission_no;
-        $response = $this->actingAs($user)->get('/edit/student/' . $student);
+        $student = Student::factory()->create();
+        $response = $this->actingAs($user)->get(route('student.edit', ['student' => $student]));
         $response->assertStatus(200);
     }
 
@@ -134,8 +134,8 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'active'])->id;
-        $response = $this->actingAs($user)->patch('/suspend/student/' . $student);
+        $student = Student::factory()->create(['status' => 'active']);
+        $response = $this->actingAs($user)->patch(route('student.suspend', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
@@ -143,8 +143,8 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'suspended'])->id;
-        $response = $this->actingAs($user)->patch('/activate/student/' . $student);
+        $student = Student::factory()->create(['status' => 'suspended']);
+        $response = $this->actingAs($user)->patch(route('student.activate', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
@@ -152,8 +152,8 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'suspended'])->id;
-        $response = $this->actingAs($user)->patch('/deactivate/student/' . $student);
+        $student = Student::factory()->create(['status' => 'suspended']);
+        $response = $this->actingAs($user)->patch(route('student.deactivate', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
@@ -161,9 +161,9 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create()->id;
+        $student = Student::factory()->create();
         $classroom = $this->generateTestClassroom();
-        $response = $this->actingAs($user)->patch('/update/student/' . $student, $this->studentInfo($classroom));
+        $response = $this->actingAs($user)->patch(route('student.update', ['student' => $student]), $this->studentInfo($classroom));
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
@@ -171,8 +171,8 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create(['user_type' => 'master']);
-        $student = Student::factory()->create()->id;
-        $response = $this->actingAs($user)->delete('/delete/student/' . $student);
+        $student = Student::factory()->create();
+        $response = $this->actingAs($user)->delete(route('student.destroy', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
@@ -182,30 +182,17 @@ class StudentTest extends TestCase
         $guardian = Guardian::factory()->create()->id;
         $student = Student::factory()->times(2)->create(['guardian_id' => $guardian]);
         $student = $student->random();
-        $response = $this->actingAs($user)->delete('/delete/student/' . $student->id);
+        $response = $this->actingAs($user)->delete(route('student.destroy', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
-
-    // public function test_user_can_get_student_subjects()
-    // {
-
-    //     $user = User::factory()->create();
-    //     $student = Student::factory()->create();
-    //     $subject = Subject::factory()->create()->id;
-    //     $student->classroom->subjects()->sync([$subject]); 
-    //     $response = $this->actingAs($user)->get('/student-subjects/' . $student->admission_no);
-    //     $response->assertStatus(200);
-    // }
 
     public function test_user_can_get_student_sessional_results()
     {
         $user = User::factory()->create();
         $result = Result::factory()->create();
-        $student = $result->student->admission_no;
+        $student = $result->student;
         $academicSession = $result->academicSession->name;
-        $response = $this->actingAs($user)->post('/results/sessional/student/' . $student, [
-            'academicSession' => $academicSession
-        ]);
+        $response = $this->actingAs($user)->get(route('student.get.sessional.results', ['student' => $student, 'academicSessionName' => $academicSession]));
         $response->assertStatus(200)->assertViewIs('studentSessionalResults');
     }
 
@@ -217,7 +204,7 @@ class StudentTest extends TestCase
         $file = UploadedFile::fake()->image('avatar.jpg');
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $response = $this->actingAs($user)->post('/store/image/' . $student->id, [
+        $response = $this->actingAs($user)->post(route('student.upload.image', ['student' => $student]), [
             'image' => $file
         ]);
 
