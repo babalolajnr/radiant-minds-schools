@@ -97,22 +97,12 @@
                                                                 </button>
                                                             </a>
 
-                                                            {{-- render if user is authorized to delete --}}
-                                                            @can('delete', $teacher)
-                                                                <button type="submit" class="btn btn-default btn-flat"
-                                                                    title="Delete"
-                                                                    onclick="deleteConfirmationModal('{{ route('teacher.destroy', ['teacher' => $teacher]) }}', {{ $teacher }})">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            @endcan
-
-                                                            {{-- render if user is not authorized to delete --}}
-                                                            @cannot('delete', $teacher)
                                                             <button type="submit" class="btn btn-default btn-flat"
-                                                                title="Delete" disabled>
+                                                                title="Delete"
+                                                                onclick="deleteConfirmationModal('{{ route('teacher.destroy', ['teacher' => $teacher]) }}', {{ $teacher }})">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
-                                                            @endcannot
+
                                                         </div>
                                                     </td>
                                                 </tr>
