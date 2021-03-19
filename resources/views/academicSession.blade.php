@@ -140,22 +140,11 @@
                                                                 <i class="fa fa-edit"></i>
                                                             </button>
                                                         </a>
-                                                        {{-- render if user is authorized to delete --}}
-                                                        @can('delete', $academicSession)
-                                                            <button type="button" class="btn btn-danger btn-flat"
-                                                                title="Delete"
-                                                                onclick="deleteConfirmationModal('{{ route('academic-session.destroy', ['academicSession' => $academicSession]) }}', '{{ $academicSession->name }}')">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-                                                        @endcan
-
-                                                        {{-- render if user is not authorized to delete --}}
-                                                        @cannot('delete', $academicSession)
-                                                        <button type="submit" class="btn btn-danger btn-flat"
-                                                            title="Delete" disabled>
+                                                        <button type="button" class="btn btn-danger btn-flat"
+                                                            title="Delete"
+                                                            onclick="deleteConfirmationModal('{{ route('academic-session.destroy', ['academicSession' => $academicSession]) }}', '{{ $academicSession->name }}')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                        @endcannot
 
                                                         @if ($academicSession->isCurrentAcademicSession())
                                                             <button type="button" class="btn btn-default btn-flat"
