@@ -38,19 +38,6 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        {{-- Teacher --}}
-                        <div class="card">
-                            <div class="card-header">
-                                <span class="font-semibold">Class teacher</span>
-                            </div>
-                            <div class="card-body">
-                                <span class="">
-                                    @if ($classroom->teacher)
-                                        {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
@@ -60,23 +47,46 @@
                                 <x-students-table :students="$students" />
                             </div>
                         </div>
-                        <div class="card col-lg-6">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between align-items-baseline">
-                                    <span class="font-semibold">Subjects</span>
-                                    <span>
-                                        <a href="{{ route('classroom.set.subjects', ['classroom' => $classroom]) }}"><button
-                                                class="btn btn-primary">Set Subjects</button>
-                                        </a>
-                                    </span>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-baseline">
+                                            <span class="font-semibold">Class Teacher</span>
+                                            <span>
+                                                <button class="btn btn-primary"
+                                                    onclick="showAssignTeacherModal()">Assign Teacher</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="">
+                                            @if ($classroom->teacher)
+                                                {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
+                                            @endif
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                @foreach ($subjects as $subject)
-                                    <div class="callout callout-info">
-                                        <span>{{ $subject->name }}</span>
+                            <div class="card col-lg-6">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-baseline">
+                                        <span class="font-semibold">Subjects</span>
+                                        <span>
+                                            <a
+                                                href="{{ route('classroom.set.subjects', ['classroom' => $classroom]) }}"><button
+                                                    class="btn btn-primary">Set Subjects</button>
+                                            </a>
+                                        </span>
                                     </div>
-                                @endforeach
+                                </div>
+                                <div class="card-body">
+                                    @foreach ($subjects as $subject)
+                                        <div class="callout callout-info">
+                                            <span>{{ $subject->name }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,6 +112,44 @@
                         @method('DELETE')
                         @csrf
                         <button type="submit" class="btn btn-danger">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {{-- Assign Teacher modal --}}
+    <div class="modal fade" id="assignTeacherModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Assign Teacher</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Teachers">Teachers</label>
+                        <select class="form-control select2" id="teacherSelect" style="width: 100%;">
+                            @foreach ($teachers as $teacher)
+                                <option @if ($classroom->teacher == $teacher) SELECTED @endif
+                                    value="{{ route('classroom.assign.teacher', ['classroom' => $classroom, 'teacherSlug' => $teacher->slug]) }}">
+                                    {{ "{$teacher->first_name} {$teacher->last_name}" }} @if ($teacher->classroom) {{ "({$teacher->classroom->name})" }}
+                                    @endif
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <form action="" method="POST" id="assignTeacherForm">
+                        @method('PATCH')
+                        @csrf
+                        <button type="button" onclick="assignTeacher()" class="btn btn-success">Submit</button>
                     </form>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
@@ -145,6 +193,10 @@
                 $('#deleteItemName').html(name)
                 $('#deleteConfirmationModal').modal('show')
             }
+
+            function showAssignTeacherModal() {
+                $('#assignTeacherModal').modal('show')
+            }
             //launch toastr 
             $(function() {
                 let Success = document.getElementById('success')
@@ -179,6 +231,13 @@
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             });
+
+            function assignTeacher()
+            {
+                const selected = $("#teacherSelect").val()
+                $("#assignTeacherForm").attr('action', selected)
+                $("#assignTeacherForm").submit()
+            }
 
         </script>
     </x-slot>
