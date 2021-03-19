@@ -35,3 +35,4 @@
 - add graduated_at column to students table
 - r̶e̶f̶a̶c̶t̶o̶r̶ t̶e̶s̶t̶s̶
 - create make master user command unit test
+- create AD view
