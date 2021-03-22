@@ -33,7 +33,6 @@ class StudentController extends Controller
             'date_of_birth' => $validatedData['date_of_birth'],
             'place_of_birth' => $validatedData['place_of_birth'],
             'classroom_id' => $classroom->id,
-            'status' => 'active'
         ];
     }
 
@@ -50,13 +49,13 @@ class StudentController extends Controller
             'blood_group' => ['required', 'string'],
             'date_of_birth' => ['required', 'date', 'before:' . now()],
             'place_of_birth' => ['required'],
-            'classroom' => ['required', 'string'],
+            'classroom' => ['required', 'string']
         ];
     }
 
     public function index()
     {
-        $students = Student::all()->sortByDesc('created_at');
+        $students = Student::where('graduated_at', null)->get()->sortByDesc('created_at');
         $academicSessions = AcademicSession::all()->sortByDesc('created_at');
         $terms = Term::all()->sortByDesc('created_at');
         return view('students', compact('students', 'academicSessions', 'terms'));
@@ -133,18 +132,11 @@ class StudentController extends Controller
         return  view('showStudent', compact('student', 'academicSessions', 'terms'));
     }
 
-    public function suspend(Student $student)
-    {
-        $student->status = 'suspended';
-        $student->save();
-
-        return back()->with('success', 'Student Suspended!');
-    }
 
     public function activate(Student $student)
     {
 
-        $student->status = 'active';
+        $student->is_active = true;
         $student->save();
 
         return back()->with('success', 'Student Activated!');
@@ -153,7 +145,7 @@ class StudentController extends Controller
     public function deactivate(Student $student)
     {
 
-        $student->status = 'inactive';
+        $student->is_active = false;
         $student->save();
 
         return back()->with('success', 'Student Deactivated!');
