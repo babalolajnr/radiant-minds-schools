@@ -51,7 +51,6 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::get('/edit/{teacher:slug}', [TeacherController::class, 'edit'])->name('edit');
         Route::post('/store', [TeacherController::class, 'store'])->name('store');
         Route::patch('/update/{teacher:slug}', [TeacherController::class, 'update'])->name('update');
-        Route::patch('/suspend/{teacher}', [TeacherController::class, 'suspend'])->name('suspend');
         Route::patch('/activate/{teacher}', [TeacherController::class, 'activate'])->name('activate');
         Route::patch('/deactivate/{teacher}', [TeacherController::class, 'deactivate'])->name('deactivate');
         Route::delete('/delete/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
@@ -71,7 +70,6 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::post('/store/image/{student}', [StudentController::class, 'uploadImage'])->name('upload.image');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
         Route::patch('/update/{student}', [StudentController::class, 'update'])->name('update');
-        Route::patch('/suspend/{student}', [StudentController::class, 'suspend'])->name('suspend');
         Route::patch('/activate/{student}', [StudentController::class, 'activate'])->name('activate');
         Route::patch('/deactivate/{student}', [StudentController::class, 'deactivate'])->name('deactivate');
         Route::patch('/promote/{student}', [StudentController::class, 'promote'])->name('promote');
