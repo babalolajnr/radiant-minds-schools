@@ -91,7 +91,7 @@ class ClassroomController extends Controller
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
-        $teachers = Teacher::all();
+        $teachers = Teacher::whereIsActive(true)->all();
 
         if (is_null($currentAcademicSession)) {
             return back()->with('error', 'Current Academic session is not set!');
