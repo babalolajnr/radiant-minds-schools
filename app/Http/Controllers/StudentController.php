@@ -55,10 +55,15 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = Student::where('graduated_at', null)->get()->sortByDesc('created_at');
+        $students = Student::whereNull('graduated_at')->get()->sortByDesc('created_at');
         $academicSessions = AcademicSession::all()->sortByDesc('created_at');
         $terms = Term::all()->sortByDesc('created_at');
         return view('students', compact('students', 'academicSessions', 'terms'));
+    }
+
+    public function getAlumni(){
+        $students = Student::whereNotNull('graduated_at')->get();
+        return view('alumni', compact('students'));
     }
 
     public function create()
