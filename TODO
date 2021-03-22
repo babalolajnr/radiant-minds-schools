@@ -32,7 +32,7 @@
 - add student graduation action
 - remove suspend action from student and teachers
 - add alumni page
-- add graduated_at column to students table
+- a̶d̶d̶ g̶r̶a̶d̶u̶a̶t̶e̶d̶_̶a̶t̶ c̶o̶l̶u̶m̶n̶ t̶o̶ s̶t̶u̶d̶e̶n̶t̶s̶ t̶a̶b̶l̶e̶
 - r̶e̶f̶a̶c̶t̶o̶r̶ t̶e̶s̶t̶s̶
 - create make master user command unit test
 - c̶r̶e̶a̶t̶e̶ A̶D̶ v̶i̶e̶w̶
