@@ -88,7 +88,9 @@
                                                 </td>
 
                                                 <td>
-                                                    {{ "{$classroom->teacher->first_name} {$classroom->teacher->last_name}" }}
+                                                    @if ($classroom->teacher)
+                                                        {{ "{$classroom->teacher->first_name} {$classroom->teacher->last_name}" }}
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
