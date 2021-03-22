@@ -85,7 +85,13 @@
                                                     <td>
                                                         {{ $teacher->sex }}
                                                     </td>
-                                                    <td>{{ $teacher->status }}</td>
+                                                    <td>
+                                                        @if ($teacher->isActive())
+                                                            active
+                                                        @else
+                                                            inactive
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <a
