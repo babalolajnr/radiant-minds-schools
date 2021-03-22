@@ -42,8 +42,10 @@ class StudentFactory extends Factory
 
         if ($graduated) {
             $graduated_at = $this->faker->dateTimeBetween('-3 years');
+            $is_active = false;
         } else {
             $graduated_at = null;
+            $is_active = true;
         }
         return [
             'first_name' => $firstName,
@@ -58,7 +60,7 @@ class StudentFactory extends Factory
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
             'place_of_birth' => $this->faker->address,
             'guardian_id' => $guardian->id,
-            'is_active' => $this->faker->randomElement([true, false]),
+            'is_active' => $is_active,
             'graduated_at' => $graduated_at
         ];
     }
