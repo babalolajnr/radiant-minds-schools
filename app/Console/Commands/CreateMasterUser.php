@@ -60,7 +60,7 @@ class CreateMasterUser extends Command
             $user = User::create($userData);
             $user->is_verified = true;
             $user->user_type = 'master';
-            $user->status = 'active';
+            $user->is_active = true;
             $user->email_verified_at = now();
 
             $user->save();
