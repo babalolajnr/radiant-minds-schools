@@ -101,6 +101,12 @@
                                     <p>Pychomotor domains</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('ad-type.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-brain"></i>
+                                    <p>Affective domains</p>
+                                </a>
+                            </li>
 
                         </ul>
                     </li>
