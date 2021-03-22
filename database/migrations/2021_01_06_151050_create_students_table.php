@@ -25,7 +25,7 @@ class CreateStudentsTable extends Migration
             $table->date('date_of_birth');
             $table->text('place_of_birth');
             $table->string('blood_group');
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->date('graduated_at')->nullable();
             $table->string('image')->nullable()->unique();
             $table->timestamps();
