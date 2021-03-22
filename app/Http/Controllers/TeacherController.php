@@ -9,17 +9,16 @@ use Illuminate\Validation\Rule;
 
 class TeacherController extends Controller
 {
-    private function teacherValidation($request, $teacher = null)
+    private function validationFields($teacher = null)
     {
-        $validatedData = $request->validate([
+        $validationFields  = [
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'email:rfc,dns'],
             'phone' => ['required', 'string', Rule::unique('teachers')->ignore($teacher), 'max:15', 'min:10'],
-            'date_of_birth' => ['required', 'date', 'before:' . now()]
-        ]);
-
-        return $validatedData;
+            'date_of_birth' => ['required', 'date', 'before:' . now()],
+        ];
+        return $validationFields;
     }
 
     private function generateFullNameSlug($firstName, $lastName)
@@ -43,11 +42,12 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $this->teacherValidation($request);
+        $validationFields = $this->validationFields() +  ['sex' => ['required', 'string']];
+        $validatedData = $request->validate($validationFields);
 
         $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
 
-        $data = array_merge($validatedData, ['slug' => $slug, 'status' => 'active']);
+        $data = array_merge($validatedData, ['slug' => $slug]);
 
         Teacher::create($data);
 
@@ -66,7 +66,8 @@ class TeacherController extends Controller
 
     public function update(Teacher $teacher, Request $request)
     {
-        $validatedData = $this->teacherValidation($request, $teacher);
+        $validationFields = $this->validationFields($teacher);
+        $validatedData = $request->validate($validationFields);
 
         //check if either the first or last name has changed to generate a new slug
         if ($teacher->first_name != $validatedData['first_name'] || $teacher->last_name != $validatedData['last_name']) {
@@ -81,17 +82,9 @@ class TeacherController extends Controller
         return redirect()->route('teacher.edit', ['teacher' => $teacher])->with('success', 'Teacher Updated!');
     }
 
-    public function suspend(Teacher $teacher)
-    {
-        $teacher->status = 'suspended';
-        $teacher->save();
-
-        return redirect()->back()->with('success', 'Teacher Suspended!');
-    }
-
     public function activate(Teacher $teacher)
     {
-        $teacher->status = 'active';
+        $teacher->is_active = true;
         $teacher->save();
 
         return redirect()->back()->with('success', 'Teacher Activated!');
@@ -99,7 +92,7 @@ class TeacherController extends Controller
 
     public function deactivate(Teacher $teacher)
     {
-        $teacher->status = 'inactive';
+        $teacher->is_active = false;
         $teacher->save();
 
         return redirect()->back()->with('success', 'Teacher Deactivated!');
