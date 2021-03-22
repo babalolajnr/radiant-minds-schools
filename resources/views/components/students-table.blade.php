@@ -10,6 +10,11 @@
                 <th>Sex</th>
                 <th>Guardian</th>
                 <th>Status</th>
+                @if (Route::currentRouteName() == 'student.get.alumni')
+                    <th>
+                        Graduation date
+                    </th>
+                @endif
                 <th>Action</th>
             </tr>
         </thead>
@@ -36,7 +41,18 @@
                     <td>
                         {{ $student->guardian->title . ' ' . $student->guardian->first_name . ' ' . $student->guardian->last_name }}
                     </td>
-                    <td>{{ $student->status }}</td>
+                    <td>
+                        @if ($student->isActive())
+                            active
+                        @else
+                            inactive
+                        @endif
+                    </td>
+                    @if (Route::currentRouteName() == 'student.get.alumni')
+                        <th>
+                            {{ $student->graduated_at }}
+                        </th>
+                    @endif
                     <td>
                         <div class="btn-group">
                             <a href="{{ route('student.show', ['student' => $student]) }}">
@@ -61,8 +77,7 @@
                             </button>
                             @endcannot
 
-                            <a
-                                href="{{ route('student.show.student.settingsView', ['student' => $student]) }}">
+                            <a href="{{ route('student.show.student.settingsView', ['student' => $student]) }}">
                                 <button type="button" class="btn btn-default btn-flat">
                                     <i class="fas fa-cogs"></i>
                                 </button>
@@ -82,6 +97,11 @@
                 <th>Sex</th>
                 <th>Guardian</th>
                 <th>Status</th>
+                @if (Route::currentRouteName() == 'student.get.alumni')
+                    <th>
+                        Graduation date
+                    </th>
+                @endif
                 <th>Action</th>
             </tr>
         </tfoot>
