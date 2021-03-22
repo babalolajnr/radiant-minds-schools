@@ -87,11 +87,11 @@ class ClassroomController extends Controller
 
     public function show(Classroom $classroom)
     {
-        $students = $classroom->students->all();
+        $students = $classroom->students->whereNull('graduated_at');
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
         $currentAcademicSession = AcademicSession::currentAcademicSession();
-        $teachers = Teacher::whereIsActive(true)->all();
+        $teachers = Teacher::whereIsActive(true)->get();
 
         if (is_null($currentAcademicSession)) {
             return back()->with('error', 'Current Academic session is not set!');
