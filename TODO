@@ -35,5 +35,5 @@
 - add graduated_at column to students table
 - r̶e̶f̶a̶c̶t̶o̶r̶ t̶e̶s̶t̶s̶
 - create make master user command unit test
-- create AD view
-- fix create result error message
+- c̶r̶e̶a̶t̶e̶ A̶D̶ v̶i̶e̶w̶
+- f̶i̶x̶ c̶r̶e̶a̶t̶e̶ r̶e̶s̶u̶l̶t̶ e̶r̶r̶o̶r̶ m̶e̶s̶s̶a̶g̶e̶
