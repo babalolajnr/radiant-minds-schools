@@ -101,6 +101,7 @@ class StudentTest extends TestCase
 
     public function test_student_controller_index_method()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get(route('student.index'));
         $response->assertStatus(200);
@@ -130,20 +131,11 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_student_can_be_suspended()
-    {
-
-        $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'active']);
-        $response = $this->actingAs($user)->patch(route('student.suspend', ['student' => $student]));
-        $response->assertStatus(302)->assertSessionHas('success');
-    }
-
     public function test_student_can_be_activated()
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'suspended']);
+        $student = Student::factory()->create(['is_active' => false]);
         $response = $this->actingAs($user)->patch(route('student.activate', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
@@ -152,7 +144,7 @@ class StudentTest extends TestCase
     {
 
         $user = User::factory()->create();
-        $student = Student::factory()->create(['status' => 'suspended']);
+        $student = Student::factory()->create(['is_active' => false]);
         $response = $this->actingAs($user)->patch(route('student.deactivate', ['student' => $student]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
