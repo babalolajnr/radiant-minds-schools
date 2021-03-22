@@ -115,26 +115,12 @@
                                                             method="post">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn @if ($teacher->status == 'active') btn-primary
+                                                            <button type="submit" class="btn @if ($teacher->isActive()) btn-primary
                                                             disabled @else btn-default @endif
                                                                 btn-flat"
-                                                                @if ($teacher->status == 'active') disabled
+                                                                @if ($teacher->isActive()) disabled
                                                                 @endif>
                                                                 Activate
-                                                            </button>
-                                                        </form>
-                                                        <form
-                                                            action="{{ route('teacher.suspend', ['teacher' => $teacher]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <button type="submit" class="btn @if ($teacher->status == 'suspended') btn-primary
-                                                            disabled @else btn-default @endif
-                                                                btn-flat"
-                                                                @if ($teacher->status == 'suspended')
-                                                                    disabled
-                                                                @endif>
-                                                                Suspend
                                                             </button>
                                                         </form>
                                                         <form
@@ -142,10 +128,10 @@
                                                             method="post">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn @if ($teacher->status == 'inactive') btn-primary
+                                                            <button type="submit" class="btn @if (!$teacher->isActive()) btn-primary
                                                             disabled @else btn-default @endif
                                                                 btn-flat"
-                                                                @if ($teacher->status == 'inactive') disabled
+                                                                @if (!$teacher->isActive()) disabled
                                                                 @endif>
                                                                 Deactivate
                                                             </button>
