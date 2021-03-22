@@ -42,7 +42,8 @@ class ResultController extends Controller
          */
 
         $messages = [
-            'between' => 'The score must be between 0 and 40',
+            'between.ca' => 'The score must be between 0 and 40',
+            'between.exam' => 'The score must be between 0 and 60',
         ];
 
         $validatedData = $request->validate([
