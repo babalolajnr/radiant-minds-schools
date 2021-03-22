@@ -67,6 +67,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::get('/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results')->where('academicSessionName', '.*');
         Route::get('/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('get.term.results')->where('academicSessionName', '.*');
         Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
+        Route::get('/alumni', [StudentController::class, 'getAlumni'])->name('get.alumni');
         Route::post('/store/image/{student}', [StudentController::class, 'uploadImage'])->name('upload.image');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
         Route::patch('/update/{student}', [StudentController::class, 'update'])->name('update');
