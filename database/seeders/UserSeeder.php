@@ -16,16 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'first_name' => 'Abdulqudduus',
-            'last_name' => 'Babalola',
-            'user_type' => 'master',
-            'status' => 'active',
-            'is_verified' => true,
-            'email' => 'babalolajnr@gmail.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('11111111'), // 8 ones
-            'remember_token' => Str::random(10),
-        ]);
+        User::factory()->times(10)->create();
     }
 }
