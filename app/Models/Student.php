@@ -10,7 +10,7 @@ class Student extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function guardian()
@@ -48,5 +48,10 @@ class Student extends Model
         }
 
         return $student;
+    }
+
+    public function isActive()
+    {
+        return $this->is_active == true;
     }
 }
