@@ -35,7 +35,7 @@ class TeacherFactory extends Factory
             'slug' => $slug,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
-            'status' => $this->faker->randomElement(['active', 'inactive', 'suspended']),
+            'is_active' => $this->faker->randomElement([true, false]),
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ];
     }
