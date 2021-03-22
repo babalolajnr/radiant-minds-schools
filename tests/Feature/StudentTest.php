@@ -188,6 +188,13 @@ class StudentTest extends TestCase
         $response->assertStatus(200)->assertViewIs('studentSessionalResults');
     }
 
+    public function test_user_can_get_alumni()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get(route('get.alumni'));
+        $response->assertStatus(200)->assertViewIs('alumni');
+    }
+
     public function test_student_image_upload()
     {
         $this->withoutExceptionHandling();
