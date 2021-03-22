@@ -23,12 +23,14 @@ class TeacherTest extends TestCase
 
     public function test_user_can_store_a_new_teacher()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $response = $this->actingAs($user)->post(route('teacher.store'), [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
             'phone' => $this->faker->e164PhoneNumber,
+            'sex' => 'M',
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
         ]);
         $response->assertStatus(302)->assertSessionHas('success');
@@ -36,6 +38,7 @@ class TeacherTest extends TestCase
 
     public function test_a_single_teacher_can_be_viewed()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $teacher = Teacher::factory()->create();
         $response = $this->actingAs($user)->get(route('teacher.show', ['teacher' => $teacher]));
@@ -44,6 +47,7 @@ class TeacherTest extends TestCase
 
     public function test_user_can_update_teacher()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $teacher = Teacher::factory()->create();
         $response = $this->actingAs($user)->patch(route('teacher.update', ['teacher' => $teacher]), [
@@ -64,18 +68,10 @@ class TeacherTest extends TestCase
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
-    public function test_user_can_suspend_teacher()
-    {
-        $user = User::factory()->create();
-        $teacher = Teacher::factory()->create(['status' => 'active']);
-        $response = $this->actingAs($user)->patch(route('teacher.suspend', ['teacher' => $teacher]));
-        $response->assertStatus(302)->assertSessionHas('success');
-    }
-
     public function test_user_can_activate_teacher()
     {
         $user = User::factory()->create();
-        $teacher = Teacher::factory()->create(['status' => 'suspended']);
+        $teacher = Teacher::factory()->create(['is_active' => false]);
         $response = $this->actingAs($user)->patch(route('teacher.activate', ['teacher' => $teacher]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
@@ -84,7 +80,7 @@ class TeacherTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
-        $teacher = Teacher::factory()->create(['status' => 'active']);
+        $teacher = Teacher::factory()->create(['is_active' => true]);
         $response = $this->actingAs($user)->patch(route('teacher.deactivate', ['teacher' => $teacher]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
