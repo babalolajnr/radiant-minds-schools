@@ -24,7 +24,7 @@
 - f̶i̶x̶ s̶t̶o̶r̶e̶ P̶D̶ f̶o̶r̶m̶ a̶c̶t̶i̶o̶n̶
 - c̶r̶e̶a̶t̶e̶ T̶e̶a̶c̶h̶e̶r̶s̶ v̶i̶e̶w̶
 - a̶d̶d̶ s̶l̶u̶g̶ t̶o̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶
-- add assign teacher method to classroom controller
+- a̶d̶d̶ a̶s̶s̶i̶g̶n̶ t̶e̶a̶c̶h̶e̶r̶ m̶e̶t̶h̶o̶d̶ t̶o̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ c̶o̶n̶t̶r̶o̶l̶l̶e̶r̶
 - r̶e̶f̶a̶c̶t̶o̶r̶ s̶t̶u̶d̶e̶n̶t̶ p̶r̶o̶m̶o̶t̶i̶o̶n̶ a̶n̶d̶ d̶e̶m̶o̶t̶i̶o̶n̶ m̶e̶t̶h̶o̶d̶s̶
 - a̶d̶d̶ a̶f̶f̶e̶c̶t̶i̶v̶e̶ d̶o̶m̶a̶i̶n̶
 - add attendance
@@ -36,3 +36,4 @@
 - r̶e̶f̶a̶c̶t̶o̶r̶ t̶e̶s̶t̶s̶
 - create make master user command unit test
 - create AD view
+- fix create result error message
