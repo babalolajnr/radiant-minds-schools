@@ -48,7 +48,7 @@ class ADTypeController extends Controller
         $data = array_merge($validatedData, $slug);
 
         $adType->update($data);
-        return redirect()->route('pd-type.index')->with('success', 'Affective domain type updated');
+        return redirect()->route('ad-type.index')->with('success', 'Affective domain type updated');
     }
 
     public function destroy(ADType $adType)
