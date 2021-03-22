@@ -96,6 +96,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('student.get.alumni') }}" class="nav-link">
+                                    <span class="nav-icon"><i class="fa fa-history pr-2 text-sm"></i><i
+                                            class="fas fa-user-graduate"></i></span>
+                                    <p>Alumni</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('pd-type.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-biking"></i>
                                     <p>Pychomotor domains</p>
