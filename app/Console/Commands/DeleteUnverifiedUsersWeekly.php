@@ -50,7 +50,7 @@ class DeleteUnverifiedUsersWeekly extends Command
 
         $this->info("{$users->count()} unverified user(s) fetched");
 
-        if ($this->confirm("Are you sure you want to delete all users fetched?", false)) {
+        if ($this->confirm("Are you sure you want to delete all users fetched?")) {
             foreach ($users->cursor() as $user) {
                 $this->info("Deleting all {$users->count()} users...");
 
