@@ -50,42 +50,21 @@
                                         <label for="status" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
-                                                <form
-                                                    action="{{ route('student.activate', ['student' => $student]) }}"
+                                                <form action="@if ($student->isActive()) {{ route('student.deactivate', ['student' => $student]) }}
+                                                @else
+                                                    {{ route('student.activate', ['student' => $student]) }} @endif"
                                                     method="post">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="btn @if ($student->status == 'active') btn-primary
-                                                    disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'active') disabled
-                                                        @endif>
-                                                        Activate
+                                                    <button type="submit" class="btn @if ($student->isActive()) btn-danger
+                                                    @else btn-success @endif btn-flat">
+                                                        @if ($student->isActive())
+                                                            Deactivate
+                                                        @else
+                                                            Activate
+                                                        @endif
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('student.suspend', ['student' => $student]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn @if ($student->status == 'suspended') btn-primary
-                                                    disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'suspended') disabled
-                                                        @endif>
-                                                        Suspend
-                                                    </button>
-                                                </form>
-                                                <form
-                                                    action="{{ route('student.deactivate', ['student' => $student]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn @if ($student->status == 'inactive') btn-primary
-                                                    disabled @else btn-default @endif btn-flat"
-                                                        @if ($student->status == 'inactive') disabled
-                                                        @endif>
-                                                        Deactivate
-                                                    </button>
-                                                </form>
-
                                             </div>
                                         </div>
                                         {{-- /Status --}}
@@ -146,7 +125,7 @@
         <!-- /.content -->
 
     </div>
-    
+
     {{-- choose term modal for PD --}}
     <div class="modal fade" id="chooseTermPD">
         <div class="modal-dialog">
