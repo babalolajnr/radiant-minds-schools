@@ -19,6 +19,7 @@ class DeleteUnverifiedUsersWeekly extends TestCase
     {
         $this->withoutExceptionHandling();
         User::factory()->create([
+            'is_verified' => false,
             'created_at' => today()->subWeek()
         ]);
 
@@ -31,6 +32,7 @@ class DeleteUnverifiedUsersWeekly extends TestCase
     {
         $this->withoutExceptionHandling();
         User::factory()->create([
+            'is_verified' => false,
             'created_at' => today()->subWeek()
         ]);
 
