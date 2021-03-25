@@ -14,6 +14,10 @@ class TeacherSeeder extends Seeder
      */
     public function run()
     {
-        Teacher::factory()->times(10)->create();
+        $teachers = count(Teacher::all());
+        $seedNumber = 50;
+        if ($teachers < $seedNumber) {
+            Teacher::factory()->times($seedNumber - $teachers)->create();
+        }
     }
 }
