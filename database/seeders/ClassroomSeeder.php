@@ -17,7 +17,10 @@ class ClassroomSeeder extends Seeder
      */
     public function run()
     {
-        $classes = ClassroomFactory::$classes;
-        Classroom::factory()->times(count($classes))->create();
+        $classrooms = Classroom::all();
+        if (count($classrooms) < 1) {
+            $classes = ClassroomFactory::$classes;
+            Classroom::factory()->times(count($classes))->create();
+        }
     }
 }
