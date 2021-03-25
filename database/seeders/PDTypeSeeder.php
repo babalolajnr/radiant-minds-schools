@@ -15,6 +15,9 @@ class PDTypeSeeder extends Seeder
      */
     public function run()
     {
-        PDType::factory()->times(count(PDTypeFactory::$pdTypes))->create();
+        $pdTypes = PDType::all();
+        if (count($pdTypes) < 1) {
+            PDType::factory()->times(count(PDTypeFactory::$pdTypes))->create();
+        }
     }
 }
