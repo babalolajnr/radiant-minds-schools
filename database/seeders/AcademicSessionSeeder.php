@@ -16,13 +16,18 @@ class AcademicSessionSeeder extends Seeder
     public function run()
     {
 
-        $academicSessions = AcademicSessionFactory::$academicSessions;
-        AcademicSession::factory()->times(count($academicSessions))->create();
+        $academicSessions = AcademicSession::all();
+        if (count($academicSessions) < 1) {
+            
+            $academicSessions = AcademicSessionFactory::$academicSessions;
 
-        //seed current academic session
-        $academicSession = AcademicSession::inRandomOrder()->first();
-        AcademicSession::where('current_session', 1)->update(['current_session' => null]);
-        $academicSession->current_session = 1;
-        $academicSession->save();
+            AcademicSession::factory()->times(count($academicSessions))->create();
+
+            //seed current academic session
+            $academicSession = AcademicSession::inRandomOrder()->first();
+            AcademicSession::where('current_session', 1)->update(['current_session' => null]);
+            $academicSession->current_session = 1;
+            $academicSession->save();
+        }
     }
 }
