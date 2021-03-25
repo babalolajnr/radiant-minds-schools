@@ -15,6 +15,9 @@ class TermSeeder extends Seeder
      */
     public function run()
     {
-        Term::factory()->times(count(TermFactory::$terms))->create();
+        $terms = Term::all();
+        if (count($terms) < 1) {
+            Term::factory()->times(count(TermFactory::$terms))->create();
+        }
     }
 }
