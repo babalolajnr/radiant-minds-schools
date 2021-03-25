@@ -19,35 +19,39 @@ class ADSeeder extends Seeder
      */
     public function run()
     {
-        $allRecords = $this->allRecords();
+        $ads = count(AD::all());
+        $seedNumber = 2000;
+        if ($ads < $seedNumber) {
+            $allRecords = $this->allRecords();
 
-        //generate 2000 random results
-        for ($i = 0; $i < 1500; $i++) {
-            $values = $this->getRandomValues($allRecords);
-
-            //get record where subject_id,term_id,student_id and academic_session_id exists 
-            $record = AD::where('a_d_type_id', $values['adType']->id)
-                ->where('student_id', $values['student']->id)
-                ->where('term_id', $values['term']->id)
-                ->where('academic_session_id', $values['academicSession']->id);
-
-            while ($record->exists()) {
+            //generate 2000 random results
+            for ($i = 0; $i < ($seedNumber - $ads); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
+                //get record where subject_id,term_id,student_id and academic_session_id exists 
                 $record = AD::where('a_d_type_id', $values['adType']->id)
                     ->where('student_id', $values['student']->id)
                     ->where('term_id', $values['term']->id)
                     ->where('academic_session_id', $values['academicSession']->id);
-            }
 
-            $value = mt_rand(1, 5);
-            AD::create([
-                'term_id' => $values['term']->id,
-                'academic_session_id' => $values['academicSession']->id,
-                'student_id' => $values['student']->id,
-                'value' => $value,
-                'a_d_type_id' => $values['adType']->id
-            ]);
+                while ($record->exists()) {
+                    $values = $this->getRandomValues($allRecords);
+
+                    $record = AD::where('a_d_type_id', $values['adType']->id)
+                        ->where('student_id', $values['student']->id)
+                        ->where('term_id', $values['term']->id)
+                        ->where('academic_session_id', $values['academicSession']->id);
+                }
+
+                $value = mt_rand(1, 5);
+                AD::create([
+                    'term_id' => $values['term']->id,
+                    'academic_session_id' => $values['academicSession']->id,
+                    'student_id' => $values['student']->id,
+                    'value' => $value,
+                    'a_d_type_id' => $values['adType']->id
+                ]);
+            }
         }
     }
 
