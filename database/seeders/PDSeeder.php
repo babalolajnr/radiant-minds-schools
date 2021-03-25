@@ -19,34 +19,39 @@ class PDSeeder extends Seeder
      */
     public function run()
     {
-        $allRecords = $this->allRecords();
+        $pds = count(PD::all());
+        $seedNumber = 2000;
 
-        //generate 2000 random results
-        for ($i = 0; $i < 1500; $i++) {
-            $values = $this->getRandomValues($allRecords);
+        if ($pds < $seedNumber) {
+            $allRecords = $this->allRecords();
 
-            //get record where subject_id,term_id,student_id and academic_session_id exists 
-            $record = PD::where('p_d_type_id', $values['pdType']->id)
-                ->where('student_id', $values['student']->id)
-                ->where('term_id', $values['term']->id)
-                ->where('academic_session_id', $values['academicSession']->id);
-
-            while ($record->exists()) {
+            //generate 2000 random results
+            for ($i = 0; $i < ($seedNumber - $pds); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
+                //get record where subject_id,term_id,student_id and academic_session_id exists 
                 $record = PD::where('p_d_type_id', $values['pdType']->id)
                     ->where('student_id', $values['student']->id)
                     ->where('term_id', $values['term']->id)
                     ->where('academic_session_id', $values['academicSession']->id);
-            }
 
-            PD::create([
-                'term_id' => $values['term']->id,
-                'academic_session_id' => $values['academicSession']->id,
-                'student_id' => $values['student']->id,
-                'value' => mt_rand(1,5),
-                'p_d_type_id' => $values['pdType']->id
-            ]);
+                while ($record->exists()) {
+                    $values = $this->getRandomValues($allRecords);
+
+                    $record = PD::where('p_d_type_id', $values['pdType']->id)
+                        ->where('student_id', $values['student']->id)
+                        ->where('term_id', $values['term']->id)
+                        ->where('academic_session_id', $values['academicSession']->id);
+                }
+
+                PD::create([
+                    'term_id' => $values['term']->id,
+                    'academic_session_id' => $values['academicSession']->id,
+                    'student_id' => $values['student']->id,
+                    'value' => mt_rand(1, 5),
+                    'p_d_type_id' => $values['pdType']->id
+                ]);
+            }
         }
     }
 
