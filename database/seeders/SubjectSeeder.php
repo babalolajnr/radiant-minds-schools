@@ -15,6 +15,9 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-        Subject::factory()->times(count(SubjectFactory::$subjects))->create();
+        $subjects = Subject::all();
+        if (count($subjects) < 1) {
+            Subject::factory()->times(count(SubjectFactory::$subjects))->create();
+        }
     }
 }
