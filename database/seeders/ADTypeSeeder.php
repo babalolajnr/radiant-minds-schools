@@ -15,6 +15,9 @@ class ADTypeSeeder extends Seeder
      */
     public function run()
     {
-        ADType::factory()->times(count(ADTypeFactory::$adTypes))->create();
+        $adTypes = ADType::all();
+        if (count($adTypes) < 1) {
+            ADType::factory()->times(count(ADTypeFactory::$adTypes))->create();
+        }
     }
 }
