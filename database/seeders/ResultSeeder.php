@@ -19,39 +19,44 @@ class ResultSeeder extends Seeder
      */
     public function run()
     {
-        $allRecords = $this->allRecords();
+        $results = count(Result::all());
+        $seedNumber = 2000;
+        
+        if ($results < $seedNumber) {
+            $allRecords = $this->allRecords();
 
-        //generate 2000 random results
-        for ($i = 0; $i < 2000; $i++) {
-            $values = $this->getRandomValues($allRecords);
-
-            //get record where subject_id,term_id,student_id and academic_session_id exists 
-            $record = Result::where('subject_id', $values['subject']->id)
-                ->where('student_id', $values['student']->id)
-                ->where('term_id', $values['term']->id)
-                ->where('academic_session_id', $values['academicSession']->id);
-
-            while ($record->exists()) {
+            //generate 2000 random results
+            for ($i = 0; $i < ($seedNumber - $results); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
+                //get record where subject_id,term_id,student_id and academic_session_id exists 
                 $record = Result::where('subject_id', $values['subject']->id)
                     ->where('student_id', $values['student']->id)
                     ->where('term_id', $values['term']->id)
                     ->where('academic_session_id', $values['academicSession']->id);
+
+                while ($record->exists()) {
+                    $values = $this->getRandomValues($allRecords);
+
+                    $record = Result::where('subject_id', $values['subject']->id)
+                        ->where('student_id', $values['student']->id)
+                        ->where('term_id', $values['term']->id)
+                        ->where('academic_session_id', $values['academicSession']->id);
+                }
+
+                $ca = mt_rand(0, 40);
+                $exam = mt_rand(0, 60);
+
+                Result::create([
+                    'term_id' => $values['term']->id,
+                    'academic_session_id' => $values['academicSession']->id,
+                    'subject_id' => $values['subject']->id,
+                    'student_id' => $values['student']->id,
+                    'ca' => $ca,
+                    'exam' => $exam,
+                    'total' => $exam + $ca
+                ]);
             }
-
-            $ca = mt_rand(0, 40);
-            $exam = mt_rand(0, 60);
-
-            Result::create([
-                'term_id' => $values['term']->id,
-                'academic_session_id' => $values['academicSession']->id,
-                'subject_id' => $values['subject']->id,
-                'student_id' => $values['student']->id,
-                'ca' => $ca,
-                'exam' => $exam,
-                'total' => $exam + $ca
-            ]);
         }
     }
 
