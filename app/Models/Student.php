@@ -54,4 +54,16 @@ class Student extends Model
     {
         return $this->is_active == true;
     }
+
+    public static function getAllStudents()
+    {
+        $students = Student::whereNull('graduated_at')->get();
+        return $students;
+    }
+
+    public static function getAlumni()
+    {
+        $alumni = Student::whereNotNull('graduated_at')->get();
+        return $alumni;
+    }
 }
