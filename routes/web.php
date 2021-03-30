@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\ADController;
 use App\Http\Controllers\ADTypeController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
@@ -167,6 +168,12 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::post('/store', [ADTypeController::class, 'store'])->name('store');
         Route::patch('/update/{adType}', [ADTypeController::class, 'update'])->name('update');
         Route::delete('/delete/{adType}', [ADTypeController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('attendance')->name('attendance.')->group(function () {
+        //Attendance Domain Routes
+        Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [AttendanceController::class, 'create'])->name('create')->where('academicSessionName', '.*');
+        Route::post('/store/{student}/{termId}/{academicSessionId?}', [AttendanceController::class, 'store'])->name('store');
     });
 });
 
