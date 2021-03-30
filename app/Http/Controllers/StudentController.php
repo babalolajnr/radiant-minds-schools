@@ -61,7 +61,8 @@ class StudentController extends Controller
         return view('students', compact('students', 'academicSessions', 'terms'));
     }
 
-    public function getAlumni(){
+    public function getAlumni()
+    {
         $students = Student::whereNotNull('graduated_at')->get();
         return view('alumni', compact('students'));
     }
@@ -358,10 +359,17 @@ class StudentController extends Controller
         $classRank = $student->classroom->rank;
         $lowestClassRank = Classroom::min('rank');
 
+        //if the student is not in the lowest class then demote the student
         if ($classRank !== $lowestClassRank) {
             $newClassRank = $classRank - 1;
             $newClassId = Classroom::where('rank', $newClassRank)->first()->id;
             $student->classroom_id = $newClassId;
+
+            // if student has graduated, 'ungraduate' the student
+            if (!is_null($student->graduated_at)) {
+                $student->graduated_at = null;
+            }
+
             $student->save();
 
             return back()->with('success', 'Student Demoted!');
@@ -383,5 +391,14 @@ class StudentController extends Controller
         $student->restore();
 
         return back()->with('success', 'Student restored!');
+    }
+
+    public function graduate(Student $student)
+    {
+        $student->graduated_at = now();
+        $student->is_active = false;
+        $student->save();
+
+        return back()->with('success', 'Student Graduated!');
     }
 }
