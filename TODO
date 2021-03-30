@@ -27,7 +27,7 @@
 - a̶d̶d̶ a̶s̶s̶i̶g̶n̶ t̶e̶a̶c̶h̶e̶r̶ m̶e̶t̶h̶o̶d̶ t̶o̶ c̶l̶a̶s̶s̶r̶o̶o̶m̶ c̶o̶n̶t̶r̶o̶l̶l̶e̶r̶
 - r̶e̶f̶a̶c̶t̶o̶r̶ s̶t̶u̶d̶e̶n̶t̶ p̶r̶o̶m̶o̶t̶i̶o̶n̶ a̶n̶d̶ d̶e̶m̶o̶t̶i̶o̶n̶ m̶e̶t̶h̶o̶d̶s̶
 - a̶d̶d̶ a̶f̶f̶e̶c̶t̶i̶v̶e̶ d̶o̶m̶a̶i̶n̶
-- add attendance
+- a̶d̶d̶ a̶t̶t̶e̶n̶d̶a̶n̶c̶e̶
 - r̶e̶f̶a̶c̶t̶o̶r̶ r̶e̶g̶i̶s̶t̶r̶a̶t̶i̶o̶n̶ s̶y̶s̶t̶e̶m̶
 - add student graduation action
 - r̶e̶m̶o̶v̶e̶ s̶u̶s̶p̶e̶n̶d̶ a̶c̶t̶i̶o̶n̶ f̶r̶o̶m̶ s̶t̶u̶d̶e̶n̶t̶ a̶n̶d̶ t̶e̶a̶c̶h̶e̶r̶s̶
@@ -38,4 +38,6 @@
 - c̶r̶e̶a̶t̶e̶ A̶D̶ v̶i̶e̶w̶
 - f̶i̶x̶ c̶r̶e̶a̶t̶e̶ r̶e̶s̶u̶l̶t̶ e̶r̶r̶o̶r̶ m̶e̶s̶s̶a̶g̶e̶
 - add graduate button to highest class students
-- Optimize term selection in student settings
+- O̶p̶t̶i̶m̶i̶z̶e̶ t̶e̶r̶m̶ s̶e̶l̶e̶c̶t̶i̶o̶n̶ i̶n̶ s̶t̶u̶d̶e̶n̶t̶ s̶e̶t̶t̶i̶n̶g̶s̶
+- add tests for attendance
+- add test for student graduate method
