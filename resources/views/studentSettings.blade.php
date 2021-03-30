@@ -57,7 +57,9 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn @if ($student->isActive()) btn-danger
-                                                    @else btn-success @endif btn-flat">
+                                                        @else btn-success @endif btn-flat" @if ($student->hasGraduated())
+                                                            disabled
+                                                        @endif>
                                                         @if ($student->isActive())
                                                             Deactivate
                                                         @else
