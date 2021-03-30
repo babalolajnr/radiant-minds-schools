@@ -24,6 +24,7 @@ class AttendanceController extends Controller
         $attendance = $student->attendances()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
 
         if ($attendance->exists()) {
+            $attendance = $attendance->first();
             return view('createAttendance', compact('attendance', 'academicSession', 'student', 'term'));
         }
 
@@ -36,20 +37,26 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Student $student, $termId, $academicSessionId = null)
     {
-        
-    }
+        $term = Term::findOrFail($termId);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Attendance $attendance)
-    {
-        //
+        if (!is_null($academicSessionId)) {
+            $academicSession = AcademicSession::findOrFail($academicSessionId);
+        } else {
+            $academicSession = AcademicSession::currentAcademicSession();
+        }
+
+        $data = $request->validate([
+            'value' => ['required', 'numeric']
+        ]);
+
+        $student->attendances()->updateOrCreate([
+            'academic_session_id' => $academicSession->id,
+            'term_id' => $term->id
+        ], ['value' => $data['value']]);
+
+        return back()->with('success', 'Record Added!');
     }
 
     /**
