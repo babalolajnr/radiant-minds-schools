@@ -115,6 +115,19 @@
                                         </div>
                                     </div>
                                     {{-- /AD --}}
+
+                                    {{-- Attendance --}}
+                                    <div class="form-group row">
+                                        <label for="class" class="col-sm-2 col-form-label">Attendance
+                                            ({{ $currentAcademicSession->name }})</label>
+                                        <div class="col-sm-6">
+                                            <button type="button" onclick="showChooseTermModalAttendance()"
+                                                class="btn btn-success btn-flat">
+                                                Create/Update Attendance
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {{-- /Attendance --}}
                                 </div>
                             </div>
                         </div>
@@ -165,6 +178,33 @@
                 <div class="modal-body">
                     @foreach ($terms as $term)
                         <a href="{{ route('ad.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
+                            <button type="button" class="btn btn-primary">{{ $term->name }}</button>
+                        </a>
+                    @endforeach
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    {{-- choose term modal for Attendance --}}
+    <div class="modal fade" id="chooseTermAttendance">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Choose Term</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach ($terms as $term)
+                        <a
+                            href="{{ route('attendance.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
                             <button type="button" class="btn btn-primary">{{ $term->name }}</button>
                         </a>
                     @endforeach
@@ -278,6 +318,11 @@
             // displays term modal for AD
             function showChooseTermModalAD() {
                 $('#chooseTermAD').modal('show')
+            }
+
+            // displays term modal for Attendance
+            function showChooseTermModalAttendance() {
+                $('#chooseTermAttendance').modal('show')
             }
 
         </script>
