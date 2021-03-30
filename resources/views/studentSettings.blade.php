@@ -71,13 +71,22 @@
                                     </div>
                                     {{-- class --}}
                                     <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Class</label>
+                                        <label for="class" class="col-sm-2 col-form-label">Class
+                                            ({{ $student->classroom->name }})</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
-                                                <button type="button"
-                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}', {{ $student }}, 'promote')"
-                                                    class="btn btn-success btn-flat">
-                                                    Promote
+                                                <button type="button" onclick="@if ($student->canGraduate()) changeClassConfirmationModal('{{ route('student.graduate', ['student' => $student]) }}',
+                                                {{ $student }}, 'graduate')@else
+                                                    changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}',
+                                                    {{ $student }}, 'promote') @endif"
+                                                    class="btn btn-success btn-flat" @if ($student->hasGraduated())
+                                                        disabled
+                                                    @endif>
+                                                    @if ($student->canGraduate())
+                                                        Graduate
+                                                    @else
+                                                        Promote
+                                                    @endif
                                                 </button>
 
                                                 <button type="button"
@@ -96,7 +105,7 @@
                                             Domain({{ $currentAcademicSession->name }})</label>
                                         <div class="col-sm-6">
                                             <button type="button" onclick="showChooseTermModalPD()"
-                                                class="btn btn-info btn-flat">
+                                                class="btn btn-default btn-flat">
                                                 Create/Update Psychomotor domains
                                             </button>
                                         </div>
@@ -109,7 +118,7 @@
                                             Domain({{ $currentAcademicSession->name }})</label>
                                         <div class="col-sm-6">
                                             <button type="button" onclick="showChooseTermModalAD()"
-                                                class="btn btn-success btn-flat">
+                                                class="btn btn-default btn-flat">
                                                 Create/Update Affective domains
                                             </button>
                                         </div>
@@ -122,7 +131,7 @@
                                             ({{ $currentAcademicSession->name }})</label>
                                         <div class="col-sm-6">
                                             <button type="button" onclick="showChooseTermModalAttendance()"
-                                                class="btn btn-success btn-flat">
+                                                class="btn btn-default btn-flat">
                                                 Create/Update Attendance
                                             </button>
                                         </div>
@@ -152,12 +161,12 @@
                 <div class="modal-body">
                     @foreach ($terms as $term)
                         <a href="{{ route('pd.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
-                            <button type="button" class="btn btn-primary">{{ $term->name }}</button>
+                            <button type="button" class="btn btn-default">{{ $term->name }}</button>
                         </a>
                     @endforeach
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -178,12 +187,12 @@
                 <div class="modal-body">
                     @foreach ($terms as $term)
                         <a href="{{ route('ad.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
-                            <button type="button" class="btn btn-primary">{{ $term->name }}</button>
+                            <button type="button" class="btn btn-default">{{ $term->name }}</button>
                         </a>
                     @endforeach
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -205,12 +214,12 @@
                     @foreach ($terms as $term)
                         <a
                             href="{{ route('attendance.create', ['student' => $student, 'termSlug' => $term->slug]) }}">
-                            <button type="button" class="btn btn-primary">{{ $term->name }}</button>
+                            <button type="button" class="btn btn-default">{{ $term->name }}</button>
                         </a>
                     @endforeach
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -237,7 +246,7 @@
                         @method('PATCH')
                         <button type="submit" class="btn btn-danger">Yes</button>
                     </form>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -280,6 +289,8 @@
                 if (action == 'promote') {
                     $('#confirmationModalStudentName').html(action + ' ' + studentName)
                 } else if (action == 'demote') {
+                    $('#confirmationModalStudentName').html(action + ' ' + studentName)
+                } else {
                     $('#confirmationModalStudentName').html(action + ' ' + studentName)
                 }
 
