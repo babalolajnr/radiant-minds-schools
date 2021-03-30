@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\AcademicSession;
 use App\Models\Attendance;
+use App\Models\Student;
+use App\Models\Term;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttendanceFactory extends Factory
@@ -22,7 +25,10 @@ class AttendanceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'student_id' => Student::factory()->create()->id,
+            'value' => mt_rand(1, 100),
+            'academic_session_id' => AcademicSession::factory()->create()->id,
+            'term_id' => Term::factory()->create()->id
         ];
     }
 }
