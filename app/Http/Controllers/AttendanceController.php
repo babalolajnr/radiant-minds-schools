@@ -2,29 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicSession;
 use App\Models\Attendance;
+use App\Models\Student;
+use App\Models\Term;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student, $termSlug, $academicSessionName = null)
     {
-        //
+        $term = Term::where('slug', $termSlug)->firstOrFail();
+        $academicSession = is_null($academicSessionName) ? AcademicSession::currentAcademicSession() : AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $attendance = $student->attendances()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
+
+        if ($attendance->exists()) {
+            return view('createAttendance', compact('attendance', 'academicSession', 'student', 'term'));
+        }
+
+        return view('createAttendance', compact('academicSession', 'student', 'term'));
     }
 
     /**
@@ -35,7 +38,7 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
