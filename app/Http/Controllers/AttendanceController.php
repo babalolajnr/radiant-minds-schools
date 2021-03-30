@@ -32,12 +32,12 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store or update attendance.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Student $student, $termId, $academicSessionId = null)
+    public function storeOrUpdate(Request $request, Student $student, $termId, $academicSessionId = null)
     {
         $term = Term::findOrFail($termId);
 
@@ -57,29 +57,6 @@ class AttendanceController extends Controller
         ], ['value' => $data['value']]);
 
         return back()->with('success', 'Record Added!');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Attendance $attendance)
-    {
-        //
     }
 
     /**
