@@ -71,4 +71,19 @@ class Student extends Model
         $alumni = Student::whereNotNull('graduated_at')->get();
         return $alumni;
     }
+
+    //check if student is in the highest class
+    public function canGraduate()
+    {
+        $classRank = $this->classroom->rank;
+        $highestClassRank = Classroom::max('rank');
+
+        return $classRank == $highestClassRank;
+    }
+
+    // check if student has graduated
+    public function hasGraduated()
+    {
+        return $this->graduated_at !== null;
+    }
 }
