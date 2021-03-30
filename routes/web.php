@@ -173,7 +173,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('attendance')->name('attendance.')->group(function () {
         //Attendance Domain Routes
         Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [AttendanceController::class, 'create'])->name('create')->where('academicSessionName', '.*');
-        Route::post('/store/{student}/{termId}/{academicSessionId?}', [AttendanceController::class, 'store'])->name('store');
+        Route::post('/store/{student}/{termId}/{academicSessionId?}', [AttendanceController::class, 'storeOrUpdate'])->name('store');
     });
 });
 
