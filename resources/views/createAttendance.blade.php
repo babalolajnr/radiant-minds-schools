@@ -54,7 +54,7 @@
                                                 {{ $academicSession->name }}</span></label>
                                         <input type="number" name="value"
                                             class="form-control @error('value') is-invalid @enderror"
-                                            value="{{ old('value') }}" required>
+                                            value="{{ old('value', $attendance->value) }}" required>
                                         @error('value')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
