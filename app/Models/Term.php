@@ -19,4 +19,9 @@ class Term extends Model
     {
         return $this->hasMany(PD::class);
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }
