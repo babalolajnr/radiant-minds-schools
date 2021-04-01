@@ -124,6 +124,7 @@ class ResultController extends Controller
         $currentDate = now()->year;
         $yearOfBirth = Carbon::createFromFormat('Y-m-d', $student->date_of_birth)->format('Y');
         $age = $currentDate - $yearOfBirth;
+        $numberOfTimesPresent = $student->attendances()->where('term_id', $term->id)->where('academic_session_id', $academicSession->id)->first();
 
         //Get class score statistics
         foreach ($results as $key => $result) {
@@ -181,7 +182,8 @@ class ResultController extends Controller
             'pds',
             'pdTypes',
             'ads',
-            'adTypes'
+            'adTypes',
+            'numberOfTimesPresent'
         ));
     }
 
