@@ -10,7 +10,7 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
                 <i class="fas fa-user text-white"></i>
-                <a href="#" class="pl-2">{{ Auth::user()->first_name }}</a>
+                <a href="{{ route('user.show', ['user' => Auth::user()]) }}" class="pl-2">{{ Auth::user()->first_name }}</a>
             </div>
 
             <!-- SidebarSearch Form -->
