@@ -17,6 +17,13 @@ use  Intervention\Image\Facades\Image;
 class StudentController extends Controller
 {
 
+     /**
+     * @return array
+     * @param mixed $validatedData
+     * 
+     * returns student info after it been extracted from
+     * the validated data
+     */
     private function studentInfo($validatedData)
     {
         $classroom =  Classroom::where('name', $validatedData['classroom'])->first();
@@ -36,6 +43,12 @@ class StudentController extends Controller
         ];
     }
 
+    /**
+     * @return array
+     * @param Student $student
+     * 
+     * return student validation rules
+     */
     private function studentValidationRules($student = null)
     {
         return [
