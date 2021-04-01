@@ -94,7 +94,13 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $dashboardData['academicSession']->name }}</h3>
+                                <h3>
+                                    @if ($dashboardData['academicSession'] !== null)
+                                        {{ $dashboardData['academicSession']->name }}
+                                    @else
+                                        Not Set
+                                    @endif
+                                </h3>
                                 <p class="font-semibold">Academic Session</p>
                             </div>
                             <div class="icon">
