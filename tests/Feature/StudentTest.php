@@ -159,6 +159,15 @@ class StudentTest extends TestCase
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 
+    public function test_student_can_be_graduated()
+    {
+
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+        $response = $this->actingAs($user)->patch(route('student.graduate', ['student' => $student]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
     public function test_student_can_be_deleted()
     {
 
@@ -191,7 +200,7 @@ class StudentTest extends TestCase
     public function test_user_can_get_alumni()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get(route('get.alumni'));
+        $response = $this->actingAs($user)->get(route('student.get.alumni'));
         $response->assertStatus(200)->assertViewIs('alumni');
     }
 
