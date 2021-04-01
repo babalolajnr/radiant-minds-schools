@@ -51,19 +51,25 @@
                                     <div>
                                         <a
                                             href="{{ route('result.show.performance', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
-                                            <button type="button" class="btn btn-info">Performance Report</button>
+                                            <button type="button" class="btn btn-default">Performance Report</button>
                                         </a>
                                         <a
                                             href="{{ route('pd.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
-                                            <button type="button" class="btn btn-primary"
-                                                title="Create or Update Pychomotor domain for the result's academic session and term">Create/Update
+                                            <button type="button" class="btn btn-default"
+                                                title="Create or update Pychomotor domain for the result's academic session and term">Create/Update
                                                 PD</button>
                                         </a>
                                         <a
                                             href="{{ route('ad.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
-                                            <button type="button" class="btn btn-success"
-                                                title="Create or Update Affective domain for the result's academic session and term">Create/Update
+                                            <button type="button" class="btn btn-default"
+                                                title="Create or update Affective domain for the result's academic session and term">Create/Update
                                                 AD</button>
+                                        </a>
+                                        <a
+                                            href="{{ route('attendance.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            <button type="button" class="btn btn-default"
+                                                title="Create or update attendance record">Create/Update
+                                                Attendance</button>
                                         </a>
                                     </div>
                                 </div>
@@ -97,15 +103,14 @@
                                                     <td>{{ round($averageScores[$result->subject->name], 2) }}
                                                     </td>
                                                     @if ($result->total <= 39)
-                                                        <td class="text-red-700">F</td>
-                                                    @elseif($result->total >= 40 && $result->total <= 49) <td
-                                                            class="text-yellow-500">D</td>
-                                                        @elseif($result->total >= 50 && $result->total <= 59) <td
-                                                                class="text-green-300">C</td>
+                                                        <td>F</td>
+                                                    @elseif($result->total >= 40 && $result->total <= 49) <td>D</td>
+                                                        @elseif($result->total >= 50 && $result->total <= 59) <td>C
+                                                                </td>
                                                             @elseif($result->total >= 60 && $result->total <= 69)
-                                                                    <td class="text-green-600">B</td>
+                                                                    <td>B</td>
                                                                 @elseif($result->total >= 70 && $result->total <=
-                                                                        100) <td class="text-green-900">A</td>
+                                                                        100) <td>A</td>
                                                                     @else
                                                                         <td></td>
                                                     @endif
