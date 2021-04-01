@@ -53,62 +53,63 @@
                                                 class="text-lg">{{ $term->name }}
                                                 {{ $academicSession->name }}</span></label>
                                         <input type="number" name="value"
-                                            class="form-control @error('value') is-invalid @enderror" value="@isset($attendance) {{ old('value', $attendance->value) }}@else
-                                        {{ old('value') }} @endisset" required>
-                                    @error('value')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                            class="form-control @error('value') is-invalid @enderror"
+                                            value="@isset($attendance){{ old('value', $attendance->value) }}@else{{ old('value') }}@endisset"
+                                                required>
+                                            @error('value')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            </div>
-    </section>
-    <!-- /.content -->
-</div>
-<x-slot name="scripts">
-    <!-- Toastr -->
-    <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
-    <!-- Select2 -->
-    <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script>
-        $(function() {
-            let Success = document.getElementById('success')
-            let Error = document.getElementById('error')
+            </section>
+            <!-- /.content -->
+        </div>
+        <x-slot name="scripts">
+            <!-- Toastr -->
+            <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
+            <!-- Select2 -->
+            <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
+            <!-- AdminLTE App -->
+            <script>
+                $(function() {
+                    let Success = document.getElementById('success')
+                    let Error = document.getElementById('error')
 
-            // if data-success = 'true' display alert
-            if (Success.dataset.success == 'true')
-                $(document).Toasts('create', {
-                    class: 'bg-success',
-                    title: 'Success',
-                    subtitle: 'Close',
-                    body: JSON.parse(Success.dataset.successMessage)
+                    // if data-success = 'true' display alert
+                    if (Success.dataset.success == 'true')
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Success',
+                            subtitle: 'Close',
+                            body: JSON.parse(Success.dataset.successMessage)
+                        })
+
+                    if (Error.dataset.error == 'true')
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Error',
+                            subtitle: 'Close',
+                            body: JSON.parse(Error.dataset.errorMessage)
+                        })
+
+
+
+                });
+                $(function() {
+
+                    //Initialize Select2 Elements
+                    $('.select2').select2()
                 })
 
-            if (Error.dataset.error == 'true')
-                $(document).Toasts('create', {
-                    class: 'bg-danger',
-                    title: 'Error',
-                    subtitle: 'Close',
-                    body: JSON.parse(Error.dataset.errorMessage)
-                })
-
-
-
-        });
-        $(function() {
-
-            //Initialize Select2 Elements
-            $('.select2').select2()
-        })
-
-    </script>
-</x-slot>
-</x-app-layout>
+            </script>
+        </x-slot>
+    </x-app-layout>
