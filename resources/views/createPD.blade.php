@@ -48,6 +48,7 @@
                                 <div class="card-body">
                                     <!-- radio -->
                                     @if (!is_null($pdTypesValues))
+                                    {{-- if the fields already have values they should be automaically filled --}}
                                         @foreach ($pdTypes as $pdType)
                                             <div class="form-group">
                                                 <label for="customRange1">{{ $pdType->name }}<span
@@ -58,6 +59,7 @@
                                             </div>
                                         @endforeach
                                     @else
+                                    {{-- if the fields have not been previously filled  --}}
                                         @foreach ($pdTypes as $pdType)
                                             <div class="form-group">
                                                 <label for="customRange1">{{ $pdType->name }}<span
