@@ -29,7 +29,7 @@
 - a̶d̶d̶ a̶f̶f̶e̶c̶t̶i̶v̶e̶ d̶o̶m̶a̶i̶n̶
 - a̶d̶d̶ a̶t̶t̶e̶n̶d̶a̶n̶c̶e̶
 - r̶e̶f̶a̶c̶t̶o̶r̶ r̶e̶g̶i̶s̶t̶r̶a̶t̶i̶o̶n̶ s̶y̶s̶t̶e̶m̶
-- add student graduation action
+- a̶d̶d̶ s̶t̶u̶d̶e̶n̶t̶ g̶r̶a̶d̶u̶a̶t̶i̶o̶n̶ a̶c̶t̶i̶o̶n̶
 - r̶e̶m̶o̶v̶e̶ s̶u̶s̶p̶e̶n̶d̶ a̶c̶t̶i̶o̶n̶ f̶r̶o̶m̶ s̶t̶u̶d̶e̶n̶t̶ a̶n̶d̶ t̶e̶a̶c̶h̶e̶r̶s̶
 - a̶d̶d̶ a̶l̶u̶m̶n̶i̶ p̶a̶g̶e̶
 - a̶d̶d̶ g̶r̶a̶d̶u̶a̶t̶e̶d̶_̶a̶t̶ c̶o̶l̶u̶m̶n̶ t̶o̶ s̶t̶u̶d̶e̶n̶t̶s̶ t̶a̶b̶l̶e̶
@@ -37,8 +37,11 @@
 - c̶r̶e̶a̶t̶e̶ m̶a̶k̶e̶ m̶a̶s̶t̶e̶r̶ u̶s̶e̶r̶ c̶o̶m̶m̶a̶n̶d̶ u̶n̶i̶t̶ t̶e̶s̶t̶
 - c̶r̶e̶a̶t̶e̶ A̶D̶ v̶i̶e̶w̶
 - f̶i̶x̶ c̶r̶e̶a̶t̶e̶ r̶e̶s̶u̶l̶t̶ e̶r̶r̶o̶r̶ m̶e̶s̶s̶a̶g̶e̶
-- add graduate button to highest class students
+- a̶d̶d̶ g̶r̶a̶d̶u̶a̶t̶e̶ b̶u̶t̶t̶o̶n̶ t̶o̶ h̶i̶g̶h̶e̶s̶t̶ c̶l̶a̶s̶s̶ s̶t̶u̶d̶e̶n̶t̶s̶
 - O̶p̶t̶i̶m̶i̶z̶e̶ t̶e̶r̶m̶ s̶e̶l̶e̶c̶t̶i̶o̶n̶ i̶n̶ s̶t̶u̶d̶e̶n̶t̶ s̶e̶t̶t̶i̶n̶g̶s̶
-- add tests for attendance
-- add test for student graduate method
-- add attendance to results page
+- a̶d̶d̶ t̶e̶s̶t̶s̶ f̶o̶r̶ a̶t̶t̶e̶n̶d̶a̶n̶c̶e̶
+- a̶d̶d̶ t̶e̶s̶t̶ f̶o̶r̶ s̶t̶u̶d̶e̶n̶t̶ g̶r̶a̶d̶u̶a̶t̶e̶ m̶e̶t̶h̶o̶d̶
+- a̶d̶d̶ a̶t̶t̶e̶n̶d̶a̶n̶c̶e̶ t̶o̶ r̶e̶s̶u̶l̶t̶s̶ p̶a̶g̶e̶
+- create bar chart data for classroom sizes
+- Create User page
+- create school settings
