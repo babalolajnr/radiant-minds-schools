@@ -25,12 +25,22 @@ class AttendanceTest extends TestCase
         $response->assertStatus(200)->assertViewIs('createAttendance');
     }
 
-    // public function test_attendance_store_or_update_method()
-    // {
-    //     $user = User::factory()->create();
-    //     $student = Student::factory()->create();
-    //     $term = Term::factory()->create();
-    //     $academicSession = AcademicSession::factory()->create();
-    //     $response = $this->actingAs($user)->post(route('attendance.store', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]));
-    // }
+    public function test_attendance_store_or_update_method()
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create();
+        $term = Term::factory()->create();
+        $academicSession = AcademicSession::factory()->create();
+        $response = $this->actingAs($user)->post(
+            route(
+                'attendance.store',
+                ['student' => $student, 'termId' => $term->id, 'academicSessionId' => $academicSession->id]
+            ),
+            [
+                'value' => mt_rand(1, 100)
+            ]
+        );
+
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
 }
