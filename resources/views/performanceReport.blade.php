@@ -206,7 +206,14 @@
                         </tr>
                         <tr>
                             <td>No of times present</td>
-                            <td></td>
+                            <td>
+                                @if ($numberOfTimesPresent != null)
+                                    {{ $numberOfTimesPresent->value }}
+                                @else
+                                    Null
+                                @endif
+                            </td>
+
                         </tr>
                         <tr>
                             <td> No of times Absent</td>
