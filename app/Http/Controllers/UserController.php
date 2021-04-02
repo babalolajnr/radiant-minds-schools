@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -93,6 +95,31 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->back()->with('success', 'User updated!');
+    }
+
+    /**
+     * Update password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'current_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'confirmed', 'min:8']
+        ]);
+
+        //if password does not match the current password
+        if (!Hash::check($data['current_password'], $user->password)) {
+            throw ValidationException::withMessages(['current_password' => ['Password does not match current password']]);
+        }
+
+        $user->password = bcrypt($data['new_password']);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password updated!');
     }
 
     /**
