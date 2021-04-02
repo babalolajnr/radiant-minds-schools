@@ -110,7 +110,7 @@
                                                 <div class="form-group">
                                                     <label for="first_name">First name</label>
                                                     <input type="text" class="form-control @error('first_name')
-                                                                                is-invalid
+                                                                                                        is-invalid
                                                     @enderror" value="{{ old('first_name', $user->first_name) }}"
                                                         placeholder="Enter first name" name="first_name" required>
                                                     @error('first_name')
@@ -122,7 +122,7 @@
                                                 <div class="form-group">
                                                     <label for="last_name">Last name</label>
                                                     <input type="text" class="form-control @error('last_name')
-                                                                            is-invalid
+                                                                                                    is-invalid
                                                 @enderror" value="{{ old('last_name', $user->last_name) }}"
                                                         placeholder="Enter last name" name="last_name" required>
                                                     @error('last_name')
@@ -134,7 +134,7 @@
                                                 <div class="form-group">
                                                     <label for="email">Email</label>
                                                     <input type="email" class="form-control @error('first_name')
-                                                                            is-invalid
+                                                                                                    is-invalid
                                                 @enderror" name="email" value="{{ old('email', $user->email) }}"
                                                         placeholder="Enter Email" required>
                                                     @error('email')
@@ -151,23 +151,45 @@
                                         <!-- /.tab-pane -->
 
                                         <div class="tab-pane" id="changePassword">
-                                            <form>
+                                            <form action="{{ route('user.update.password', ['user' => $user]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PATCH')
                                                 <div class="form-group">
                                                     <label for="old_password">Current password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Enter current password" name="current_password"
-                                                        required>
+                                                    <input type="password" class="form-control @error('current_password')
+                                                                    is-invalid
+                                                    @enderror" placeholder="Enter current password"
+                                                        name="current_password" required>
+                                                    @error('current_password')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new_password">New password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Enter new password" name="new_password" required>
+                                                    <input type="password" class="form-control @error('new_password')
+                                                                    is-invalid
+                                                    @enderror" placeholder="Enter new password" name="new_password"
+                                                        required>
+                                                    @error('new_password')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="confirm_password">Cofirm password</label>
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Confirm new password" name="confirm_password"
-                                                        required>
+                                                    <input type="password" class="form-control @error('new_password_confirmation')
+                                                                    is-invalid
+                                                    @enderror" placeholder="Confirm new password"
+                                                        name="new_password_confirmation" required>
+                                                    @error('new_password_confirmation')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
