@@ -87,7 +87,11 @@
                                                             <i class="far fa-times-circle"></i>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $user->status }}</td>
+                                                    <td>
+                                                        @if ($user->isActive())
+                                                        active @else inactive
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <form
@@ -108,8 +112,7 @@
                                                                     @method('PATCH')
                                                                     <button type="submit"
                                                                         class="btn btn-default btn-flat"
-                                                                        title="@if ($user->isActive()) 
-                                                                        Deactivate User
+                                                                        title="@if ($user->isActive()) Deactivate User
                                                                     @else
                                                                         Activate User @endif" >
                                                                         @if ($user->isActive()) <i
