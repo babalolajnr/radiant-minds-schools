@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -21,7 +22,7 @@ class UserController extends Controller
     /**
      * Verify a new user.
      *
-     * @return \Illuminate\Http\Response
+     * @return Redirect
      */
     public function verify(User $user)
     {
@@ -35,15 +36,25 @@ class UserController extends Controller
         return back()->with('success', 'User Verified');
     }
 
+    /**
+     * Toggle the user status between active and inactive states.
+     *
+     * @param  \App\Models\User  $user
+     * @return Redirect
+     */
     public function toggleStatus(User $user)
     {
         $this->authorize('toggleStatus', $user);
 
         if ($user->status == 'active') {
             $user->status = 'inactive';
+
+            //set action to deactivated
             $action = 'deactivated';
         } else {
             $user->status = 'active';
+
+            //set action to activated
             $action = 'activated';
         }
 
@@ -65,17 +76,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,7 +84,15 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)]
+        ]);
+
+        $user->update($data);
+
+        return redirect()->back()->with('success', 'User updated!');
     }
 
     /**
