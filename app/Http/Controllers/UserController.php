@@ -48,13 +48,13 @@ class UserController extends Controller
     {
         $this->authorize('toggleStatus', $user);
 
-        if ($user->status == 'active') {
-            $user->status = 'inactive';
+        if ($user->isActive()) {
+            $user->is_active = false;
 
             //set action to deactivated
             $action = 'deactivated';
         } else {
-            $user->status = 'active';
+            $user->is_active = true;
 
             //set action to activated
             $action = 'activated';
