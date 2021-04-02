@@ -103,21 +103,45 @@
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="edit">
-                                            <form>
+                                            <form action="{{ route('user.update', ['user' => $user]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PATCH')
                                                 <div class="form-group">
                                                     <label for="first_name">First name</label>
-                                                    <input type="text" class="form-control"
+                                                    <input type="text" class="form-control @error('first_name')
+                                                                                is-invalid
+                                                    @enderror" value="{{ old('first_name', $user->first_name) }}"
                                                         placeholder="Enter first name" name="first_name" required>
+                                                    @error('first_name')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="last_name">Last name</label>
-                                                    <input type="text" class="form-control"
+                                                    <input type="text" class="form-control @error('last_name')
+                                                                            is-invalid
+                                                @enderror" value="{{ old('last_name', $user->last_name) }}"
                                                         placeholder="Enter last name" name="last_name" required>
+                                                    @error('last_name')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email">Email</label>
-                                                    <input type="email" class="form-control" name="email"
+                                                    <input type="email" class="form-control @error('first_name')
+                                                                            is-invalid
+                                                @enderror" name="email" value="{{ old('email', $user->email) }}"
                                                         placeholder="Enter Email" required>
+                                                    @error('email')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
