@@ -37,4 +37,13 @@ class UserTest extends TestCase
 
         $response->assertStatus(302)->assertSessionHas('success');
     }
+
+    public function test_toggle_user_method()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $testUser = User::factory()->create(['user_type' => 'admin']);
+
+        $response = $this->actingAs($user)->patch(route('user.toggle-status', ['user' => $testUser]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
 }
