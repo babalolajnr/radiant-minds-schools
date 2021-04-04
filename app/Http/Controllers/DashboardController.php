@@ -8,8 +8,10 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
+use Faker\Provider\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache as FacadesCache;
+
 
 class DashboardController extends Controller
 {
@@ -24,7 +26,7 @@ class DashboardController extends Controller
 
 
         $dashboardData = FacadesCache::remember('dashboardData', 60 * 60, function () {
-            
+
             $students = count(Student::getAllStudents());
             $alumni = count(Student::getAlumni());
             $teachers = count(Teacher::all());
@@ -46,9 +48,23 @@ class DashboardController extends Controller
             return $dashboardData;
         });
 
+        $classrooms = Classroom::all();
+        $classroomNames = [];
+        $populations = [];
+        $colors = [];
+
+        foreach ($classrooms as $classroom) {
+            array_push($classroomNames, $classroom->name);
+            $population = $classroom->students->whereNull('graduated_at');
+            array_push($populations, count($population));
+            array_push($colors, Color::hexcolor());
+        }
 
         return view("dashboard", compact(
-            'dashboardData'
+            'dashboardData',
+            'classroomNames',
+            'populations',
+            'colors'
         ));
     }
 }
