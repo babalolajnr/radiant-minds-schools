@@ -34,6 +34,7 @@ class DashboardController extends Controller
             $classrooms = count(Classroom::all());
             $academicSession = AcademicSession::currentAcademicSession();
             $subjects = count(Subject::all());
+            $classroomPopulationChartData = $this->generateClassroomsPopulationChart();
 
             $dashboardData = [
                 'students' => $students,
@@ -42,12 +43,26 @@ class DashboardController extends Controller
                 'users' => $users,
                 'classrooms' => $classrooms,
                 'academicSession' => $academicSession,
-                'subjects' => $subjects
+                'subjects' => $subjects,
+                'classroomPopulationChartData' => $classroomPopulationChartData
             ];
 
             return $dashboardData;
         });
 
+
+
+        return view("dashboard", compact(
+            'dashboardData',
+        ));
+    }
+
+    /** Generates data for the classrooms population chart
+     * @return array
+     * 
+     */
+    private function generateClassroomsPopulationChart()
+    {
         $classrooms = Classroom::all();
         $classroomNames = [];
         $populations = [];
@@ -55,16 +70,19 @@ class DashboardController extends Controller
 
         foreach ($classrooms as $classroom) {
             array_push($classroomNames, $classroom->name);
+
+            //get students that have not graduated for each class and count them
             $population = $classroom->students->whereNull('graduated_at');
             array_push($populations, count($population));
+
+            //push random colors into array
             array_push($colors, Color::hexcolor());
         }
 
-        return view("dashboard", compact(
-            'dashboardData',
-            'classroomNames',
-            'populations',
-            'colors'
-        ));
+        return [
+            'classroomNames' => $classroomNames,
+            'populations' => $populations,
+            'colors' => $colors
+        ];
     }
 }
