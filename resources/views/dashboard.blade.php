@@ -219,18 +219,17 @@
         <script>
             const ctx = document.getElementById('myChart').getContext('2d');
             const data = {
-                labels: @json($classroomNames),
+                labels: @json($dashboardData['classroomPopulationChartData']['classroomNames']),
                 datasets: [{
                     label: 'Classroom Population',
-                    data: @json($populations),
-                    backgroundColor: @json($colors),
+                    data: @json($dashboardData['classroomPopulationChartData']['populations']),
+                    backgroundColor: @json($dashboardData['classroomPopulationChartData']['colors']),
                     hoverOffset: 4
                 }]
             };
             const myChart = new Chart(ctx, {
                 type: 'pie',
                 data: data,
-
             });
 
         </script>
