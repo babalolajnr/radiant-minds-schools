@@ -33,14 +33,14 @@ class UserPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can update password.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function updatePassword(User $user, User $model)
     {
-        //
+        return $user == $model;
     }
 
     /**
@@ -52,7 +52,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        return $user == $model;
     }
 
     /**
@@ -62,12 +62,12 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user)
     {
         return $user->isMaster();
     }
 
-   
+
     public function verify(User $user)
     {
         return $user->isMaster();
