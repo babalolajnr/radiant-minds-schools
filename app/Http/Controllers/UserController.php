@@ -86,6 +86,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->authorize('view', $user);
+
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -106,6 +108,8 @@ class UserController extends Controller
      */
     public function updatePassword(Request $request, User $user)
     {
+        $this->authorize('view', $user);
+
         $data = $request->validate([
             'current_password' => ['required', 'string'],
             'new_password' => ['required', 'string', 'confirmed', 'min:8']
@@ -130,6 +134,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete', $user);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'User deleted!');
     }
 }
