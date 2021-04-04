@@ -10,7 +10,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('TAssets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
@@ -42,13 +43,13 @@
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
-    <script src="{{ asset('TAssets/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('TAssets/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
-    <script src="{{ asset('TAssets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('TAssets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- overlayScrollbars -->
-    <script src="{{ asset('TAssets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+    <script src="{{ asset('TAssets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset('TAssets/dist/js/adminlte.min.js')}}"></script>
+    <script src="{{ asset('TAssets/dist/js/adminlte.min.js') }}"></script>
     {{ $scripts }}
 </body>
 
