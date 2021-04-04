@@ -198,7 +198,6 @@
     </div>
     <x-slot name="scripts">
         <!-- ChartJS -->
-        {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script> --}}
         <script src="{{ asset('TAssets/plugins/chart.js/Chart.bundle.min.js') }}"></script>
         <script>
             const ctx = document.getElementById('class-population').getContext('2d');
