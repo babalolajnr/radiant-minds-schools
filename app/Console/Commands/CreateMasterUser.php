@@ -44,8 +44,17 @@ class CreateMasterUser extends Command
         $password = $this->secret('Enter password');
         $password2 = $this->secret('Confirm password');
 
+        //check if passwords do not match
         if ($password != $password2) {
             $this->error("Passwords do not match!");
+            return 1;
+        }
+
+        //check if email exists
+        $row = User::where('email', $email);
+
+        if ($row->exists()) {
+            $this->error("Email exists! Try again.");
             return 1;
         }
 
