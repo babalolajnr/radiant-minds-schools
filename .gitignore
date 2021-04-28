@@ -14,3 +14,4 @@ yarn-error.log
 .profile
 debug.log
 .idea
+mysql-schema.dump
