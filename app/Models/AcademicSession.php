@@ -26,6 +26,11 @@ class AcademicSession extends Model
         return $this->hasMany(Attendance::class);
     }
 
+    public function terms()
+    {
+        return $this->belongsToMany(Term::class)->withPivot('start_date', 'end_date')->withTimestamps();
+    }
+
     //get current academic Session
     public static function currentAcademicSession()
     {
