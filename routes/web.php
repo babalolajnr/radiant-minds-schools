@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicSessionController;
+use App\Http\Controllers\AcademicSessionTermController;
 use App\Http\Controllers\ADController;
 use App\Http\Controllers\ADTypeController;
 use App\Http\Controllers\AttendanceController;
@@ -15,7 +16,6 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\UserController;
-use App\Models\AcademicSessionTerm;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -182,7 +182,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     });
 
     Route::prefix('academic-session-term')->name('academic-session-term.')->group(function () {
-        Route::post('/store', [AcademicSessionTerm::class, 'store'])->name('store');
+        Route::post('/store', [AcademicSessionTermController::class, 'store'])->name('store');
     });
 });
 
