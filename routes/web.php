@@ -15,6 +15,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\UserController;
+use App\Models\AcademicSessionTerm;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -178,6 +179,10 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         //Attendance Domain Routes
         Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [AttendanceController::class, 'create'])->name('create')->where('academicSessionName', '.*');
         Route::post('/store/{student}/{termId}/{academicSessionId?}', [AttendanceController::class, 'storeOrUpdate'])->name('store');
+    });
+
+    Route::prefix('academic-session-term')->name('academic-session-term.')->group(function () {
+        Route::post('/store', [AcademicSessionTerm::class, 'store'])->name('store');
     });
 });
 
