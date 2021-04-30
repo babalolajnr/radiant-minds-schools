@@ -18,6 +18,8 @@ class AcademicSessionTerm extends Model
 
     protected $table = 'academic_session_term';
 
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
     public function fee()
     {
         return $this->belongsTo(Fee::class);
