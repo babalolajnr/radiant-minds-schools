@@ -24,4 +24,9 @@ class Term extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function academic_sessions()
+    {
+        return $this->belongsToMany(AcademicSession::class)->withPivot('start_date', 'end_date')->withTimestamps();
+    }
 }
