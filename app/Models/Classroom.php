@@ -25,4 +25,9 @@ class Classroom extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+
+    public function fee()
+    {
+        return $this->belongsTo(Fee::class);
+    }
 }
