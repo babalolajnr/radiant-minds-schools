@@ -28,7 +28,7 @@ class AcademicSession extends Model
 
     public function terms()
     {
-        return $this->belongsToMany(Term::class)->withPivot('start_date', 'end_date')->withTimestamps();
+        return $this->belongsToMany(Term::class)->using(AcademicSessionTerm::class)->withPivot('start_date', 'end_date')->withTimestamps();
     }
 
     //get current academic Session
