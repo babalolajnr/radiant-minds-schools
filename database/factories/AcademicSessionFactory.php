@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\AcademicSession;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class AcademicSessionFactory extends Factory
 {
@@ -21,10 +22,14 @@ class AcademicSessionFactory extends Factory
      */
     public function definition()
     {
-        
+
 
         $name = $this->faker->unique()->randomElement(self::$academicSessions);
 
+        /**
+         * break the string and extract the first part before the '/'
+         * then generate a random day and month
+         */
         $eachYear = explode("/", $name);
         $startYear = $eachYear[0];
         $startDay = mt_rand(1, 30);
@@ -37,6 +42,7 @@ class AcademicSessionFactory extends Factory
 
         return [
             'name' => $name,
+            'slug' => Str::of($name)->slug('-'),
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
@@ -46,5 +52,6 @@ class AcademicSessionFactory extends Factory
         '2010/2011',
         '2011/2012',
         '2012/2013',
+        '2013/2014'
     ];
 }
