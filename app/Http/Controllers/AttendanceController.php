@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicSession;
+use App\Models\AcademicSessionTerm;
 use App\Models\Attendance;
 use App\Models\Student;
-use App\Models\Term;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -17,18 +16,24 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Student $student, $termSlug, $academicSessionName = null)
+    public function create(Student $student, $periodSlug = null)
     {
-        $term = Term::where('slug', $termSlug)->firstOrFail();
-        $academicSession = is_null($academicSessionName) ? AcademicSession::currentAcademicSession() : AcademicSession::where('name', $academicSessionName)->firstOrFail();
-        $attendance = $student->attendances()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
+        /**
+         * if period is not recieved i.e it's null.
+         * The active period should be used 
+         */
+        $period = is_null($periodSlug)
+            ? AcademicSessionTerm::activePeriod()
+            : AcademicSessionTerm::where('slug', $periodSlug)->firstOrFail();
+
+        $attendance = $student->attendances()->where('academic_session_term_id', $period->id);
 
         if ($attendance->exists()) {
             $attendance = $attendance->first();
-            return view('createAttendance', compact('attendance', 'academicSession', 'student', 'term'));
+            return view('createAttendance', compact('attendance', 'period', 'student'));
         }
 
-        return view('createAttendance', compact('academicSession', 'student', 'term'));
+        return view('createAttendance', compact('period', 'student'));
     }
 
     /**
@@ -37,14 +42,13 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeOrUpdate(Request $request, Student $student, $termId, $academicSessionId = null)
+    public function storeOrUpdate(Request $request, Student $student, $periodSlug = null)
     {
-        $term = Term::findOrFail($termId);
 
-        if (!is_null($academicSessionId)) {
-            $academicSession = AcademicSession::findOrFail($academicSessionId);
+        if (!is_null($periodSlug)) {
+            $period =  AcademicSessionTerm::where('slug', $periodSlug)->firstOrFail();
         } else {
-            $academicSession = AcademicSession::currentAcademicSession();
+            $period = AcademicSessionTerm::activePeriod();
         }
 
         $data = $request->validate([
@@ -52,8 +56,7 @@ class AttendanceController extends Controller
         ]);
 
         $student->attendances()->updateOrCreate([
-            'academic_session_id' => $academicSession->id,
-            'term_id' => $term->id
+            'academic_session_term_id' => $period->id,
         ], ['value' => $data['value']]);
 
         return back()->with('success', 'Record Added!');
