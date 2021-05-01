@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\AcademicSession;
+use App\Models\AcademicSessionTerm;
 use App\Models\Attendance;
 use App\Models\Student;
-use App\Models\Term;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -27,23 +26,20 @@ class AttendanceSeeder extends Seeder
             for ($i = 0; $i < ($seedNumber - $attendances); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
-                //get record where subject_id,term_id,student_id and academic_session_id exists 
+                //get record where student_id and academic_session_term_id exists 
                 $record = Attendance::where('student_id', $values['student']->id)
-                    ->where('term_id', $values['term']->id)
-                    ->where('academic_session_id', $values['academicSession']->id);
+                    ->where('academic_session_term_id', $values['period']->id);
 
                 while ($record->exists()) {
                     $values = $this->getRandomValues($allRecords);
 
                     $record = Attendance::where('student_id', $values['student']->id)
-                        ->where('term_id', $values['term']->id)
-                        ->where('academic_session_id', $values['academicSession']->id);
+                        ->where('academic_session_term_id', $values['period']->id);
                 }
 
                 $value = mt_rand(1, 100);
                 Attendance::create([
-                    'term_id' => $values['term']->id,
-                    'academic_session_id' => $values['academicSession']->id,
+                    'academic_session_term_id' => $values['period']->id,
                     'student_id' => $values['student']->id,
                     'value' => $value,
                 ]);
@@ -53,31 +49,25 @@ class AttendanceSeeder extends Seeder
 
     private function allRecords()
     {
-        $term = Term::first();
-        $academicSession = AcademicSession::first();
+        $period = AcademicSessionTerm::first();
         $student = Student::first();
 
 
         //if any of the required values are empty seed their tables
-        if (is_null($term)) {
-            Artisan::call('db:seed', ['--class' => 'TermSeeder']);
-        }
 
-        if (is_null($academicSession)) {
-            Artisan::call('db:seed', ['--class' => 'AcademicSessionSeeder']);
+        if (is_null($period)) {
+            Artisan::call('db:seed', ['--class' => 'AcademicSessionTermSeeder']);
         }
 
         if (is_null($student)) {
             Artisan::call('db:seed', ['--class' => 'StudentSeeder']);
         }
 
-        $terms = Term::all();
-        $academicSessions = AcademicSession::all();
+        $periods = AcademicSessionTerm::all();
         $students = Student::all();
 
         return [
-            'terms' => $terms,
-            'academicSessions' => $academicSessions,
+            'periods' => $periods,
             'students' => $students,
         ];
     }
@@ -85,13 +75,11 @@ class AttendanceSeeder extends Seeder
     private function getRandomValues($allRecords)
     {
         $student = $allRecords['students']->random();
-        $term = $allRecords['terms']->random();
-        $academicSession = $allRecords['academicSessions']->random();
+        $period = $allRecords['periods']->random();
 
         return [
             'student' => $student,
-            'term' => $term,
-            'academicSession' => $academicSession,
+            'period' => $period,
         ];
     }
 }
