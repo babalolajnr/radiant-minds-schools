@@ -22,11 +22,11 @@ class Term extends Model
 
     // public function academic_sessions()
     // {
-    //     return $this->belongsToMany(AcademicSession::class)->using(AcademicSessionTerm::class)->withPivot('start_date', 'end_date')->withTimestamps();
+    //     return $this->belongsToMany(AcademicSession::class)->using(Period::class)->withPivot('start_date', 'end_date')->withTimestamps();
     // }
 
     public function periods()
     {
-        return $this->hasMany(AcademicSessionTerm::class);
+        return $this->hasMany(Period::class);
     }
 }

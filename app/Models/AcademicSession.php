@@ -24,6 +24,6 @@ class AcademicSession extends Model
 
     public function periods()
     {
-        return $this->hasMany(AcademicSessionTerm::class);
+        return $this->hasMany(Period::class);
     }
 }

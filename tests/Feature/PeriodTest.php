@@ -9,18 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class AcademicSessionTermTest extends TestCase
+class PeriodTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
 
-    public function test_academic_session_term_can_be_stored()
+    public function test_period_can_be_stored()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
 
         $response = $this->actingAs($user)->post(
-            route('academic-session-term.store'),
+            route('period.store'),
             [
                 'academic_session' => AcademicSession::factory()->create()->name,
                 'term' => Term::factory()->create()->name,

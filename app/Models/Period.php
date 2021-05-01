@@ -5,14 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * AcademicSessionTerm is also referred to as a 'Period'
- * so wherever period is seen it also means AcademicSessionTerm
- * 
- * This model also serves as the pivot table of 'academic_sessions' and
- * 'terms' table
- */
-class AcademicSessionTerm extends Model
+class Period extends Model
 {
     use HasFactory;
 
@@ -23,7 +16,7 @@ class AcademicSessionTerm extends Model
      */
     public $incrementing = true;
 
-    protected $table = 'academic_session_term';
+    protected $table = 'periods';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -58,11 +51,11 @@ class AcademicSessionTerm extends Model
 
     /**
      * gets active period
-     * @return AcademicSessionTerm
+     * @return Period
      */
     public static function activePeriod()
     {
-        $activePeriod = AcademicSessionTerm::where('active', true)->first();
+        $activePeriod = Period::where('active', true)->first();
         return $activePeriod;
     }
 }

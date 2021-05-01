@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAcademicSessionTermIdToAttendancesTable extends Migration
+class AddPeriodIdToAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddAcademicSessionTermIdToAttendancesTable extends Migration
     public function up()
     {
         Schema::table('attendances', function (Blueprint $table) {
-            $table->foreignId('academic_session_term_id')->constrained('academic_session_term')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('period_id')->constrained('periods')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

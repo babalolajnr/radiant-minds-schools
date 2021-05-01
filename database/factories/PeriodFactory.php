@@ -3,20 +3,20 @@
 namespace Database\Factories;
 
 use App\Models\AcademicSession;
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Term;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-class AcademicSessionTermFactory extends Factory
+class PeriodFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = AcademicSessionTerm::class;
+    protected $model = Period::class;
 
     /**
      * Define the model's default state.

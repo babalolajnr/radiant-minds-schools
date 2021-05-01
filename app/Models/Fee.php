@@ -13,7 +13,7 @@ class Fee extends Model
 
     public function academicSessionTerm()
     {
-        return $this->hasOne(AcademicSessionTerm::class);
+        return $this->hasOne(Period::class);
     }
 
     public function classroom()

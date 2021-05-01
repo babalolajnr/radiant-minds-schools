@@ -16,7 +16,7 @@ class CreateFeesTable extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->double('fee');
-            $table->foreignId('academic_session_term_id')->constrained('academic_session_term')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('period_id')->constrained('periods')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('classroom_id')->constrained('classrooms')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });

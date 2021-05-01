@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicSessionController;
-use App\Http\Controllers\AcademicSessionTermController;
+use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ADController;
 use App\Http\Controllers\ADTypeController;
 use App\Http\Controllers\AttendanceController;
@@ -181,8 +181,8 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::post('/store/{student}/{periodSlug?}', [AttendanceController::class, 'storeOrUpdate'])->name('store');
     });
 
-    Route::prefix('academic-session-term')->name('academic-session-term.')->group(function () {
-        Route::post('/store', [AcademicSessionTermController::class, 'store'])->name('store');
+    Route::prefix('period')->name('period.')->group(function () {
+        Route::post('/store', [PeriodController::class, 'store'])->name('store');
     });
 });
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Term;
 use App\Models\User;
@@ -19,7 +19,7 @@ class AttendanceTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $period = AcademicSessionTerm::factory()->create();
+        $period = Period::factory()->create();
         $response = $this->actingAs($user)->get(route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]));
         $response->assertStatus(200)->assertViewIs('createAttendance');
     }
@@ -28,7 +28,7 @@ class AttendanceTest extends TestCase
     {
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $period = AcademicSessionTerm::factory()->create();
+        $period = Period::factory()->create();
         $response = $this->actingAs($user)->post(
             route(
                 'attendance.store',

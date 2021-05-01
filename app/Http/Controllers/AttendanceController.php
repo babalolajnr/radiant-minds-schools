@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -23,10 +23,10 @@ class AttendanceController extends Controller
          * The active period should be used 
          */
         $period = is_null($periodSlug)
-            ? AcademicSessionTerm::activePeriod()
-            : AcademicSessionTerm::where('slug', $periodSlug)->firstOrFail();
+            ? Period::activePeriod()
+            : Period::where('slug', $periodSlug)->firstOrFail();
 
-        $attendance = $student->attendances()->where('academic_session_term_id', $period->id);
+        $attendance = $student->attendances()->where('period_id', $period->id);
 
         if ($attendance->exists()) {
             $attendance = $attendance->first();
@@ -46,9 +46,9 @@ class AttendanceController extends Controller
     {
 
         if (!is_null($periodSlug)) {
-            $period =  AcademicSessionTerm::where('slug', $periodSlug)->firstOrFail();
+            $period =  Period::where('slug', $periodSlug)->firstOrFail();
         } else {
-            $period = AcademicSessionTerm::activePeriod();
+            $period = Period::activePeriod();
         }
 
         $data = $request->validate([
@@ -56,7 +56,7 @@ class AttendanceController extends Controller
         ]);
 
         $student->attendances()->updateOrCreate([
-            'academic_session_term_id' => $period->id,
+            'period_id' => $period->id,
         ], ['value' => $data['value']]);
 
         return back()->with('success', 'Record Added!');

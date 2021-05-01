@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,7 +26,7 @@ class AttendanceFactory extends Factory
         return [
             'student_id' => Student::factory()->create()->id,
             'value' => mt_rand(1, 100),
-            'academic_session_term_id' => AcademicSessionTerm::factory()->create()->id,
+            'period_id' => Period::factory()->create()->id,
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Database\Seeder;
@@ -26,20 +26,20 @@ class AttendanceSeeder extends Seeder
             for ($i = 0; $i < ($seedNumber - $attendances); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
-                //get record where student_id and academic_session_term_id exists 
+                //get record where student_id and period_id exists 
                 $record = Attendance::where('student_id', $values['student']->id)
-                    ->where('academic_session_term_id', $values['period']->id);
+                    ->where('period_id', $values['period']->id);
 
                 while ($record->exists()) {
                     $values = $this->getRandomValues($allRecords);
 
                     $record = Attendance::where('student_id', $values['student']->id)
-                        ->where('academic_session_term_id', $values['period']->id);
+                        ->where('period_id', $values['period']->id);
                 }
 
                 $value = mt_rand(1, 100);
                 Attendance::create([
-                    'academic_session_term_id' => $values['period']->id,
+                    'period_id' => $values['period']->id,
                     'student_id' => $values['student']->id,
                     'value' => $value,
                 ]);
@@ -49,21 +49,21 @@ class AttendanceSeeder extends Seeder
 
     private function allRecords()
     {
-        $period = AcademicSessionTerm::first();
+        $period = Period::first();
         $student = Student::first();
 
 
         //if any of the required values are empty seed their tables
 
         if (is_null($period)) {
-            Artisan::call('db:seed', ['--class' => 'AcademicSessionTermSeeder']);
+            Artisan::call('db:seed', ['--class' => 'PeriodSeeder']);
         }
 
         if (is_null($student)) {
             Artisan::call('db:seed', ['--class' => 'StudentSeeder']);
         }
 
-        $periods = AcademicSessionTerm::all();
+        $periods = Period::all();
         $students = Student::all();
 
         return [

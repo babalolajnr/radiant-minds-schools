@@ -9,7 +9,7 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['value', 'academic_session_term_id'];
+    protected $fillable = ['value', 'period_id'];
 
     public function student()
     {
@@ -18,6 +18,6 @@ class Attendance extends Model
 
     public function period()
     {
-        return $this->hasOne(AcademicSessionTerm::class);
+        return $this->hasOne(Period::class);
     }
 }

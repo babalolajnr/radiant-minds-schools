@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\AcademicSession;
-use App\Models\AcademicSessionTerm;
+use App\Models\Period;
 use App\Models\Term;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
-class AcademicSessionTermSeeder extends Seeder
+class PeriodSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -40,7 +40,7 @@ class AcademicSessionTermSeeder extends Seeder
                 $endDate = Carbon::createFromFormat('Y-m-d', $startDate)->addDays(mt_rand(30, 90));
                 $slug = Str::of("{$academicSession->name} {$term->name}")->slug('-');
 
-                AcademicSessionTerm::create([
+                Period::create([
                     'academic_session_id' => $academicSession->id,
                     'term_id' => $term->id,
                     'start_date' => $startDate,
@@ -50,7 +50,7 @@ class AcademicSessionTermSeeder extends Seeder
             }
         }
 
-        $period = AcademicSessionTerm::inRandomOrder()->first();
+        $period = Period::inRandomOrder()->first();
         $period->active = true;
         $period->save();
     }

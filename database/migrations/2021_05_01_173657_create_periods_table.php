@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcademicSessionTermTable extends Migration
+class CreatePeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAcademicSessionTermTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_session_term', function (Blueprint $table) {
+        Schema::create('periods', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
             $table->foreignId('academic_session_id')->constrained('academic_sessions')->onUpdate('cascade')->onDelete('restrict');
@@ -32,6 +32,6 @@ class CreateAcademicSessionTermTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_session_term');
+        Schema::dropIfExists('periods');
     }
 }
