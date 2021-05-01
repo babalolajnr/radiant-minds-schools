@@ -9,20 +9,15 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['value', 'term_id', 'academic_session_id'];
+    protected $fillable = ['value', 'academic_session_term_id'];
 
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
 
-    public function term()
+    public function period()
     {
-        return $this->belongsTo(Term::class);
-    }
-
-    public function academicSession()
-    {
-        return $this->belongsTo(AcademicSession::class);
+        return $this->hasOne(AcademicSessionTerm::class);
     }
 }
