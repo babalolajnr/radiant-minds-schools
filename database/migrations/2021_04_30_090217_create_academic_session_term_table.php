@@ -18,8 +18,8 @@ class CreateAcademicSessionTermTable extends Migration
             $table->string('slug')->unique();
             $table->foreignId('academic_session_id')->constrained('academic_sessions')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('term_id')->constrained('terms')->onUpdate('cascade')->onDelete('restrict');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_date')->unique();
+            $table->date('end_date')->unique();
             $table->boolean('active')->unique()->nullable();
             $table->timestamps();
         });
