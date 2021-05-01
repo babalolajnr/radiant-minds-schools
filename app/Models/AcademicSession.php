@@ -21,25 +21,9 @@ class AcademicSession extends Model
         return $this->hasMany(PD::class);
     }
 
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
-    }
 
-    public function terms()
+    public function periods()
     {
-        return $this->belongsToMany(Term::class)->using(AcademicSessionTerm::class)->withPivot('start_date', 'end_date')->withTimestamps();
-    }
-
-    //get current academic Session
-    public static function currentAcademicSession()
-    {
-        $currentAcademicSession = AcademicSession::where('current_session', 1)->first();
-        return $currentAcademicSession;
-    }
-
-    public function isCurrentAcademicSession()
-    {
-        return $this->current_session == 1;
+        return $this->hasMany(AcademicSessionTerm::class);
     }
 }
