@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\AcademicSession;
+use App\Models\AcademicSessionTerm;
 use App\Models\Student;
 use App\Models\Term;
 use App\Models\User;
@@ -19,9 +19,8 @@ class AttendanceTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $term = Term::factory()->create();
-        $academicSession = AcademicSession::factory()->create();
-        $response = $this->actingAs($user)->get(route('attendance.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]));
+        $period = AcademicSessionTerm::factory()->create();
+        $response = $this->actingAs($user)->get(route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]));
         $response->assertStatus(200)->assertViewIs('createAttendance');
     }
 
@@ -29,12 +28,11 @@ class AttendanceTest extends TestCase
     {
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $term = Term::factory()->create();
-        $academicSession = AcademicSession::factory()->create();
+        $period = AcademicSessionTerm::factory()->create();
         $response = $this->actingAs($user)->post(
             route(
                 'attendance.store',
-                ['student' => $student, 'termId' => $term->id, 'academicSessionId' => $academicSession->id]
+                ['student' => $student, 'periodSlug' => $period->slug]
             ),
             [
                 'value' => mt_rand(1, 100)
