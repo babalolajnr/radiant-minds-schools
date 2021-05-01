@@ -20,13 +20,13 @@ class Term extends Model
         return $this->hasMany(PD::class);
     }
 
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
-    }
+    // public function academic_sessions()
+    // {
+    //     return $this->belongsToMany(AcademicSession::class)->using(AcademicSessionTerm::class)->withPivot('start_date', 'end_date')->withTimestamps();
+    // }
 
-    public function academic_sessions()
+    public function periods()
     {
-        return $this->belongsToMany(AcademicSession::class)->using(AcademicSessionTerm::class)->withPivot('start_date', 'end_date')->withTimestamps();
+        return $this->hasMany(AcademicSessionTerm::class);
     }
 }
