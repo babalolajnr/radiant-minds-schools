@@ -43,15 +43,15 @@
                                 <h3 class="card-title">Attendance</h3>
                             </div>
                             <form method="POST"
-                                action="{{ route('attendance.store', ['student' => $student, 'termId' => $term->id]) }}">
+                                action="{{ route('attendance.store', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="">Number of Times <span
                                                 class="text-lg">{{ $student->first_name }}
                                                 {{ $student->last_name }}</span> was present in <span
-                                                class="text-lg">{{ $term->name }}
-                                                {{ $academicSession->name }}</span></label>
+                                                class="text-lg">{{ $period->academicSession }}
+                                                {{ $period->term }}</span></label>
                                         <input type="number" name="value"
                                             class="form-control @error('value') is-invalid @enderror"
                                             value="@isset($attendance){{ old('value', $attendance->value) }}@else{{ old('value') }}@endisset"
