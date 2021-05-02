@@ -18,14 +18,9 @@ class AD extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function academicSession()
+    public function period()
     {
-        return $this->belongsTo(AcademicSession::class);
-    }
-
-    public function term()
-    {
-        return $this->belongsTo(Term::class);
+       return $this->belongsTo(Period::class);
     }
 
     public function adType()
