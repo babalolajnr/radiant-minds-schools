@@ -30,15 +30,16 @@ class PeriodFactory extends Factory
 
         $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
 
-        $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date);
+        $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date->toDateString());
         $startDate = $startDate->addDays(mt_rand(1, 20));
-        
+
         return [
             'academic_session_id' => $academicSession->id,
             'term_id' => $term->id,
             'slug' => $slug,
             'start_date' => $startDate,
-            'end_date' => $academicSession->end_date
+            'end_date' => $academicSession->end_date,
+            'active' => null
         ];
     }
 }
