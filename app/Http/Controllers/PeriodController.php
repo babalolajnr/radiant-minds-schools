@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\Period;
 use App\Models\Term;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PeriodController extends Controller
 {
@@ -25,14 +26,16 @@ class PeriodController extends Controller
             return back()->with('error', 'Record Exists');
         }
 
-        $academicSessionID = AcademicSession::where('name', $data['academic_session'])->first()->id;
-        $termID = Term::where('name', $data['term'])->first()->id;
+        $academicSession = AcademicSession::where('name', $data['academic_session'])->first();
+        $term = Term::where('name', $data['term'])->first();
 
+        $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
         Period::create([
-            'academic_session_id' => $academicSessionID,
-            'term_id' => $termID,
+            'academic_session_id' => $academicSession->id,
+            'term_id' => $term->id,
             'start_date' => $data['start_date'],
-            'end_date' => $data['end_date']
+            'end_date' => $data['end_date'],
+            'slug' => $slug
         ]);
 
         return back()->with('success', 'Record Created!');
