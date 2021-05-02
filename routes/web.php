@@ -147,8 +147,8 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('pds')->name('pd.')->group(function () {
         //Pychomotor Domain Routes
-        Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [PDController::class, 'create'])->name('create')->where('academicSessionName', '.*');
-        Route::post('/store/{student}/{termId}/{academicSessionId?}', [PDController::class, 'store'])->name('store');
+        Route::get('/create/{student:admission_no}/{periodSlug}', [PDController::class, 'create'])->name('create');
+        Route::post('/store/{student}/{periodSlug}', [PDController::class, 'store'])->name('store');
     });
 
     Route::prefix('pd-types')->name('pd-type.')->group(function () {
@@ -162,8 +162,8 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('ads')->name('ad.')->group(function () {
         //Affective Domain Routes
-        Route::get('/create/{student:admission_no}/{termSlug}/{academicSessionName?}', [ADController::class, 'create'])->name('create')->where('academicSessionName', '.*');
-        Route::post('/store/{student}/{termId}/{academicSessionId?}', [ADController::class, 'store'])->name('store');
+        Route::get('/create/{student:admission_no}/{periodSlug?}', [ADController::class, 'create'])->name('create');
+        Route::post('/store/{student}/{periodSlug?}', [ADController::class, 'storeOrUpdate'])->name('store');
     });
 
     Route::prefix('ad-types')->name('ad-type.')->group(function () {
