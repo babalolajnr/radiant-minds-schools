@@ -40,6 +40,11 @@ class Period extends Model
         return $this->belongsTo(AcademicSession::class);
     }
 
+    public function results()
+    {
+        return $this->hasMany(Result::class);
+    }
+
     /**
      * checks if period is active
      * @return bool
