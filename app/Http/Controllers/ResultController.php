@@ -31,7 +31,7 @@ class ResultController extends Controller
 
         $subjects = $student->classroom->subjects()->where('academic_session_id',  $activePeriod->academicSession->id)->get();
 
-        return view('createResults', compact('terms', 'subjects', 'student', 'activePeriod'));
+        return view('createResults', compact('subjects', 'student', 'activePeriod'));
     }
 
     public function store(Request $request, Student $student)
