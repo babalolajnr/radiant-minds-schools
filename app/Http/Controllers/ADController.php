@@ -2,31 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicSession;
 use App\Models\AD;
 use App\Models\ADType;
+use App\Models\Period;
 use App\Models\Student;
-use App\Models\Term;
 use Illuminate\Http\Request;
 
 class ADController extends Controller
 {
     /**
-     * This method accepts an optional academic session id parameter
-     * if the request does not have academic session id it defaults to the
-     * current academic session
+     * Get affective domain creation form
      * 
+     * This method accepts an optional periodSlug parameter
+     * if the request does not have periodSlug it defaults to the
+     * active period
+     * 
+     * @param Student $student
+     * @param string $periodSlug
+     * 
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      * 
      */
-    public function create(Student $student, $termSlug, $academicSessionName = null)
+    public function create(Student $student, $periodSlug = null)
     {
-        $term = Term::where('slug', $termSlug)->firstOrFail();
         $adTypes = ADType::all();
 
-        $academicSession = is_null($academicSessionName) ? AcademicSession::currentAcademicSession() : AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $period = is_null($periodSlug)
+            ? Period::activePeriod()
+            : Period::where('slug', $periodSlug)->firstOrFail();
 
-        //get student ads for academic session and term passed into the controller
-        $studentADs = $student->ads()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
+        //get student ads for period and term passed into the controller
+        $studentADs = $student->ads()->where('period_id', $period->id);
         if ($studentADs->exists()) {
             $adTypesValues = [];
 
@@ -41,37 +47,38 @@ class ADController extends Controller
             $adTypesValues = null;
         }
 
-        return view('createAD', compact('adTypes', 'student', 'adTypesValues', 'term', 'academicSession'));
+        return view('createAD', compact('adTypes', 'student', 'adTypesValues', 'period'));
     }
 
     /**
-     * this method stores ads id they don't exist
-     * and updates them if they do. It should probably be called
-     * storeOrUpdate but I would probably change it later. It also
-     * recieves an optional academic session id parameter.
+     * Store or update AD record
      * 
-     * If the optional academic session id parameter is null, it
-     * uses the current academic session to store the adType else it
-     * uses the academic session from the url
+     * If the optional periodSlug parameter is null, it
+     * uses the active period to store the adType else it
+     * uses the period from the url
+     * 
+     * @param Student $student
+     * @param Request $request
+     * @param string $periodSlug
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Student $student, $termId, Request $request, $academicSessionId = null)
+    public function storeOrUpdate(Student $student, Request $request, $periodSlug = null)
     {
-        $term = Term::findOrFail($termId);
 
         $validatedData = $request->validate([
             'adTypes.*' => ['required', 'numeric', 'min:1', 'max:5'],
         ]);
 
-        $academicSession = is_null($academicSessionId) ?
-            AcademicSession::currentAcademicSession() : AcademicSession::findOrFail($academicSessionId);
+        $period = is_null($periodSlug) ?
+            period::activePeriod() : Period::where('slug', $periodSlug)->firstOrFail();
 
         foreach ($validatedData['adTypes'] as $adType => $value) {
             $adType = ADType::where('slug', $adType)->first();
             AD::updateOrCreate(
                 [
                     'student_id' => $student->id,
-                    'academic_session_id' => $academicSession->id,
-                    'term_id' => $term->id,
+                    'period' => $period->id,
                     'a_d_type_id' => $adType->id,
                 ],
                 ['value' => $value]
