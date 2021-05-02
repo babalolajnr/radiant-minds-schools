@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AcademicSession;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -32,13 +33,13 @@ class AcademicSessionFactory extends Factory
          */
         $eachYear = explode("/", $name);
         $startYear = $eachYear[0];
-        $startDay = mt_rand(1, 30);
-        $startMonth = mt_rand(1, 12);
 
-        $startDate = $startDay . '-' . $startMonth . '-' . $startYear;
-        $startDate = date('Y-m-d', strtotime($startDate));
+        $startDate = Carbon::now();
+        $startDate->year($startYear);
+        $startDate->month(mt_rand(1, 12));
+        $startDate->day(mt_rand(1, 30));
 
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate)));
+        $endDate = Carbon::createFromFormat('Y-m-d', $startDate->toDateString())->addYear();
 
         return [
             'name' => $name,
