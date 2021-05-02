@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\AcademicSession;
 use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
-use App\Models\Term;
+use App\Models\Period;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -21,7 +20,7 @@ class ResultSeeder extends Seeder
     {
         $results = count(Result::all());
         $seedNumber = 2000;
-        
+
         if ($results < $seedNumber) {
             $allRecords = $this->allRecords();
 
@@ -29,27 +28,24 @@ class ResultSeeder extends Seeder
             for ($i = 0; $i < ($seedNumber - $results); $i++) {
                 $values = $this->getRandomValues($allRecords);
 
-                //get record where subject_id,term_id,student_id and academic_session_id exists 
+                //get record where subject_id,period_id and student_id exists 
                 $record = Result::where('subject_id', $values['subject']->id)
                     ->where('student_id', $values['student']->id)
-                    ->where('term_id', $values['term']->id)
-                    ->where('academic_session_id', $values['academicSession']->id);
+                    ->where('period_id', $values['period']->id);
 
                 while ($record->exists()) {
                     $values = $this->getRandomValues($allRecords);
 
                     $record = Result::where('subject_id', $values['subject']->id)
                         ->where('student_id', $values['student']->id)
-                        ->where('term_id', $values['term']->id)
-                        ->where('academic_session_id', $values['academicSession']->id);
+                        ->where('period_id', $values['period']->id);
                 }
 
                 $ca = mt_rand(0, 40);
                 $exam = mt_rand(0, 60);
 
                 Result::create([
-                    'term_id' => $values['term']->id,
-                    'academic_session_id' => $values['academicSession']->id,
+                    'period_id' => $values['period']->id,
                     'subject_id' => $values['subject']->id,
                     'student_id' => $values['student']->id,
                     'ca' => $ca,
@@ -62,18 +58,13 @@ class ResultSeeder extends Seeder
 
     private function allRecords()
     {
-        $term = Term::first();
-        $academicSession = AcademicSession::first();
+        $period = Period::first();
         $student = Student::first();
         $subject = Subject::first();
 
         //if any of the required values are empty seed their tables
-        if (is_null($term)) {
-            Artisan::call('db:seed', ['--class' => 'TermSeeder']);
-        }
-
-        if (is_null($academicSession)) {
-            Artisan::call('db:seed', ['--class' => 'AcademicSessionSeeder']);
+        if (is_null($period)) {
+            Artisan::call('db:seed', ['--class' => 'PeriodSeeder']);
         }
 
         if (is_null($subject)) {
@@ -84,14 +75,12 @@ class ResultSeeder extends Seeder
             Artisan::call('db:seed', ['--class' => 'StudentSeeder']);
         }
 
-        $terms = Term::all();
-        $academicSessions = AcademicSession::all();
+        $periods = Period::all();
         $students = Student::all();
         $subjects = Subject::all();
 
         return [
-            'terms' => $terms,
-            'academicSessions' => $academicSessions,
+            'periods' => $periods,
             'students' => $students,
             'subjects' => $subjects
         ];
@@ -100,14 +89,12 @@ class ResultSeeder extends Seeder
     private function getRandomValues($allRecords)
     {
         $student = $allRecords['students']->random();
-        $term = $allRecords['terms']->random();
+        $period = $allRecords['periods']->random();
         $subject = $allRecords['subjects']->random();
-        $academicSession = $allRecords['academicSessions']->random();
 
         return [
             'student' => $student,
-            'term' => $term,
-            'academicSession' => $academicSession,
+            'period' => $period,
             'subject' =>  $subject
         ];
     }
