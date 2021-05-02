@@ -10,11 +10,6 @@ class Term extends Model
     use HasFactory;
     protected $fillable = ['name', 'slug'];
 
-    public function pds()
-    {
-        return $this->hasMany(PD::class);
-    }
-
     public function periods()
     {
         return $this->hasMany(Period::class);
