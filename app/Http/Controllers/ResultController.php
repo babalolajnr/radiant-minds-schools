@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
 use App\Models\ADType;
-use App\Models\PD;
 use App\Models\PDType;
+use App\Models\Period;
 use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
@@ -16,23 +16,22 @@ use Illuminate\Http\Request;
 class ResultController extends Controller
 {
     /**
-     * there should ba a page that has all the courses the student's
+     * there should be a page that has all the courses the student's
      * class has and a button to fill in the subject, term, session
      * ca and exam
      *
      */
     public function create(Student $student)
     {
-        $terms = Term::all();
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $activePeriod = Period::activePeriod();
 
-        if (is_null($currentAcademicSession)) {
-            return back()->with('error', 'Current Academic Session is not set');
+        if (is_null($activePeriod)) {
+            return back()->with('error', 'Active period is not set');
         }
 
-        $subjects = $student->classroom->subjects()->where('academic_session_id',  $currentAcademicSession->id)->get();
+        $subjects = $student->classroom->subjects()->where('academic_session_id',  $activePeriod->academicSession->id)->get();
 
-        return view('createResults', compact('terms', 'subjects', 'student', 'currentAcademicSession'));
+        return view('createResults', compact('terms', 'subjects', 'student', 'activePeriod'));
     }
 
     public function store(Request $request, Student $student)
@@ -49,22 +48,21 @@ class ResultController extends Controller
         $validatedData = $request->validate([
             'ca' => ['required', 'numeric', 'between:0,40'],
             'exam' => ['nullable', 'numeric', 'between:0,60'],
-            'term' => ['string', 'required', 'exists:terms,name'],
             'subject' => ['string', 'required', 'exists:subjects,name']
         ], $messages);
 
-        $term = Term::where('name', $validatedData['term'])->first();
         $subject = Subject::where('name', $validatedData['subject'])->first();
-        $academicSession = AcademicSession::currentAcademicSession();
 
-        if (is_null($academicSession)) {
-            return back()->with('error', 'Current academic session has not been set 😢');
+        //term and academic session will be goten from the active period
+        $activePeriod = Period::activePeriod();
+
+        if (is_null($activePeriod)) {
+            return back()->with('error', 'Active period is not set');
         }
 
         $record = Result::where('subject_id', $subject->id)
             ->where('student_id', $student->id)
-            ->where('term_id', $term->id)
-            ->where('academic_session_id', $academicSession->id);
+            ->where('period_id', $activePeriod->id);
 
         if ($record->exists()) {
             return back()->with('error', 'Record Exists');
@@ -76,8 +74,7 @@ class ResultController extends Controller
         Result::create([
             'ca' => $ca,
             'exam' => $exam,
-            'term_id' => $term->id,
-            'academic_session_id' => $academicSession->id,
+            'period_id' => $activePeriod->id,
             'subject_id' => $subject->id,
             'student_id' => $student->id,
             'total' => $exam + $ca
