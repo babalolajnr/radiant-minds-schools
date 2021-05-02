@@ -45,6 +45,11 @@ class Period extends Model
         return $this->hasMany(Result::class);
     }
 
+    public function pds()
+    {
+        return $this->hasMany(PD::class);
+    }
+
     /**
      * checks if period is active
      * @return bool
