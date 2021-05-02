@@ -54,13 +54,13 @@
                                     <div class="form-group">
                                         <label for="Term">Term</label>
                                         <select class="form-control select2" style="width: 100%;" disabled>
-                                            <option SELECTED >{{ $result->term->name }}</option>
+                                            <option SELECTED >{{ $result->period->term->name }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
                                         <select class="form-control select2" style="width: 100%;" disabled>
-                                            <option SELECTED >{{ $result->academicSession->name }}</option>
+                                            <option SELECTED >{{ $result->period->academicSession->name }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
