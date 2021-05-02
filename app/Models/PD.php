@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class PD extends Model
 {
    use HasFactory;
-   
+
    protected $table = 'p_d_s';
    protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -20,14 +20,9 @@ class PD extends Model
       return $this->belongsTo(Student::class);
    }
 
-   public function academicSession()
+   public function period()
    {
-      return $this->belongsTo(AcademicSession::class);
-   }
-
-   public function term()
-   {
-      return $this->belongsTo(Term::class);
+      return $this->belongsTo(Period::class);
    }
 
    public function pdType()
