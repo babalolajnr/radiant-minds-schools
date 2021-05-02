@@ -11,11 +11,6 @@ class AcademicSession extends Model
 
     protected $fillable = ['name', 'slug', 'start_date', 'end_date'];
 
-    public function pds()
-    {
-        return $this->hasMany(PD::class);
-    }
-
     public function periods()
     {
         return $this->hasMany(Period::class);
