@@ -40,8 +40,9 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">New Result<span class="text-sm text-muted"> for current academic
-                                        session ({{ $currentAcademicSession->name }})</span></h3>
+                                <h3 class="card-title">New Result<span class="text-sm text-muted"> for active period
+                                        ({{ $activePeriod->term->name }}
+                                        {{ $activePeriod->academicSession->name }})</span></h3>
                             </div>
                             <form method="POST" action="{{ route('result.store', ['student' => $student]) }}">
                                 @csrf
@@ -55,17 +56,6 @@
                                             @endforeach
                                         </select>
                                         @error('subject')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="Term">Term</label>
-                                        <select class="form-control select2" name="term" style="width: 100%;">
-                                            @foreach ($terms as $term)
-                                                <option @if (old('term') == $term) SELECTED @endif>{{ $term->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('term')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
