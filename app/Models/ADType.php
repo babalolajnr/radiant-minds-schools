@@ -11,6 +11,10 @@ class ADType extends Model
 
     protected $fillable = ['name', 'slug'];
 
+    protected $casts = [
+        'slug' => 'string'
+    ];
+
     public function ads()
     {
         return $this->hasMany(AD::class);
