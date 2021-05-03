@@ -138,7 +138,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('results')->name('result.')->group(function () {
         //Result ROutes
         Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
-        Route::get('/performance-report/{student:admission_no}/{termSlug}/{academicSessionName}', [ResultController::class, 'showPerformanceReport'])->name('show.performance')->where('academicSessionName', '.*');
+        Route::get('/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('show.performance')->where('academicSessionName', '.*');
         Route::get('/edit/{result}', [ResultController::class, 'edit'])->name('edit');
         Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
         Route::patch('/update/{result}', [ResultController::class, 'update'])->name('update');
