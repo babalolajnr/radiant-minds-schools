@@ -33,7 +33,7 @@
                     <label class="col-sm-1">CLASS:</label>
                     <div class="col-sm-3 bord1 border-bottom ">{{ $student->classroom->name }}</div>
                     <label class="col-sm-1">SESSION:</label>
-                    <div class="col-sm-3 bord2 border-bottom ">{{ $academicSession->name }}</div>
+                    <div class="col-sm-3 bord2 border-bottom ">{{ $period->academicSession->name }}</div>
                     <label class="col-sm-2">ADMISSION NO:</label>
                     <div class="col-sm-3 mr-5 bord3 border-bottom ">{{ $student->admission_no }}</div>
                 </div>
