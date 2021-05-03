@@ -10,7 +10,7 @@ class ADType extends Model
     use HasFactory;
     
     /**
-     * fillable
+     * The attributes that are mass assignable.
      *
      * @var array
      */

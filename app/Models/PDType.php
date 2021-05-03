@@ -10,14 +10,14 @@ class PDType extends Model
     use HasFactory;    
 
     /**
-     * table
+     * Table associated with PDType model
      *
      * @var string
      */
     protected $table = 'p_d_types'; 
        
     /**
-     * fillable
+     * The attributes that are mass assignable.
      *
      * @var array
      */

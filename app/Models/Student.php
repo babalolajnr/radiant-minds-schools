@@ -10,40 +10,81 @@ class Student extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
+    
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id', 'created_at', 'updated_at'];
-
+    
+    /**
+     * Guardian relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function guardian()
     {
         return $this->belongsTo(Guardian::class);
     }
-
+    
+    /**
+     * Classroom relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);
     }
-
+    
+    /**
+     * Result relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function results()
     {
         return $this->hasMany(Result::class);
     }
-
+    
+    /**
+     * Pd relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function pds()
     {
         return $this->hasMany(PD::class);
     }
-
+    
+    /**
+     * Ad relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function ads()
     {
         return $this->hasMany(AD::class);
     }
-
+    
+    /**
+     * Attendance relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
 
-    //check if student exists
+     
+    /**
+     * Find student
+     *
+     * @param  string $admission_no
+     * @return Student $student
+     */
     public static function findStudent($admission_no)
     {
 
@@ -54,25 +95,47 @@ class Student extends Model
 
         return $student;
     }
-
+    
+    /**
+     * Check if student is active
+     *
+     * @return boolean
+     */
     public function isActive()
     {
         return $this->is_active == true;
     }
-
+    
+    /**
+     * Get all students that have not graduated
+     *
+     * @return mixed $students
+     */
     public static function getAllStudents()
     {
         $students = Student::whereNull('graduated_at')->get();
         return $students;
     }
-
+    
+    /**
+     * Get Alumni
+     *
+     * @return mixed $alumni
+     */
     public static function getAlumni()
     {
         $alumni = Student::whereNotNull('graduated_at')->get();
         return $alumni;
     }
 
-    //check if student is in the highest class
+        
+    /**
+     * Check if student can graduate
+     * 
+     * Only Students in the highest class can graduate
+     *
+     * @return boolean
+     */
     public function canGraduate()
     {
         $classRank = $this->classroom->rank;
@@ -81,7 +144,12 @@ class Student extends Model
         return $classRank == $highestClassRank;
     }
 
-    // check if student has graduated
+       
+    /**
+     * check if student is an alumni
+     *
+     * @return void
+     */
     public function hasGraduated()
     {
         return $this->graduated_at !== null;
