@@ -33,6 +33,8 @@ class PeriodSeeder extends Seeder
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
 
+        $rank = 0;
+
         foreach ($academicSessions as $academicSession) {
             foreach ($terms as $term) {
                 $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date)
@@ -45,7 +47,8 @@ class PeriodSeeder extends Seeder
                     'term_id' => $term->id,
                     'start_date' => $startDate,
                     'end_date' => $endDate,
-                    'slug' => $slug
+                    'slug' => $slug,
+                    'rank' => $rank++
                 ]);
             }
         }
