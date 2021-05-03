@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicSession;
 use App\Models\ADType;
 use App\Models\PDType;
 use App\Models\Period;
 use App\Models\Result;
 use App\Models\Student;
 use App\Models\Subject;
-use App\Models\Term;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
 {
+   
     /**
-     * there should be a page that has all the courses the student's
-     * class has and a button to fill in the subject, term, session
-     * ca and exam
+     * Get Result creation page
      *
+     * @param  Student $student
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create(Student $student)
     {
@@ -33,12 +32,16 @@ class ResultController extends Controller
 
         return view('createResults', compact('subjects', 'student', 'activePeriod'));
     }
-
+    
+    /**
+     * Store student result for active period
+     *
+     * @param  Request $request
+     * @param  Student $student
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request, Student $student)
     {
-        /**
-         * NOTE: Result can only be stored for the current academic session
-         */
 
         $messages = [
             'between.ca' => 'The score must be between 0 and 40',
@@ -82,19 +85,26 @@ class ResultController extends Controller
 
         return back()->with('success', 'Record created! 👍');
     }
-
-    public function showPerformanceReport(Student $student,  $termSlug, $academicSessionName)
+    
+    /**
+     * Get student performance report
+     *
+     * @param  Student $student
+     * @param  string $periodSlug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function showPerformanceReport(Student $student, $periodSlug)
     {
-        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
-        $term = Term::where('slug', $termSlug)->firstOrFail();
+        $period = Period::where('slug', $periodSlug)->firstOrFail();
 
         $pdTypes = PDType::all();
-        $pds = $this->getPds($student, $academicSession, $term);
-        $adTypes = ADType::all();
-        $ads = $this->getAds($student, $academicSession, $term);
+        $pds = $this->getPds($student, $period);
 
-        //Get the subjects for the student's class in the selected academic session
-        $subjects = $student->classroom->subjects()->where('academic_session_id',  $academicSession->id)->get();
+        $adTypes = ADType::all();
+        $ads = $this->getAds($student, $period);
+
+        //Get the subjects for the student's class in the selected period Academic Session
+        $subjects = $student->classroom->subjects()->where('academic_session_id',  $period->academicSession->id)->get();
 
         //Check if the class has subjects
         if (count($subjects) < 1) {
@@ -106,8 +116,7 @@ class ResultController extends Controller
         //create a results array from all subjects from the student's class
         foreach ($subjects as $subject) {
             $result = Result::where('student_id', $student->id)
-                ->where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $subject->id)->first();
+                ->where('period_id', $period->term->id)->where('subject_id', $subject->id)->first();
 
             $result = [$subject->name => $result];
             $results = array_merge($results, $result);
@@ -121,11 +130,12 @@ class ResultController extends Controller
         $currentDate = now()->year;
         $yearOfBirth = Carbon::createFromFormat('Y-m-d', $student->date_of_birth)->format('Y');
         $age = $currentDate - $yearOfBirth;
-        $numberOfTimesPresent = $student->attendances()->where('term_id', $term->id)->where('academic_session_id', $academicSession->id)->first();
+        $numberOfTimesPresent = $student->attendances()->where('period_id', $period->id)->first();
 
         //Get class score statistics
         foreach ($results as $key => $result) {
 
+            //if student does not have a result recorded for the subject
             if ($result == null) {
                 $maxScore = [$key => null];
                 $maxScores = array_merge($maxScores, $maxScore);
@@ -136,8 +146,7 @@ class ResultController extends Controller
                 $averageScore = [$key => null];
                 $averageScores = array_merge($averageScores, $averageScore);
             } else {
-                $scoresQuery = Result::where('academic_session_id', $academicSession->id)
-                    ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
+                $scoresQuery = Result::where('period_id', $period->id)->where('subject_id', $result->subject->id);
 
                 //highest scores
                 $maxScore = $scoresQuery->max('total');
@@ -170,8 +179,6 @@ class ResultController extends Controller
             'totalObtainable',
             'percentage',
             'results',
-            'academicSession',
-            'term',
             'maxScores',
             'averageScores',
             'minScores',
@@ -180,10 +187,17 @@ class ResultController extends Controller
             'pdTypes',
             'ads',
             'adTypes',
-            'numberOfTimesPresent'
+            'numberOfTimesPresent',
+            'period'
         ));
     }
 
+    /**
+     * Get Edit Result Page
+     *
+     * @param  Result $result
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function edit(Result $result)
     {
         //store previous url in session to be used for redirect after update
@@ -191,6 +205,13 @@ class ResultController extends Controller
         return view('editResult', compact('result'));
     }
 
+    /**
+     * Update result
+     *
+     * @param  Result $result
+     * @param  Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function update(Result $result, Request $request)
     {
         $validatedData = $request->validate([
@@ -207,16 +228,29 @@ class ResultController extends Controller
         return redirect($request->session()->get('resultsPage'))->with('success', 'Result Updated!');
     }
 
+    /**
+     * Destroy result
+     *
+     * @param  Result $result
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Result $result)
     {
         $result->delete();
         return back()->with('success', 'Result Deleted');
     }
 
-    private function getPds($student, $academicSession, $term)
+    /**
+     * Get Pychomotor domains for a given period
+     *
+     * @param  Student $student
+     * @param  Period $period
+     * @return array
+     */
+    private function getPds($student, $period)
     {
-        // get pds for the academic session and term
-        $pds = $student->pds()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->get();
+        // get pds for the period
+        $pds = $student->pds()->where('period_id', $period->id)->get();
 
         $pdTypeIds = [];
         $values = [];
@@ -242,10 +276,17 @@ class ResultController extends Controller
         return $pds;
     }
 
-    private function getAds($student, $academicSession, $term)
+    /**
+     * Get Affective domains for given period
+     *
+     * @param  Student $student
+     * @param  Period $period
+     * @return array
+     */
+    private function getAds($student, $period)
     {
-        // get ads for the academic session and term
-        $ads = $student->ads()->where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->get();
+        // get ads for period
+        $ads = $student->ads()->where('period_id', $period->id)->get();
 
         $adTypeIds = [];
         $values = [];
