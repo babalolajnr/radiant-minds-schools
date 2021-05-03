@@ -30,12 +30,24 @@ class PeriodController extends Controller
         $term = Term::where('name', $data['term'])->first();
 
         $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
+
+        $periodCount = Period::count();
+
+        //check if table has records
+        if ($periodCount < 1) {
+            $highestRank = 1;
+        } else {
+            $highestRank = Period::max('rank')->rank;
+            $highestRank++;
+        }
+
         Period::create([
             'academic_session_id' => $academicSession->id,
             'term_id' => $term->id,
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
-            'slug' => $slug
+            'slug' => $slug,
+            'rank' => $highestRank
         ]);
 
         return back()->with('success', 'Record Created!');
