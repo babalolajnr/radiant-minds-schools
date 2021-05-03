@@ -163,7 +163,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('ads')->name('ad.')->group(function () {
         //Affective Domain Routes
         Route::get('/create/{student:admission_no}/{periodSlug?}', [ADController::class, 'create'])->name('create');
-        Route::post('/store/{student}/{periodSlug?}', [ADController::class, 'storeOrUpdate'])->name('store');
+        Route::post('/store/{student}/{periodSlug?}', [ADController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 
     Route::prefix('ad-types')->name('ad-type.')->group(function () {
