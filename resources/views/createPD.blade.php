@@ -42,13 +42,14 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="@if (!$academicSession->isCurrentAcademicSession()) {{ route('pd.store', ['student' => $student, 'termId' => $term, 'academicSessionId' => $academicSession->id]) }}
-                            @else {{ route('pd.store', ['student' => $student, 'termId' => $term]) }} @endif" method="POST">
+                            <form action="@if (!$period->isActive()) {{ route('pd.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->id]) }}
+                            @else {{ route('pd.storeOrUpdate', ['student' => $student]) }} @endif"
+                                method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
                                     @if (!is_null($pdTypesValues))
-                                    {{-- if the fields already have values they should be automaically filled --}}
+                                        {{-- if the fields already have values they should be automaically filled --}}
                                         @foreach ($pdTypes as $pdType)
                                             <div class="form-group">
                                                 <label for="customRange1">{{ $pdType->name }}<span
@@ -59,7 +60,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                    {{-- if the fields have not been previously filled  --}}
+                                        {{-- if the fields have not been previously filled --}}
                                         @foreach ($pdTypes as $pdType)
                                             <div class="form-group">
                                                 <label for="customRange1">{{ $pdType->name }}<span
