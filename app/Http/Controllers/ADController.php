@@ -78,7 +78,7 @@ class ADController extends Controller
             AD::updateOrCreate(
                 [
                     'student_id' => $student->id,
-                    'period' => $period->id,
+                    'period_id' => $period->id,
                     'a_d_type_id' => $adType->id,
                 ],
                 ['value' => $value]
