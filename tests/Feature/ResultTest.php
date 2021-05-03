@@ -54,6 +54,7 @@ class ResultTest extends TestCase
 
     public function test_result_create_method()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create();
 
@@ -67,6 +68,7 @@ class ResultTest extends TestCase
 
     public function test_result_edit_method()
     {
+        $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
         $result = Result::factory()->create();
@@ -93,10 +95,10 @@ class ResultTest extends TestCase
         //seed a subject to the classroom
         $classroom = $result->student->classroom;
         $subject = Subject::factory()->create();
-        $data = [$subject->id => ['academic_session_id' => $result->academicSession->id]];
+        $data = [$subject->id => ['academic_session_id' => $result->period->academicSession->id]];
         $classroom->subjects()->attach($data);
 
-        $response = $this->actingAs($user)->get(route('result.show.performance', ['student' => $result->student, 'termSlug' => $result->term->slug, 'academicSessionName' => $result->academicSession->name]));
+        $response = $this->actingAs($user)->get(route('result.show.performance', ['student' => $result->student, 'periodSlug' => $result->period->slug]));
         $response->assertStatus(200)->assertViewIs('performanceReport');
     }
 
