@@ -37,7 +37,7 @@ class PeriodController extends Controller
         if ($periodCount < 1) {
             $highestRank = 1;
         } else {
-            $highestRank = Period::max('rank')->rank;
+            $highestRank = Period::max('rank');
             $highestRank++;
         }
 
