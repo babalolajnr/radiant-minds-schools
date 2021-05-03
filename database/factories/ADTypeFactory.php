@@ -24,6 +24,7 @@ class ADTypeFactory extends Factory
     {
         $adType = $this->faker->unique()->randomElement(self::$adTypes);
         $slug = Str::of($adType)->slug('-');
+        
         return [
             'name' => $adType,
             'slug' => $slug
