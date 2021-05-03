@@ -21,6 +21,7 @@ class CreatePeriodsTable extends Migration
             $table->date('start_date')->unique();
             $table->date('end_date')->unique();
             $table->boolean('active')->unique()->nullable();
+            $table->integer('rank')->unique();
             $table->timestamps();
         });
     }
