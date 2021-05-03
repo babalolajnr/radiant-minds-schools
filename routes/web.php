@@ -147,8 +147,8 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('pds')->name('pd.')->group(function () {
         //Pychomotor Domain Routes
-        Route::get('/create/{student:admission_no}/{periodSlug}', [PDController::class, 'create'])->name('create');
-        Route::post('/store/{student}/{periodSlug}', [PDController::class, 'store'])->name('store');
+        Route::get('/create/{student:admission_no}/{periodSlug?}', [PDController::class, 'create'])->name('create');
+        Route::post('/store/{student}/{periodSlug?}', [PDController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 
     Route::prefix('pd-types')->name('pd-type.')->group(function () {
