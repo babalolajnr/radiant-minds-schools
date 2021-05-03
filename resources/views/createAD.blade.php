@@ -42,9 +42,9 @@
                             </div>
                             {{-- AD --}}
 
-                            <form action="@if (!$period->isActive()) {{ route('ad.store', ['student' => $student, 'periodId' => $period->id]) }}
+                            <form action="@if (!$period->isActive()) {{ route('ad.storeOrUpdate', ['student' => $student, 'periodId' => $period->id]) }}
                             @else
-                                {{ route('ad.store', ['student' => $student]) }} @endif" method="POST">
+                                {{ route('ad.storeOrUpdate', ['student' => $student]) }} @endif" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <!-- radio -->
