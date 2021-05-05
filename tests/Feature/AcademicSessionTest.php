@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\AcademicSession;
-use App\Models\Result;
+use App\Models\Period;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -69,7 +69,7 @@ class AcademicSessionTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
         $academicSession = AcademicSession::factory()->create();
-        Result::factory()->create(['academic_session_id' => $academicSession]);
+        Period::factory()->create(['academic_session_id' => $academicSession]);
         $response = $this->actingAs($user)->delete(route('academic-session.destroy', ['academicSession' => $academicSession]));
         $response->assertStatus(302)->assertSessionHas('error');
     }
