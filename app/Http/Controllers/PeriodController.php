@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\AcademicSession;
 use App\Models\Period;
 use App\Models\Term;
-use Carbon\Carbon;
+use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PeriodController extends Controller
 {
+    use ValidationTrait;
+    
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -27,9 +29,9 @@ class PeriodController extends Controller
             return back()->with('error', 'Record Exists');
         }
 
-        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date']);
-
         //check if date range is unique
+        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class);
+
         if ($validateDateRange !== true) {
             return back()->with('error', 'Date range overlaps with another period');
         }
@@ -61,40 +63,4 @@ class PeriodController extends Controller
         return back()->with('success', 'Record Created!');
     }
 
-    /**
-     * Validate date range is unique
-     * 
-     * For Two Date ranges A and B
-     * Formula : StartA <= EndB && EndA >= StartB
-     * 
-     * If the function returns true, date range is unique
-     * else it is not
-     *
-     * @param  string $startDate
-     * @param  string $endDate
-     * @return bool
-     */
-    private function validateDateRange($startDate, $endDate): bool
-    {
-        $periods = Period::all();
-
-        if (count($periods) < 1) {
-            return true;
-        }
-
-        $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
-        $endDate = Carbon::createFromFormat('Y-m-d', $endDate);
-
-        foreach ($periods as $period) {
-
-            $periodStartDate =  Carbon::createFromFormat('Y-m-d', $period->start_date);
-            $periodEndDate =  Carbon::createFromFormat('Y-m-d', $period->end_date);
-
-            if ($periodStartDate->lessThanOrEqualTo($endDate) && $periodEndDate->greaterThanOrEqualTo($startDate)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
