@@ -92,8 +92,6 @@ class PeriodTest extends TestCase
         $periodEndDate = Carbon::now();
         $periodEndDate->year(2023)->month(10)->day(10);
 
-        // Period::factory()->create(['start_date' => $periodStartDate, 'end_date' => $periodEndDate]);
-
         $this->seed('PeriodSeeder');
 
         $academicSessionName = '2022/2023';
