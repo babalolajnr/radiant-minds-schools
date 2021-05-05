@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
+use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class AcademicSessionController extends Controller
 {
+    use ValidationTrait;
+
     private function validateAcademicSession($request, $academicSession = null)
     {
         $messages = [
@@ -32,7 +35,19 @@ class AcademicSessionController extends Controller
 
     public function store(Request $request)
     {
-        AcademicSession::create($this->validateAcademicSession($request));
+        $data = $this->validateAcademicSession($request);
+
+        $data += ['slug' =>  str_replace('/', '-', $data['name'])];
+
+        //check if date range is unique
+        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], AcademicSession::class);
+
+        if ($validateDateRange !== true) {
+            return back()->with('error', 'Date range overlaps with another period');
+        }
+
+        AcademicSession::create($data);
+
         return back()->with('success', 'Academic Session Created!');
     }
 
@@ -43,8 +58,18 @@ class AcademicSessionController extends Controller
 
     public function update(AcademicSession $academicSession, Request $request)
     {
+        $data = $this->validateAcademicSession($request, $academicSession);
 
-        $academicSession->update($this->validateAcademicSession($request, $academicSession));
+        $data += ['slug' =>  str_replace('/', '-', $data['name'])];
+
+        //check if date range is unique
+        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], AcademicSession::class);
+
+        if ($validateDateRange !== true) {
+            return back()->with('error', 'Date range overlaps with another period');
+        }
+
+        $academicSession->update($data);
 
         return redirect()->route('academic-session.index')->with('success', 'Academic Session Updated!');
     }
@@ -60,15 +85,5 @@ class AcademicSessionController extends Controller
             }
         }
         return back()->with('success', 'Academic Session Deleted!');
-    }
-
-    public function setCurrentAcademicSession(AcademicSession $academicSession)
-    {
-        AcademicSession::where('current_session', 1)->update(['current_session' => null]);
-
-        $academicSession->current_session = 1;
-        $academicSession->save();
-
-        return back()->with('success', $academicSession->name . ' set as current session');
     }
 }
