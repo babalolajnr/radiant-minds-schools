@@ -43,7 +43,7 @@ class AcademicSessionFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::of($name)->slug('-'),
+            'slug' =>  str_replace('/', '-', $name),
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
