@@ -35,11 +35,21 @@ class PeriodSeeder extends Seeder
 
         $rank = 0;
 
+        $selectedDays = [];
         foreach ($academicSessions as $academicSession) {
             foreach ($terms as $term) {
+
+                //ensure the day is unique
+                do {
+                    $days = mt_rand(1, 90);
+                } while (in_array($days, $selectedDays));
+
+                array_push($selectedDays, $days);
+
                 $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date)
-                    ->addDays(mt_rand(1, 20))->toDateString();
-                $endDate = Carbon::createFromFormat('Y-m-d', $startDate)->addDays(mt_rand(30, 90));
+                    ->addDays($days)->toDateString();
+                    
+                $endDate = Carbon::createFromFormat('Y-m-d', $startDate)->addDays($days);
                 $slug = Str::of("{$academicSession->name} {$term->name}")->slug('-');
 
                 Period::create([
