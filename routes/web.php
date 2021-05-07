@@ -186,6 +186,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::get('/edit/{period:slug}', [PeriodController::class, 'edit'])->name('edit');
         Route::patch('/update/{period:slug}', [PeriodController::class, 'update'])->name('update');
         Route::patch('/set-active/{period:slug}', [PeriodController::class, 'setActivePeriod'])->name('set-active-period');
+        Route::delete('/delete/{period:slug}', [PeriodController::class, 'destroy'])->name('delete');
     });
 });
 
