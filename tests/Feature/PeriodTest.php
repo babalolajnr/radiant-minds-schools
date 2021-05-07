@@ -22,13 +22,15 @@ class PeriodTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
 
+        $academicSession = AcademicSession::factory()->create();
+
         $response = $this->actingAs($user)->post(
             route('period.store'),
             [
-                'academic_session' => AcademicSession::factory()->create()->name,
+                'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => now(),
-                'end_date' => now()->addMonths(4)
+                'start_date' => $academicSession->start_date->addDays(mt_rand(0, 10)),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(0, 10))
             ]
         );
 
@@ -42,13 +44,15 @@ class PeriodTest extends TestCase
 
         Period::factory()->create();
 
+        $academicSession = AcademicSession::factory()->create();
+
         $response = $this->actingAs($user)->post(
             route('period.store'),
             [
-                'academic_session' => AcademicSession::factory()->create()->name,
+                'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => now()->toDateString(),
-                'end_date' => now()->addMonths(4)->toDateString()
+                'start_date' => $academicSession->start_date->addDays(mt_rand(0, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(0, 10))->toDateString()
             ]
         );
 
@@ -58,23 +62,24 @@ class PeriodTest extends TestCase
     public function test_period_with_date_range_that_overlaps_another_period_cannot_be_stored()
     {
         $this->withoutExceptionHandling();
+
         $user = User::factory()->create(['user_type' => 'master']);
 
-        $periodStartDate = Carbon::now();
-        $periodStartDate->year(2021)->month(4)->day(10);
+        $academicSession = AcademicSession::factory()->create();
 
-        $periodEndDate = Carbon::now();
-        $periodEndDate->year(2021)->month(10)->day(10);
+        $periodStartDate = $academicSession->start_date->addDays(mt_rand(0, 1));
+
+        $periodEndDate =  $academicSession->end_date->subDays(mt_rand(0, 1));
 
         Period::factory()->create(['start_date' => $periodStartDate, 'end_date' => $periodEndDate]);
 
         $response = $this->actingAs($user)->post(
             route('period.store'),
             [
-                'academic_session' => AcademicSession::factory()->create()->name,
+                'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => '2021-6-20',
-                'end_date' => '2021-7-20'
+                'start_date' => $periodStartDate->addDays(mt_rand(1, 5))->toDateString(),
+                'end_date' => $periodEndDate->subDays(mt_rand(1, 1))->toDateString()
             ]
         );
 
@@ -103,7 +108,7 @@ class PeriodTest extends TestCase
             'start_date' => $periodStartDate,
             'end_date' => $periodEndDate,
             'rank' => mt_rand(20, 40)
-        ])->name;
+        ]);
 
         $termName = 'Fifth term';
         $term =  Term::create(['name' => $termName, 'slug' => Str::of($termName)->slug('-')])->name;
@@ -111,10 +116,10 @@ class PeriodTest extends TestCase
         $response = $this->actingAs($user)->post(
             route('period.store'),
             [
-                'academic_session' => $academicSession,
+                'academic_session' => $academicSession->name,
                 'term' => $term,
-                'start_date' => '2022-10-10',
-                'end_date' => '2023-12-10'
+                'start_date' => $academicSession->start_date->addDays(mt_rand(0, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(0, 1))->toDateString()
             ]
         );
 
