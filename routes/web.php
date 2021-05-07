@@ -183,6 +183,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('period')->name('period.')->group(function () {
         Route::post('/store', [PeriodController::class, 'store'])->name('store');
+        Route::get('/edit/{period:slug}', [PeriodController::class, 'edit'])->name('edit');
     });
 });
 
