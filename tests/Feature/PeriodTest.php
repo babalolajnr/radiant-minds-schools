@@ -151,4 +151,23 @@ class PeriodTest extends TestCase
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
+
+    public function test_period_can_be_set_as_active()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->patch(route('period.set-active-period', ['period' => $period]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_period_can_be_set_as_active_when_there_is_already_an_active_period()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        Period::factory()->create(['active' => true]);
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->patch(route('period.set-active-period', ['period' => $period]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
 }
