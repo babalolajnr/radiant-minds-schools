@@ -12,14 +12,26 @@ use Illuminate\Support\Str;
 class PeriodController extends Controller
 {
     use ValidationTrait;
-    
+        
+    /**
+     * store period.
+     *
+     * @param  mixed $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
+        $academicSession = AcademicSession::where('name', $request->academic_session)->first();
+
+        if($academicSession == null){
+            return back()->with('error', 'Academic Session not found');
+        }
+
         $data = $request->validate([
             'academic_session' => ['required', 'exists:academic_sessions,name', 'string'],
             'term' => ['required', 'string', 'exists:terms,name'],
-            'start_date' => ['required', 'date', 'unique:periods'],
-            'end_date' => ['required', 'date', 'after:start_date', 'unique:periods'],
+            'start_date' => ['required', 'date', 'unique:periods', "after_or_equal:{$academicSession->start_date}"],
+            'end_date' => ['required', 'date', 'after:start_date', 'unique:periods', "before_or_equal:{$academicSession->end_date}"],
         ]);
 
         //check if academic session and term exist on the same row
@@ -36,7 +48,6 @@ class PeriodController extends Controller
             return back()->with('error', 'Date range overlaps with another period');
         }
 
-        $academicSession = AcademicSession::where('name', $data['academic_session'])->first();
         $term = Term::where('name', $data['term'])->first();
 
         $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
