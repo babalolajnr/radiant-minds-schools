@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class PeriodController extends Controller
 {
     use ValidationTrait;
-        
+
     /**
      * store period.
      *
@@ -23,7 +23,7 @@ class PeriodController extends Controller
     {
         $academicSession = AcademicSession::where('name', $request->academic_session)->first();
 
-        if($academicSession == null){
+        if ($academicSession == null) {
             return back()->with('error', 'Academic Session not found');
         }
 
@@ -50,6 +50,7 @@ class PeriodController extends Controller
 
         $term = Term::where('name', $data['term'])->first();
 
+        //create slug
         $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
 
         $periodCount = Period::count();
@@ -73,5 +74,15 @@ class PeriodController extends Controller
 
         return back()->with('success', 'Record Created!');
     }
-
+    
+    /**
+     * edit period
+     *
+     * @param  Period $period
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function edit(Period $period)
+    {
+        return view('editPeriod', compact('period'));
+    }
 }
