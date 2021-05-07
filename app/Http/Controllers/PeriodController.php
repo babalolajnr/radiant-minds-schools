@@ -86,7 +86,14 @@ class PeriodController extends Controller
     {
         return view('editPeriod', compact('period'));
     }
-
+    
+    /**
+     * update period
+     *
+     * @param  Request $request
+     * @param  Period $period
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Period $period)
     {
         $data = $request->validate([
@@ -105,7 +112,13 @@ class PeriodController extends Controller
 
         return back()->with('success', 'Period updated successfully');
     }
-
+    
+    /**
+     * Set active period
+     *
+     * @param  mixed $period
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setActivePeriod(Period $period)
     {
         $activePeriod = Period::where('active', true)->first();
@@ -117,5 +130,24 @@ class PeriodController extends Controller
         $period->update(['active' => true]);
 
         return back()->with('success', "{$period->slug} set as active");
+    }
+    
+    /**
+     * destroy period
+     *
+     * @param  mixed $period
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Period $period){
+
+        try {
+            $period->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Period cannot be deleted because some resources are dependent on it!');
+            }
+        }
+        return back()->with('success', 'Deleted!');
     }
 }
