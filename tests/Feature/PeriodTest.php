@@ -125,4 +125,15 @@ class PeriodTest extends TestCase
 
         $response->assertStatus(302)->assertSessionHas('success');
     }
+
+    public function test_edit_period_method()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('period.edit', ['period' => $period]));
+
+        $response->assertStatus(200)->assertViewIs('editPeriod');
+    }
 }
