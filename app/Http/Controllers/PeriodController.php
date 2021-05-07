@@ -8,6 +8,7 @@ use App\Models\Term;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PeriodController extends Controller
 {
@@ -74,7 +75,7 @@ class PeriodController extends Controller
 
         return back()->with('success', 'Record Created!');
     }
-    
+
     /**
      * edit period
      *
@@ -85,4 +86,24 @@ class PeriodController extends Controller
     {
         return view('editPeriod', compact('period'));
     }
+
+    public function update(Request $request, Period $period)
+    {
+        $data = $request->validate([
+            'start_date' => ['required', 'date', Rule::unique('periods')->ignore($period), "after_or_equal:{$period->academicSession->start_date}"],
+            'end_date' => ['required', 'date', 'after:start_date', Rule::unique('periods')->ignore($period), "before_or_equal:{$period->academicSession->end_date}"],
+        ]);
+
+        //check if date range is unique and does not overlap another date range
+        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class, $period);
+
+        if ($validateDateRange !== true) {
+            return back()->with('error', 'Date range overlaps with another period');
+        }
+
+        $period->update($data);
+
+        return back()->with('success', 'Period updated successfully');
+    }
+
 }
