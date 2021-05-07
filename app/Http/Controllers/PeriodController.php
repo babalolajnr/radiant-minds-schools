@@ -106,4 +106,16 @@ class PeriodController extends Controller
         return back()->with('success', 'Period updated successfully');
     }
 
+    public function setActivePeriod(Period $period)
+    {
+        $activePeriod = Period::where('active', true)->first();
+
+        if ($activePeriod != null) {
+            $activePeriod->update(['active' => null]);
+        }
+
+        $period->update(['active' => true]);
+
+        return back()->with('success', "{$period->slug} set as active");
+    }
 }
