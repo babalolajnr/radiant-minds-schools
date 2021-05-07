@@ -20,25 +20,34 @@ trait ValidationTrait
      * @param  string $startDate
      * @param  string $endDate
      * @param string $model
+     * @param object $ignore
      * @return bool
      */
-    private function validateDateRange($startDate, $endDate, $model): bool
+    private function validateDateRange($startDate, $endDate, $model, $ignore = null): bool
     {
-        $periods = $model::all();
+        $records = $model::all();
 
-        if (count($periods) < 1) {
+        if (count($records) < 1) {
             return true;
         }
 
         $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
         $endDate = Carbon::createFromFormat('Y-m-d', $endDate);
 
-        foreach ($periods as $period) {
+        foreach ($records as $record) {
 
-            $periodStartDate =  Carbon::createFromFormat('Y-m-d', $period->start_date);
-            $periodEndDate =  Carbon::createFromFormat('Y-m-d', $period->end_date);
+            $recordStartDate =  Carbon::createFromFormat('Y-m-d', $record->start_date);
+            $recordEndDate =  Carbon::createFromFormat('Y-m-d', $record->end_date);
 
-            if ($periodStartDate->lessThanOrEqualTo($endDate) && $periodEndDate->greaterThanOrEqualTo($startDate)) {
+            if ($recordStartDate->lessThanOrEqualTo($endDate) && $recordEndDate->greaterThanOrEqualTo($startDate)) {
+
+                //ignore given record by returning true if it overlaps itself
+                if ($ignore != null) {
+                    if ($record->id == $ignore->id) {
+                        return true;
+                    }
+                }
+
                 return false;
             }
         }
