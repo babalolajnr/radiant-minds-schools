@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\AcademicSession;
 use App\Models\Period;
+use App\Models\Result;
 use App\Models\Term;
 use App\Models\User;
 use Carbon\Carbon;
@@ -169,5 +170,23 @@ class PeriodTest extends TestCase
 
         $response = $this->actingAs($user)->patch(route('period.set-active-period', ['period' => $period]));
         $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_period_can_be_deleted()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('period.delete', ['period' => $period]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_period_that_has_relations_cannot_be_deleted()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+        $result = Result::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('period.delete', ['period' => $result->period]));
+        $response->assertStatus(302)->assertSessionHas('error');
     }
 }
