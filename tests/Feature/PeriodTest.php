@@ -29,8 +29,8 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(0, 10)),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(0, 10))
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))
             ]
         );
 
@@ -51,8 +51,8 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(0, 10))->toDateString(),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(0, 10))->toDateString()
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString()
             ]
         );
 
@@ -135,5 +135,20 @@ class PeriodTest extends TestCase
         $response = $this->actingAs($user)->get(route('period.edit', ['period' => $period]));
 
         $response->assertStatus(200)->assertViewIs('editPeriod');
+    }
+
+    public function test_update_period_method()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->patch(route('period.update', ['period' => $period]), [
+            'start_date' => $period->start_date->addDays(mt_rand(0, 10))->toDateString(),
+            'end_date' => $period->end_date->subDays(mt_rand(0, 10))->toDateString()
+        ]);
+
+        $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
     }
 }
