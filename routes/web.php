@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\PDController;
 use App\Http\Controllers\PDTypeController;
@@ -187,6 +188,10 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         Route::patch('/update/{period:slug}', [PeriodController::class, 'update'])->name('update');
         Route::patch('/set-active/{period:slug}', [PeriodController::class, 'setActivePeriod'])->name('set-active-period');
         Route::delete('/delete/{period:slug}', [PeriodController::class, 'destroy'])->name('delete');
+    });
+
+    Route::prefix('fee')->name('fee.')->group(function () {
+        Route::post('/store', [FeeController::class, 'store'])->name('store');
     });
 });
 
