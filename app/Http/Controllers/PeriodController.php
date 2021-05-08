@@ -52,7 +52,7 @@ class PeriodController extends Controller
         $term = Term::where('name', $data['term'])->first();
 
         //create slug
-        $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
+        $slug = Str::of("{$academicSession->name} {$term->slug}")->slug('-');
 
         $periodCount = Period::count();
 
