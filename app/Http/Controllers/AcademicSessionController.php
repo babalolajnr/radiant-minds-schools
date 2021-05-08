@@ -19,7 +19,7 @@ class AcademicSessionController extends Controller
         ];
 
         $validatedData = $request->validate([
-            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession)],
+            'name' => ['required', 'string', Rule::unique('academic_sessions')->ignore($academicSession), 'regex:/^\d{4}[-]{1}\d{4}$/m'],
             'start_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession)],
             'end_date' => ['required', 'date', Rule::unique('academic_sessions')->ignore($academicSession), 'after:start_date']
         ], $messages);
@@ -36,8 +36,6 @@ class AcademicSessionController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateAcademicSession($request);
-
-        $data += ['slug' =>  str_replace('/', '-', $data['name'])];
 
         //check if date range is unique
         $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], AcademicSession::class);
@@ -59,8 +57,6 @@ class AcademicSessionController extends Controller
     public function update(AcademicSession $academicSession, Request $request)
     {
         $data = $this->validateAcademicSession($request, $academicSession);
-
-        $data += ['slug' =>  str_replace('/', '-', $data['name'])];
 
         //check if date range is unique
         $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], AcademicSession::class);
