@@ -100,12 +100,10 @@ class PeriodTest extends TestCase
 
         $this->seed('PeriodSeeder');
 
-        $academicSessionName = '2022/2023';
-        $slug = str_replace('/', '-', $academicSessionName);
+        $academicSessionName = '2022-2023';
 
         $academicSession = AcademicSession::create([
-            'name' => '2022/2023',
-            'slug' => $slug,
+            'name' => '2022-2023',
             'start_date' => $periodStartDate,
             'end_date' => $periodEndDate,
             'rank' => mt_rand(20, 40)
