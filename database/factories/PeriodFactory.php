@@ -28,7 +28,7 @@ class PeriodFactory extends Factory
         $academicSession = AcademicSession::factory()->create();
         $term = Term::factory()->create();
 
-        $slug = Str::of("{$academicSession->slug} {$term->slug}")->slug('-');
+        $slug = Str::of("{$academicSession->name} {$term->slug}")->slug('-');
 
         $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date->toDateString());
         $startDate = $startDate->addDays(mt_rand(1, 20));
