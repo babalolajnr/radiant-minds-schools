@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicSession extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'start_date', 'end_date'];
-    
+    protected $fillable = ['name', 'start_date', 'end_date'];
+
     /**
      * Period relationship.
      *
