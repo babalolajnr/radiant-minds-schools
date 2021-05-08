@@ -15,21 +15,30 @@ class Period extends Model
      * @var bool
      */
     public $incrementing = true;
-    
+
     /**
      * Table associated with Period model
      *
      * @var string
      */
     protected $table = 'periods';
-    
+
     /**
      * The attributes that are not mass assignable.
      *
      * @var array
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'slug' => 'string',
+    ];
+
     /**
      * Fee relationship
      *
@@ -39,7 +48,7 @@ class Period extends Model
     {
         return $this->belongsTo(Fee::class);
     }
-    
+
     /**
      * Attendance relationship
      *
@@ -49,7 +58,7 @@ class Period extends Model
     {
         return $this->belongsTo(Attendance::class);
     }
-    
+
     /**
      * Term relationship
      *
@@ -59,7 +68,7 @@ class Period extends Model
     {
         return $this->belongsTo(Term::class);
     }
-    
+
     /**
      * AcademicSession relationship
      *
@@ -69,7 +78,7 @@ class Period extends Model
     {
         return $this->belongsTo(AcademicSession::class);
     }
-    
+
     /**
      * Results relationship
      *
@@ -79,7 +88,7 @@ class Period extends Model
     {
         return $this->hasMany(Result::class);
     }
-    
+
     /**
      * Pds relationship
      *
