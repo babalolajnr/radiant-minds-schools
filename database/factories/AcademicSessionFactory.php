@@ -28,10 +28,10 @@ class AcademicSessionFactory extends Factory
         $name = $this->faker->unique()->randomElement(self::$academicSessions);
 
         /**
-         * break the string and extract the first part before the '/'
+         * break the string and extract the first part before the '-'
          * then generate a random day and month
          */
-        $eachYear = explode("/", $name);
+        $eachYear = explode("-", $name);
         $startYear = $eachYear[0];
 
         $startDate = Carbon::now();
@@ -43,16 +43,15 @@ class AcademicSessionFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' =>  str_replace('/', '-', $name),
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
     }
 
     public static $academicSessions = [
-        '2010/2011',
-        '2011/2012',
-        '2012/2013',
-        '2013/2014'
+        '2010-2011',
+        '2011-2012',
+        '2012-2013',
+        '2013-2014'
     ];
 }
