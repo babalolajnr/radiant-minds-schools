@@ -121,11 +121,11 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('academic-sessions')->name('academic-session.')->group(function () {
         //AcademicSession routes
         Route::get('/', [AcademicSessionController::class, 'index'])->name('index');
-        Route::get('/edit/{academicSession:name}', [AcademicSessionController::class, 'edit'])->name('edit')->where('academicSession', '.*');
-        Route::get('/set-current/{academicSession:name}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current')->where('academicSession', '.*');
+        Route::get('/edit/{academicSession:name}', [AcademicSessionController::class, 'edit'])->name('edit');
+        Route::get('/set-current/{academicSession:name}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current');
         Route::post('/store', [AcademicSessionController::class, 'store'])->name('store');
-        Route::patch('/update/{academicSession:name}', [AcademicSessionController::class, 'update'])->name('update')->where('academicSession', '.*');
-        Route::delete('/delete/{academicSession:name}', [AcademicSessionController::class, 'destroy'])->name('destroy')->where('academicSession', '.*');
+        Route::patch('/update/{academicSession:name}', [AcademicSessionController::class, 'update'])->name('update');
+        Route::delete('/delete/{academicSession:name}', [AcademicSessionController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('guardians')->name('guardian.')->group(function () {
@@ -138,7 +138,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     Route::prefix('results')->name('result.')->group(function () {
         //Result ROutes
         Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
-        Route::get('/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('show.performance')->where('academicSessionName', '.*');
+        Route::get('/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
         Route::get('/edit/{result}', [ResultController::class, 'edit'])->name('edit');
         Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
         Route::patch('/update/{result}', [ResultController::class, 'update'])->name('update');
