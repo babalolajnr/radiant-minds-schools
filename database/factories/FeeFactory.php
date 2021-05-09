@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Classroom;
 use App\Models\Fee;
+use App\Models\Period;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FeeFactory extends Factory
@@ -22,7 +24,9 @@ class FeeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'fee' => mt_rand(10000, 100000),
+            'classroom_id' => Classroom::factory()->create()->id,
+            'period_id' => Period::factory()->create()->id
         ];
     }
 }
