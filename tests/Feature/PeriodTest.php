@@ -62,7 +62,6 @@ class PeriodTest extends TestCase
 
     public function test_period_with_date_range_that_overlaps_another_period_cannot_be_stored()
     {
-        $this->withoutExceptionHandling();
 
         $user = User::factory()->create(['user_type' => 'master']);
 
@@ -84,7 +83,7 @@ class PeriodTest extends TestCase
             ]
         );
 
-        $response->assertStatus(302)->assertSessionHas('error');
+        $response->assertStatus(302)->assertSessionHasErrors(['start_date', 'end_date']);
     }
 
     public function test_period_with_date_range_that_does_not_overlap_another_period_can_be_stored()
@@ -99,8 +98,6 @@ class PeriodTest extends TestCase
         $periodEndDate->year(2023)->month(10)->day(10);
 
         $this->seed('PeriodSeeder');
-
-        $academicSessionName = '2022-2023';
 
         $academicSession = AcademicSession::create([
             'name' => '2022-2023',
@@ -187,4 +184,55 @@ class PeriodTest extends TestCase
         $response = $this->actingAs($user)->delete(route('period.delete', ['period' => $result->period]));
         $response->assertStatus(302)->assertSessionHas('error');
     }
+
+    public function test_period_that_has_a_start_date_before_academic_session_start_date_cannot_be_stored()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $academicSession = AcademicSession::factory()->create();
+
+        $periodStartDate = $academicSession->start_date->subDays(mt_rand(0, 10));
+
+        $periodEndDate =  $academicSession->end_date->subDays(mt_rand(0, 1));
+
+        Period::factory()->create(['start_date' => $periodStartDate, 'end_date' => $periodEndDate]);
+
+        $response = $this->actingAs($user)->post(
+            route('period.store'),
+            [
+                'academic_session' => $academicSession->name,
+                'term' => Term::factory()->create()->name,
+                'start_date' => $periodStartDate->toDateString(),
+                'end_date' => $periodEndDate->subDays(mt_rand(1, 1))->toDateString()
+            ]
+        );
+
+        $response->assertStatus(302)->assertSessionHasErrors('start_date');
+    }
+
+    public function test_period_that_has_a_end_date_after_academic_session_end_date_cannot_be_stored()
+    {
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $academicSession = AcademicSession::factory()->create();
+
+        $periodStartDate = $academicSession->start_date->addDays(mt_rand(0, 10));
+
+        $periodEndDate =  $academicSession->end_date->addDays(mt_rand(1, 10));
+
+        Period::factory()->create(['start_date' => $periodStartDate, 'end_date' => $periodEndDate]);
+
+        $response = $this->actingAs($user)->post(
+            route('period.store'),
+            [
+                'academic_session' => $academicSession->name,
+                'term' => Term::factory()->create()->name,
+                'start_date' => $periodStartDate->toDateString(),
+                'end_date' => $periodEndDate->toDateString()
+            ]
+        );
+
+        $response->assertStatus(302)->assertSessionHasErrors('end_date');
+    }
+
 }
