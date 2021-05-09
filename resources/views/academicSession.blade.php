@@ -57,6 +57,7 @@
                                         <input type="text" name="name" value="{{ old('name') }}"
                                             class="form-control @error('name') is-invalid @enderror"
                                             id="academicSession" placeholder="Enter Academic Session">
+                                        <small class="text-muted">e.g 2009-2010 </small>
                                         @error('name')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -120,11 +121,14 @@
                                             <tr>
                                                 <td>
                                                     {{ $academicSession->name }}
+                                                </td>
+                                                {{-- <td>
+                                                    {{ $academicSession->name }}
                                                     @if ($academicSession->isCurrentAcademicSession()) <span
                                                             class="pl-3" title="Current Academic Session"><i
                                                                 class="fas fa-check text-green-600"></i></span>
                                                     @endif
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     {{ $academicSession->start_date }}
                                                 </td>
@@ -146,7 +150,7 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
 
-                                                        @if ($academicSession->isCurrentAcademicSession())
+                                                        {{-- @if ($academicSession->isCurrentAcademicSession())
                                                             <button type="button" class="btn btn-default btn-flat"
                                                                 title="Set as current academic session" disabled>
                                                                 <i class="fas fa-toggle-on text-green-700"></i>
@@ -159,7 +163,7 @@
                                                                     <i class="fas fa-toggle-off text-red-500"></i>
                                                                 </button>
                                                             </a>
-                                                        @endif
+                                                            @endif --}}
 
                                                     </div>
                                                 </td>
