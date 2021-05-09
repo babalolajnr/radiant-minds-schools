@@ -8,7 +8,7 @@ use App\Models\Period;
 use Illuminate\Http\Request;
 
 class FeeController extends Controller
-{    
+{
     /**
      * store fee
      *
@@ -29,7 +29,7 @@ class FeeController extends Controller
         //check if record exists
         $row = Fee::where('classroom_id', $classroom->id)->where('period_id', $period->id);
 
-        if ($row->exists()){
+        if ($row->exists()) {
             return back()->with('error', 'Record Exists');
         }
 
@@ -41,7 +41,36 @@ class FeeController extends Controller
 
         return back()->with('success', 'Record created');
     }
-    
+
+    /**
+     * show edit fee page
+     *
+     * @param  Fee $fee
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function edit(Fee $fee)
+    {
+        return view('editFee', compact('fee'));
+    }
+
+    /**
+     * update fee
+     *
+     * @param  Request $request
+     * @param  Fee $fee
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Fee $fee)
+    {
+        $data = $request->validate([
+            'fee' => ['required', 'string', 'numeric'],
+        ]);
+
+        $fee->update($data);
+
+        return back()->with('success', 'Record Updated');
+    }
+
     /**
      * destroy fee record
      *
