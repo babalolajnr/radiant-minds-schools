@@ -24,7 +24,7 @@ class FeeTest extends TestCase
         $response = $this->actingAs($user)->post(route('fee.store'), [
             'classroom' => $classroom->name,
             'period' => $period->slug,
-            'fee' => '20000'
+            'amount' => '20000'
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success');
@@ -59,9 +59,24 @@ class FeeTest extends TestCase
         $amount = mt_rand(10000, 100000);
         
         $response = $this->actingAs($user)->patch(route('fee.update', ['fee' => $fee]), [
-            'fee' => "{$amount}"
+            'amount' => "{$amount}"
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_fee_that_is_not_numeric_will_not_be_stored()
+    {
+        $user = User::factory(['user_type' => 'master'])->create();
+        $classroom = Classroom::factory()->create();
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('fee.store'), [
+            'classroom' => $classroom->name,
+            'period' => $period->slug,
+            'amount' => '2fdsfs0'
+        ]);
+
+        $response->assertStatus(302)->assertSessionHasErrors('amount');
     }
 }
