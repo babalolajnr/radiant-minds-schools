@@ -48,6 +48,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('period.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-hourglass-half"></i>
+                                    <p>Periods</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('classroom.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-chalkboard"></i>
                                     <p>Classrooms</p>
