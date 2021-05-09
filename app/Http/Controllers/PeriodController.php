@@ -9,10 +9,24 @@ use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PeriodController extends Controller
 {
     use ValidationTrait;
+
+    /**
+     * get periods page
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function index()
+    {
+        $periods = Period::all();
+        $academicSessions = AcademicSession::all();
+        $terms = Term::all();
+        return view('periods', compact('periods', 'academicSessions', 'terms'));
+    }
 
     /**
      * store period.
@@ -28,12 +42,17 @@ class PeriodController extends Controller
             return back()->with('error', 'Academic Session not found');
         }
 
+        $messages = [
+            'start_date.after_or_equal' => 'Start date must be after or equal to the start date of the selected academic session',
+            'end_date.before_or_equal' => 'End date must be before or equal to the end date of the selected academic session'
+        ];
+
         $data = $request->validate([
             'academic_session' => ['required', 'exists:academic_sessions,name', 'string'],
             'term' => ['required', 'string', 'exists:terms,name'],
-            'start_date' => ['required', 'date', 'unique:periods', "after_or_equal:{$academicSession->start_date}"],
-            'end_date' => ['required', 'date', 'after:start_date', 'unique:periods', "before_or_equal:{$academicSession->end_date}"],
-        ]);
+            'start_date' => ['required', 'date', 'unique:periods,start_date', "after_or_equal:{$academicSession->start_date}"],
+            'end_date' => ['required', 'date', 'after:start_date', 'unique:periods,end_date', "before_or_equal:{$academicSession->end_date}"],
+        ], $messages);
 
         //check if academic session and term exist on the same row
         $row = Period::where('academic_session_id', $data['academic_session'])->where('term_id', $data['term']);
@@ -46,7 +65,10 @@ class PeriodController extends Controller
         $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class);
 
         if ($validateDateRange !== true) {
-            return back()->with('error', 'Date range overlaps with another period');
+            throw ValidationException::withMessages([
+                'start_date' => ['Date range overlaps with another period'],
+                'end_date' => ['Date range overlaps with another period']
+            ]);
         }
 
         $term = Term::where('name', $data['term'])->first();
@@ -86,7 +108,7 @@ class PeriodController extends Controller
     {
         return view('editPeriod', compact('period'));
     }
-    
+
     /**
      * update period
      *
@@ -112,7 +134,7 @@ class PeriodController extends Controller
 
         return back()->with('success', 'Period updated successfully');
     }
-    
+
     /**
      * Set active period
      *
@@ -129,16 +151,17 @@ class PeriodController extends Controller
 
         $period->update(['active' => true]);
 
-        return back()->with('success', "{$period->slug} set as active");
+        return back()->with('success', "{$period->academicSession->name} {$period->term->name} is now active");
     }
-    
+
     /**
      * destroy period
      *
      * @param  mixed $period
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Period $period){
+    public function destroy(Period $period)
+    {
 
         try {
             $period->delete();
