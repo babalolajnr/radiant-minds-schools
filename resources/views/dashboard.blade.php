@@ -95,8 +95,8 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>
-                                    @if ($dashboardData['academicSession'] !== null)
-                                        {{ $dashboardData['academicSession']->name }}
+                                    @if ($dashboardData['period'] !== null)
+                                        {{ $dashboardData['period']->academicSession->name }}
                                     @else
                                         Not Set
                                     @endif
