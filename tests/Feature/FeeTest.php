@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Classroom;
+use App\Models\Fee;
 use App\Models\Period;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,6 +27,16 @@ class FeeTest extends TestCase
             'fee' => '20000'
         ]);
 
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_fee_can_be_deleted()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory(['user_type' => 'master'])->create();
+        $fee = Fee::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('fee.destroy', ['fee' => $fee]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
 }
