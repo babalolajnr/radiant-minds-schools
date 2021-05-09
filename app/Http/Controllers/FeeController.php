@@ -19,7 +19,7 @@ class FeeController extends Controller
     {
         $data = $request->validate([
             'classroom' => ['required', 'string', 'exists:classrooms,name'],
-            'fee' => ['required', 'string', 'numeric'],
+            'amount' => ['required', 'string', 'numeric'],
             'period' => ['required', 'string', 'exists:periods,slug']
         ]);
 
@@ -35,7 +35,7 @@ class FeeController extends Controller
 
         Fee::create([
             'classroom_id' => $classroom->id,
-            'fee' => $data['fee'],
+            'amount' => $data['amount'],
             'period_id' => $period->id,
         ]);
 
@@ -63,7 +63,7 @@ class FeeController extends Controller
     public function update(Request $request, Fee $fee)
     {
         $data = $request->validate([
-            'fee' => ['required', 'string', 'numeric'],
+            'amount' => ['required', 'string', 'numeric'],
         ]);
 
         $fee->update($data);
