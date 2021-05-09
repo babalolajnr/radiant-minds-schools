@@ -8,7 +8,13 @@ use App\Models\Period;
 use Illuminate\Http\Request;
 
 class FeeController extends Controller
-{
+{    
+    /**
+     * store fee
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,5 +40,24 @@ class FeeController extends Controller
         ]);
 
         return back()->with('success', 'Record created');
+    }
+    
+    /**
+     * destroy fee record
+     *
+     * @param  Fee $fee
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Fee $fee)
+    {
+        try {
+            $fee->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                //SQLSTATE[23000]: Integrity constraint violation
+                return back()->with('error', 'Fee cannot be deleted because some resources are dependent on it!');
+            }
+        }
+        return back()->with('success', 'Deleted!');
     }
 }
