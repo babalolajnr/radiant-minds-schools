@@ -183,8 +183,9 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     });
 
     Route::prefix('period')->name('period.')->group(function () {
-        Route::post('/store', [PeriodController::class, 'store'])->name('store');
+        Route::get('/', [PeriodController::class, 'index'])->name('index');
         Route::get('/edit/{period:slug}', [PeriodController::class, 'edit'])->name('edit');
+        Route::post('/store', [PeriodController::class, 'store'])->name('store');
         Route::patch('/update/{period:slug}', [PeriodController::class, 'update'])->name('update');
         Route::patch('/set-active/{period:slug}', [PeriodController::class, 'setActivePeriod'])->name('set-active-period');
         Route::delete('/delete/{period:slug}', [PeriodController::class, 'destroy'])->name('delete');
