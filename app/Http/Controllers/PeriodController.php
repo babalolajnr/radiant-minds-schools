@@ -127,7 +127,10 @@ class PeriodController extends Controller
         $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class, $period);
 
         if ($validateDateRange !== true) {
-            return back()->with('error', 'Date range overlaps with another period');
+            throw ValidationException::withMessages([
+                'start_date' => ['Date range overlaps with another period'],
+                'end_date' => ['Date range overlaps with another period']
+            ]);
         }
 
         $period->update($data);
