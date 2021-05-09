@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicSession;
 use App\Models\Classroom;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -32,7 +32,7 @@ class DashboardController extends Controller
             $teachers = count(Teacher::all());
             $users = count(User::all());
             $classrooms = count(Classroom::all());
-            $academicSession = AcademicSession::currentAcademicSession();
+            $period = Period::activePeriod();
             $subjects = count(Subject::all());
             $classroomPopulationChartData = $this->generateClassroomsPopulationChart();
 
@@ -42,7 +42,7 @@ class DashboardController extends Controller
                 'teachers' => $teachers,
                 'users' => $users,
                 'classrooms' => $classrooms,
-                'academicSession' => $academicSession,
+                'period' => $period,
                 'subjects' => $subjects,
                 'classroomPopulationChartData' => $classroomPopulationChartData
             ];
