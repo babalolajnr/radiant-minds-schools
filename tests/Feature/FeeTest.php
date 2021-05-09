@@ -39,4 +39,29 @@ class FeeTest extends TestCase
         $response = $this->actingAs($user)->delete(route('fee.destroy', ['fee' => $fee]));
         $response->assertStatus(302)->assertSessionHas('success');
     }
+
+    public function test_user_can_get_fee_edit_page()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory(['user_type' => 'master'])->create();
+        $fee = Fee::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('fee.edit', ['fee' => $fee]));
+        $response->assertStatus(200)->assertViewIs('editFee');
+    }
+
+    public function test_fee_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory(['user_type' => 'master'])->create();
+        $fee = Fee::factory()->create();
+
+        $amount = mt_rand(10000, 100000);
+        
+        $response = $this->actingAs($user)->patch(route('fee.update', ['fee' => $fee]), [
+            'fee' => "{$amount}"
+        ]);
+
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
 }
