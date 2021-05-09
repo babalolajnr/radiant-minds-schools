@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class AcademicSessionController extends Controller
 {
@@ -40,8 +41,12 @@ class AcademicSessionController extends Controller
         //check if date range is unique
         $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], AcademicSession::class);
 
+        //if date range is not unique
         if ($validateDateRange !== true) {
-            return back()->with('error', 'Date range overlaps with another period');
+            throw ValidationException::withMessages([
+                'start_date' => ['Date range overlaps with another period'],
+                'end_date' => ['Date range overlaps with another period']
+            ]);
         }
 
         AcademicSession::create($data);
