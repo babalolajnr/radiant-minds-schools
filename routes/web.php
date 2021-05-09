@@ -192,6 +192,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
 
     Route::prefix('fee')->name('fee.')->group(function () {
         Route::post('/store', [FeeController::class, 'store'])->name('store');
+        Route::delete('/delete/{fee}', [FeeController::class, 'destroy'])->name('destroy');
     });
 });
 
