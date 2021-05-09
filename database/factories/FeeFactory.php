@@ -24,7 +24,7 @@ class FeeFactory extends Factory
     public function definition()
     {
         return [
-            'fee' => mt_rand(10000, 100000),
+            'amount' => mt_rand(10000, 100000),
             'classroom_id' => Classroom::factory()->create()->id,
             'period_id' => Period::factory()->create()->id
         ];
