@@ -10,7 +10,8 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex justify-content-center">
                 <i class="fas fa-user text-white"></i>
-                <a href="{{ route('user.show', ['user' => Auth::user()]) }}" class="pl-2">{{ Auth::user()->first_name }}</a>
+                <a href="{{ route('user.show', ['user' => Auth::user()]) }}"
+                    class="pl-2">{{ Auth::user()->first_name }}</a>
             </div>
 
             <!-- SidebarSearch Form -->
@@ -51,6 +52,12 @@
                                 <a href="{{ route('period.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-hourglass-half"></i>
                                     <p>Periods</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('fee.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                                    <p>Fees</p>
                                 </a>
                             </li>
                             <li class="nav-item">
