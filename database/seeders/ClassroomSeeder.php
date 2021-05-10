@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Classroom;
-use App\Models\Subject;
+use App\Models\Teacher;
 use Database\Factories\ClassroomFactory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class ClassroomSeeder extends Seeder
 {
@@ -17,10 +17,22 @@ class ClassroomSeeder extends Seeder
      */
     public function run()
     {
-        $classrooms = Classroom::all();
-        if (count($classrooms) < 1) {
-            $classes = ClassroomFactory::$classes;
-            Classroom::factory()->times(count($classes))->create();
+        $classrooms = ClassroomFactory::$classes;
+        foreach ($classrooms as $classroom) {
+
+            $row = Classroom::where('name', $classroom['name']);
+            if ($row->exists()) {
+                continue;
+            }
+
+            Classroom::create(
+                [
+                    'name' => $classroom['name'],
+                    'rank' => $classroom['rank'],
+                    'slug' => Str::of($classroom['name'])->slug('-'),
+                    'teacher_id' => Teacher::factory()->create(['is_active' => true])->id
+                ]
+            );
         }
     }
 }
