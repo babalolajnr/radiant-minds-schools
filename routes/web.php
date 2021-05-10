@@ -192,6 +192,7 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
     });
 
     Route::prefix('fee')->name('fee.')->group(function () {
+        Route::get('/', [FeeController::class, 'index'])->name('index');
         Route::post('/store', [FeeController::class, 'store'])->name('store');
         Route::get('/edit/{fee}', [FeeController::class, 'edit'])->name('edit');
         Route::patch('/update/{fee}', [FeeController::class, 'update'])->name('update');
