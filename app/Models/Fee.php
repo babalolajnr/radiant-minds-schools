@@ -23,7 +23,7 @@ class Fee extends Model
      */
     public function period()
     {
-        return $this->hasOne(Period::class);
+        return $this->belongsTo(Period::class);
     }
     
     /**
@@ -33,7 +33,7 @@ class Fee extends Model
      */
     public function classroom()
     {
-        return $this->hasOne(Classroom::class);
+        return $this->belongsTo(Classroom::class);
     }
 
 }
