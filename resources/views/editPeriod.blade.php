@@ -121,12 +121,6 @@
                 format: 'YYYY-MM-DD'
             })
 
-            function deleteConfirmationModal(url, name) {
-                $('#yesDeleteConfirmation').attr("action", url)
-                $('#deleteItemName').html(name)
-                $('#deleteConfirmationModal').modal('show')
-            }
-
             $(function() {
                 let Success = document.getElementById('success')
                 let Error = document.getElementById('error')
