@@ -33,11 +33,24 @@ class PeriodSeeder extends Seeder
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
 
-        $rank = 0;
+        $period = Period::first();
+
+        if ($period == null) {
+            $rank = 0;
+        } else {
+            $rank = Period::get()->max('rank');
+        }
 
         $selectedDays = [];
         foreach ($academicSessions as $academicSession) {
             foreach ($terms as $term) {
+
+                //check if academic session and term exist on the same row
+                $row = Period::where('academic_session_id', $academicSession->id)->where('term_id', $term->id);
+
+                if ($row->exists()) {
+                    continue;
+                }
 
                 //ensure the day is unique
                 do {
@@ -48,7 +61,7 @@ class PeriodSeeder extends Seeder
 
                 $startDate = Carbon::createFromFormat('Y-m-d', $academicSession->start_date)
                     ->addDays($days)->toDateString();
-                    
+
                 $endDate = Carbon::createFromFormat('Y-m-d', $startDate)->addDays($days);
                 $slug = Str::of("{$academicSession->name} {$term->name}")->slug('-');
 
@@ -63,8 +76,11 @@ class PeriodSeeder extends Seeder
             }
         }
 
-        $period = Period::inRandomOrder()->first();
-        $period->active = true;
-        $period->save();
+        $activePeriod = Period::activePeriod();
+        if ($activePeriod == null) {
+            $period = Period::inRandomOrder()->first();
+            $period->active = true;
+            $period->save();
+        }
     }
 }
