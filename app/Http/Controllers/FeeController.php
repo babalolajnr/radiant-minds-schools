@@ -9,6 +9,20 @@ use Illuminate\Http\Request;
 
 class FeeController extends Controller
 {
+    
+    /**
+     * get fees page
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function index()
+    {
+        $fees = Fee::all();
+        $periods = Period::all();
+        $classrooms = Classroom::all();
+
+        return view('fees', compact('fees', 'periods', 'classrooms'));
+    }
     /**
      * store fee
      *
