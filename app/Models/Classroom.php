@@ -48,6 +48,6 @@ class Classroom extends Model
      */
     public function fee()
     {
-        return $this->belongsTo(Fee::class);
+        return $this->hasMany(Fee::class);
     }
 }
