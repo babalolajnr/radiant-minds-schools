@@ -123,7 +123,6 @@ Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function (
         //AcademicSession routes
         Route::get('/', [AcademicSessionController::class, 'index'])->name('index');
         Route::get('/edit/{academicSession:name}', [AcademicSessionController::class, 'edit'])->name('edit');
-        Route::get('/set-current/{academicSession:name}', [AcademicSessionController::class, 'setCurrentAcademicSession'])->name('set.current');
         Route::post('/store', [AcademicSessionController::class, 'store'])->name('store');
         Route::patch('/update/{academicSession:name}', [AcademicSessionController::class, 'update'])->name('update');
         Route::delete('/delete/{academicSession:name}', [AcademicSessionController::class, 'destroy'])->name('destroy');
