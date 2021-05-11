@@ -18,37 +18,38 @@ class ADSeeder extends Seeder
      */
     public function run()
     {
-        $ads = count(AD::all());
-        $seedNumber = 2000;
-        if ($ads < $seedNumber) {
-            $allRecords = $this->allRecords();
+  
+        $this->command->getOutput()->progressStart(100);
 
-            //generate 2000 random results
-            for ($i = 0; $i < ($seedNumber - $ads); $i++) {
-                $values = $this->getRandomValues($allRecords);
+        $data = $this->allRecords();
 
-                //get record where subject_id,period_id,student_id exists 
-                $record = AD::where('a_d_type_id', $values['adType']->id)
-                    ->where('student_id', $values['student']->id)
-                    ->where('period_id', $values['period']->id);
+        foreach ($data['students'] as $student) {
 
-                while ($record->exists()) {
-                    $values = $this->getRandomValues($allRecords);
+            foreach ($data['adTypes'] as $adType) {
 
-                    $record = AD::where('a_d_type_id', $values['adType']->id)
-                        ->where('student_id', $values['student']->id)
-                        ->where('period_id', $values['period']->id);
+                foreach ($data['periods'] as $period) {
+
+                    $record = AD::where('a_d_type_id', $adType->id)
+                        ->where('student_id', $student->id)
+                        ->where('period_id', $period->id);
+
+                    if ($record->exists()) {
+                        continue;
+                    }
+
+                    AD::create([
+                        'period_id' => $period->id,
+                        'student_id' => $student->id,
+                        'value' => mt_rand(1, 5),
+                        'a_d_type_id' => $adType->id
+                    ]);
                 }
-
-                $value = mt_rand(1, 5);
-                AD::create([
-                    'period_id' => $values['period']->id,
-                    'student_id' => $values['student']->id,
-                    'value' => $value,
-                    'a_d_type_id' => $values['adType']->id
-                ]);
             }
+            
+            $this->command->getOutput()->progressAdvance();
         }
+
+        $this->command->getOutput()->progressFinish();
     }
 
     private function allRecords()
