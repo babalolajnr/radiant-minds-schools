@@ -17,34 +17,31 @@ class AttendanceSeeder extends Seeder
      */
     public function run()
     {
-        $attendances = count(Attendance::all());
-        $seedNumber = 2000;
-        if ($attendances < $seedNumber) {
-            $allRecords = $this->allRecords();
+        $this->command->getOutput()->progressStart(100);
 
-            //generate 2000 random results
-            for ($i = 0; $i < ($seedNumber - $attendances); $i++) {
-                $values = $this->getRandomValues($allRecords);
+        $data = $this->allRecords();
 
-                //get record where student_id and period_id exists 
-                $record = Attendance::where('student_id', $values['student']->id)
-                    ->where('period_id', $values['period']->id);
+        foreach ($data['students'] as $student) {
 
-                while ($record->exists()) {
-                    $values = $this->getRandomValues($allRecords);
+            foreach ($data['periods'] as $period) {
 
-                    $record = Attendance::where('student_id', $values['student']->id)
-                        ->where('period_id', $values['period']->id);
+                $record = Attendance::where('student_id', $student->id)->where('period_id', $period->id);
+
+                if ($record->exists()) {
+                    continue;
                 }
 
-                $value = mt_rand(1, 100);
                 Attendance::create([
-                    'period_id' => $values['period']->id,
-                    'student_id' => $values['student']->id,
-                    'value' => $value,
+                    'period_id' => $period->id,
+                    'student_id' => $student->id,
+                    'value' => mt_rand(1, 100),
                 ]);
+
+                $this->command->getOutput()->progressAdvance();
             }
         }
+
+        $this->command->getOutput()->progressFinish();
     }
 
     private function allRecords()
@@ -69,17 +66,6 @@ class AttendanceSeeder extends Seeder
         return [
             'periods' => $periods,
             'students' => $students,
-        ];
-    }
-
-    private function getRandomValues($allRecords)
-    {
-        $student = $allRecords['students']->random();
-        $period = $allRecords['periods']->random();
-
-        return [
-            'student' => $student,
-            'period' => $period,
         ];
     }
 }
