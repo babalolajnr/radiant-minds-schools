@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Subject;
 use Database\Factories\SubjectFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class SubjectSeeder extends Seeder
 {
@@ -15,9 +16,23 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-        $subjects = Subject::all();
-        if (count($subjects) < 1) {
-            Subject::factory()->times(count(SubjectFactory::$subjects))->create();
+        $subjects = SubjectFactory::$subjects;
+
+        foreach ($subjects as $subject) {
+
+            $row = Subject::where('name', $subject);
+
+            if ($row->exists()) {
+                continue;
+            }
+
+            $slug = Str::of($subject)->slug('-');
+            Subject::create(
+                [
+                    'name' => $subject,
+                    'slug' => $slug
+                ]
+            );
         }
     }
 }
