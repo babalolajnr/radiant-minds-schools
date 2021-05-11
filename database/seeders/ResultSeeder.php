@@ -18,44 +18,48 @@ class ResultSeeder extends Seeder
      */
     public function run()
     {
-        $results = count(Result::all());
-        $seedNumber = 2000;
+        // $this->command->getOutput()->progressStart(100);
 
-        if ($results < $seedNumber) {
-            $allRecords = $this->allRecords();
+        $data = $this->allRecords();
 
-            //generate 2000 random results
-            for ($i = 0; $i < ($seedNumber - $results); $i++) {
-                $values = $this->getRandomValues($allRecords);
+        foreach ($data['students'] as $student) {
 
-                //get record where subject_id,period_id and student_id exists 
-                $record = Result::where('subject_id', $values['subject']->id)
-                    ->where('student_id', $values['student']->id)
-                    ->where('period_id', $values['period']->id);
+            foreach ($data['subjects'] as $subject) {
 
-                while ($record->exists()) {
-                    $values = $this->getRandomValues($allRecords);
+                foreach ($data['periods'] as $period) {
 
-                    $record = Result::where('subject_id', $values['subject']->id)
-                        ->where('student_id', $values['student']->id)
-                        ->where('period_id', $values['period']->id);
+                    $record = Result::where('subject_id', $subject->id)
+                        ->where('student_id', $student->id)
+                        ->where('period_id', $period->id);
+
+                    if ($record->exists()) {
+                        continue;
+                    }
+
+                    $ca = mt_rand(0, 40);
+                    $exam = mt_rand(0, 60);
+                    Result::create([
+                        'period_id' => $period->id,
+                        'subject_id' => $subject->id,
+                        'student_id' => $student->id,
+                        'ca' => $ca,
+                        'exam' => $exam,
+                        'total' => $exam + $ca
+                    ]);
+                    // $this->command->getOutput()->progressAdvance();
                 }
-
-                $ca = mt_rand(0, 40);
-                $exam = mt_rand(0, 60);
-
-                Result::create([
-                    'period_id' => $values['period']->id,
-                    'subject_id' => $values['subject']->id,
-                    'student_id' => $values['student']->id,
-                    'ca' => $ca,
-                    'exam' => $exam,
-                    'total' => $exam + $ca
-                ]);
             }
         }
+        Artisan::call('db:seed', ['--class' => 'ClassroomSubjectSeeder']);
+
+        // $this->command->getOutput()->progressFinish();
     }
 
+    /**
+     * Query Periods, Students and subjects data
+     *
+     * @return array
+     */
     private function allRecords()
     {
         $period = Period::first();
