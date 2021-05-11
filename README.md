@@ -30,7 +30,7 @@
   <h3 align="center">Radiant Minds schools</h3>
 
 <p align="center">
-    Radiant Minds Schools is a school management system for Primary and Secondary schools. It has all the management tools needed for effective school management.
+    Radiant Minds Schools is a school management system for Primary and Secondary schools.
     <br />
     <a href="https://github.com/babalolajnr/radiant-minds-schools/issues">Report Bug</a>
     <a href="https://github.com/babalolajnr/radiant-minds-schools/issues">Request Feature</a>
@@ -69,7 +69,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This is a project I created to ease the management of school activities for school administrators. It is still under active development and some features might not work properly yet
+Software for efficient school management. It is still under heavy development.
 
 ### Built With
 
