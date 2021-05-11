@@ -89,17 +89,4 @@ class ResultSeeder extends Seeder
             'subjects' => $subjects
         ];
     }
-
-    private function getRandomValues($allRecords)
-    {
-        $student = $allRecords['students']->random();
-        $period = $allRecords['periods']->random();
-        $subject = $allRecords['subjects']->random();
-
-        return [
-            'student' => $student,
-            'period' => $period,
-            'subject' =>  $subject
-        ];
-    }
 }
