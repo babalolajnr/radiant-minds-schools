@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\ADType;
 use Database\Factories\ADTypeFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ADTypeSeeder extends Seeder
 {
@@ -15,9 +16,26 @@ class ADTypeSeeder extends Seeder
      */
     public function run()
     {
-        $adTypes = ADType::all();
-        if (count($adTypes) < 1) {
-            ADType::factory()->times(count(ADTypeFactory::$adTypes))->create();
+        $this->command->getOutput()->progressStart(100);
+
+        $adTypes = ADTypeFactory::$adTypes;
+
+        foreach ($adTypes as $pdType) {
+            $record = ADType::where('name', $pdType);
+
+            if ($record->exists()) {
+                continue;
+            }
+
+            $slug = Str::of($pdType)->slug('-');
+
+            ADType::create([
+                'name' => $pdType,
+                'slug' => $slug
+            ]);
+            $this->command->getOutput()->progressAdvance();
         }
+
+        $this->command->getOutput()->progressFinish();
     }
 }
