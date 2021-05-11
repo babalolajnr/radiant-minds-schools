@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\PDType;
 use Database\Factories\PDTypeFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+
 
 class PDTypeSeeder extends Seeder
 {
@@ -15,9 +17,26 @@ class PDTypeSeeder extends Seeder
      */
     public function run()
     {
-        $pdTypes = PDType::all();
-        if (count($pdTypes) < 1) {
-            PDType::factory()->times(count(PDTypeFactory::$pdTypes))->create();
+        $this->command->getOutput()->progressStart(100);
+
+        $pdTypes = PDTypeFactory::$pdTypes;
+
+        foreach ($pdTypes as $pdType) {
+            $record = PDType::where('name', $pdType);
+
+            if ($record->exists()) {
+                continue;
+            }
+
+            $slug = Str::of($pdType)->slug('-');
+
+            PDType::create([
+                'name' => $pdType,
+                'slug' => $slug
+            ]);
+            $this->command->getOutput()->progressAdvance();
         }
+
+        $this->command->getOutput()->progressFinish();
     }
 }
