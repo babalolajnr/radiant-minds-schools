@@ -50,23 +50,23 @@
                                     </div>
                                     <div>
                                         <a
-                                            href="{{ route('result.show.performance', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                             <button type="button" class="btn btn-default">Performance Report</button>
                                         </a>
                                         <a
-                                            href="{{ route('pd.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                             <button type="button" class="btn btn-default"
                                                 title="Create or update Pychomotor domain for the result's academic session and term">Create/Update
                                                 PD</button>
                                         </a>
                                         <a
-                                            href="{{ route('ad.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            href="{{ route('ad.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                             <button type="button" class="btn btn-default"
                                                 title="Create or update Affective domain for the result's academic session and term">Create/Update
                                                 AD</button>
                                         </a>
                                         <a
-                                            href="{{ route('attendance.create', ['student' => $student, 'termSlug' => $term->slug, 'academicSessionName' => $academicSession->name]) }}">
+                                            href="{{ route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                             <button type="button" class="btn btn-default"
                                                 title="Create or update attendance record">Create/Update
                                                 Attendance</button>
