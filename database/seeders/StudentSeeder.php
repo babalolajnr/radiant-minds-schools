@@ -15,7 +15,7 @@ class StudentSeeder extends Seeder
     public function run()
     {
         $students = count(Student::all());
-        $seedNumber = 50;
+        $seedNumber = 20;
         if ($students < $seedNumber) {
             Student::factory()->times($seedNumber - $students)->create();
         }
