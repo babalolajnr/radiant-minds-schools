@@ -18,37 +18,37 @@ class PDSeeder extends Seeder
      */
     public function run()
     {
-        $pds = count(PD::all());
-        $seedNumber = 2000;
+        $this->command->getOutput()->progressStart(100);
 
-        if ($pds < $seedNumber) {
-            $allRecords = $this->allRecords();
+        $data = $this->allRecords();
 
-            //generate 2000 random results
-            for ($i = 0; $i < ($seedNumber - $pds); $i++) {
-                $values = $this->getRandomValues($allRecords);
+        foreach ($data['students'] as $student) {
 
-                //get record where subject_id,period_id,student_id exists 
-                $record = PD::where('p_d_type_id', $values['pdType']->id)
-                    ->where('student_id', $values['student']->id)
-                    ->where('period_id', $values['period']->id);
+            foreach ($data['pdTypes'] as $pdType) {
 
-                while ($record->exists()) {
-                    $values = $this->getRandomValues($allRecords);
+                foreach ($data['periods'] as $period) {
 
-                    $record = PD::where('p_d_type_id', $values['pdType']->id)
-                        ->where('student_id', $values['student']->id)
-                        ->where('period_id', $values['period']->id);
+                    $record = PD::where('p_d_type_id', $pdType->id)
+                        ->where('student_id', $student->id)
+                        ->where('period_id', $period->id);
+
+                    if ($record->exists()) {
+                        continue;
+                    }
+
+                    PD::create([
+                        'period_id' => $period->id,
+                        'student_id' => $student->id,
+                        'value' => mt_rand(1, 5),
+                        'p_d_type_id' => $pdType->id
+                    ]);
                 }
-
-                PD::create([
-                    'period_id' => $values['period']->id,
-                    'student_id' => $values['student']->id,
-                    'value' => mt_rand(1, 5),
-                    'p_d_type_id' => $values['pdType']->id
-                ]);
             }
+            
+            $this->command->getOutput()->progressAdvance();
         }
+
+        $this->command->getOutput()->progressFinish();
     }
 
     private function allRecords()
@@ -78,19 +78,6 @@ class PDSeeder extends Seeder
             'periods' => $periods,
             'students' => $students,
             'pdTypes' => $pdTypes
-        ];
-    }
-
-    private function getRandomValues($allRecords)
-    {
-        $student = $allRecords['students']->random();
-        $period = $allRecords['periods']->random();
-        $pdType = $allRecords['pdTypes']->random();
-
-        return [
-            'student' => $student,
-            'period' => $period,
-            'pdType' => $pdType
         ];
     }
 }
