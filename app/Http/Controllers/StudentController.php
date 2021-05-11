@@ -7,6 +7,7 @@ use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
 use App\Models\PDType;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Term;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ use  Intervention\Image\Facades\Image;
 class StudentController extends Controller
 {
 
-     /**
+    /**
      * @return array
      * @param mixed $validatedData
      * 
@@ -133,15 +134,14 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         //get unique results that has unique academic sessions
-        $results = Result::where('student_id', $student->id)->get()->unique('academic_session_id');
+        $results = Result::where('student_id', $student->id)->get()->unique('period_id');
 
         //reset the keys to consecutively numbered indexes
         $results = $results->values()->all();
-
         $academicSessions = [];
 
         foreach ($results as $result) {
-            $academicSession = $result->academicSession;
+            $academicSession = $result->period->academicSession;
             array_push($academicSessions, $academicSession);
         }
 
@@ -188,47 +188,45 @@ class StudentController extends Controller
     public function getSessionalResults(Student $student, $academicSessionName)
     {
         $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $periods = Period::where('academic_session_id', $academicSession->id)->get();
 
-        $terms = Term::all();
         $results = [];
         $maxScores = [];
         $minScores = [];
         $averageScores = [];
 
         //loop through all the terms and create an associative array based on terms and results
-        foreach ($terms as $term) {
-            $result = Result::where('student_id', $student->id)
-                ->where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->get();
+        foreach ($periods as $period) {
+            $resultItem = Result::where('student_id', $student->id)
+                ->where('period_id', $period->id)->get();
 
             //Get each subject highest and lowest scores    
-            foreach ($result as $item) {
+            foreach ($resultItem as $item) {
 
-                $scoresQuery = Result::where('academic_session_id', $academicSession->id)
-                    ->where('term_id', $term->id)->where('subject_id', $item->subject->id);
+                $scoresQuery = Result::where('period_id', $period->id)->where('subject_id', $item->subject->id);
 
                 //highest scores
                 $maxScore = $scoresQuery->max('total');
 
-                $maxScore = [$item->subject->name . '-' . $term->name => $maxScore];
+                $maxScore = [$item->subject->name . '-' . $period->term->name => $maxScore];
                 $maxScores = array_merge($maxScores, $maxScore);
 
                 //Lowest scores
                 $minScore = $scoresQuery->min('total');
 
-                $minScore = [$item->subject->name . '-' . $term->name => $minScore];
+                $minScore = [$item->subject->name . '-' . $period->term->name => $minScore];
                 $minScores = array_merge($minScores, $minScore);
 
                 //Average Scores
                 $averageScore = $scoresQuery->pluck('total');
 
                 $averageScore = collect($averageScore)->avg();
-                $averageScore = [$item->subject->name . '-' . $term->name => $averageScore];
+                $averageScore = [$item->subject->name . '-' . $period->term->name => $averageScore];
                 $averageScores = array_merge($averageScores, $averageScore);
             }
 
-            $result = [$term->name => $result];
-            $results = array_merge($results, $result);
+            $resultItem = [$period->term->name => $resultItem];
+            $results = array_merge($results, $resultItem);
         }
 
         return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession'));
@@ -239,10 +237,10 @@ class StudentController extends Controller
 
         $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
         $term = Term::where('slug', $termSlug)->firstOrFail();
+        $period = Period::where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->first();
 
-        $results = Result::where('student_id', $student->id)
-            ->where('academic_session_id', $academicSession->id)
-            ->where('term_id', $term->id)->get();
+
+        $results = Result::where('student_id', $student->id)->where('period_id', $period->id)->get();
 
         $maxScores = [];
         $minScores = [];
@@ -251,8 +249,8 @@ class StudentController extends Controller
         //Get each subject highest and lowest scores    
         foreach ($results as $result) {
 
-            $scoresQuery = Result::where('academic_session_id', $academicSession->id)
-                ->where('term_id', $term->id)->where('subject_id', $result->subject->id);
+            $scoresQuery = Result::where('period_id', $period->id)
+                ->where('subject_id', $result->subject->id);
 
             //highest scores
             $maxScore = $scoresQuery->max('total');
@@ -272,7 +270,7 @@ class StudentController extends Controller
             $averageScore = [$result->subject->name => $averageScore];
             $averageScores = array_merge($averageScores, $averageScore);
         }
-        return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores'));
+        return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores', 'period'));
     }
 
     public function destroy(Student $student)
@@ -336,7 +334,7 @@ class StudentController extends Controller
 
     public function showStudentSettingsView(Student $student)
     {
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $currentAcademicSession = Period::activePeriod()->academicSession;
 
         if (is_null($currentAcademicSession)) {
             return back()->with('error', 'Current Academic Session is not set');
