@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicSession;
 use App\Models\Classroom;
-use App\Models\Student;
+use App\Models\Period;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Term;
@@ -90,7 +90,7 @@ class ClassroomController extends Controller
         $students = $classroom->students->whereNull('graduated_at');
         $academicSessions = AcademicSession::all();
         $terms = Term::all();
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $currentAcademicSession = Period::activePeriod()->academicSession;
         $teachers = Teacher::whereIsActive(true)->get();
 
         if (is_null($currentAcademicSession)) {
@@ -139,7 +139,7 @@ class ClassroomController extends Controller
         $relations = [];
 
         //NOTE: subjects can only be set for the current academic session
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $currentAcademicSession = Period::activePeriod()->academicSession;
 
         //loop subjects and get the ones that are related to the classroom
         foreach ($subjects as $subject) {
@@ -164,7 +164,7 @@ class ClassroomController extends Controller
 
         $subjects = $request->subjects;
         $subjectIds = [];
-        $currentAcademicSession = AcademicSession::currentAcademicSession();
+        $currentAcademicSession = Period::activePeriod()->academicSession;
         $academicSessions = [];
 
         foreach ($subjects as $subject) {
