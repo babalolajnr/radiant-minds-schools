@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePeriodRequest;
+use App\Http\Requests\UpdatePeriodRequest;
 use App\Models\AcademicSession;
 use App\Models\Period;
 use App\Models\Term;
 use App\Services\PeriodService;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 
 class PeriodController extends Controller
 {
@@ -30,7 +28,7 @@ class PeriodController extends Controller
     /**
      * store period.
      *
-     * @param  mixed $request
+     * @param  StorePeriodRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StorePeriodRequest $request)
@@ -56,28 +54,13 @@ class PeriodController extends Controller
     /**
      * update period
      *
-     * @param  Request $request
+     * @param  UpdatePeriodRequest $request
      * @param  Period $period
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Period $period)
+    public function update(UpdatePeriodRequest $request, Period $period)
     {
-        $data = $request->validate([
-            'start_date' => ['required', 'date', Rule::unique('periods')->ignore($period), "after_or_equal:{$period->academicSession->start_date}"],
-            'end_date' => ['required', 'date', 'after:start_date', Rule::unique('periods')->ignore($period), "before_or_equal:{$period->academicSession->end_date}"],
-        ]);
-
-        //check if date range is unique and does not overlap another date range
-        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class, $period);
-
-        if ($validateDateRange !== true) {
-            throw ValidationException::withMessages([
-                'start_date' => ['Date range overlaps with another period'],
-                'end_date' => ['Date range overlaps with another period']
-            ]);
-        }
-
-        $period->update($data);
+        $period->update($request->validated());
 
         return back()->with('success', 'Period updated successfully');
     }
