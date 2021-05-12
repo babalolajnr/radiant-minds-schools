@@ -48,8 +48,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">New Period</h3>
                             </div>
-                            <form id="" method="POST"
-                                action="{{ route('period.store') }}">
+                            <form id="" method="POST" action="{{ route('period.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -57,8 +56,11 @@
                                         <select class="form-control select2" name="academic_session"
                                             style="width: 100%;">
                                             @foreach ($academicSessions as $academicSession)
-                                                <option @if (old('academic_session') == $academicSession) SELECTED @endif>
+                                                <option @if (old('academic_session') == $academicSession->name) SELECTED @endif
+                                                    value="{{ $academicSession->name }}">
                                                     {{ $academicSession->name }}
+                                                    ({{ $academicSession->start_date }} to
+                                                    {{ $academicSession->end_date }})
                                                 </option>
                                             @endforeach
                                         </select>
@@ -110,6 +112,15 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="No of times school opened">No of times school opened</label>
+                                        <input type="number" class="form-control"
+                                            value="{{ old('no_times_school_opened') }}"
+                                            name="no_times_school_opened">
+                                        @error('no_times_school_opened')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
@@ -126,6 +137,7 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
+                                            <th>Rank</th>
                                             <th>Name</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
@@ -135,6 +147,7 @@
                                     <tbody>
                                         @foreach ($periods as $period)
                                             <tr>
+                                                <td>{{ $period->rank }}</td>
                                                 <td>
                                                     {{ $period->term->name }} {{ $period->academicSession->name }}
                                                     @if ($period->isActive()) <span
@@ -187,6 +200,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th>Rank</th>
                                             <th>Name</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>

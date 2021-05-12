@@ -48,11 +48,13 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Academic Session">Academic Session</label>
-                                        <input type="text"class="form-control" value="{{ $period->academicSession->name }}" disabled>
+                                        <input type="text" class="form-control"
+                                            value="{{ $period->academicSession->name }}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="Term">Term</label>
-                                        <input type="text" class="form-control" value="{{ $period->term->name }}" disabled>
+                                        <input type="text" class="form-control" value="{{ $period->term->name }}"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label>Start Date</label>
@@ -84,6 +86,15 @@
                                             </div>
                                         </div>
                                         @error('end_date')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="No of times school opened">No of times school opened</label>
+                                        <input type="number" class="form-control"
+                                            value="{{ old('no_times_school_opened', $period->no_times_school_opened) }}"
+                                            name="no_times_school_opened">
+                                        @error('no_times_school_opened')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
