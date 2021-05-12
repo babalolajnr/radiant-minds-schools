@@ -46,7 +46,8 @@ class PeriodFactory extends Factory
             'start_date' => $startDate,
             'end_date' => $academicSession->end_date,
             'active' => null,
-            'rank' => $rank
+            'rank' => $rank,
+            'no_times_school_opened' => mt_rand(100, 120)
         ];
     }
 }
