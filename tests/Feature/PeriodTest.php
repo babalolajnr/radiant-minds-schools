@@ -31,16 +31,60 @@ class PeriodTest extends TestCase
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
                 'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
+                'no_of_times_school_opened'
+
             ]
         );
 
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
-    public function test_period_can_be_stored_when_there_are_other_period_records()
+    public function test_period_can_be_stored_without_no_of_times_school_opened_field()
     {
         $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $academicSession = AcademicSession::factory()->create();
+
+        $response = $this->actingAs($user)->post(
+            route('period.store'),
+            [
+                'academic_session' => $academicSession->name,
+                'term' => Term::factory()->create()->name,
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
+            ]
+        );
+
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_period_cannot_be_stored_when_no_of_times_school_opened_field_is_greater_than_date_range()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['user_type' => 'master']);
+
+        $academicSession = AcademicSession::factory()->create();
+
+        $response = $this->actingAs($user)->post(
+            route('period.store'),
+            [
+                'academic_session' => $academicSession->name,
+                'term' => Term::factory()->create()->name,
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
+                'no_of_times_school_opened' => '500'
+
+            ]
+        );
+
+        $response->assertStatus(302)->assertSessionHasErrorsIn('no_of_times_school_opened');
+    }
+
+    public function test_period_can_be_stored_when_there_are_other_period_records()
+    {
+        // $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
 
         Period::factory()->create();
@@ -53,7 +97,8 @@ class PeriodTest extends TestCase
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
                 'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString()
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString(),
+                'no_of_times_school_opened' => '50'
             ]
         );
 
