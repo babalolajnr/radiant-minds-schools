@@ -35,7 +35,8 @@ class PeriodService
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'],
             'slug' => $slug,
-            'rank' => $highestRank
+            'rank' => $highestRank,
+            'no_times_school_opened' => $validatedData['no_times_school_opened'] ?? null
         ]);
     }
 }
