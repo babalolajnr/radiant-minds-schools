@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePeriodRequest;
 use App\Models\AcademicSession;
 use App\Models\Period;
 use App\Models\Term;
-use App\Traits\ValidationTrait;
+use App\Services\PeriodService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class PeriodController extends Controller
 {
-    use ValidationTrait;
 
     /**
      * get periods page
@@ -34,66 +33,11 @@ class PeriodController extends Controller
      * @param  mixed $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StorePeriodRequest $request)
     {
-        $academicSession = AcademicSession::where('name', $request->academic_session)->first();
+        $periodService = new PeriodService();
 
-        if ($academicSession == null) {
-            return back()->with('error', 'Academic Session not found');
-        }
-
-        $messages = [
-            'start_date.after_or_equal' => 'Start date must be after or equal to the start date of the selected academic session',
-            'end_date.before_or_equal' => 'End date must be before or equal to the end date of the selected academic session'
-        ];
-
-        $data = $request->validate([
-            'academic_session' => ['required', 'exists:academic_sessions,name', 'string'],
-            'term' => ['required', 'string', 'exists:terms,name'],
-            'start_date' => ['required', 'date', 'unique:periods,start_date', "after_or_equal:{$academicSession->start_date}"],
-            'end_date' => ['required', 'date', 'after:start_date', 'unique:periods,end_date', "before_or_equal:{$academicSession->end_date}"],
-        ], $messages);
-
-        //check if academic session and term exist on the same row
-        $row = Period::where('academic_session_id', $data['academic_session'])->where('term_id', $data['term']);
-
-        if ($row->exists()) {
-            return back()->with('error', 'Record Exists');
-        }
-
-        //check if date range is unique
-        $validateDateRange = $this->validateDateRange($data['start_date'], $data['end_date'], Period::class);
-
-        if ($validateDateRange !== true) {
-            throw ValidationException::withMessages([
-                'start_date' => ['Date range overlaps with another period'],
-                'end_date' => ['Date range overlaps with another period']
-            ]);
-        }
-
-        $term = Term::where('name', $data['term'])->first();
-
-        //create slug
-        $slug = Str::of("{$academicSession->name} {$term->slug}")->slug('-');
-
-        $periodCount = Period::count();
-
-        //check if table has records
-        if ($periodCount < 1) {
-            $highestRank = 1;
-        } else {
-            $highestRank = Period::max('rank');
-            $highestRank++;
-        }
-
-        Period::create([
-            'academic_session_id' => $academicSession->id,
-            'term_id' => $term->id,
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
-            'slug' => $slug,
-            'rank' => $highestRank
-        ]);
+        $periodService->store($request);
 
         return back()->with('success', 'Record Created!');
     }
