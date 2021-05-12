@@ -30,9 +30,9 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
-                'no_of_times_school_opened'
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString(),
+                'no_times_school_opened' => ''
 
             ]
         );
@@ -52,8 +52,8 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString(),
             ]
         );
 
@@ -62,7 +62,6 @@ class PeriodTest extends TestCase
 
     public function test_period_cannot_be_stored_when_no_of_times_school_opened_field_is_greater_than_date_range()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create(['user_type' => 'master']);
 
         $academicSession = AcademicSession::factory()->create();
@@ -72,14 +71,14 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10)),
-                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10)),
-                'no_of_times_school_opened' => '500'
+                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
+                'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString(),
+                'no_times_school_opened' => '500'
 
             ]
         );
 
-        $response->assertStatus(302)->assertSessionHasErrorsIn('no_of_times_school_opened');
+        $response->assertStatus(302)->assertSessionHasErrorsIn('no_times_school_opened');
     }
 
     public function test_period_can_be_stored_when_there_are_other_period_records()
@@ -96,9 +95,9 @@ class PeriodTest extends TestCase
             [
                 'academic_session' => $academicSession->name,
                 'term' => Term::factory()->create()->name,
-                'start_date' => $academicSession->start_date->addDays(mt_rand(1, 10))->toDateString(),
+                'start_date' => $academicSession->start_date->addDays(mt_rand(10, 20))->toDateString(),
                 'end_date' => $academicSession->end_date->subDays(mt_rand(1, 10))->toDateString(),
-                'no_of_times_school_opened' => '50'
+                'no_times_school_opened' => '50'
             ]
         );
 
@@ -181,13 +180,15 @@ class PeriodTest extends TestCase
     public function test_update_period_method()
     {
         $this->withoutExceptionHandling();
+
         $user = User::factory()->create(['user_type' => 'master']);
 
         $period = Period::factory()->create();
 
         $response = $this->actingAs($user)->patch(route('period.update', ['period' => $period]), [
-            'start_date' => $period->start_date->addDays(mt_rand(0, 10))->toDateString(),
-            'end_date' => $period->end_date->subDays(mt_rand(0, 10))->toDateString()
+            'start_date' => $period->start_date->addDays(mt_rand(1, 10))->toDateString(),
+            'end_date' => $period->end_date->subDays(mt_rand(1, 10))->toDateString(),
+            'no_times_school_opened' => '50'
         ]);
 
         $response->assertStatus(302)->assertSessionHas('success')->assertSessionHasNoErrors();
