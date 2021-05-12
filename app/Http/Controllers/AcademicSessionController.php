@@ -16,7 +16,8 @@ class AcademicSessionController extends Controller
     {
         $messages = [
             'name.required' => 'This field is required',
-            'name.unique' => 'Record exists'
+            'name.unique' => 'Record exists',
+            'name.regex' => 'Academic session format is invalid'
         ];
 
         $validatedData = $request->validate([
