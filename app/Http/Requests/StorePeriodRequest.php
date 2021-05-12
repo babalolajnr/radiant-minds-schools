@@ -43,7 +43,7 @@ class StorePeriodRequest extends FormRequest
             'term' => ['required', 'string', 'exists:terms,name'],
             'start_date' => ['required', 'date', 'unique:periods,start_date', "after_or_equal:{$academicSession->start_date}"],
             'end_date' => ['required', 'date', 'after:start_date', 'unique:periods,end_date', "before_or_equal:{$academicSession->end_date}"],
-            'no_of_times_school_opened' => ['numeric', 'nullable']
+            'no_times_school_opened' => ['numeric', 'nullable']
         ];
     }
 
@@ -75,15 +75,15 @@ class StorePeriodRequest extends FormRequest
              * it is not above the date range
              */
 
-            if ($this->filled('no_of_times_school_opened')) {
+            if ($this->filled('no_times_school_opened')) {
 
                 $startDate = Carbon::createFromFormat('Y-m-d', $this->start_date);
                 $endDate = Carbon::createFromFormat('Y-m-d', $this->end_date);
 
                 $diffInDaysBetweenStartDateAndEndDate = $startDate->diffInDays($endDate);
 
-                if ($this->no_of_times_school_opened > $diffInDaysBetweenStartDateAndEndDate) {
-                    $validator->errors()->add('no_of_times_school_opened', 'No of times school opened cannot be greater than no of days in date range');
+                if ($this->no_times_school_opened > $diffInDaysBetweenStartDateAndEndDate) {
+                    $validator->errors()->add('no_times_school_opened', 'No of times school opened cannot be greater than no of days in date range');
                 }
             }
 
