@@ -28,15 +28,19 @@ class TeacherFactory extends Factory
         $lastName = $this->faker->lastName;
         $fullname = $firstName . ' ' . $lastName . ' ' . Str::random(5);
         $slug = Str::of($fullname)->slug('-');
+
         return [
             'first_name' => $firstName,
             'last_name' => $lastName,
             'sex' => $sex,
             'slug' => $slug,
-            'email' => $this->faker->email,
+            'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->e164PhoneNumber,
             'is_active' => $this->faker->randomElement([true, false]),
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'email_verified_at' => now(),
+            'password' => bcrypt(11111111), // password - 8 ones
+            'remember_token' => Str::random(10),
         ];
     }
 }
