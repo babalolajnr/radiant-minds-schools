@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class Teacher extends Authenticatable
 {
     use HasFactory, SoftDeletes,  Notifiable;
 
+    protected $guard = 'teacher';
     /**
      * The attributes that are not mass assignable.
      *
@@ -50,7 +53,7 @@ class Teacher extends Authenticatable
     /**
      * Check if teacher is active
      *
-     * @return void
+     * @return bool
      */
     public function isActive()
     {
