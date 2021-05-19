@@ -32,6 +32,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->user('teacher')) {
+            $teachersClassroom = $request->user('teacher')->classroom;
+
+            if(is_null($teachersClassroom))
+            {
+                return "Welcome {$request->user('teacher')->first_name} {$request->user('teacher')->last_name}";
+            }
+            
+            return redirect(route('classroom.show', ['classroom' => $teachersClassroom]));
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -46,7 +57,7 @@ class AuthenticatedSessionController extends Controller
         if (Auth::guard('web')->check()) {
             Auth::guard('web')->logout();
         } else {
-            Auth::guard('webteachers')->logout();
+            Auth::guard('teacher')->logout();
         }
 
         $request->session()->invalidate();
