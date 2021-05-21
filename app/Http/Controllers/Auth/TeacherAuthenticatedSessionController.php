@@ -37,7 +37,7 @@ class TeacherAuthenticatedSessionController extends Controller
 
         if (is_null($teachersClassroom)) {
 
-            return "Welcome {$request->user('teacher')->first_name} {$request->user('teacher')->last_name}";
+            return back()->with('error', 'You are not a class-teacher!');
         }
 
         return redirect(route('classroom.show', ['classroom' => $teachersClassroom]));
