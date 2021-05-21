@@ -34,7 +34,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified', 'isActiveAndVerified'])->group(function () {
+
+Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'isActiveAndVerified'])->group(function () {
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
