@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Checks if User Is Active And Verified
@@ -19,16 +20,16 @@ class CheckUserIsActiveAndVerified
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()) {
-            if (!auth()->user()->isActive() || !auth()->user()->isVerified()) {
+        if (Auth::guard('web')->check()) {
+            if (!$request->user()->isActive() || !$request->user()->isVerified()) {
                 return response()->view('deactivated');
             }
-        } elseif (auth('teacher')->user()) {
-            if (!auth('teacher')->user()->isActive()) {
+        } elseif (Auth::guard('teacher')->check()) {
+            if (!$request->user('teacher')->isActive()) {
                 return response()->view('deactivated');
             }
         }
-        
+
         return $next($request);
     }
 }
