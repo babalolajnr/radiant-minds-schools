@@ -29,6 +29,7 @@
                         <a href="{{ url('/dashboard') }}" class="text-sm dark:text-white text-gray-700 underline">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-white underline">Login</a>
+                        <a href="{{ route('teacher.login') }}" class="ml-4 text-sm text-gray-700 dark:text-white underline">Teacher Login</a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-white underline">Register</a>
