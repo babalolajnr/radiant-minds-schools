@@ -21,7 +21,7 @@ class CheckUserIsActiveAndVerified
     public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('web')->check()) {
-            if (!$request->user()->isActive() || !$request->user()->isVerified()) {
+            if (!$request->user('web')->isActive() || !$request->user('web')->isVerified()) {
                 return response()->view('deactivated');
             }
         } elseif (Auth::guard('teacher')->check()) {
