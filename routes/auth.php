@@ -74,6 +74,6 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
         ->middleware('guest')->name('login');
 
     Route::post('/logout', [TeacherAuthenticatedSessionController::class, 'destroy'])
-        ->middleware('auth')
+        ->middleware('auth:teacher')
         ->name('logout');
 });
