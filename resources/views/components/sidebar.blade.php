@@ -166,7 +166,9 @@
        <!-- /.sidebar -->
 
        <div class="sidebar-custom d-flex">
-           <form action="/logout" method="post">
+           <form @auth('web') action="{{ route('logout') }}" @endauth
+                @auth('teacher') action="{{ route('teacher.logout') }}" @endauth
+                method="post">
                @csrf
                <button type="submit" class="btn btn-link" title="Logout"><i
                        class="fas fa-sign-out-alt text-danger"></i></button>
