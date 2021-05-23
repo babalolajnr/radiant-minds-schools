@@ -29,13 +29,12 @@ class StoreStudentRequest extends FormRequest
      */
     public function rules()
     {
-        $student = $this->route('student');
 
         return [
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
             'sex' => ['required', 'string'],
-            'admission_no' => ['required', 'string', Rule::unique('students')->ignore($student)],
+            'admission_no' => ['required', 'string', Rule::unique('students')],
             'lg' => ['required', 'string'],
             'state' => ['required', 'string'],
             'country' => ['required', 'string'],
