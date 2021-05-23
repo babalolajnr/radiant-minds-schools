@@ -35,12 +35,12 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'isActiveAndVerified'])->group(function () {
+Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerified'])->group(function () {
 
-    Route::get('/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('classroom.show');
+    Route::get('classrooms/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('classroom.show')->middleware('classTeacherOrUser');
 
     //Routes accessible to both master-user and admins only
-    Route::middleware(['isAdminOrMaster'])->group(function () {
+    Route::middleware(['auth:web'])->group(function () {
 
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
