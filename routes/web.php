@@ -51,7 +51,8 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
     
     //Routes accessible to student's classteachers and master-user and admins only
     Route::middleware('studentClassTeacherOrUser')->group(function () {
-        
+
+        Route::get('/students/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('student.get.term.results')->where('academicSessionName', '.*');
         Route::get('/students/view/{student:admission_no}', [StudentController::class, 'show'])->name('student.show');
         Route::get('/students/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('student.get.sessional.results')->where('academicSessionName', '.*');
         Route::get('/results/create/{student:admission_no}', [ResultController::class, 'create'])->name('result.create');
@@ -96,7 +97,6 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::get('/create', [StudentController::class, 'create'])->name('create');
             Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
             Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
-            Route::get('/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('get.term.results')->where('academicSessionName', '.*');
             Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
             Route::get('/alumni', [StudentController::class, 'getAlumni'])->name('get.alumni');
             Route::post('/store/image/{student}', [StudentController::class, 'uploadImage'])->name('upload.image');
