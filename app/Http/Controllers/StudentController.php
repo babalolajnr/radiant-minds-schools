@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreStudentRequest;
 use App\Models\AcademicSession;
 use App\Models\Result;
 use App\Models\Classroom;
@@ -10,6 +11,7 @@ use App\Models\PDType;
 use App\Models\Period;
 use App\Models\Student;
 use App\Models\Term;
+use App\Services\StudentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -18,55 +20,7 @@ use  Intervention\Image\Facades\Image;
 class StudentController extends Controller
 {
 
-    /**
-     * @return array
-     * @param mixed $validatedData
-     * 
-     * returns student info after it been extracted from
-     * the validated data
-     */
-    private function studentInfo($validatedData)
-    {
-        $classroom =  Classroom::where('name', $validatedData['classroom'])->first();
-
-        return [
-            'first_name' => $validatedData['first_name'],
-            'last_name' => $validatedData['last_name'],
-            'sex' => $validatedData['sex'],
-            'admission_no' => $validatedData['admission_no'],
-            'lg' => $validatedData['lg'],
-            'state' => $validatedData['state'],
-            'country' => $validatedData['country'],
-            'blood_group' => $validatedData['blood_group'],
-            'date_of_birth' => $validatedData['date_of_birth'],
-            'place_of_birth' => $validatedData['place_of_birth'],
-            'classroom_id' => $classroom->id,
-        ];
-    }
-
-    /**
-     * @return array
-     * @param Student $student
-     * 
-     * return student validation rules
-     */
-    private function studentValidationRules($student = null)
-    {
-        return [
-            'first_name' => ['required', 'string', 'max:30'],
-            'last_name' => ['required', 'string', 'max:30'],
-            'sex' => ['required', 'string'],
-            'admission_no' => ['required', 'string', Rule::unique('students')->ignore($student)],
-            'lg' => ['required', 'string'],
-            'state' => ['required', 'string'],
-            'country' => ['required', 'string'],
-            'blood_group' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:' . now()],
-            'place_of_birth' => ['required'],
-            'classroom' => ['required', 'string']
-        ];
-    }
-
+   
     public function index()
     {
         $students = Student::whereNull('graduated_at')->get()->sortByDesc('created_at');
@@ -87,46 +41,17 @@ class StudentController extends Controller
         return view('createStudent', compact('classrooms'));
     }
 
+        
     /**
-     * This method works by collecting all the guardian and student info from the user and
-     * making sure it's all filled out. Then it checks if the guardian's phone number is present
-     * in the database. If it is then it gets the guardian's id and inserts it into the student's table
+     * store student
+     *
+     * @param  StoreStudentRequest $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $guardianValidationRules = [
-            'guardian_title' => ['required', 'max:30', 'string'],
-            'guardian_first_name' => ['required', 'max:30', 'string'],
-            'guardian_last_name' => ['required', 'max:30', 'string'],
-            'guardian_email' => ['required', 'string', 'email:rfc,dns'],
-            'guardian_phone' => ['required', 'string', 'between:10,15'],
-            'guardian_occupation' => ['required', 'string'],
-            'guardian_address' => ['required']
-        ];
-
-        //merge guardian and student validation rules
-        $data = array_merge($guardianValidationRules, $this->studentValidationRules());
-        $validatedData = $request->validate($data);
-
-        $guardian = Guardian::where('phone', $validatedData['guardian_phone'])->first();
-
-        //if guardian does not exist create new guardian
-        if (is_null($guardian)) {
-            $guardian = Guardian::create([
-                'title' => $validatedData['guardian_title'],
-                'first_name' => $validatedData['guardian_first_name'],
-                'last_name' => $validatedData['guardian_last_name'],
-                'email' => $validatedData['guardian_email'],
-                'phone' => $validatedData['guardian_phone'],
-                'occupation' => $validatedData['guardian_occupation'],
-                'address' => $validatedData['guardian_address'],
-            ]);
-        }
-
-        //merge guardian id with student info
-        $studentInfo = array_merge($this->studentInfo($validatedData), ['guardian_id' => $guardian->id]);
-
-        Student::create($studentInfo);
+        $studentService = new StudentService();
+        $studentService->store($request);
 
         return redirect()->route('student.index')->with('success', 'Student Added!');
     }
