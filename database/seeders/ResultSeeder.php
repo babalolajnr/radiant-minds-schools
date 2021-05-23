@@ -18,7 +18,7 @@ class ResultSeeder extends Seeder
      */
     public function run()
     {
-        // $this->command->getOutput()->progressStart(100);
+        $this->command->getOutput()->progressStart(100);
 
         $data = $this->allRecords();
 
@@ -46,13 +46,13 @@ class ResultSeeder extends Seeder
                         'exam' => $exam,
                         'total' => $exam + $ca
                     ]);
-                    // $this->command->getOutput()->progressAdvance();
                 }
             }
+            $this->command->getOutput()->progressAdvance();
         }
         Artisan::call('db:seed', ['--class' => 'ClassroomSubjectSeeder']);
 
-        // $this->command->getOutput()->progressFinish();
+        $this->command->getOutput()->progressFinish();
     }
 
     /**
