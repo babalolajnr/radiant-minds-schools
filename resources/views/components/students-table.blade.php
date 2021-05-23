@@ -62,20 +62,22 @@
                                 </button>
                             </a>
 
-                            {{-- render if user is authorized to delete --}}
-                            @can('delete', $student)
-                                <button type="submit" class="btn btn-default btn-flat" title="Delete"
-                                    onclick="deleteConfirmationModal('{{ route('student.destroy', ['student' => $student]) }}', {{ $student }})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            @endcan
+                            @auth('web')
+                                {{-- render if user is authorized to delete --}}
+                                @can('delete', $student)
+                                    <button type="submit" class="btn btn-default btn-flat" title="Delete"
+                                        onclick="deleteConfirmationModal('{{ route('student.destroy', ['student' => $student]) }}', {{ $student }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                @endcan
 
-                            {{-- render if user is not authorized to delete --}}
-                            @cannot('delete', $student)
-                            <button type="submit" class="btn btn-default btn-flat" title="Delete" disabled>
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            @endcannot
+                                {{-- render if user is not authorized to delete --}}
+                                @cannot('delete', $student)
+                                    <button type="submit" class="btn btn-default btn-flat" title="Delete" disabled>
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                @endcannot
+                            @endauth
 
                             <a href="{{ route('student.show.student.settingsView', ['student' => $student]) }}">
                                 <button type="button" class="btn btn-default btn-flat">
