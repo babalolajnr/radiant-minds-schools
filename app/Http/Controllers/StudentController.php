@@ -19,7 +19,6 @@ use  Intervention\Image\Facades\Image;
 class StudentController extends Controller
 {
 
-   
     public function index()
     {
         $students = Student::whereNull('graduated_at')->get()->sortByDesc('created_at');
@@ -40,45 +39,33 @@ class StudentController extends Controller
         return view('createStudent', compact('classrooms'));
     }
 
-        
+
     /**
      * store student
      *
      * @param  StoreStudentRequest $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(StoreStudentRequest $request)
+    public function store(StoreStudentRequest $request, StudentService $studentService)
     {
-        $studentService = new StudentService();
         $studentService->store($request);
-
         return redirect()->route('student.index')->with('success', 'Student Added!');
     }
 
-    public function show(Student $student)
+    public function show(Student $student, StudentService $studentService)
     {
-        //get unique results that has unique academic sessions
-        $results = Result::where('student_id', $student->id)->get()->unique('period_id');
-
-        //reset the keys to consecutively numbered indexes
-        $results = $results->values()->all();
-        $academicSessions = [];
-
-        foreach ($results as $result) {
-            $academicSession = $result->period->academicSession;
-            array_push($academicSessions, $academicSession);
-        }
-
-        $academicSessions = collect($academicSessions);
-
-        $terms = Term::all();
-        return  view('showStudent', compact('student', 'academicSessions', 'terms'));
+        return view('showStudent', $studentService->show($student));
     }
 
 
+    /**
+     * Activate Student
+     *
+     * @param  Student $student
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function activate(Student $student)
     {
-
         $student->is_active = true;
         $student->save();
 
@@ -106,92 +93,17 @@ class StudentController extends Controller
         return redirect(route('student.edit', ['student' => $student]))->with('success', 'Student Updated!');
     }
 
-    public function getSessionalResults(Student $student, $academicSessionName)
+    public function getSessionalResults(Student $student, $academicSessionName, StudentService $studentService)
     {
-        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
-        $periods = Period::where('academic_session_id', $academicSession->id)->get();
-
-        $results = [];
-        $maxScores = [];
-        $minScores = [];
-        $averageScores = [];
-
-        //loop through all the terms and create an associative array based on terms and results
-        foreach ($periods as $period) {
-            $resultItem = Result::where('student_id', $student->id)
-                ->where('period_id', $period->id)->get();
-
-            //Get each subject highest and lowest scores    
-            foreach ($resultItem as $item) {
-
-                $scoresQuery = Result::where('period_id', $period->id)->where('subject_id', $item->subject->id);
-
-                //highest scores
-                $maxScore = $scoresQuery->max('total');
-
-                $maxScore = [$item->subject->name . '-' . $period->term->name => $maxScore];
-                $maxScores = array_merge($maxScores, $maxScore);
-
-                //Lowest scores
-                $minScore = $scoresQuery->min('total');
-
-                $minScore = [$item->subject->name . '-' . $period->term->name => $minScore];
-                $minScores = array_merge($minScores, $minScore);
-
-                //Average Scores
-                $averageScore = $scoresQuery->pluck('total');
-
-                $averageScore = collect($averageScore)->avg();
-                $averageScore = [$item->subject->name . '-' . $period->term->name => $averageScore];
-                $averageScores = array_merge($averageScores, $averageScore);
-            }
-
-            $resultItem = [$period->term->name => $resultItem];
-            $results = array_merge($results, $resultItem);
-        }
-
-        return view('studentSessionalResults', compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession'));
+        $sessionalResults = $studentService->getSessionalResults($student, $academicSessionName);
+        return view('studentSessionalResults', $sessionalResults);
     }
 
-    public function getTermResults(Student $student, $termSlug, $academicSessionName)
+    public function getTermResults(Student $student, $termSlug, $academicSessionName, StudentService $studentService)
     {
+        $termResults = $studentService->getTermResults($student, $termSlug, $academicSessionName);
 
-        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
-        $term = Term::where('slug', $termSlug)->firstOrFail();
-        $period = Period::where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->first();
-
-
-        $results = Result::where('student_id', $student->id)->where('period_id', $period->id)->get();
-
-        $maxScores = [];
-        $minScores = [];
-        $averageScores = [];
-
-        //Get each subject highest and lowest scores    
-        foreach ($results as $result) {
-
-            $scoresQuery = Result::where('period_id', $period->id)
-                ->where('subject_id', $result->subject->id);
-
-            //highest scores
-            $maxScore = $scoresQuery->max('total');
-
-            $maxScore = [$result->subject->name => $maxScore];
-            $maxScores = array_merge($maxScores, $maxScore);
-
-            //Lowest scores
-            $minScore = $scoresQuery->min('total');
-
-            $minScore = [$result->subject->name => $minScore];
-            $minScores = array_merge($minScores, $minScore);
-
-            //Average Scores
-            $averageScore = $scoresQuery->pluck('total');
-            $averageScore = collect($averageScore)->avg();
-            $averageScore = [$result->subject->name => $averageScore];
-            $averageScores = array_merge($averageScores, $averageScore);
-        }
-        return view('studentTermResults', compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores', 'period'));
+        return view('studentTermResults', $termResults);
     }
 
     public function destroy(Student $student)
@@ -236,7 +148,7 @@ class StudentController extends Controller
     public function uploadImage(Student $student, Request $request)
     {
 
-        $validatedData = $request->validate([
+        $request->validate([
             'image' => ['required', 'image', 'unique:students,image,except,id']
         ]);
 
