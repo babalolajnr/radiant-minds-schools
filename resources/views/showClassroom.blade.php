@@ -47,47 +47,50 @@
                                 <x-students-table :students="$students" />
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card">
+                        @auth('web')
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-baseline">
+                                                <span class="font-semibold">Class Teacher</span>
+                                                <span>
+                                                    <button class="btn btn-primary"
+                                                        onclick="showAssignTeacherModal()">Assign Teacher</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <span class="">
+                                                @if ($classroom->teacher)
+                                                    {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card col-lg-6">
                                     <div class="card-header">
                                         <div class="d-flex justify-content-between align-items-baseline">
-                                            <span class="font-semibold">Class Teacher</span>
+                                            <span class="font-semibold">Subjects</span>
                                             <span>
-                                                <button class="btn btn-primary"
-                                                    onclick="showAssignTeacherModal()">Assign Teacher</button>
+                                                <a
+                                                    href="{{ route('classroom.set.subjects', ['classroom' => $classroom]) }}"><button
+                                                        class="btn btn-primary">Set Subjects</button>
+                                                </a>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <span class="">
-                                            @if ($classroom->teacher)
-                                                {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
-                                            @endif
-                                        </span>
+                                        @foreach ($subjects as $subject)
+                                            <div class="callout callout-info">
+                                                <span>{{ $subject->name }}</span>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card col-lg-6">
-                                <div class="card-header">
-                                    <div class="d-flex justify-content-between align-items-baseline">
-                                        <span class="font-semibold">Subjects</span>
-                                        <span>
-                                            <a
-                                                href="{{ route('classroom.set.subjects', ['classroom' => $classroom]) }}"><button
-                                                    class="btn btn-primary">Set Subjects</button>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    @foreach ($subjects as $subject)
-                                        <div class="callout callout-info">
-                                            <span>{{ $subject->name }}</span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
+                            @endauth
+
                         </div>
                     </div>
                 </div>
@@ -232,8 +235,7 @@
 
             });
 
-            function assignTeacher()
-            {
+            function assignTeacher() {
                 const selected = $("#teacherSelect").val()
                 $("#assignTeacherForm").attr('action', selected)
                 $("#assignTeacherForm").submit()
