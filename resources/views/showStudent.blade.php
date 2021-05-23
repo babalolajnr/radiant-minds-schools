@@ -54,8 +54,10 @@
 
                                     <p class="text-muted text-center" id="admissionNo">{{ $student->admission_no }}
                                     </p>
-                                    <div class="d-flex justify-content-center"><button class="btn btn-primary"
-                                            data-toggle="modal" data-target="#editModal">Edit</button></div>
+                                    @auth('web')
+                                        <div class="d-flex justify-content-center"><button class="btn btn-primary"
+                                                data-toggle="modal" data-target="#editModal">Edit</button></div>
+                                    @endauth
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -302,38 +304,39 @@
         </div>
         {{-- /.Term result modal --}}
     </div>
+    @auth('web')
+        {{-- edit student modal --}}
+        <div class="modal fade" id="editModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Student</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <a href="{{ route('student.edit', ['student' => $student->admission_no]) }}"
+                            id="editStudentButton">
+                            <button type="button" class="btn btn-success" title="Edit Student">Student</button>
+                        </a>
+                        <span class="px-3"></span>
+                        <a href="{{ route('guardian.edit', ['guardian' => $student->guardian]) }}"
+                            id="editGuardianButton">
+                            <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
+                        </a>
 
-    {{-- edit student modal --}}
-    <div class="modal fade" id="editModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Student</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <a href="{{ route('student.edit', ['student' => $student->admission_no]) }}"
-                        id="editStudentButton">
-                        <button type="button" class="btn btn-success" title="Edit Student">Student</button>
-                    </a>
-                    <span class="px-3"></span>
-                    <a href="{{ route('guardian.edit', ['guardian' => $student->guardian]) }}"
-                        id="editGuardianButton">
-                        <button type="button" class="btn btn-info" title="Edit Guardian">Guardian</button>
-                    </a>
-
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-content -->
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-dialog -->
-    </div>
-    {{-- /edit student modal --}}
+        {{-- /edit student modal --}}
+        @endauth
     <x-slot name="scripts">
         <!-- Toastr -->
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
