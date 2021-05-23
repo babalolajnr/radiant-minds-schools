@@ -10,6 +10,7 @@ use App\Models\Period;
 use App\Models\Result;
 use App\Models\Student;
 use App\Models\Term;
+use  Intervention\Image\Facades\Image;
 
 class StudentService
 {
@@ -207,5 +208,22 @@ class StudentService
         }
 
         return compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession');
+    }
+
+    public function uploadImage($student, $request)
+    {
+        $request->validate([
+            'image' => ['required', 'image', 'unique:students,image,except,id', 'mimes:jpg', 'max:1000']
+        ]);
+
+        //create name from first and last name
+        $imageName = $student->first_name . $student->last_name . '.' . $request->image->extension();
+        $path = $request->file('image')->storeAs('public/students', $imageName);
+        Image::make($request->image->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
+
+        //update image in the database
+        $filePath = 'storage/students/' . $imageName;
+        $student->image = $filePath;
+        $student->save();
     }
 }
