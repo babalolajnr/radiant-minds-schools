@@ -14,25 +14,40 @@ use App\Models\Term;
 use App\Services\StudentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use  Intervention\Image\Facades\Image;
 
 class StudentController extends Controller
 {
 
+    /**
+     * index
+     *
+     * @return void
+     */
     public function index()
     {
         $students = Student::whereNull('graduated_at')->get()->sortByDesc('created_at');
         $academicSessions = AcademicSession::all()->sortByDesc('created_at');
         $terms = Term::all()->sortByDesc('created_at');
+
         return view('students', compact('students', 'academicSessions', 'terms'));
     }
 
+    /**
+     * Get Alumni
+     *
+     * @return void
+     */
     public function getAlumni()
     {
         $students = Student::whereNotNull('graduated_at')->get();
         return view('alumni', compact('students'));
     }
 
+    /**
+     * create student
+     *
+     * @return void
+     */
     public function create()
     {
         $classrooms = Classroom::pluck('name')->all();
@@ -44,6 +59,7 @@ class StudentController extends Controller
      * store student
      *
      * @param  StoreStudentRequest $request
+     * @param  StudentService $studentService
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(StoreStudentRequest $request, StudentService $studentService)
@@ -52,6 +68,13 @@ class StudentController extends Controller
         return redirect()->route('student.index')->with('success', 'Student Added!');
     }
 
+    /**
+     * show student
+     *
+     * @param  Student $student
+     * @param  StudentService $studentService
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function show(Student $student, StudentService $studentService)
     {
         return view('showStudent', $studentService->show($student));
@@ -145,23 +168,9 @@ class StudentController extends Controller
         return back()->with('success', 'Student deleted permanently');
     }
 
-    public function uploadImage(Student $student, Request $request)
+    public function uploadImage(Student $student, Request $request, StudentService $studentService)
     {
-
-        $request->validate([
-            'image' => ['required', 'image', 'unique:students,image,except,id']
-        ]);
-
-        //create name from first and last name
-        $imageName = $student->first_name . $student->last_name . '.' . $request->image->extension();
-        $path = $request->file('image')->storeAs('public/students', $imageName);
-        Image::make($request->image->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
-
-        //update image in the database
-        $filePath = 'storage/students/' . $imageName;
-        $student->image = $filePath;
-        $student->save();
-
+        $studentService->uploadImage($student, $request);
         return back()->with('success', 'Image uploaded successfully');
     }
 
