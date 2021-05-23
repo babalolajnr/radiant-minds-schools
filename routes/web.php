@@ -36,8 +36,30 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerified'])->group(function () {
+    
+    Route::get('/classrooms/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('classroom.show')->middleware('classTeacherOrUser');
+    
+    
+    
+    Route::prefix('results')->name('result.')->group(function () {
+        
+        //Result ROutes
+        Route::get('/edit/{result}', [ResultController::class, 'edit'])->name('edit');
+        Route::patch('/update/{result}', [ResultController::class, 'update'])->name('update');
+        Route::delete('/delete/{result}', [ResultController::class, 'destroy'])->name('destroy');
+    });
+    
+    //Routes accessible to student's classteachers and master-user and admins only
+    Route::middleware('studentClassTeacherOrUser')->group(function () {
+        
+        Route::get('/students/view/{student:admission_no}', [StudentController::class, 'show'])->name('student.show');
+        Route::get('/students/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('student.get.sessional.results')->where('academicSessionName', '.*');
+        Route::get('/results/create/{student:admission_no}', [ResultController::class, 'create'])->name('result.create');
+        Route::post('/results/store/{student}', [ResultController::class, 'store'])->name('result.store');
+        Route::get('/results/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('result.show.performance');
 
-    Route::get('classrooms/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('classroom.show')->middleware('classTeacherOrUser');
+    });
+
 
     //Routes accessible to both master-user and admins only
     Route::middleware(['auth:web'])->group(function () {
@@ -73,9 +95,7 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::get('/', [StudentController::class, 'index'])->name('index');
             Route::get('/create', [StudentController::class, 'create'])->name('create');
             Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
-            Route::get('view/{student:admission_no}', [StudentController::class, 'show'])->name('show');
             Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
-            Route::get('/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results')->where('academicSessionName', '.*');
             Route::get('/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('get.term.results')->where('academicSessionName', '.*');
             Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
             Route::get('/alumni', [StudentController::class, 'getAlumni'])->name('get.alumni');
@@ -139,16 +159,6 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::patch('/update/{guardian:phone}', [GuardianController::class, 'update'])->name('update');
         });
 
-
-        Route::prefix('results')->name('result.')->group(function () {
-            //Result ROutes
-            Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
-            Route::get('/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
-            Route::get('/edit/{result}', [ResultController::class, 'edit'])->name('edit');
-            Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
-            Route::patch('/update/{result}', [ResultController::class, 'update'])->name('update');
-            Route::delete('/delete/{result}', [ResultController::class, 'destroy'])->name('destroy');
-        });
 
         Route::prefix('pds')->name('pd.')->group(function () {
             //Pychomotor Domain Routes
