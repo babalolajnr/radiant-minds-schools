@@ -3,9 +3,13 @@
 namespace App\Services;
 
 use App\Http\Requests\StoreStudentRequest;
+use App\Models\AcademicSession;
 use App\Models\Classroom;
 use App\Models\Guardian;
+use App\Models\Period;
+use App\Models\Result;
 use App\Models\Student;
+use App\Models\Term;
 
 class StudentService
 {
@@ -69,5 +73,139 @@ class StudentService
             'place_of_birth' => $validatedData['place_of_birth'],
             'classroom_id' => $classroom->id,
         ];
+    }
+
+    /**
+     * Get student term results
+     *
+     *
+     * @param  mixed $student
+     * @param  mixed $termSlug
+     * @param  mixed $academicSessionName
+     * 
+     * @return array
+     */
+    public function getTermResults($student, $termSlug, $academicSessionName)
+    {
+
+        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $term = Term::where('slug', $termSlug)->firstOrFail();
+        $period = Period::where('academic_session_id', $academicSession->id)->where('term_id', $term->id)->first();
+
+
+        $results = Result::where('student_id', $student->id)->where('period_id', $period->id)->get();
+
+        $maxScores = [];
+        $minScores = [];
+        $averageScores = [];
+
+        //Get each subject highest and lowest scores    
+        foreach ($results as $result) {
+
+            $scoresQuery = Result::where('period_id', $period->id)
+                ->where('subject_id', $result->subject->id);
+
+            //highest scores
+            $maxScore = $scoresQuery->max('total');
+
+            $maxScore = [$result->subject->name => $maxScore];
+            $maxScores = array_merge($maxScores, $maxScore);
+
+            //Lowest scores
+            $minScore = $scoresQuery->min('total');
+
+            $minScore = [$result->subject->name => $minScore];
+            $minScores = array_merge($minScores, $minScore);
+
+            //Average Scores
+            $averageScore = $scoresQuery->pluck('total');
+            $averageScore = collect($averageScore)->avg();
+            $averageScore = [$result->subject->name => $averageScore];
+            $averageScores = array_merge($averageScores, $averageScore);
+        }
+
+        return compact('student', 'results', 'academicSession', 'term', 'maxScores', 'averageScores', 'minScores', 'period');
+    }
+
+    /**
+     * show student
+     *
+     * @param  mixed $student
+     * @return array
+     */
+    public function show($student)
+    {
+        //get unique results that has unique academic sessions
+        $results = Result::where('student_id', $student->id)->get();
+        $periods = [];
+
+        foreach ($results as $result) {
+            array_push($periods, $result->period);
+        }
+
+        $periodsCollection = collect($periods);
+
+        $uniqueAcademicSessions = $periodsCollection->unique('academic_session_id');
+
+        $academicSessions = [];
+
+        foreach ($uniqueAcademicSessions as $uniqueAcademicSession) {
+            $academicSession = $uniqueAcademicSession->academicSession;
+            array_push($academicSessions, $academicSession);
+        }
+
+        $academicSessions = collect($academicSessions);
+
+        $terms = Term::all();
+
+        return compact('student', 'academicSessions', 'terms');
+    }
+
+    public function getSessionalResults($student, $academicSessionName)
+    {
+
+        $academicSession = AcademicSession::where('name', $academicSessionName)->firstOrFail();
+        $periods = Period::where('academic_session_id', $academicSession->id)->get();
+
+        $results = [];
+        $maxScores = [];
+        $minScores = [];
+        $averageScores = [];
+
+        //loop through all the terms and create an associative array based on terms and results
+        foreach ($periods as $period) {
+            $resultItem = Result::where('student_id', $student->id)
+                ->where('period_id', $period->id)->get();
+
+            //Get each subject highest and lowest scores    
+            foreach ($resultItem as $item) {
+
+                $scoresQuery = Result::where('period_id', $period->id)->where('subject_id', $item->subject->id);
+
+                //highest scores
+                $maxScore = $scoresQuery->max('total');
+
+                $maxScore = [$item->subject->name . '-' . $period->term->name => $maxScore];
+                $maxScores = array_merge($maxScores, $maxScore);
+
+                //Lowest scores
+                $minScore = $scoresQuery->min('total');
+
+                $minScore = [$item->subject->name . '-' . $period->term->name => $minScore];
+                $minScores = array_merge($minScores, $minScore);
+
+                //Average Scores
+                $averageScore = $scoresQuery->pluck('total');
+
+                $averageScore = collect($averageScore)->avg();
+                $averageScore = [$item->subject->name . '-' . $period->term->name => $averageScore];
+                $averageScores = array_merge($averageScores, $averageScore);
+            }
+
+            $resultItem = [$period->term->name => $resultItem];
+            $results = array_merge($results, $resultItem);
+        }
+
+        return compact('results', 'maxScores', 'minScores', 'averageScores', 'academicSession');
     }
 }
