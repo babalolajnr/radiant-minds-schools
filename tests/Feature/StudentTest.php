@@ -60,8 +60,6 @@ class StudentTest extends TestCase
      */
     public function test_student_can_be_created_with_new_guardian_info()
     {
-        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
         $classroom = $this->generateTestClassroom();
         $studentInfo = $this->studentInfo($classroom);
@@ -82,8 +80,6 @@ class StudentTest extends TestCase
 
     public function test_an_already_taken_guardian_phone_will_work()
     {
-        $this->withoutExceptionHandling();
-
         $guardian = Guardian::factory()->create();
         $user = User::factory()->create();
 
@@ -198,6 +194,17 @@ class StudentTest extends TestCase
         $student = $result->student;
         $academicSession = $result->period->academicSession->name;
         $response = $this->actingAs($user)->get(route('student.get.sessional.results', ['student' => $student, 'academicSessionName' => $academicSession]));
+        $response->assertStatus(200)->assertViewIs('studentSessionalResults');
+    }
+
+    public function test_user_can_get_student_term_results()
+    {
+        $user = User::factory()->create();
+        $result = Result::factory()->create();
+        $student = $result->student;
+        $academicSession = $result->period->academicSession->name;
+        $term = $result->period->term->slug;
+        $response = $this->actingAs($user)->get(route('student.get.sessional.results', ['student' => $student, 'academicSessionName' => $academicSession, 'termSlug' => $term]));
         $response->assertStatus(200)->assertViewIs('studentSessionalResults');
     }
 
