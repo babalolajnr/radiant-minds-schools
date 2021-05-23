@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Models\AcademicSession;
 use App\Models\Result;
 use App\Models\Classroom;
-use App\Models\Guardian;
 use App\Models\PDType;
 use App\Models\Period;
 use App\Models\Student;
@@ -14,7 +14,6 @@ use App\Models\Term;
 use App\Services\StudentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use  Intervention\Image\Facades\Image;
 
 class StudentController extends Controller
@@ -101,13 +100,10 @@ class StudentController extends Controller
         return view('editStudent', compact(['student', 'classrooms']));
     }
 
-    public function update(Student $student, Request $request)
+    public function update(Student $student, UpdateStudentRequest $request)
     {
-
-        $validatedData = $request->validate($this->studentValidationRules($student));
-        $student->update($this->studentInfo($validatedData));
-
-        return redirect('/edit/student/' . $student->admission_no)->with('success', 'Student Updated!');
+        $student->update($request->validated());
+        return redirect(route('student.edit', ['student' => $student]))->with('success', 'Student Updated!');
     }
 
     public function getSessionalResults(Student $student, $academicSessionName)
