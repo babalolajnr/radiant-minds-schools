@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ADType;
+use App\Models\Fee;
 use App\Models\PDType;
 use App\Models\Period;
 use App\Models\Result;
@@ -69,7 +70,6 @@ class ResultGenerationService
         $currentDate = now()->year;
         $yearOfBirth = Carbon::createFromFormat('Y-m-d', $this->student->date_of_birth)->format('Y');
         $age = $currentDate - $yearOfBirth;
-        $numberOfTimesPresent = $this->student->attendances()->where('period_id', $period->id)->first();
 
         //Get class score statistics
         foreach ($results as $key => $result) {
@@ -112,6 +112,8 @@ class ResultGenerationService
 
         $percentage = $totalObtained / $totalObtainable * 100;
 
+        $nextTermDetails = $this->getNextTermDetails($period);
+
         return [
             'student' => $this->student,
             'totalObtained' => $totalObtained,
@@ -126,8 +128,9 @@ class ResultGenerationService
             'pdTypes' => $pdTypes,
             'ads' => $ads,
             'adTypes' => $adTypes,
-            'numberOfTimesPresent' => $numberOfTimesPresent,
             'period' => $period,
+            'nextTermBegins' => $nextTermDetails['nextTermBegins'],
+            'nextTermFee' => $nextTermDetails['nextTermFee'],
         ];
     }
     /**
@@ -198,5 +201,31 @@ class ResultGenerationService
         $ads = array_combine($adTypeNames, $values);
 
         return $ads;
+    }
+
+    /**
+     * Get next term details
+     *
+     * @param  mixed $period
+     * @return array
+     */
+    private function getNextTermDetails($period)
+    {
+        $nextPeriod = Period::where('rank', $period->rank + 1)->first();
+
+        if (is_null($nextPeriod)) {
+            $nextTermBegins = null;
+            $nextTermFee = null;
+        } else {
+            $nextTermBegins = $nextPeriod->start_date;
+            $nextTermFee = Fee::where('classroom_id', $this->student->classroom->id)
+                ->where('period_id', $nextPeriod->id)->first()->amount;
+            $nextTermFee = number_format($nextTermFee);
+        }
+
+        return [
+            'nextTermBegins' => $nextTermBegins,
+            'nextTermFee' => $nextTermFee
+        ];
     }
 }
