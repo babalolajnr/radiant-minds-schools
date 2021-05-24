@@ -42,7 +42,7 @@ class Period extends Model
     /**
      * Fee relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function fee()
     {
@@ -52,17 +52,17 @@ class Period extends Model
     /**
      * Attendance relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function attendance()
     {
-        return $this->belongsTo(Attendance::class);
+        return $this->hasOne(Attendance::class);
     }
 
     /**
      * Term relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function term()
     {
@@ -72,7 +72,7 @@ class Period extends Model
     /**
      * AcademicSession relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function academicSession()
     {
@@ -82,7 +82,7 @@ class Period extends Model
     /**
      * Results relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function results()
     {
@@ -92,7 +92,7 @@ class Period extends Model
     /**
      * Pds relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pds()
     {
