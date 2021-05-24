@@ -1,26 +1,61 @@
-.bord{
-    width: 90%;
+/* logo and adress details */
+.head{
+    background-color: #FFFCC7;
+    display: flex;
+    justify-content: center;
 }
-.bord1{
-    width: 25%;
+.content{
+    margin-left: 20px;
 }
-.bord2{
-    width: 20%;
+.content h1{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #052F57;
+    letter-spacing: -2px;
 }
-.bord3{
-    width: 20%;
+.content img{
+    margin-top: -13px;
 }
-.bord4{
-    width: 22%;
+.content .icon{
+    width: 15px;
+    margin-top: 0.1mm;
+    margin-bottom: 1mm;
 }
-.bord5{
-    width: 22%;
+.head .space{
+    letter-spacing: 1px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-.bord6{
-    width: 29%;
+.head .image .img{
+    width: 170px;  
+}
+.head .content .arabic{
+     width: 410px;
 }
 
- .two .sub1{
+/* student details */
+
+form .name{
+    width: 1030px;
+}
+.class,.session{
+    width: 293px;
+}
+.dob, .age{
+    width: 315px;
+}.admission{
+    width: 290px;
+}
+.gender{
+    width: 308px;
+}
+
+.stu-name,.stu-class,.stu-sess,.stu-add,.stu-dob,.stu-age,.stu-gender{
+    display: flex;
+}
+.sec, .thrd{
+    display: flex;
+}
+/* result layout */
+.two .sub1{
     width:700px;
 } 
 .two .sub2{
@@ -28,17 +63,120 @@
 } 
 .two, .three{
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: space-between;    
 }
 .sub3, .sub4{
     width: 530px;
 }
 .color{
-    color: #01013f;
+    color: #052F57;
 }
 
 .heading{
-    background-color: #01013f !important;
-    color: gold;
+    background-color: #052F57 !important;
+    color: #F8EA0C;
 }
+
+.t-wrapper{
+     display: flex;
+ }
+ .hod-wrapper{
+     display: flex;
+ }
+.class-teacher-remark, .class-teacher-sign{
+    display: flex;
+}
+.remark-ct{
+    margin-left: 2px;
+    width: 35em;
+}
+.remark-hd{
+    margin-left: 2px;
+    width: 35em;
+}
+.sign{
+    margin-left: 2px;
+    width: 300px;
+}
+
+@media print{
+    /* head */
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .some{
+        font-size: 13px;
+    }
+   
+    .head{
+        background-color: #FFFCC7;
+    }
+    
+   .head .image .img{
+       width: 115px;
+    }
+   
+    .head .content .arabic{
+        width: 250px;
+    }
+    
+    .head .content{
+        margin-left: 20px;
+    }
+    .head .content .fam{
+        font-size: 30px; 
+    }
+    .head .content .space{
+        font-size: 18px; 
+    }
+    .head .content p{
+        font-size: 14px; 
+    }
+   
+    .head .content .icon{
+        width: 15px;
+        margin-top: 0.1mm;
+        margin-bottom: 1mm;
+    }
+    
+    .one{
+        font-size: 7px; 
+    }
+    form label{
+        font-size: 15px;
+    }
+    .name{
+        width: 1200px;
+    }
+    .sec{
+        width: 400px;
+    }
+    .thrd{
+        width: 400px;
+    }
+    .two .sub1{
+        width:60%;
+    } 
+    .two .sub2{
+        width: 37%;
+    }
+    .three .sub3{
+        width: 47%;
+    }
+    .three .sub4{
+        width: 47%;
+    }
+    .remark-ct{
+        width: 50em;
+    }
+    .remark-hd{
+        width: 50em;
+    }
+    .remark2 .sign{
+        width: 15em;
+    }
+    .remark .sign{
+        width: 15em;
+    }
+}   
