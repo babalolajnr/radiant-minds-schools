@@ -21,7 +21,8 @@
         <!--Logo and details of the company-->
         <div class="head p-3">
             <div class="image">
-                <img class="img" src="{{ asset('images/radiant_logo-removebg-preview.png') }}" alt="Radiant minds logo">
+                <img class="img" src="{{ asset('images/radiant_logo-removebg-preview.png') }}"
+                    alt="Radiant minds logo">
             </div>
             <div class="content text-center">
                 <h1 class="fam">
@@ -35,11 +36,12 @@
                         Idi-Aba, Abeokuta
                         <br>
                         <i class="fa fa-phone text-danger"></i>08172951965 &nbsp;&nbsp; <img class="icon"
-                            src="Image\whatsapp.png" alt="">08147971373 &nbsp;&nbsp;
+                            src="{{ asset('images/whatsapp.png') }}" alt="">08147971373 &nbsp;&nbsp;
                         <img class="icon" src="{{ asset('images/gmail.png') }}" alt=""> radiantmindsschool@gmail.com
                     </strong>
                 </p>
-                <p class="h5"><strong><u>FIRST TERM STUDENT'S PERFORMANCE REPORT</u></strong></p>
+                <p class="h5"><strong class="text-uppercase"><u>{{ $period->term->name }} STUDENT'S PERFORMANCE
+                            REPORT</u></strong></p>
             </div>
         </div>
 
@@ -47,30 +49,47 @@
 
         <div class="some">
             <div class="one">
-                <div class="p-3">
-                    <div class="row mt-2">
-                        <label class="col-sm-1">NAME:</label>
-                        <div class="col-sm-11 bord border-bottom ">
-                            {{ $student->first_name . ' ' . $student->last_name }}
+                <form action="" class="p-3">
+                    <div class="stu-name mb-2">
+                        <label for="name">NAME:</label>
+                        <div class="name border-bottom"><span
+                                class="px-3 fw-bold">{{ $student->first_name . ' ' . $student->last_name }}</span>
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <label class="col-sm-1">CLASS:</label>
-                        <div class="col-sm-3 bord1 border-bottom ">{{ $student->classroom->name }}</div>
-                        <label class="col-sm-1">SESSION:</label>
-                        <div class="col-sm-3 bord2 border-bottom ">{{ $period->academicSession->name }}</div>
-                        <label class="col-sm-2">ADMISSION NO:</label>
-                        <div class="col-sm-3 mr-5 bord3 border-bottom ">{{ $student->admission_no }}</div>
+                    <div class="sec mb-2">
+                        <div class="stu-class">
+                            <label for="class">CLASS:</label>
+                            <div class="class border-bottom"><span
+                                    class="px-3 fw-bold">{{ $student->classroom->name }}</span></div>
+                        </div>
+                        <div class="stu-sess">
+                            <label for="session">SESSION:</label>
+                            <div class="session border-bottom"><span
+                                    class="px-3 fw-bold">{{ $period->academicSession->name }}</span></div>
+                        </div>
+                        <div class="stu-add">
+                            <label for="admission">ADMISSION:</label>
+                            <div class="admission border-bottom "><span
+                                    class="px-3 fw-bold">{{ $student->admission_no }}</span></div>
+                        </div>
                     </div>
-                    <div class="row mt-3 mb-4">
-                        <label class="col-sm-1">DOB:</label>
-                        <div class=" col-sm-3 bord4 border-bottom ">{{ $student->date_of_birth }}</div>
-                        <label class="col-sm-1">AGE:</label>
-                        <div class="col-sm=3 bord5 border-bottom ">{{ $age }}</div>
-                        <label class="col-sm-1">GENDER:</label>
-                        <div class="col-sm-3 bord6 border-bottom ">{{ $student->sex }}</div>
+                    <div class="thrd">
+                        <div class="stu-dob">
+                            <label for="dob">DOB:</label>
+                            <div class="dob border-bottom "><span
+                                    class="px-3 fw-bold">{{ $student->date_of_birth }}</span></div>
+                        </div>
+                        <div class="stu-age">
+                            <label for="age">AGE:</label>
+                            <div class="age border-bottom "><span class="px-3 fw-bold">{{ $age }}</span></div>
+                        </div>
+                        <div class="stu-gender">
+                            <label for="gender">GENDER:</label>
+                            <div class="gender border-bottom "><span class="px-3 fw-bold">{{ $student->sex }}</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -93,41 +112,41 @@
 
                         @foreach ($results as $key => $result)
                             <tr>
-                                <td>{{ $key }}</td>
-                                @if ($result == null)
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                @else
-                                    <td>{{ $result->ca }}</td>
-                                    <td>{{ $result->exam }}</td>
-                                    <td>{{ $result->total }}</td>
-                                    <td>{{ $maxScores[$result->subject->name] }}
-                                    <td>{{ $minScores[$result->subject->name] }}
-                                    </td>
-                                    <td>{{ round($averageScores[$result->subject->name], 2) }}
-                                    </td>
-                                    @if ($result->total <= 39)
-                                        <td class="text-red-700">F</td>
-                                    @elseif($result->total >= 40 && $result->total <= 49) <td
-                                            class="text-yellow-500">D</td>
-                                        @elseif($result->total >= 50 && $result->total <= 59) <td
-                                                class="text-green-300">C
-                                                </td>
-                                            @elseif($result->total >= 60 && $result->total <= 69) <td
-                                                    class="text-green-600">B</td>
-                                                @elseif($result->total >= 70 && $result->total <= 100) <td
-                                                        class="text-green-900">A</td>
-                                                    @else
-                                                        <td></td>
-                                    @endif
+                                <th scope="row">{{ $key }}</td>
+                                    @if ($result == null)
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            @else
+                                <td>{{ $result->ca }}</td>
+                                <td>{{ $result->exam }}</td>
+                                <td>{{ $result->total }}</td>
+                                <td>{{ $maxScores[$result->subject->name] }}
+                                <td>{{ $minScores[$result->subject->name] }}
+                                </td>
+                                <td>{{ round($averageScores[$result->subject->name], 2) }}
+                                </td>
+                                @if ($result->total <= 39)
+                                    <td class="text-red-700">F</td>
+                                @elseif($result->total >= 40 && $result->total <= 49) <td class="text-yellow-500">D
+                                        </td>
+                                    @elseif($result->total >= 50 && $result->total <= 59) <td
+                                            class="text-green-300">C
+                                            </td>
+                                        @elseif($result->total >= 60 && $result->total <= 69) <td
+                                                class="text-green-600">B</td>
+                                            @elseif($result->total >= 70 && $result->total <= 100) <td
+                                                    class="text-green-900">A</td>
+                                                @else
+                                                    <td></td>
                                 @endif
+                        @endif
 
-                            </tr>
+                        </tr>
                         @endforeach
                     </tbody>
 
@@ -228,23 +247,29 @@
                         </tr>
                         <tr>
                             <td>No of Times School opened</td>
-                            <td></td>
+                            <td>{{ $period->no_times_school_opened }}</td>
 
                         </tr>
                         <tr>
                             <td>No of times present</td>
                             <td>
-                                @if ($numberOfTimesPresent != null)
-                                    {{ $numberOfTimesPresent->value }}
+                                @if ($period->attendance->value != null)
+                                    {{ $period->attendance->value }}
                                 @else
-                                    Null
+                                    null
                                 @endif
                             </td>
 
                         </tr>
                         <tr>
                             <td> No of times Absent</td>
-                            <td></td>
+                            <td>
+                                @if ($period->attendance->value != null)
+                                    {{ $period->no_times_school_opened - $period->attendance->value }}
+                                @else
+                                    null
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -258,7 +283,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Empty</td>
+                            <td class="text-center fw-bold">{{ $nextTermBegins }}</td>
                         </tr>
 
                     </tbody>
@@ -272,7 +297,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Empty</td>
+                            <td class="text-center fw-bold">₦ {{ $nextTermFee }}</td>
                         </tr>
 
                     </tbody>
