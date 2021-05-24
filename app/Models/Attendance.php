@@ -29,10 +29,10 @@ class Attendance extends Model
     /**
      * period relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function period()
     {
-        return $this->hasOne(Period::class);
+        return $this->belongsTo(Period::class);
     }
 }
