@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\AcademicSession;
-use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\PDType;
 use App\Models\Period;
