@@ -36,9 +36,9 @@ class AttendanceSeeder extends Seeder
                     'student_id' => $student->id,
                     'value' => mt_rand(1, 100),
                 ]);
-
-                $this->command->getOutput()->progressAdvance();
             }
+
+            $this->command->getOutput()->progressAdvance();
         }
 
         $this->command->getOutput()->progressFinish();
