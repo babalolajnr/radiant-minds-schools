@@ -2,7 +2,8 @@
    <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
        <!-- Brand Logo -->
        <a href="/dashboard" class="brand-link d-flex justify-content-center">
-           <span class="brand-text font-weight-bold">{{ config('app.name', 'App Name') }}</span>
+           <span
+               class="brand-text font-weight-bold text-uppercase">{{ str_replace('-', ' ', config('app.name', 'School name')) }}</span>
        </a>
 
        <!-- Sidebar -->
@@ -166,14 +167,13 @@
        <!-- /.sidebar -->
 
        <div class="sidebar-custom d-flex">
-           <form @auth('web') action="{{ route('logout') }}" @endauth
-                @auth('teacher') action="{{ route('teacher.logout') }}" @endauth
-                method="post">
-               @csrf
-               <button type="submit" class="btn btn-link" title="Logout"><i
-                       class="fas fa-sign-out-alt text-danger"></i></button>
-           </form>
-           <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Help</a>
-       </div>
-       <!-- /.sidebar-custom -->
-   </aside>
+           <form @auth('web') action="{{ route('logout') }}" @endauth @auth('teacher')
+           action="{{ route('teacher.logout') }}" @endauth method="post">
+           @csrf
+           <button type="submit" class="btn btn-link" title="Logout"><i
+                   class="fas fa-sign-out-alt text-danger"></i></button>
+       </form>
+       <a href="#" class="btn btn-secondary hide-on-collapse pos-right">Help</a>
+   </div>
+   <!-- /.sidebar-custom -->
+</aside>
