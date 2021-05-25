@@ -43,6 +43,8 @@ class ClassroomSubjectSeeder extends Seeder
         /**
          * generate 9 random subject for a classroom for each academic session
          */
+        $this->command->getOutput()->progressStart(100);
+
         foreach ($academicSessions as $academicSession) {
             foreach ($classrooms as $classroom) {
                 $randomSubjects = $subjects->random(9);
@@ -63,6 +65,8 @@ class ClassroomSubjectSeeder extends Seeder
                     }
                 }
             }
+            $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
     }
 }
