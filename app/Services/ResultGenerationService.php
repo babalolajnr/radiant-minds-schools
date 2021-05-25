@@ -219,8 +219,14 @@ class ResultGenerationService
         } else {
             $nextTermBegins = $nextPeriod->start_date;
             $nextTermFee = Fee::where('classroom_id', $this->student->classroom->id)
-                ->where('period_id', $nextPeriod->id)->first()->amount;
-            $nextTermFee = number_format($nextTermFee);
+                ->where('period_id', $nextPeriod->id)->first();
+                
+            //check if next term fee is available
+            if (is_null($nextTermFee)) {
+                $nextTermFee = null;
+            } else {
+                $nextTermFee = number_format($$nextTermFee->amount);
+            }
         }
 
         return [
