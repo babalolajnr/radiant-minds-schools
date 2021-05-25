@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Period;
 use App\Models\Remark;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class RemarkController extends Controller
@@ -22,20 +24,31 @@ class RemarkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student, $periodSlug = null)
     {
-        //
+        $period = is_null($periodSlug)
+            ? Period::activePeriod()
+            : Period::where('slug', $periodSlug)->firstOrFail();
+
+        $remarks = $student->remarks()->where('period_id', $period->id);
+
+        if ($remarks->exists()) {
+            $remarks = $remarks->first();
+        } else {
+            $remarks = null;
+        }
+
+        return view('createRemark', compact('period', 'student', 'remarks'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store or Update a remark
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeOrUpdate(Request $request)
     {
-        //
     }
 
     /**
@@ -45,29 +58,6 @@ class RemarkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Remark $remark)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Remark  $remark
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Remark $remark)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Remark  $remark
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Remark $remark)
     {
         //
     }
