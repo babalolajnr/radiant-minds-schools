@@ -71,4 +71,21 @@ class RemarkTest extends TestCase
         $response->assertStatus(302);
     }
 
+    public function test_remark_can_be_updated()
+    {
+        $student = Student::factory()->create();
+        $teacher = $student->classroom->teacher;
+        $period = Period::factory()->create();
+        Remark::factory()->create(['student_id' => $student->id, 'period_id' => $period->id]);
+
+        $response = $this->actingAs($teacher, 'teacher')->post(
+            route('remark.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->slug]),
+            [
+                'class_teacher_remark' => $this->faker->realText,
+                'hos_remark' => $this->faker->realText
+            ]
+        );
+
+        $response->assertStatus(302);
+    }
 }
