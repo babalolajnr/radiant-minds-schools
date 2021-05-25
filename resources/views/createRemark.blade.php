@@ -48,7 +48,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Class Teacher Remark">Class Teacher Remark</label>
-                                        <input class='form-control @error(' class_teacher_remark') is-invalid @enderror'
+                                        <input class='form-control @error('class_teacher_remark') is-invalid @enderror'
                                             type='text' 
                                             @if (!is_null($remarks))
                                                 value='{{ old('class_teacher_remark', $remarks->class_teacher_remark) }}'
