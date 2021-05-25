@@ -59,7 +59,7 @@ class Student extends Model
     }
     
     /**
-     * Ad relationship
+     * AD relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -77,7 +77,16 @@ class Student extends Model
     {
         return $this->hasMany(Attendance::class);
     }
-
+    
+    /**
+     * remarks relationship
+     *
+     * @return void
+     */
+    public function remarks()
+    {
+        return $this->hasMany(Remark::class);
+    }
      
     /**
      * Find student
