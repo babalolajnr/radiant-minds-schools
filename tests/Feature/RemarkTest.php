@@ -28,7 +28,7 @@ class RemarkTest extends TestCase
         $response->assertStatus(200)->assertViewIs('createRemark');
     }
 
-    public function test_teacher_can_get_remark_screen()
+    public function test_class_teacher_can_get_remark_screen()
     {
         $this->withoutExceptionHandling();
         
@@ -39,5 +39,17 @@ class RemarkTest extends TestCase
         $response = $this->actingAs($teacher, 'teacher')->get(route('remark.create', ['student' => $student, 'periodSlug' => $period->slug]));
 
         $response->assertStatus(200)->assertViewIs('createRemark');
+    }
+
+    public function test_non_class_teacher_cannot_get_remark_screen()
+    {
+        
+        $student = Student::factory()->create();
+        $teacher = Teacher::factory()->create();
+        $period = Period::factory()->create();
+
+        $response = $this->actingAs($teacher, 'teacher')->get(route('remark.create', ['student' => $student, 'periodSlug' => $period->slug]));
+
+        $response->assertStatus(403);
     }
 }
