@@ -15,6 +15,10 @@ class CreateRemarksTable extends Migration
     {
         Schema::create('remarks', function (Blueprint $table) {
             $table->id();
+            $table->mediumText('class_teacher_remark')->nullable();
+            $table->mediumText('hos_remark')->nullable();
+            $table->foreignId('student_id')->constrained('students')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('period_id')->constrained('periods')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
     }
