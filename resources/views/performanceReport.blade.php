@@ -253,7 +253,7 @@
                         <tr>
                             <td>No of times present</td>
                             <td>
-                                @if ($period->attendance->value != null)
+                                @if (!is_null($period->attendance))
                                     {{ $period->attendance->value }}
                                 @else
                                     null
@@ -264,7 +264,7 @@
                         <tr>
                             <td> No of times Absent</td>
                             <td>
-                                @if ($period->attendance->value != null)
+                                @if (!is_null($period->attendance))
                                     {{ $period->no_times_school_opened - $period->attendance->value }}
                                 @else
                                     null
