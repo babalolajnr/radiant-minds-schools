@@ -50,8 +50,10 @@
                                         <label for="">Number of Times <span
                                                 class="text-lg">{{ $student->first_name }}
                                                 {{ $student->last_name }}</span> was present in <span
-                                                class="text-lg">{{ $period->academicSession }}
-                                                {{ $period->term }}</span></label>
+                                                class="text-lg">{{ $period->term->name }}
+                                                {{ $period->academicSession->name }}
+                                            </span>
+                                        </label>
                                         <input type="number" name="value"
                                             class="form-control @error('value') is-invalid @enderror"
                                             value="@isset($attendance){{ old('value', $attendance->value) }}@else{{ old('value') }}@endisset"
