@@ -42,7 +42,7 @@
                             </div>
                             {{-- AD --}}
 
-                            <form action="@if (!$period->isActive()) {{ route('ad.storeOrUpdate', ['student' => $student, 'periodId' => $period->id]) }}
+                            <form action="@if (!$period->isActive()) {{ route('ad.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->slug]) }}
                             @else
                                 {{ route('ad.storeOrUpdate', ['student' => $student]) }} @endif" method="POST">
                                 @csrf
