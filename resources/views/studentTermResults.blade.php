@@ -48,28 +48,34 @@
                                         <h3 class="font-semibold">{{ $academicSession->name . ' ' . $term->name }}
                                         </h3>
                                     </div>
-                                    <div>
+                                    <div class="btn-group">
                                         <a
                                             href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-default">Performance Report</button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat">Performance Report</button>
                                         </a>
                                         <a
                                             href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-default"
+                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
                                                 title="Create or update Pychomotor domain for the result's academic session and term">Create/Update
                                                 PD</button>
                                         </a>
                                         <a
                                             href="{{ route('ad.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-default"
+                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
                                                 title="Create or update Affective domain for the result's academic session and term">Create/Update
                                                 AD</button>
                                         </a>
                                         <a
                                             href="{{ route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-default"
+                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
                                                 title="Create or update attendance record">Create/Update
                                                 Attendance</button>
+                                        </a>
+                                        <a
+                                            href="{{ route('remark.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                title="Create or update attendance record">Create/Update
+                                                Remark</button>
                                         </a>
                                     </div>
                                 </div>
