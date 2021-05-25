@@ -42,89 +42,89 @@
                             <div class="card-header">
                                 <h3 class="card-title">Create/Update Remark</span></h3>
                             </div>
-                            <form method="POST" action="@if (!$period->isActive()) {{ route('remark.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->id]) }}
+                            <form method="POST" action="@if (!$period->isActive()) {{ route('remark.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->slug]) }}
                             @else {{ route('remark.storeOrUpdate', ['student' => $student]) }} @endif">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="Class Teacher Remark">Class Teacher Remark</label>
-                                        <input class='form-control @error('class_teacher_remark') is-invalid @enderror'
-                                            type='text' 
-                                            @if (!is_null($remarks))
-                                                value='{{ old('class_teacher_remark', $remarks->class_teacher_remark) }}'
-                                            @else 
-                                                value='{{ old('class_teacher_remark') }}' 
-                                            @endif
-                                            name='class_teacher_remark'>
-                                            
-                                        @error('class_teacher_remark')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="HOS remark">HOS Remark</label>
-                                        <input class='form-control @error(' hos_remark') is-invalid @enderror'
-                                            type='text' 
-                                        @if (!is_null($remarks))
-                                            value='{{ old('hos_remark', $remarks->hos_remark) }}'
-                                        @else 
-                                            value='{{ old('hos_remark') }}' 
-                                        @endif
-                                            name='hos_remark'>
+                                        <textarea class='form-control @error(' class_teacher_remark') is-invalid
+                                                @enderror' name='class_teacher_remark' rows="4">
+                                                @if (!is_null($remarks))
+                                                    {{ old('class_teacher_remark', $remarks->class_teacher_remark) }}
+                                                @else 
+                                                    {{ old('class_teacher_remark') }}
+                                                @endif
+                                            </textarea>
 
-                                        @error('hos_remark')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                            @error('class_teacher_remark')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="HOS remark">HOS Remark</label>
+                                            <textarea class='form-control @error(' hos_remark') is-invalid @enderror'
+                                                name='hos_remark' rows="4">
+                                                @if (!is_null($remarks)) 
+                                                    {{ old('hos_remark', $remarks->hos_remark) }}
+                                                @else 
+                                                    {{ old('hos_remark') }} 
+                                                @endif
+                                                </textarea>
+
+                                            @error('hos_remark')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- /.card-body -->
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-        </section>
-        <!-- /.content -->
-    </div>
-    <x-slot name="scripts">
-        <!-- Toastr -->
-        <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
-        <!-- Select2 -->
-        <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
-        <!-- AdminLTE App -->
-        <script>
-            $(function() {
-                let Success = document.getElementById('success')
-                let Error = document.getElementById('error')
+            </section>
+            <!-- /.content -->
+        </div>
+        <x-slot name="scripts">
+            <!-- Toastr -->
+            <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
+            <!-- Select2 -->
+            <script src="{{ asset('TAssets/plugins/select2/js/select2.full.min.js') }}"></script>
+            <!-- AdminLTE App -->
+            <script>
+                $(function() {
+                    let Success = document.getElementById('success')
+                    let Error = document.getElementById('error')
 
-                // if data-success = 'true' display alert
-                if (Success.dataset.success == 'true')
-                    $(document).Toasts('create', {
-                        class: 'bg-success',
-                        title: 'Success',
-                        subtitle: 'Close',
-                        body: JSON.parse(Success.dataset.successMessage)
-                    })
+                    // if data-success = 'true' display alert
+                    if (Success.dataset.success == 'true')
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Success',
+                            subtitle: 'Close',
+                            body: JSON.parse(Success.dataset.successMessage)
+                        })
 
-                if (Error.dataset.error == 'true')
-                    $(document).Toasts('create', {
-                        class: 'bg-danger',
-                        title: 'Error',
-                        subtitle: 'Close',
-                        body: JSON.parse(Error.dataset.errorMessage)
-                    })
-
+                    if (Error.dataset.error == 'true')
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Error',
+                            subtitle: 'Close',
+                            body: JSON.parse(Error.dataset.errorMessage)
+                        })
 
 
-            });
-            $(function() {
 
-                //Initialize Select2 Elements
-                $('.select2').select2()
-            })
+                });
+                $(function() {
 
-        </script>
-    </x-slot>
-</x-app-layout>
+                    //Initialize Select2 Elements
+                    $('.select2').select2()
+                })
+
+            </script>
+        </x-slot>
+    </x-app-layout>
