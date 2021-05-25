@@ -35,10 +35,10 @@ class ResultGenerationService
         $period = Period::where('slug', $periodSlug)->firstOrFail();
 
         $pdTypes = PDType::all();
-        $pds = $this->getPds($this->student, $period);
+        $pds = $this->getPds($period);
 
         $adTypes = ADType::all();
-        $ads = $this->getAds($this->student, $period);
+        $ads = $this->getAds($period);
 
         //Get the subjects for the student's class in the selected period Academic Session
         $subjects = $this->student->classroom->subjects()->where('academic_session_id',  $period->academicSession->id)->get();
