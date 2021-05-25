@@ -47,8 +47,27 @@ class RemarkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(Student $student, Request $request, $periodSlug = null)
     {
+        $validated = $request->validate([
+            'class_teacher_remark' => ['string'],
+            'hos_remark' => ['string']
+        ]);
+
+        $period = Period::where('slug', $periodSlug)->first();
+
+        Remark::updateOrCreate(
+            [
+                'student_id' => $student->id,
+                'period_id' => $period->id,
+            ],
+            [
+                'class_teacher_remark' => $validated['class_teacher_remark'],
+                'hos_remark' => $validated['hos_remark']
+            ]
+        );
+
+        return back()->with('success', 'Remark recorded!');
     }
 
     /**
