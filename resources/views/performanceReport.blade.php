@@ -408,7 +408,7 @@
                 <div class="t-wrapper">
                     <div class="class-teacher-remark">
                         <label for="class-teachers-remark">Class Teacher's Remark</label>
-                        <div class="remark-ct border-bottom"></div>
+                        <div class="remark-ct border-bottom fst-italic ps-2">{{ $remarks->class_teacher_remark }}</div>
                     </div>
                     <div class="class-teacher-sign">
                         <label for="class-teachers-sign">Sign</label>
@@ -420,8 +420,8 @@
             <div class="remark2 mb-4">
                 <div class="hod-wrapper border p-3">
                     <div class="class-teacher-remark">
-                        <label for="class-teachers-remark">HOD's Remark</label>
-                        <div class="remark-hd border-bottom"></div>
+                        <label for="class-teachers-remark">HOS's Remark</label>
+                        <div class="remark-hd border-bottom fst-italic ps-2">{{ $remarks->hos_remark }}</div>
                     </div>
                     <div class="class-teacher-sign ">
                         <label for="class-teachers-sign">Sign</label>
