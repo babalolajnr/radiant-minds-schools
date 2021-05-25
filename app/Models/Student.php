@@ -10,14 +10,14 @@ class Student extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     /**
      * The attributes that are not mass assignable.
      *
      * @var array
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    
+
     /**
      * Guardian relationship
      *
@@ -27,7 +27,7 @@ class Student extends Model
     {
         return $this->belongsTo(Guardian::class);
     }
-    
+
     /**
      * Classroom relationship
      *
@@ -37,7 +37,7 @@ class Student extends Model
     {
         return $this->belongsTo(Classroom::class);
     }
-    
+
     /**
      * Result relationship
      *
@@ -47,7 +47,7 @@ class Student extends Model
     {
         return $this->hasMany(Result::class);
     }
-    
+
     /**
      * Pd relationship
      *
@@ -57,7 +57,7 @@ class Student extends Model
     {
         return $this->hasMany(PD::class);
     }
-    
+
     /**
      * AD relationship
      *
@@ -67,7 +67,7 @@ class Student extends Model
     {
         return $this->hasMany(AD::class);
     }
-    
+
     /**
      * Attendance relationship
      *
@@ -77,7 +77,7 @@ class Student extends Model
     {
         return $this->hasMany(Attendance::class);
     }
-    
+
     /**
      * remarks relationship
      *
@@ -87,7 +87,7 @@ class Student extends Model
     {
         return $this->hasMany(Remark::class);
     }
-     
+    
     /**
      * Find student
      *
@@ -104,7 +104,7 @@ class Student extends Model
 
         return $student;
     }
-    
+
     /**
      * Check if student is active
      *
@@ -114,7 +114,7 @@ class Student extends Model
     {
         return $this->is_active == true;
     }
-    
+
     /**
      * Get all students that have not graduated
      *
@@ -125,7 +125,7 @@ class Student extends Model
         $students = Student::whereNull('graduated_at')->get();
         return $students;
     }
-    
+
     /**
      * Get Alumni
      *
@@ -137,7 +137,7 @@ class Student extends Model
         return $alumni;
     }
 
-        
+
     /**
      * Check if student can graduate
      * 
@@ -153,7 +153,7 @@ class Student extends Model
         return $classRank == $highestClassRank;
     }
 
-       
+
     /**
      * check if student is an alumni
      *
