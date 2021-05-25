@@ -59,7 +59,7 @@ class PDSeeder extends Seeder
 
         //if any of the required values are empty seed their tables
         if (is_null($period)) {
-            Artisan::call('db:seed', ['--class' => 'TermSeeder']);
+            Artisan::call('db:seed', ['--class' => 'PeriodSeeder']);
         }
 
         if (is_null($student)) {
