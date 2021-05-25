@@ -25,7 +25,7 @@ class DashboardController extends Controller
     {
 
 
-        $dashboardData = FacadesCache::remember('dashboardData', 60 * 60, function () {
+        $dashboardData = FacadesCache::remember('dashboardData', 60, function () {
 
             $students = count(Student::getAllStudents());
             $alumni = count(Student::getAlumni());
