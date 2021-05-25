@@ -74,6 +74,7 @@
                                             <th>Rank</th>
                                             <th>Name</th>
                                             <th>Class teacher</th>
+                                            <th>Population</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -91,6 +92,9 @@
                                                     @if ($classroom->teacher)
                                                         {{ "{$classroom->teacher->first_name} {$classroom->teacher->last_name}" }}
                                                     @endif
+                                                </td>
+                                                <td>
+                                                    {{ $classroom->students()->where('graduated_at', null)->count() }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
@@ -124,6 +128,7 @@
                                             <th>Rank</th>
                                             <th>Name</th>
                                             <th>Class teacher</th>
+                                            <th>Population</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
