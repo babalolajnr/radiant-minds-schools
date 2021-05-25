@@ -98,6 +98,16 @@ class Period extends Model
     {
         return $this->hasMany(PD::class);
     }
+    
+    /**
+     * remarks relationship
+     *
+     * @return void
+     */
+    public function remarks()
+    {
+        return $this->hasMany(Remarks::class);
+    }
 
     /**
      * Checks if period is active
