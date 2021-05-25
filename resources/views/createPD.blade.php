@@ -42,7 +42,7 @@
                             </div>
                             {{-- PD --}}
 
-                            <form action="@if (!$period->isActive()) {{ route('pd.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->id]) }}
+                            <form action="@if (!$period->isActive()) {{ route('pd.storeOrUpdate', ['student' => $student, 'periodSlug' => $period->slug]) }}
                             @else {{ route('pd.storeOrUpdate', ['student' => $student]) }} @endif"
                                 method="POST">
                                 @csrf
