@@ -106,7 +106,7 @@ class Period extends Model
      */
     public function remarks()
     {
-        return $this->hasMany(Remarks::class);
+        return $this->hasMany(Remark::class);
     }
 
     /**
