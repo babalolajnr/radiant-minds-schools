@@ -6,6 +6,8 @@ use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class TeacherTest extends TestCase
@@ -82,6 +84,21 @@ class TeacherTest extends TestCase
         $user = User::factory()->create();
         $teacher = Teacher::factory()->create(['is_active' => true]);
         $response = $this->actingAs($user)->patch(route('teacher.deactivate', ['teacher' => $teacher]));
+        $response->assertStatus(302)->assertSessionHas('success');
+    }
+
+    public function test_teacher_can_store_signature()
+    {
+        $this->withoutExceptionHandling();
+        Storage::fake('public/teachers/signatures');
+
+        $file = UploadedFile::fake()->image('signature.jpg');
+
+        $teacher = Teacher::factory()->create(['is_active' => true]);
+        $response = $this->actingAs($teacher, 'teacher')->patch(route('teacher.store.signature', ['teacher' => $teacher]), [
+            'signature' => $file
+        ]);
+
         $response->assertStatus(302)->assertSessionHas('success');
     }
 }
