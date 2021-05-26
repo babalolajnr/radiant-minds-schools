@@ -36,20 +36,18 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        @if (!empty($results))
 
-                        <!-- Default box -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Results</h3>
-                            </div>
-                            <div class="card-body">
-                                @if (!empty($results))
-                                    @foreach ($results as $key => $termResult)
-
+                            @foreach ($results as $key => $termResult)
+                                <!-- Default box -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2 class="card-title text-bold">{{ $key }}</h2>
+                                    </div>
+                                    <div class="card-body">
                                         {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
                                         <table id="{{ $key }}" class="table table-bordered table-striped">
                                             <thead>
-                                                <h3>{{ $key }}</h3>
                                                 <tr>
                                                     <th>Subject</th>
                                                     <th>C.A.<span class="text-red-500 pl-1">40</span></th>
@@ -63,7 +61,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
                                                 @foreach ($termResult as $itemKey => $item)
                                                     <tr>
                                                         <td>{{ $item->subject->name }}</td>
@@ -77,15 +74,14 @@
                                                         </td>
 
                                                         @if ($item->total <= 39)
-                                                            <td class="text-red-700">F</td>
-                                                        @elseif($item->total > 39 && $item->total <= 49) <td
-                                                                class="text-yellow-500">D</td>
-                                                            @elseif($item->total > 49 && $item->total <= 59) <td
-                                                                    class="text-green-300">C</td>
-                                                                @elseif($item->total > 59 && $item->total <= 69) <td
-                                                                        class="text-green-600">B</td>
+                                                            <td>F</td>
+                                                        @elseif($item->total > 39 && $item->total <= 49) <td>D</td>
+                                                            @elseif($item->total > 49 && $item->total <= 59) <td>C
+                                                                    </td>
+                                                                @elseif($item->total > 59 && $item->total <= 69)
+                                                                        <td>B</td>
                                                                     @elseif($item->total > 69 && $item->total <=
-                                                                            100) <td class="text-green-900">A</td>
+                                                                            100) <td>A</td>
                                                                         @else
                                                                             <td></td>
                                                         @endif
@@ -123,15 +119,16 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <hr class="py-4">
-                                    @endforeach
-                                @else
-                                    No results for this academic session 😢
-                                @endif
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        @else
+                            No results for this academic session 😢
+                        @endif
                     </div>
                 </div>
+            </div>
         </section>
         <!-- /.content -->
     </div>
