@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeactivatedController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\PDController;
@@ -38,10 +39,18 @@ Route::get('/', function () {
 
 Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerified'])->group(function () {
 
+
     Route::get('/classrooms/view/{classroom:slug}', [ClassroomController::class, 'show'])->name('classroom.show')->middleware('classTeacherOrUser');
 
+    Route::prefix('teachers')->name('teacher.')->group(function () {
 
-
+        //Teacher routes
+        Route::get('/view/{teacher:slug}', [TeacherController::class, 'show'])->name('show');
+        Route::get('/edit/{teacher:slug}', [TeacherController::class, 'edit'])->name('edit');
+        Route::patch('/update/{teacher:slug}', [TeacherController::class, 'update'])->name('update');
+        Route::patch('/store-signature/{teacher:slug}', [TeacherController::class, 'storeSignature'])->name('store.signature');
+    });
+    
     Route::prefix('results')->name('result.')->group(function () {
 
         //Result ROutes
@@ -91,10 +100,7 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             //Teacher routes
             Route::get('/', [TeacherController::class, 'index'])->name('index');
             Route::get('/create', [TeacherController::class, 'create'])->name('create');
-            Route::get('/view/{teacher:slug}', [TeacherController::class, 'show'])->name('show');
-            Route::get('/edit/{teacher:slug}', [TeacherController::class, 'edit'])->name('edit');
             Route::post('/store', [TeacherController::class, 'store'])->name('store');
-            Route::patch('/update/{teacher:slug}', [TeacherController::class, 'update'])->name('update');
             Route::patch('/activate/{teacher}', [TeacherController::class, 'activate'])->name('activate');
             Route::patch('/deactivate/{teacher}', [TeacherController::class, 'deactivate'])->name('deactivate');
             Route::delete('/delete/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
