@@ -46,7 +46,8 @@
                                     </div>
                                     <div class="card-body">
                                         {{-- The table id is gotten by first getting the associative array index then using it to get the numeric index --}}
-                                        <table id="{{ $key }}" class="table table-bordered table-striped">
+                                        <table id="{{ str_replace(' ', '-', $key) }}"
+                                            class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Subject</th>
@@ -211,6 +212,7 @@
                 $('table').each(function() {
 
                     const tableID = $(this).attr('id')
+                    
                     $("#" + tableID).DataTable({
                         "responsive": true,
                         "lengthChange": false,
