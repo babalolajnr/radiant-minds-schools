@@ -20,14 +20,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Results</h1>
+                        <h1>{{ $academicSession->name . ' ' . $term->name }} Results</h1>
                     </div>
                     <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
+                        {{-- <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-result"><a href="#">Home</a></li>
                             <li class="breadcrumb-result"><a href="#">Layout</a></li>
                             <li class="breadcrumb-result active">Fixed Layout</li>
-                        </ol>
+                        </ol> --}}
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -43,15 +43,13 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                <div class=" d-flex justify-content-between">
-                                    <div>
-                                        <h3 class="font-semibold">{{ $academicSession->name . ' ' . $term->name }}
-                                        </h3>
-                                    </div>
+                                <div class="d-flex justify-content-between">
                                     <div class="btn-group">
                                         <a
                                             href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat">Performance Report</button>
+                                            <button type="button"
+                                                class="btn btn-outline-secondary btn-sm btn-flat">Performance
+                                                Report</button>
                                         </a>
                                         <a
                                             href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
@@ -71,12 +69,15 @@
                                                 title="Create or update attendance record">Create/Update
                                                 Attendance</button>
                                         </a>
-                                        <a
-                                            href="{{ route('remark.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
-                                                title="Create or update attendance record">Create/Update
-                                                Remark</button>
-                                        </a>
+                                        @auth('teacher')
+                                            @if ($period->isActive())
+                                                <a href="{{ route('remark.teacher.create', ['student' => $student]) }}">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                        title="Create or update attendance record">Create/Update
+                                                        Teacher's Remark</button>
+                                                </a>
+                                            @endif
+                                        @endauth
                                     </div>
                                 </div>
                             </div>
