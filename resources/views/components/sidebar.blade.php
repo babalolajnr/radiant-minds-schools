@@ -160,6 +160,14 @@
                        @endmasteruser
 
                    @endif
+                   @auth('teacher')
+                       <li class="nav-item">
+                           <a href="{{ route('classroom.show', ['classroom' => auth('teacher')->user()->classroom]) }}" class="nav-link">
+                               <i class="nav-icon fas fa-chalkboard"></i>
+                               <p>Classroom</p>
+                           </a>
+                       </li>
+                   @endauth
                </ul>
            </nav>
            <!-- /.sidebar-menu -->
