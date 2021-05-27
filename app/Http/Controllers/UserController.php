@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use  Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -124,6 +125,34 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Password updated!');
+    }
+
+     /**
+     * store user Signature
+     *
+     * @param  User $user
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeSignature(User $user, Request $request)
+    {
+        $this->authorize('storeSignature', $user);
+
+        $request->validate([
+            'signature' => ['required', 'image', 'unique:users,signature,except,id', 'mimes:jpg', 'max:1000']
+        ]);
+
+        //create name from first and last name
+        $signatureName = $user->first_name . $user->last_name . '.' . $request->signature->extension();
+        $path = $request->file('signature')->storeAs('public/users/signatures', $signatureName);
+        Image::make($request->signature->getRealPath())->fit(400, 400)->save(storage_path('app/' . $path));
+
+        //update signature in the database
+        $filePath = 'storage/users/signatures/' . $signatureName;
+        $user->signature = $filePath;
+        $user->save();
+
+        return back()->with('success', 'Signature uploaded successfully');
     }
 
     /**
