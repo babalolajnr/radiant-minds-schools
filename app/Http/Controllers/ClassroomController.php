@@ -184,10 +184,32 @@ class ClassroomController extends Controller
 
         return back()->with('success', 'Subjects set successfully');
     }
-
+    
+    /**
+     * assign teacher to a classroom
+     *
+     * @param  Classroom $classroom
+     * @param  string $teacherSlug
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function assignTeacher(Classroom $classroom, $teacherSlug)
     {
         $teacher = Teacher::where('slug', $teacherSlug)->firstOrFail();
+
+        if (!$teacher->isActive()) {
+            return back()->with('error', 'Teacher is not active');
+        }
+
+        /**
+         * A teacher cannot manage multiple classes so if a teacher
+         * has a classroom already assigned set the teacher_id of the 
+         * currently assigned class as null
+         */
+        if (!is_null($teacher->classroom)) {
+            $teacher->classroom->teacher_id = null;
+            $teacher->classroom->save();
+        }
+
         $classroom->teacher_id = $teacher->id;
         $classroom->save();
 
