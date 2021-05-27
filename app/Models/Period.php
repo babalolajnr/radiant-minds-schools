@@ -100,13 +100,13 @@ class Period extends Model
     }
     
     /**
-     * remarks relationship
+     * TeacherRemarks relationship
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMan
      */
-    public function remarks()
+    public function teacherRemarks()
     {
-        return $this->hasMany(Remark::class);
+        return $this->hasMany(TeacherRemark::class);
     }
 
     /**
