@@ -17,7 +17,7 @@ class CheckUserIsStudentClassroomTeacher
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('teacher')->check()) {
+        if (auth('teacher')->check()) {
 
             //if request teacher doesn't have a classroom
             if (is_null($request->user()->classroom)) {
