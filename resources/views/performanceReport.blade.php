@@ -408,7 +408,11 @@
                 <div class="t-wrapper">
                     <div class="class-teacher-remark">
                         <label for="class-teachers-remark">Class Teacher's Remark</label>
-                        <div class="remark-ct border-bottom fst-italic ps-2">{{ $remarks->class_teacher_remark }}</div>
+                        <div class="remark-ct border-bottom fst-italic ps-2">
+                            @if ($remarks)
+                                {{ $remarks->class_teacher_remark }}
+                            @endif
+                        </div>
                     </div>
                     <div class="class-teacher-sign">
                         <label for="class-teachers-sign">Sign</label>
@@ -421,7 +425,11 @@
                 <div class="hod-wrapper border p-3">
                     <div class="class-teacher-remark">
                         <label for="class-teachers-remark">HOS's Remark</label>
-                        <div class="remark-hd border-bottom fst-italic ps-2">{{ $remarks->hos_remark }}</div>
+                        <div class="remark-hd border-bottom fst-italic ps-2">
+                            @if ($remarks)
+                                {{ $remarks->hos_remark }}
+                            @endif
+                        </div>
                     </div>
                     <div class="class-teacher-sign ">
                         <label for="class-teachers-sign">Sign</label>
