@@ -157,7 +157,6 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <hr class="py-4">
                             </div>
                         </div>
                     </div>
