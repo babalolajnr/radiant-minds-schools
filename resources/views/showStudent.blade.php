@@ -129,7 +129,13 @@
                                             <hr>
                                             <strong></i>status</strong>
 
-                                            <p class="text-muted" id="status">{{ $student->status }}</p>
+                                            <p class="text-muted" id="status">
+                                                @if ($student->isActive())
+                                                    Active
+                                                    @else
+                                                    Inactive
+                                                @endif
+                                            </p>
 
                                         </div>
                                         <!-- /.tab-pane -->
@@ -336,7 +342,7 @@
             <!-- /.modal-dialog -->
         </div>
         {{-- /edit student modal --}}
-        @endauth
+    @endauth
     <x-slot name="scripts">
         <!-- Toastr -->
         <script src="{{ asset('TAssets/plugins/toastr/toastr.min.js') }}"></script>
