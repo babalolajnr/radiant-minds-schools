@@ -58,7 +58,7 @@ class ResultController extends Controller
         //term and academic session will be goten from the active period
         $activePeriod = Period::activePeriod();
 
-        if (is_null($activePeriod)) {
+        if (!Period::activePeriodIsSet()) {
             return back()->with('error', 'Active period is not set');
         }
 
