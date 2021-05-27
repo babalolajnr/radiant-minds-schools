@@ -51,7 +51,7 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
         Route::patch('/update/{teacher:slug}', [TeacherController::class, 'update'])->name('update');
         Route::patch('/store-signature/{teacher:slug}', [TeacherController::class, 'storeSignature'])->name('store.signature');
     });
-    
+
     Route::prefix('results')->name('result.')->group(function () {
 
         //Result ROutes
@@ -78,6 +78,12 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             //Pychomotor Domain Routes
             Route::get('/create/{student:admission_no}/{periodSlug?}', [RemarkController::class, 'create'])->name('create');
             Route::post('/store/{student}/{periodSlug?}', [RemarkController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
+
+        Route::prefix('attendance')->name('attendance.')->group(function () {
+            //Attendance Domain Routes
+            Route::get('/create/{student:admission_no}/{periodSlug?}', [AttendanceController::class, 'create'])->name('create');
+            Route::post('/store/{student}/{periodSlug?}', [AttendanceController::class, 'storeOrUpdate'])->name('store');
         });
     });
 
@@ -207,11 +213,6 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::delete('/delete/{adType}', [ADTypeController::class, 'destroy'])->name('destroy');
         });
 
-        Route::prefix('attendance')->name('attendance.')->group(function () {
-            //Attendance Domain Routes
-            Route::get('/create/{student:admission_no}/{periodSlug?}', [AttendanceController::class, 'create'])->name('create');
-            Route::post('/store/{student}/{periodSlug?}', [AttendanceController::class, 'storeOrUpdate'])->name('store');
-        });
 
         Route::prefix('period')->name('period.')->group(function () {
             Route::get('/', [PeriodController::class, 'index'])->name('index');
