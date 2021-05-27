@@ -16,7 +16,7 @@ class TeacherRemarkTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function test_teacher_can_get_remark_screen()
+    public function test_teacher_can_get_teacher_remark_screen()
     {
         $this->withoutExceptionHandling();
 
@@ -30,7 +30,7 @@ class TeacherRemarkTest extends TestCase
     }
 
 
-    public function test_non_class_teacher_cannot_get_remark_screen()
+    public function test_non_class_teacher_cannot_get_teacher_remark_screen()
     {
 
         $student = Student::factory()->create();
@@ -43,7 +43,7 @@ class TeacherRemarkTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_remark_can_be_stored()
+    public function test_teacher_remark_can_be_stored()
     {
         $this->withoutExceptionHandling();
 
@@ -62,7 +62,7 @@ class TeacherRemarkTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_remark_can_be_updated()
+    public function test_teacher_remark_can_be_updated()
     {
         $this->withoutExceptionHandling();
         $student = Student::factory()->create();
