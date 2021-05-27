@@ -13,7 +13,7 @@ use App\Http\Controllers\FeeController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\PDController;
 use App\Http\Controllers\PDTypeController;
-use App\Http\Controllers\RemarkController;
+use App\Http\Controllers\TeacherRemarkController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -60,8 +60,17 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
         Route::delete('/delete/{result}', [ResultController::class, 'destroy'])->name('destroy');
     });
 
-    //Routes accessible to student's classteachers and master-user and admins only
+    
+
+    Route::prefix('teacher-remarks')->name('remark.teacher.')->middleware('studentClassTeacher')->group(function () {
+       
+        //Only Student's current classroom teacher can access this routes
+        Route::get('/create/{student:admission_no}', [TeacherRemarkController::class, 'create'])->name('create');
+        Route::post('/store/{student}', [TeacherRemarkController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
     Route::middleware('studentClassTeacherOrUser')->group(function () {
+        //Routes accessible to student's classteachers and master-user and admins only
 
         Route::get('/students/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('student.get.term.results')->where('academicSessionName', '.*');
         Route::get('/students/view/{student:admission_no}', [StudentController::class, 'show'])->name('student.show');
@@ -72,12 +81,6 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::get('/create/{student:admission_no}', [ResultController::class, 'create'])->name('create');
             Route::post('/store/{student}', [ResultController::class, 'store'])->name('store');
             Route::get('/performance-report/{student:admission_no}/{periodSlug}', [ResultController::class, 'showPerformanceReport'])->name('show.performance');
-        });
-
-        Route::prefix('remarks')->name('remark.')->group(function () {
-            //Pychomotor Domain Routes
-            Route::get('/create/{student:admission_no}/{periodSlug?}', [RemarkController::class, 'create'])->name('create');
-            Route::post('/store/{student}/{periodSlug?}', [RemarkController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
 
         Route::prefix('attendance')->name('attendance.')->group(function () {
