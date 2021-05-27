@@ -15,6 +15,10 @@ class CreateHosRemarksTable extends Migration
     {
         Schema::create('hos_remarks', function (Blueprint $table) {
             $table->id();
+            $table->mediumText('remark');
+            $table->foreignId('student_id')->constrained('students')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('period_id')->constrained('periods')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
     }
