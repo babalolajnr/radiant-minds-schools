@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CheckUserIsStudentClassroomTeacher
 {
@@ -20,14 +19,12 @@ class CheckUserIsStudentClassroomTeacher
         if (auth('teacher')->check()) {
 
             //if request teacher doesn't have a classroom
-            if (is_null($request->user()->classroom)) {
-                abort(403);
-            }
+            if (is_null($request->user()->classroom)) abort(403);
+
             //check if authenticated teacher is the classteacher of the classroom to be viewed
-            if (!$request->user()->classroom->id === $request->route('student')->classroom->id) {
-                abort(403);
-            }
-        }
+            if (!$request->user()->classroom->id === $request->route('student')->classroom->id) abort(403);
+            
+        } else abort(403);
 
         return $next($request);
     }
