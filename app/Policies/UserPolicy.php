@@ -89,4 +89,17 @@ class UserPolicy
     {
         //
     }
+
+     /**
+     * Determine whether the user can store signature
+     *
+     * @param  User $user
+     * @return void
+     */
+    public function storeSignature(User $user)
+    {
+        if(auth('teacher')->check()) return false;
+        
+        return auth('web')->user()->id == $user->id;
+    }
 }
