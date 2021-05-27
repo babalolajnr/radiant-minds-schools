@@ -41,7 +41,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+        
+    /**
+     * Hos remark relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function remarks()
+    {
+        return $this->hasMany(HosRemark::class);
+    }
     /**
      * Check if user is an admin
      *
