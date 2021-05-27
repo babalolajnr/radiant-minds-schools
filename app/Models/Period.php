@@ -98,7 +98,7 @@ class Period extends Model
     {
         return $this->hasMany(PD::class);
     }
-    
+
     /**
      * TeacherRemarks relationship
      *
@@ -128,5 +128,17 @@ class Period extends Model
     {
         $activePeriod = Period::where('active', true)->first();
         return $activePeriod;
+    }
+    
+    /**
+     * check if active period is set
+     *
+     * @return bool
+     */
+    public static function checkActivePeriodIsSet()
+    {
+        $activePeriod = Period::activePeriod();
+        if (is_null($activePeriod)) return false;
+        return true;
     }
 }
