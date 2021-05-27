@@ -89,6 +89,16 @@ class Student extends Model
     }
     
     /**
+     * Hos Remarks relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hosRemarks()
+    {
+        return $this->hasMany(HosRemark::class);
+    }
+    
+    /**
      * Find student
      *
      * @param  string $admission_no
