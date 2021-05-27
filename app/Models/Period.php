@@ -100,13 +100,23 @@ class Period extends Model
     }
 
     /**
-     * TeacherRemarks relationship
+     * Teacher Remarks relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMan
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function teacherRemarks()
     {
         return $this->hasMany(TeacherRemark::class);
+    }
+    
+    /**
+     * Hos Remarks relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hosRemarks()
+    {
+        return $this->hasMany(HosRemark::class);
     }
 
     /**
