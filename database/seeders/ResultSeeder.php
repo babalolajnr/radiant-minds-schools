@@ -80,7 +80,7 @@ class ResultSeeder extends Seeder
         }
 
         $periods = Period::all();
-        $students = Student::all();
+        $students = Student::whereIsNull('graduated_at')->all();
         $subjects = Subject::all();
 
         return [
