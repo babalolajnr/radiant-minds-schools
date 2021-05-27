@@ -6,7 +6,7 @@ use App\Models\ADType;
 use App\Models\Fee;
 use App\Models\PDType;
 use App\Models\Period;
-use App\Models\Remark;
+use App\Models\TeacherRemark;
 use App\Models\Result;
 use App\Models\Student;
 use Carbon\Carbon;
@@ -72,7 +72,7 @@ class ResultGenerationService
         $yearOfBirth = Carbon::createFromFormat('Y-m-d', $this->student->date_of_birth)->format('Y');
         $age = $currentDate - $yearOfBirth;
 
-        $remarks = Remark::where('student_id', $this->student->id)->where('period_id', $period->id)->first();
+        $teacherRemark = TeacherRemark::where('student_id', $this->student->id)->where('period_id', $period->id)->first();
 
         //Get class score statistics
         foreach ($results as $key => $result) {
@@ -134,7 +134,7 @@ class ResultGenerationService
             'period' => $period,
             'nextTermBegins' => $nextTermDetails['nextTermBegins'],
             'nextTermFee' => $nextTermDetails['nextTermFee'],
-            'remarks' => $remarks
+            'teacherRemark' => $teacherRemark
         ];
     }
     /**
