@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeactivatedController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\HosRemarkController;
 use App\Http\Controllers\PDController;
 use App\Http\Controllers\PDTypeController;
 use App\Http\Controllers\TeacherRemarkController;
@@ -60,14 +61,15 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
         Route::delete('/delete/{result}', [ResultController::class, 'destroy'])->name('destroy');
     });
 
-    
+
 
     Route::prefix('teacher-remarks')->name('remark.teacher.')->middleware('studentClassTeacher')->group(function () {
-       
+
         //Only Student's current classroom teacher can access this routes
         Route::get('/create/{student:admission_no}', [TeacherRemarkController::class, 'create'])->name('create');
         Route::post('/store/{student}', [TeacherRemarkController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
+
 
     Route::middleware('studentClassTeacherOrUser')->group(function () {
         //Routes accessible to student's classteachers and master-user and admins only
@@ -116,6 +118,12 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::delete('/delete/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
         });
 
+        Route::prefix('hos-remarks')->name('remark.hos.')->group(function () {
+
+            //HOS remark routes
+            Route::get('/create/{student:admission_no}', [HosRemarkController::class, 'create'])->name('create');
+            Route::post('/store/{student}', [HosRemarkController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
 
         Route::prefix('students')->name('student.')->group(function () {
             //Student Routes
