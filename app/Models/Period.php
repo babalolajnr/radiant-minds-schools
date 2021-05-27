@@ -135,7 +135,7 @@ class Period extends Model
      *
      * @return bool
      */
-    public static function checkActivePeriodIsSet()
+    public static function activePeriodIsSet()
     {
         $activePeriod = Period::activePeriod();
         if (is_null($activePeriod)) return false;
