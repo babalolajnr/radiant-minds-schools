@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Period;
 use App\Models\TeacherRemark;
 use App\Models\Student;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -18,11 +19,10 @@ class TeacherRemarkSeeder extends Seeder
     public function run()
     {
         $this->command->getOutput()->progressStart(100);
-
         $data = $this->allRecords();
-
+        $faker = Factory::create();
+        
         foreach ($data['students'] as $student) {
-
 
             foreach ($data['periods'] as $period) {
 
@@ -33,10 +33,11 @@ class TeacherRemarkSeeder extends Seeder
                     continue;
                 }
 
-                TeacherRemark::factory()->create([
+                TeacherRemark::create([
                     'student_id' => $student->id,
                     'period_id' => $period->id,
-                    'teacher_id' => $student->classroom->teacher->id
+                    'teacher_id' => $student->classroom->teacher->id,
+                    'remark' => $faker->realText()
                 ]);
             }
 
