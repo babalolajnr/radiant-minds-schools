@@ -154,9 +154,8 @@ class ResultGenerationService
         //for each of the pds push the pdTypeId and pd value into two separate arrays
         foreach ($pds as $pd) {
             $pdTypeId = $pd->p_d_type_id;
-            $value = $pd->value;
             array_push($pdTypeIds, $pdTypeId);
-            array_push($values, $value);
+            array_push($values, $pd->value);
         }
 
         //for each pdTypeId get the name and push it into an array
@@ -189,9 +188,8 @@ class ResultGenerationService
         //for each of the ads push the adTypeId and pd value into two separate arrays
         foreach ($ads as $ad) {
             $adTypeId = $ad->a_d_type_id;
-            $value = $ad->value;
             array_push($adTypeIds, $adTypeId);
-            array_push($values, $value);
+            array_push($values, $ad->value);
         }
 
         //for each adTypeId get the name and push it into an array
