@@ -61,11 +61,12 @@
                                             </div>
                                         </div>
                                         <div class="card-body">
-                                            <span class="">
-                                                @if ($classroom->teacher)
+                                            @if ($classroom->teacher)
+                                                <a
+                                                    href="{{ route('teacher.show', ['teacher' => $classroom->teacher]) }}">
                                                     {{ $classroom->teacher->first_name . ' ' . $classroom->teacher->last_name }}
-                                                @endif
-                                            </span>
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
