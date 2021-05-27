@@ -22,6 +22,7 @@ class TeacherRemarkController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
     public function create(Student $student)
@@ -44,7 +45,7 @@ class TeacherRemarkController extends Controller
     }
 
     /**
-     * Store or Update a remark
+     * Store or Update teacher's remark
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
