@@ -51,8 +51,12 @@ class AttendanceController extends Controller
             $period = Period::activePeriod();
         }
 
+        if ($period->no_times_school_opened == null) {
+            return back()->with('error', 'No of days school opened is null. Contact the admin!');
+        }
+
         $data = $request->validate([
-            'value' => ['required', 'numeric']
+            'value' => ['required', 'numeric', "max:{$period->no_times_school_opened}"]
         ]);
 
         $student->attendances()->updateOrCreate([
