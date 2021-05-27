@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\HosRemark;
+use App\Models\Period;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class HosRemarkController extends Controller
@@ -20,22 +22,56 @@ class HosRemarkController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student)
     {
-        //
+        $period = Period::activePeriod();
+
+        if (!Period::activePeriodIsSet()) {
+            return back()->with('error', 'Active Period is not set');
+        };
+
+        $remark = $student->hosRemarks()->where('period_id', $period->id);
+
+        if ($remark->exists()) {
+            $remark = $remark->first();
+        } else {
+            $remark = null;
+        }
+
+        return view('createHosRemark', compact('period', 'student', 'remark'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store or update Hos remark
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeOrUpdate(Student $student, Request $request)
     {
-        //
+        $validated = $request->validate([
+            'remark' => ['string']
+        ]);
+
+        if (!Period::activePeriodIsSet()) {
+            return back()->with('error', 'Active Period is not set');
+        };
+
+        HosRemark::updateOrCreate(
+            [
+                'student_id' => $student->id,
+                'period_id' => Period::activePeriod()->id,
+                'user_id' => $request->user()->id,
+            ],
+            [
+                'remark' => $validated['remark'],
+            ]
+        );
+
+        return back()->with('success', 'HOS Remark recorded!');
     }
 
     /**
