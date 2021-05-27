@@ -49,6 +49,16 @@ class Teacher extends Authenticatable
     {
         return $this->hasOne(Classroom::class);
     }
+    
+    /**
+     * TeacherRemark relationship
+     *
+     * @return void
+     */
+    public function remarks()
+    {
+        return $this->hasMany(TeacherRemark::class);
+    }
 
     /**
      * Check if teacher is active
