@@ -79,13 +79,13 @@ class Student extends Model
     }
 
     /**
-     * remarks relationship
+     * teacher remarks relationship
      *
      * @return void
      */
-    public function remarks()
+    public function teacherRemarks()
     {
-        return $this->hasMany(Remark::class);
+        return $this->hasMany(TeacherRemark::class);
     }
     
     /**
