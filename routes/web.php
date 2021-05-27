@@ -102,6 +102,7 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/{user:email}', [UserController::class, 'show'])->name('show');
             Route::patch('/update/{user}', [UserController::class, 'update'])->name('update');
+            Route::patch('/store-signature/{user}', [UserController::class, 'storeSignature'])->name('store.signature');
             Route::patch('/update-password/{user}', [UserController::class, 'updatePassword'])->name('update.password');
             Route::patch('/verify/{user:email}', [UserController::class, 'verify'])->name('verify');
             Route::patch('/toggle-status/{user:email}', [UserController::class, 'toggleStatus'])->name('toggle-status');
