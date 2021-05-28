@@ -73,8 +73,17 @@
                                             @if ($period->isActive())
                                                 <a href="{{ route('remark.teacher.create', ['student' => $student]) }}">
                                                     <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
-                                                        title="Create or update attendance record">Create/Update
+                                                        title="Create or update teacher's remark">Create/Update
                                                         Teacher's Remark</button>
+                                                </a>
+                                            @endif
+                                        @endauth
+                                        @auth('web')
+                                            @if ($period->isActive())
+                                                <a href="{{ route('remark.hos.create', ['student' => $student]) }}">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                        title="Create or update HOS remark">Create/Update
+                                                        HOS Remark</button>
                                                 </a>
                                             @endif
                                         @endauth
