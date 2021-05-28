@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ADType;
 use App\Models\Fee;
+use App\Models\HosRemark;
 use App\Models\PDType;
 use App\Models\Period;
 use App\Models\TeacherRemark;
@@ -73,7 +74,7 @@ class ResultGenerationService
         $age = $currentDate - $yearOfBirth;
 
         $teacherRemark = TeacherRemark::where('student_id', $this->student->id)->where('period_id', $period->id)->first();
-
+        $hosRemark = HosRemark::where('student_id', $this->student->id)->where('period_id', $period->id)->first();
         //Get class score statistics
         foreach ($results as $key => $result) {
 
@@ -134,7 +135,8 @@ class ResultGenerationService
             'period' => $period,
             'nextTermBegins' => $nextTermDetails['nextTermBegins'],
             'nextTermFee' => $nextTermDetails['nextTermFee'],
-            'teacherRemark' => $teacherRemark
+            'teacherRemark' => $teacherRemark,
+            'hosRemark' => $hosRemark
         ];
     }
     /**
@@ -222,7 +224,7 @@ class ResultGenerationService
             $nextTermBegins = $nextPeriod->start_date;
             $nextTermFee = Fee::where('classroom_id', $this->student->classroom->id)
                 ->where('period_id', $nextPeriod->id)->first();
-                
+
             //check if next term fee is available
             if (is_null($nextTermFee)) {
                 $nextTermFee = null;
