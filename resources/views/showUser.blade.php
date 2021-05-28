@@ -70,6 +70,10 @@
                                         </li>
                                         <li class="nav-item"><a class="nav-link" href="#changePassword"
                                                 data-toggle="tab">Change Password</a></li>
+                                        @if (auth()->user()->id == $user->id)
+                                            <li class="nav-item"><a class="nav-link" href="#signature"
+                                                    data-toggle="tab">Signature Upload</a></li>
+                                        @endif
                                     </ul>
 
                                 </div><!-- /.card-header -->
@@ -110,7 +114,7 @@
                                                 <div class="form-group">
                                                     <label for="first_name">First name</label>
                                                     <input type="text" class="form-control @error('first_name')
-                                                                                                        is-invalid
+                                                                                                                            is-invalid
                                                     @enderror" value="{{ old('first_name', $user->first_name) }}"
                                                         placeholder="Enter first name" name="first_name" required>
                                                     @error('first_name')
@@ -122,7 +126,7 @@
                                                 <div class="form-group">
                                                     <label for="last_name">Last name</label>
                                                     <input type="text" class="form-control @error('last_name')
-                                                                                                    is-invalid
+                                                                                                                        is-invalid
                                                 @enderror" value="{{ old('last_name', $user->last_name) }}"
                                                         placeholder="Enter last name" name="last_name" required>
                                                     @error('last_name')
@@ -134,7 +138,7 @@
                                                 <div class="form-group">
                                                     <label for="email">Email</label>
                                                     <input type="email" class="form-control @error('first_name')
-                                                                                                    is-invalid
+                                                                                                                        is-invalid
                                                 @enderror" name="email" value="{{ old('email', $user->email) }}"
                                                         placeholder="Enter Email" required>
                                                     @error('email')
@@ -158,7 +162,7 @@
                                                 <div class="form-group">
                                                     <label for="old_password">Current password</label>
                                                     <input type="password" class="form-control @error('current_password')
-                                                                    is-invalid
+                                                                                        is-invalid
                                                     @enderror" placeholder="Enter current password"
                                                         name="current_password" required>
                                                     @error('current_password')
@@ -170,7 +174,7 @@
                                                 <div class="form-group">
                                                     <label for="new_password">New password</label>
                                                     <input type="password" class="form-control @error('new_password')
-                                                                    is-invalid
+                                                                                        is-invalid
                                                     @enderror" placeholder="Enter new password" name="new_password"
                                                         required>
                                                     @error('new_password')
@@ -182,7 +186,7 @@
                                                 <div class="form-group">
                                                     <label for="confirm_password">Cofirm password</label>
                                                     <input type="password" class="form-control @error('new_password_confirmation')
-                                                                    is-invalid
+                                                                                        is-invalid
                                                     @enderror" placeholder="Confirm new password"
                                                         name="new_password_confirmation" required>
                                                     @error('new_password_confirmation')
@@ -197,6 +201,34 @@
                                             </form>
                                         </div>
 
+                                        @if (auth()->user()->id == $user->id)
+                                            <div class="tab-pane" id="signature">
+                                                <form action="{{ route('user.store.signature', ['user' => $user]) }}"
+                                                    method="post" id="signatureForm" enctype="multipart/form-data">
+                                                    @method('PATCH')
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="signature">File input</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" name="signature" @error('signature')
+                                                                    is-invalid @enderror class="custom-file-input">
+                                                                <label class="custom-file-label" for="signature">Choose
+                                                                    file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <button type="submit">
+                                                                    <span
+                                                                        class="input-group-text">Upload</span></button>
+                                                            </div>
+                                                        </div>
+                                                        @error('signature')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
                                     <!-- /.tab-content -->
                                 </div><!-- /.card-body -->
