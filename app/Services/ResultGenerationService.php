@@ -35,7 +35,6 @@ class ResultGenerationService
     public function generateReport($periodSlug)
     {
         $period = Period::where('slug', $periodSlug)->firstOrFail();
-
         $pdTypes = PDType::all();
         $pds = $this->getPds($period);
 
@@ -215,6 +214,7 @@ class ResultGenerationService
      */
     private function getNextTermDetails($period)
     {
+
         $nextPeriod = Period::where('rank', $period->rank + 1)->first();
 
         if (is_null($nextPeriod)) {
@@ -229,7 +229,7 @@ class ResultGenerationService
             if (is_null($nextTermFee)) {
                 $nextTermFee = null;
             } else {
-                $nextTermFee = number_format($$nextTermFee->amount);
+                $nextTermFee = number_format($nextTermFee->amount);
             }
         }
 
