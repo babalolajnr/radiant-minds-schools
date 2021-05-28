@@ -42,16 +42,16 @@
 
                         <!-- Default box -->
                         <div class="card">
-                            @if ($period->isActive())
-                                <div class="card-header">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="btn-group">
-                                            <a
-                                                href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                                <button type="button"
-                                                    class="btn btn-outline-secondary btn-sm btn-flat">Performance
-                                                    Report</button>
-                                            </a>
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between">
+                                    <div class="btn-group">
+                                        <a
+                                            href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                            <button type="button"
+                                                class="btn btn-outline-secondary btn-sm btn-flat">Performance
+                                                Report</button>
+                                        </a>
+                                        @if ($period->isActive())
                                             <a
                                                 href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
                                                 <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
@@ -84,10 +84,10 @@
                                                         HOS Remark</button>
                                                 </a>
                                             @endauth
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                             <div class="card-body">
                                 <table id="results" class="table table-bordered table-striped">
                                     <thead>
