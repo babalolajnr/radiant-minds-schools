@@ -417,7 +417,7 @@
                     <div class="class-teacher-sign">
                         <label for="class-teachers-sign">Sign</label>
                         <div class="sign border-bottom">
-                            @if ($teacherRemark)
+                            @if ($teacherRemark->teacher->signature)
                             <span class="ps-4">
                                 <img src="{{ asset($teacherRemark->teacher->signature) }}" height=40 width="60" alt="teacher's signature">
                             </span>
@@ -432,14 +432,20 @@
                     <div class="class-teacher-remark">
                         <label for="class-teachers-remark">HOS's Remark</label>
                         <div class="remark-hd border-bottom fst-italic ps-2">
-                            {{-- @if ($remarks)
-                                {{ $remarks->hos_remark }}
-                            @endif --}}
+                            @if ($hosRemark)
+                            {{ $hosRemark->remark }}
+                        @endif
                         </div>
                     </div>
                     <div class="class-teacher-sign ">
                         <label for="class-teachers-sign">Sign</label>
-                        <div class="sign border-bottom"></div>
+                        <div class="sign border-bottom">
+                            @if ($hosRemark->user->signature)
+                            <span class="ps-4">
+                                <img src="{{ asset($hosRemark->user->signature) }}" height=40 width="60" alt="teacher's signature">
+                            </span>
+                            @endif
+                        </div>
                     </div>
 
                 </div>
