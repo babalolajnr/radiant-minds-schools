@@ -158,8 +158,9 @@ class StudentService
         $academicSessions = collect($academicSessions);
 
         $terms = Term::all();
+        $activePeriod = Period::activePeriod();
 
-        return compact('student', 'academicSessions', 'terms');
+        return compact('student', 'academicSessions', 'terms', 'activePeriod');
     }
 
     public function getSessionalResults($student, $academicSessionName)
