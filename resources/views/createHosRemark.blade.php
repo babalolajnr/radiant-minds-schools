@@ -43,13 +43,13 @@
                                 <h3 class="card-title">Create/Update HOS Remark</span></h3>
                             </div>
                             <form method="POST"
-                                action="{{ route('remark.teacher.storeOrUpdate', ['student' => $student]) }}">
+                                action="{{ route('remark.hos.storeOrUpdate', ['student' => $student]) }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="HOS remark">HOS Remark</label>
-                                        <textarea class='form-control @error('remark') is-invalid
-                                            @enderror' name='remark' rows="4">
+                                        <textarea class='form-control @error(' remark') is-invalid @enderror'
+                                            name='remark' rows="4">
                                                 @if (!is_null($remark))
                                                     {{ old('remark', $remark->remark) }}
                                                 @else 
