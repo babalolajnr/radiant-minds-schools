@@ -108,7 +108,7 @@ class Period extends Model
     {
         return $this->hasMany(TeacherRemark::class);
     }
-    
+
     /**
      * Hos Remarks relationship
      *
@@ -139,7 +139,7 @@ class Period extends Model
         $activePeriod = Period::where('active', true)->first();
         return $activePeriod;
     }
-    
+
     /**
      * check if active period is set
      *
@@ -150,5 +150,27 @@ class Period extends Model
         $activePeriod = Period::activePeriod();
         if (is_null($activePeriod)) return false;
         return true;
+    }
+
+    /**
+     * Get current academic session
+     *
+     * @return AcademicSession
+     */
+    public static function currentAcademicSession()
+    {
+        if (Period::activePeriodIsSet()) return Period::activePeriod()->academicSession;
+        return null;
+    }
+
+    /**
+     * Get current term
+     *
+     * @return Term
+     */
+    public static function currentTerm()
+    {
+        if (Period::activePeriodIsSet()) return Period::activePeriod()->term;
+        return null;
     }
 }
