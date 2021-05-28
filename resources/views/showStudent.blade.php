@@ -132,7 +132,7 @@
                                             <p class="text-muted" id="status">
                                                 @if ($student->isActive())
                                                     Active
-                                                    @else
+                                                @else
                                                     Inactive
                                                 @endif
                                             </p>
@@ -243,7 +243,7 @@
                                         <option
                                             value="{{ route('student.get.sessional.results', ['student' => $student, 'academicSessionName' => $academicSession->name]) }}"
                                             @if (old('academicSession') == $academicSession) SELECTED @endif>
-                                            {{ $academicSession->name }}
+                                            {{ $academicSession->name }} @if ($activePeriod->academicSession->id == $academicSession->id) * @endif
                                         </option>
                                     @endforeach
                                 </select>
@@ -286,7 +286,7 @@
                                         @foreach ($terms as $term)
                                             <option
                                                 value="{{ route('student.get.term.results', ['student' => $student, 'academicSessionName' => $academicSession->name, 'termSlug' => $term->slug]) }}">
-                                                {{ $academicSession->name }} {{ $term->name }}
+                                                {{ $academicSession->name }} {{ $term->name }} @if ($activePeriod->academicSession->id == $academicSession->id && $activePeriod->term->id == $term->id) * @endif
                                             </option>
                                         @endforeach
                                     @endforeach
