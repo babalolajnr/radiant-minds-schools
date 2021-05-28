@@ -53,7 +53,7 @@ class TeacherRemarkController extends Controller
     public function storeOrUpdate(Student $student, Request $request)
     {
         $validated = $request->validate([
-            'remark' => ['string']
+            'remark' => ['string', 'required']
         ]);
 
         if (!Period::activePeriodIsSet()) {
@@ -64,9 +64,9 @@ class TeacherRemarkController extends Controller
             [
                 'student_id' => $student->id,
                 'period_id' => Period::activePeriod()->id,
-                'teacher_id' => $request->user()->id,
             ],
             [
+                'teacher_id' => $request->user()->id,
                 'remark' => $validated['remark'],
             ]
         );
