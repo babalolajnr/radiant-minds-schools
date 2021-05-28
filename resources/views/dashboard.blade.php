@@ -92,7 +92,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
-                        <div class="small-box bg-info">
+                        <div class="small-box bg-secondary">
                             <div class="inner">
                                 <h3>
                                     @if ($dashboardData['period'] !== null)
@@ -107,6 +107,26 @@
                                 <i class="fas fa-calendar"></i>
                             </div>
                             <a href="{{ route('academic-session.index') }}" class="small-box-footer">More info <i
+                                    class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>
+                                    @if ($dashboardData['period'] !== null)
+                                        {{ $dashboardData['period']->term->name }}
+                                    @else
+                                        Not Set
+                                    @endif
+                                </h3>
+                                <p class="font-semibold">Term</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <a href="{{ route('term.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
