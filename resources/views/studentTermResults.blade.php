@@ -42,54 +42,52 @@
 
                         <!-- Default box -->
                         <div class="card">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between">
-                                    <div class="btn-group">
-                                        <a
-                                            href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button"
-                                                class="btn btn-outline-secondary btn-sm btn-flat">Performance
-                                                Report</button>
-                                        </a>
-                                        <a
-                                            href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
-                                                title="Create or update Pychomotor domain for the result's academic session and term">Create/Update
-                                                PD</button>
-                                        </a>
-                                        <a
-                                            href="{{ route('ad.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
-                                                title="Create or update Affective domain for the result's academic session and term">Create/Update
-                                                AD</button>
-                                        </a>
-                                        <a
-                                            href="{{ route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
-                                                title="Create or update attendance record">Create/Update
-                                                Attendance</button>
-                                        </a>
-                                        @auth('teacher')
-                                            @if ($period->isActive())
+                            @if ($period->isActive())
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="btn-group">
+                                            <a
+                                                href="{{ route('result.show.performance', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                                <button type="button"
+                                                    class="btn btn-outline-secondary btn-sm btn-flat">Performance
+                                                    Report</button>
+                                            </a>
+                                            <a
+                                                href="{{ route('pd.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                    title="Create or update Pychomotor domain for the result's academic session and term">Create/Update
+                                                    PD</button>
+                                            </a>
+                                            <a
+                                                href="{{ route('ad.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                    title="Create or update Affective domain for the result's academic session and term">Create/Update
+                                                    AD</button>
+                                            </a>
+                                            <a
+                                                href="{{ route('attendance.create', ['student' => $student, 'periodSlug' => $period->slug]) }}">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
+                                                    title="Create or update attendance record">Create/Update
+                                                    Attendance</button>
+                                            </a>
+                                            @auth('teacher')
                                                 <a href="{{ route('remark.teacher.create', ['student' => $student]) }}">
                                                     <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
                                                         title="Create or update teacher's remark">Create/Update
                                                         Teacher's Remark</button>
                                                 </a>
-                                            @endif
-                                        @endauth
-                                        @auth('web')
-                                            @if ($period->isActive())
+                                            @endauth
+                                            @auth('web')
                                                 <a href="{{ route('remark.hos.create', ['student' => $student]) }}">
                                                     <button type="button" class="btn btn-outline-secondary btn-sm btn-flat"
                                                         title="Create or update HOS remark">Create/Update
                                                         HOS Remark</button>
                                                 </a>
-                                            @endif
-                                        @endauth
+                                            @endauth
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="card-body">
                                 <table id="results" class="table table-bordered table-striped">
                                     <thead>
