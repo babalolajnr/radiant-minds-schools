@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Notifications\TeacherResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as PasswordsCanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,9 +12,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
-class Teacher extends Authenticatable
+class Teacher extends Authenticatable implements CanResetPassword
 {
-    use HasFactory, SoftDeletes,  Notifiable;
+    use HasFactory, SoftDeletes, Notifiable, PasswordsCanResetPassword;
 
     protected $guard = 'teacher';
     /**
@@ -49,7 +52,7 @@ class Teacher extends Authenticatable
     {
         return $this->hasOne(Classroom::class);
     }
-    
+
     /**
      * TeacherRemark relationship
      *
@@ -68,5 +71,18 @@ class Teacher extends Authenticatable
     public function isActive()
     {
         return $this->is_active == true;
+    }
+    
+    /**
+     * Send Password reset notification
+     *
+     * @param  mixed $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $notification = new TeacherResetPassword($token);
+        
+        $this->notify($notification);
     }
 }
