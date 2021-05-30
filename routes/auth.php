@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\TeacherAuthenticatedSessionController;
+use App\Http\Controllers\Auth\TeacherNewPasswordController;
+use App\Http\Controllers\Auth\TeacherPasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +66,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::prefix('teacher')->name('teacher.')->group(function () {
+Route::prefix('teachers')->name('teacher.')->group(function () {
 
     Route::get('/login', [TeacherAuthenticatedSessionController::class, 'create'])
         ->middleware('guest')
@@ -76,4 +78,20 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
     Route::post('/logout', [TeacherAuthenticatedSessionController::class, 'destroy'])
         ->middleware('auth:teacher')
         ->name('logout');
+
+    Route::get('/forgot-password', [TeacherPasswordResetLinkController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.request');
+
+    Route::post('/forgot-password', [TeacherPasswordResetLinkController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.email');
+
+    Route::get('/reset-password/{token}', [TeacherNewPasswordController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.reset');
+
+    Route::post('/reset-password', [TeacherNewPasswordController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.update');
 });
