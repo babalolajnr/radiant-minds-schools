@@ -52,8 +52,8 @@
 
             <div class="flex items-center justify-between">
                 <div class="mt-4">
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="/register">
-                        {{ __('Register') }}
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                        User Login
                     </a>
                 </div>
                 <div class="flex justify-end">
