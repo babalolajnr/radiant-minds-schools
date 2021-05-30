@@ -13,14 +13,17 @@
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         @if (session('error'))
-        <div class="mb-4 text-red-500">
-            {{ session('error') }} Contact the admin.
-        </div>
+            <div class="mb-4 text-red-500">
+                {{ session('error') }} Contact the admin.
+            </div>
         @endif
 
         <form method="POST" action="{{ route('teacher.login') }}">
             @csrf
 
+            <div class="pb-4">
+                <h3 class="text-center font-bold">Teacher Login</h3>
+            </div>
             <!-- Email Address -->
             <div>
                 <x-label for="email" :value="__('Email')" />
