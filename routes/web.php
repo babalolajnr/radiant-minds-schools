@@ -74,9 +74,14 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
     Route::middleware('studentClassTeacherOrUser')->group(function () {
         //Routes accessible to student's classteachers and master-user and admins only
 
-        Route::get('/students/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('student.get.term.results')->where('academicSessionName', '.*');
-        Route::get('/students/view/{student:admission_no}', [StudentController::class, 'show'])->name('student.show');
-        Route::get('/students/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('student.get.sessional.results')->where('academicSessionName', '.*');
+        Route::prefix('students')->name('student.')->group(function () {
+
+            // student routes
+            Route::get('/results/term/{student:admission_no}/{termSlug}/{academicSessionName}', [StudentController::class, 'getTermResults'])->name('get.term.results')->where('academicSessionName', '.*');
+            Route::get('/view/{student:admission_no}', [StudentController::class, 'show'])->name('show');
+            Route::get('/results/sessional/{student:admission_no}/{academicSessionName}', [StudentController::class, 'getSessionalResults'])->name('get.sessional.results')->where('academicSessionName', '.*');
+            Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
+        });
 
         Route::prefix('results')->name('result.')->group(function () {
             //Results Routes
@@ -130,7 +135,6 @@ Route::middleware(['auth:teacher,web', 'verified:teacher,web', 'activeAndVerifie
             //Student Routes
             Route::get('/', [StudentController::class, 'index'])->name('index');
             Route::get('/create', [StudentController::class, 'create'])->name('create');
-            Route::get('/student-settings/{student:admission_no}', [StudentController::class, 'showStudentSettingsView'])->name('show.student.settingsView');
             Route::get('/edit/{student:admission_no}', [StudentController::class, 'edit'])->name('edit');
             Route::get('/trashed', [StudentController::class, 'showTrashed'])->name('show.trashed');
             Route::get('/alumni', [StudentController::class, 'getAlumni'])->name('get.alumni');
