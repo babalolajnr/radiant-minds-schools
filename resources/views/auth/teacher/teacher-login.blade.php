@@ -56,7 +56,7 @@
                 <div class="flex justify-end">
                     @if (Route::has('password.request'))
                         <a class="underline text-sm text-gray-600 hover:text-gray-900 mt-4"
-                            href="{{ route('password.request') }}">
+                            href="{{ route('teacher.password.request') }}">
                             {{ __('Forgot your password?') }}
                         </a>
                     @endif
