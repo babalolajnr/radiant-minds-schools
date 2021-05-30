@@ -8,6 +8,10 @@
             href="{{ asset('TAssets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet"
             href="{{ asset('TAssets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
+        <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet"
+            href="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     </x-slot>
 
     <div class="content-wrapper">
@@ -77,18 +81,10 @@
                                             ({{ $student->classroom->name }})</label>
                                         <div class="col-sm-10">
                                             <div class="btn-group">
-                                                <button type="button" onclick="@if ($student->canGraduate()) changeClassConfirmationModal('{{ route('student.graduate', ['student' => $student]) }}',
-                                                {{ $student }}, 'graduate')@else
-                                                    changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}',
-                                                    {{ $student }}, 'promote') @endif"
-                                                    class="btn btn-success btn-flat" @if ($student->hasGraduated())
-                                                        disabled
-                                                    @endif>
-                                                    @if ($student->canGraduate())
-                                                        Graduate
-                                                    @else
-                                                        Promote
-                                                    @endif
+                                                <button type="button"
+                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}', {{ $student }}, 'promote')"
+                                                    class="btn btn-success btn-flat" @if ($student->canGraduate() || $student->hasGraduated()) disabled @endif>
+                                                    Promote
                                                 </button>
 
                                                 <button type="button"
@@ -100,6 +96,39 @@
                                         </div>
                                     </div>
                                     {{-- /class --}}
+
+                                    {{-- Set Graduation date --}}
+                                    @if ($student->canGraduate())
+                                        <form action="">
+                                            <div class="form-group row">
+                                                <label for="class" class="col-sm-2 col-form-label">Set Graduation Date
+                                                    ({{ $currentAcademicSession->name }})</label>
+                                                <div class="col-sm-2">
+                                                    <div class="input-group date" id="graduationDate"
+                                                        data-target-input="nearest">
+                                                        <input type="text"
+                                                            class="form-control @error('graduated_at') is-invalid @enderror datetimepicker-input"
+                                                            data-target="#graduationDate"
+                                                            value="{{ old('graduated_at') }}" name="graduated_at" />
+                                                        <div class="input-group-append" data-target="#graduationDate"
+                                                            data-toggle="datetimepicker">
+                                                            <div class="input-group-text"><i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @error('graduated_at')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    @endif
+
+                                    {{-- /Set graduation date --}}
 
                                     {{-- PD --}}
                                     <div class="form-group row">
@@ -281,7 +310,16 @@
         <script src="{{ asset('TAssets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
         </script>
         <!-- AdminLTE App -->
+        <script src="{{ asset('TAssets/plugins/moment/moment.min.js') }}"></script>
+
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="{{ asset('TAssets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}">
+        </script>
         <script>
+            $('#graduationDate').datetimepicker({
+                format: 'YYYY-MM-DD'
+            })
+
             function changeClassConfirmationModal(url, data, action) {
 
                 const studentName = data.first_name + ' ' + data.last_name
