@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-               {{-- logo goes here --}}
+                {{-- logo goes here --}}
             </a>
         </x-slot>
 
@@ -14,6 +14,10 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
+
+            <div class="pb-4">
+                <h3 class="text-center font-bold">User Login</h3>
+            </div>
 
             <!-- Email Address -->
             <div>
@@ -49,10 +53,10 @@
                 </div>
                 <div class="flex justify-end">
                     @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 mt-4"
-                        href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+                        <a class="underline text-sm text-gray-600 hover:text-gray-900 mt-4"
+                            href="{{ route('password.request') }}">
+                            {{ __('Forgot your password?') }}
+                        </a>
                     @endif
 
                     <x-button class="ml-3">
