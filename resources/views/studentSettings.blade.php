@@ -53,121 +53,140 @@
                                         {{-- Status --}}
                                         <label for="status" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
-                                            <div class="btn-group">
-                                                <form action="@if ($student->isActive()) {{ route('student.deactivate', ['student' => $student]) }}
-                                                @else
-                                                    {{ route('student.activate', ['student' => $student]) }} @endif"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn @if ($student->isActive()) btn-danger
-                                                        @else btn-success @endif btn-flat" @if ($student->hasGraduated())
-                                                            disabled
-                                                        @endif>
-                                                        @if ($student->isActive())
-                                                            Deactivate
-                                                        @else
-                                                            Activate
-                                                        @endif
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            @if ($student->hasGraduated())
+                                                <div class='pt-2'>
+                                                    Graduated
+                                                </div>
+                                            @else
+                                                <div class="btn-group">
+                                                    <form action="@if ($student->isActive()) {{ route('student.deactivate', ['student' => $student]) }}
+                                                    @else
+                                                        {{ route('student.activate', ['student' => $student]) }} @endif"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="btn @if ($student->isActive()) btn-danger
+                                                        @else btn-success @endif btn-flat"
+                                                            @if ($student->hasGraduated())
+                                                                disabled
+                                                            @endif>
+                                                            @if ($student->isActive())
+                                                                Deactivate
+                                                            @else
+                                                                Activate
+                                                            @endif
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endif
                                         </div>
                                         {{-- /Status --}}
                                     </div>
-                                    {{-- class --}}
-                                    <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Class
-                                            ({{ $student->classroom->name }})</label>
-                                        <div class="col-sm-10">
-                                            <div class="btn-group">
-                                                <button type="button"
-                                                    onclick="changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}', {{ $student }}, 'promote')"
-                                                    class="btn btn-success btn-flat" @if ($student->canGraduate() || $student->hasGraduated()) disabled @endif>
-                                                    Promote
-                                                </button>
 
-                                                <button type="button"
-                                                    onclick="changeClassConfirmationModal('{{ route('student.demote', ['student' => $student]) }}',{{ $student }}, 'demote')"
-                                                    class="btn btn-danger btn-flat">
-                                                    Demote
-                                                </button>
+                                    @if (!$student->hasGraduated())
+                                        {{-- class --}}
+                                        <div class="form-group row">
+                                            <label for="class" class="col-sm-2 col-form-label">Class
+                                                ({{ $student->classroom->name }})</label>
+                                            <div class="col-sm-10">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                        onclick="changeClassConfirmationModal('{{ route('student.promote', ['student' => $student]) }}', {{ $student }}, 'promote')"
+                                                        class="btn btn-success btn-flat" @if ($student->canGraduate() || $student->hasGraduated()) disabled @endif>
+                                                        Promote
+                                                    </button>
+
+                                                    <button type="button"
+                                                        onclick="changeClassConfirmationModal('{{ route('student.demote', ['student' => $student]) }}',{{ $student }}, 'demote')"
+                                                        class="btn btn-danger btn-flat">
+                                                        Demote
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {{-- /class --}}
+                                        {{-- /class --}}
 
-                                    {{-- Set Graduation date --}}
-                                    @if ($student->canGraduate())
-                                        <form action="">
-                                            <div class="form-group row">
-                                                <label for="class" class="col-sm-2 col-form-label">Set Graduation Date
-                                                    ({{ $currentAcademicSession->name }})</label>
-                                                <div class="col-sm-2">
-                                                    <div class="input-group date" id="graduationDate"
-                                                        data-target-input="nearest">
-                                                        <input type="text"
-                                                            class="form-control @error('graduated_at') is-invalid @enderror datetimepicker-input"
-                                                            data-target="#graduationDate"
-                                                            value="{{ old('graduated_at') }}" name="graduated_at" />
-                                                        <div class="input-group-append" data-target="#graduationDate"
-                                                            data-toggle="datetimepicker">
-                                                            <div class="input-group-text"><i class="fa fa-calendar"></i>
+                                        {{-- Set Graduation date --}}
+                                        @if ($student->canGraduate())
+                                            <form action="{{ route('student.graduate', ['student' => $student]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <div class="form-group row">
+                                                    <label for="class" class="col-sm-2 col-form-label">Set
+                                                        Graduation
+                                                        Date
+                                                        ({{ $currentAcademicSession->name }})</label>
+                                                    <div class="col-sm-2">
+                                                        <div class="input-group date" id="graduationDate"
+                                                            data-target-input="nearest">
+                                                            <input type="text"
+                                                                class="form-control @error('graduated_at') is-invalid @enderror datetimepicker-input"
+                                                                data-target="#graduationDate"
+                                                                value="{{ old('graduated_at') }}"
+                                                                name="graduated_at" />
+                                                            <div class="input-group-append"
+                                                                data-target="#graduationDate"
+                                                                data-toggle="datetimepicker">
+                                                                <div class="input-group-text"><i
+                                                                        class="fa fa-calendar"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    @error('graduated_at')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
+                                                        @error('graduated_at')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
 
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </div>
+                                            </form>
+                                        @endif
+
+                                        {{-- /Set graduation date --}}
+
+                                        {{-- PD --}}
+                                        <div class="form-group row">
+                                            <label for="class" class="col-sm-2 col-form-label">Psychomotor
+                                                Domain({{ $currentAcademicSession->name }})</label>
+                                            <div class="col-sm-6">
+                                                <button type="button" onclick="showChooseTermModalPD()"
+                                                    class="btn btn-default btn-flat">
+                                                    Create/Update Psychomotor domains
+                                                </button>
                                             </div>
-                                        </form>
+                                        </div>
+                                        {{-- /PD --}}
+
+                                        {{-- AD --}}
+                                        <div class="form-group row">
+                                            <label for="class" class="col-sm-2 col-form-label">Affective
+                                                Domain({{ $currentAcademicSession->name }})</label>
+                                            <div class="col-sm-6">
+                                                <button type="button" onclick="showChooseTermModalAD()"
+                                                    class="btn btn-default btn-flat">
+                                                    Create/Update Affective domains
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {{-- /AD --}}
+
+                                        {{-- Attendance --}}
+                                        <div class="form-group row">
+                                            <label for="class" class="col-sm-2 col-form-label">Attendance
+                                                ({{ $currentAcademicSession->name }})</label>
+                                            <div class="col-sm-6">
+                                                <button type="button" onclick="showChooseTermModalAttendance()"
+                                                    class="btn btn-default btn-flat">
+                                                    Create/Update Attendance
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {{-- /Attendance --}}
                                     @endif
 
-                                    {{-- /Set graduation date --}}
-
-                                    {{-- PD --}}
-                                    <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Psychomotor
-                                            Domain({{ $currentAcademicSession->name }})</label>
-                                        <div class="col-sm-6">
-                                            <button type="button" onclick="showChooseTermModalPD()"
-                                                class="btn btn-default btn-flat">
-                                                Create/Update Psychomotor domains
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {{-- /PD --}}
-
-                                    {{-- AD --}}
-                                    <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Affective
-                                            Domain({{ $currentAcademicSession->name }})</label>
-                                        <div class="col-sm-6">
-                                            <button type="button" onclick="showChooseTermModalAD()"
-                                                class="btn btn-default btn-flat">
-                                                Create/Update Affective domains
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {{-- /AD --}}
-
-                                    {{-- Attendance --}}
-                                    <div class="form-group row">
-                                        <label for="class" class="col-sm-2 col-form-label">Attendance
-                                            ({{ $currentAcademicSession->name }})</label>
-                                        <div class="col-sm-6">
-                                            <button type="button" onclick="showChooseTermModalAttendance()"
-                                                class="btn btn-default btn-flat">
-                                                Create/Update Attendance
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {{-- /Attendance --}}
                                 </div>
                             </div>
                         </div>
