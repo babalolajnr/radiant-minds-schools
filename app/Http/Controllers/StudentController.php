@@ -244,10 +244,27 @@ class StudentController extends Controller
 
         return back()->with('success', 'Student restored!');
     }
-
-    public function graduate(Student $student)
+    
+    /**
+     * Store student gradation date
+     *
+     * @param  Student $student
+     * @param  Request $request
+     * @return void
+     */
+    public function graduate(Student $student, Request $request)
     {
-        $student->graduated_at = now();
+        if (!Period::activePeriodIsSet()) {
+            return back()->with('error', 'Active Period is not set');
+        }
+
+        $activePeriod = Period::activePeriod();
+
+        $validated = $request->validate([
+            'graduated_at' => ['required', 'date', "before_or_equal:{$activePeriod->academicSession->end_date}"]
+        ]);
+
+        $student->graduated_at = $validated['graduated_at'];
         $student->is_active = false;
         $student->save();
 
