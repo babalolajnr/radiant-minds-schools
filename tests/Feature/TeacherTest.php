@@ -34,6 +34,7 @@ class TeacherTest extends TestCase
             'phone' => $this->faker->e164PhoneNumber,
             'sex' => 'M',
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
+            'password' => 'password'
         ]);
         $response->assertStatus(302)->assertSessionHas('success');
     }
