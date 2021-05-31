@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'is_verified' => true,
             'is_active' => true,
-            'password' => bcrypt(11111111), // password - 8 ones
+            'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
         ];
     }
