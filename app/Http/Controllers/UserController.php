@@ -87,7 +87,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->authorize('view', $user);
+        $this->authorize('update', $user);
 
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -109,7 +109,7 @@ class UserController extends Controller
      */
     public function updatePassword(Request $request, User $user)
     {
-        $this->authorize('view', $user);
+        $this->authorize('updatePassword', $user);
 
         $data = $request->validate([
             'current_password' => ['required', 'string'],
