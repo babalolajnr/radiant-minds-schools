@@ -142,6 +142,10 @@ class ClassroomController extends Controller
         $relations = [];
 
         //NOTE: subjects can only be set for the current academic session
+        if (!Period::activePeriodIsSet()) {
+            return back()->with('error', 'Academic Session is not set');
+        }
+        
         $currentAcademicSession = Period::activePeriod()->academicSession;
 
         //loop subjects and get the ones that are related to the classroom
@@ -167,6 +171,11 @@ class ClassroomController extends Controller
 
         $subjects = $request->subjects;
         $subjectIds = [];
+
+        if (!Period::activePeriodIsSet()) {
+            return back()->with('error', 'Active Period is not set!');
+        }
+
         $currentAcademicSession = Period::activePeriod()->academicSession;
         $academicSessions = [];
 
@@ -184,7 +193,7 @@ class ClassroomController extends Controller
 
         return back()->with('success', 'Subjects set successfully');
     }
-    
+
     /**
      * assign teacher to a classroom
      *
