@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\AcademicSession;
 use App\Models\Classroom;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -82,7 +83,8 @@ class ClassroomTest extends TestCase
         $user = User::factory()->create();
         $subjects = $this->generateTestSubjects();
         $classroom = Classroom::factory()->create();
-        AcademicSession::factory()->create(['current_session' => 1]);
+        
+        Period::factory()->create(['active' => true]);
         $response = $this->actingAs($user)->post(route('classroom.update.subjects', ['classroom' => $classroom]), [
             'subjects' => $subjects
         ]);
@@ -94,6 +96,7 @@ class ClassroomTest extends TestCase
     {
         $classroom = Classroom::factory()->create();
         $user = User::factory()->create();
+        Period::factory()->create(['active' => true]);
         $response = $this->actingAs($user)->get(route('classroom.set.subjects', ['classroom' => $classroom]));
 
         $response->assertStatus(200)->assertViewIs('setSubjects');
