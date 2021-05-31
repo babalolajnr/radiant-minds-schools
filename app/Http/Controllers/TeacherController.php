@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTeacherRequest;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -9,7 +10,7 @@ use Illuminate\Validation\Rule;
 use  Intervention\Image\Facades\Image;
 
 class TeacherController extends Controller
-{    
+{
     /**
      * get validation fiels
      *
@@ -42,7 +43,7 @@ class TeacherController extends Controller
 
         return $slug;
     }
-    
+
     /**
      * get teachers view
      *
@@ -53,7 +54,7 @@ class TeacherController extends Controller
         $teachers = Teacher::all();
         return view('teachers', compact('teachers'));
     }
-    
+
     /**
      * get create view
      *
@@ -63,27 +64,28 @@ class TeacherController extends Controller
     {
         return view('createTeacher');
     }
-    
+
     /**
      * store new teacher
      *
-     * @param Request $request
+     * @param StoreTeacherRequest $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreTeacherRequest $request)
     {
-        $validationFields = $this->validationFields() +  ['sex' => ['required', 'string']];
-        $validatedData = $request->validate($validationFields);
+        $validated = $request->validated();
 
-        $slug = $this->generateFullNameSlug($validatedData['first_name'], $validatedData['last_name']);
+        $slug = $this->generateFullNameSlug($validated['first_name'], $validated['last_name']);
 
-        $data = array_merge($validatedData, ['slug' => $slug]);
+        $password = bcrypt($validated['password']);
+
+        $data = array_merge($validated, ['slug' => $slug], ['password' => $password]);
 
         Teacher::create($data);
 
         return redirect()->route('teacher.index')->with('success', 'Teacher Created');
     }
-    
+
     /**
      * show teacher
      *
@@ -94,7 +96,7 @@ class TeacherController extends Controller
     {
         return view('showTeacher', compact('teacher'));
     }
-    
+
     /**
      * get edit teacher view.
      *
@@ -105,7 +107,7 @@ class TeacherController extends Controller
     {
         return view('editTeacher', compact('teacher'));
     }
-    
+
     /**
      * update
      *
@@ -130,7 +132,7 @@ class TeacherController extends Controller
 
         return redirect()->route('teacher.edit', ['teacher' => $teacher])->with('success', 'Teacher Updated!');
     }
-    
+
     /**
      * activate teacher
      *
@@ -144,7 +146,7 @@ class TeacherController extends Controller
 
         return redirect()->back()->with('success', 'Teacher Activated!');
     }
-    
+
     /**
      * deactivate teacher
      *
