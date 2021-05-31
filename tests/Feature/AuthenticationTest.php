@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Classroom;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -50,22 +51,23 @@ class AuthenticationTest extends TestCase
     public function test_teachers_can_authenticate_using_the_login_screen()
     {
         $this->withoutExceptionHandling();
-        $teacher = Teacher::factory()->create();
+        $classroom = Classroom::factory()->create();
+        $teacher = $classroom->teacher;
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('teacher.login'), [
             'email' => $teacher->email,
             'password' => '11111111',
         ]);
 
         $this->assertAuthenticated('teacher');
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(route('classroom.show', ['classroom' => $classroom]));
     }
 
     public function test_teacher_can_not_authenticate_with_invalid_password()
     {
         $teacher = Teacher::factory()->create();
 
-        $this->post('/login', [
+        $this->post(route('teacher.login'), [
             'email' => $teacher->email,
             'password' => 'wrong-password',
         ]);
