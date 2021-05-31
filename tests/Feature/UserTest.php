@@ -32,7 +32,7 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->patch(route('user.update.password', ['user' => $user]), [
-            'current_password' => '11111111', //default user factory password(8 ones)
+            'current_password' => 'password', //default user factory password(8 ones)
             'new_password' => 'ANewPassword',
             'new_password_confirmation' => 'ANewPassword'
         ]);
