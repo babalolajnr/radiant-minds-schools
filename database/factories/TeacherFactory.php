@@ -39,7 +39,7 @@ class TeacherFactory extends Factory
             'is_active' => $this->faker->randomElement([true, false]),
             'date_of_birth' => $this->faker->dateTimeThisCentury(),
             'email_verified_at' => now(),
-            'password' => bcrypt(11111111), // password - 8 ones
+            'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
         ];
     }
