@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Result;
 use App\Models\Classroom;
 use App\Models\Guardian;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\User;
 use Database\Seeders\ClassroomSeeder;
@@ -161,10 +162,15 @@ class StudentTest extends TestCase
 
     public function test_student_can_be_graduated()
     {
-
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $student = Student::factory()->create();
-        $response = $this->actingAs($user)->patch(route('student.graduate', ['student' => $student]));
+        $period = Period::factory()->create(['active' => true]);
+        $graduated_at = $period->academicSession->start_date;
+        $response = $this->actingAs($user)->patch(
+            route('student.graduate', ['student' => $student]),
+            ['graduated_at' => $graduated_at]
+        );
         $response->assertStatus(302)->assertSessionHas('success');
     }
 
