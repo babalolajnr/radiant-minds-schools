@@ -104,4 +104,16 @@ class TeacherPolicy
         
         return auth('teacher')->user()->id == $teacher->id;
     }
+
+    /**
+     * Determine whether the teacher can update password.
+     *
+     * @param  \App\Models\Teacher  $teacher
+     * @param  \App\Models\Teacher  $model
+     * @return mixed
+     */
+    public function updatePassword(Teacher $teacher, Teacher $model)
+    {
+        return $teacher->id == $model->id;
+    }
 }
