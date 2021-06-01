@@ -30,7 +30,6 @@ class StoreTeacherRequest extends FormRequest
             'phone' => ['required', 'string', 'unique:teachers', 'max:15', 'min:10'],
             'date_of_birth' => ['required', 'date', 'before:' . now()],
             'sex' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8']
         ];
     }
 }
