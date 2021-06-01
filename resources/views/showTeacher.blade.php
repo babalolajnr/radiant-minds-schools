@@ -91,6 +91,11 @@
                                             <li class="nav-item"><a class="nav-link" href="#signature"
                                                     data-toggle="tab">Signature Upload</a></li>
                                         @endauth
+                                        @auth('teacher')
+                                            <li class="nav-item"><a class="nav-link" href="#changePassword"
+                                                    data-toggle="tab">Change Password</a></li>
+                                        @endauth
+
                                     </ul>
 
                                 </div><!-- /.card-header -->
@@ -214,6 +219,51 @@
                                                         @error('signature')
                                                             <div class="text-danger">{{ $message }}</div>
                                                         @enderror
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane" id="changePassword">
+                                                <form action="{{ route('teacher.update.password', ['teacher' => $teacher]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <div class="form-group">
+                                                        <label for="old_password">Current password</label>
+                                                        <input type="password" class="form-control @error('current_password')
+                                                                                                    is-invalid
+                                                            @enderror" placeholder="Enter current password"
+                                                            name="current_password" required>
+                                                        @error('current_password')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="new_password">New password</label>
+                                                        <input type="password" class="form-control @error('new_password')
+                                                                                                    is-invalid
+                                                            @enderror" placeholder="Enter new password" name="new_password"
+                                                            required>
+                                                        @error('new_password')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="confirm_password">Cofirm password</label>
+                                                        <input type="password" class="form-control @error('new_password_confirmation') is-invalid
+                                                            @enderror" placeholder="Confirm new password"
+                                                            name="new_password_confirmation" required>
+                                                        @error('new_password_confirmation')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
                                                     </div>
                                                 </form>
                                             </div>
