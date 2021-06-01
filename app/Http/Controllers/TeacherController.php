@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use  Intervention\Image\Facades\Image;
 
 class TeacherController extends Controller
@@ -77,7 +79,7 @@ class TeacherController extends Controller
 
         $slug = $this->generateFullNameSlug($validated['first_name'], $validated['last_name']);
 
-        $password = bcrypt($validated['password']);
+        $password = bcrypt($validated['last_name']);
 
         $data = array_merge($validated, ['slug' => $slug], ['password' => $password]);
 
@@ -200,4 +202,32 @@ class TeacherController extends Controller
 
         return back()->with('success', 'Signature uploaded successfully');
     }
+
+     /**
+     * Update password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Teacher  $teacher
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request, Teacher $teacher)
+    {
+        $this->authorize('updatePassword', $teacher);
+
+        $data = $request->validate([
+            'current_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'confirmed', 'min:8']
+        ]);
+
+        //if password does not match the current password
+        if (!Hash::check($data['current_password'], $teacher->password)) {
+            throw ValidationException::withMessages(['current_password' => ['Password does not match current password']]);
+        }
+
+        $teacher->password = bcrypt($data['new_password']);
+        $teacher->save();
+
+        return redirect()->back()->with('success', 'Password updated!');
+    }
+
 }
